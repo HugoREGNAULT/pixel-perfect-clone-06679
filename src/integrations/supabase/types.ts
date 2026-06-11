@@ -14,7 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      waitlist: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          user_type: Database["public"]["Enums"]["springr_user_type"]
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          user_type: Database["public"]["Enums"]["springr_user_type"]
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          user_type?: Database["public"]["Enums"]["springr_user_type"]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +43,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      springr_user_type: "etudiant" | "entreprise"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +170,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      springr_user_type: ["etudiant", "entreprise"],
+    },
   },
 } as const
