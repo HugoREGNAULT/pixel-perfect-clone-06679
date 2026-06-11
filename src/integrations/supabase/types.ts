@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          updated_at: string
+          user_type: Database["public"]["Enums"]["springr_user_type"] | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id: string
+          updated_at?: string
+          user_type?: Database["public"]["Enums"]["springr_user_type"] | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          updated_at?: string
+          user_type?: Database["public"]["Enums"]["springr_user_type"] | null
+        }
+        Relationships: []
+      }
       waitlist: {
         Row: {
           created_at: string
