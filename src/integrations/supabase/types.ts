@@ -14,6 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
+      founders: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          email: string
+          environment: string
+          id: string
+          paid_at: string | null
+          payment_status: string
+          stripe_payment_intent_id: string | null
+          stripe_session_id: string | null
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          email: string
+          environment?: string
+          id?: string
+          paid_at?: string | null
+          payment_status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          email?: string
+          environment?: string
+          id?: string
+          paid_at?: string | null
+          payment_status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+        }
+        Relationships: []
+      }
+      newsletter_signups: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -38,24 +95,24 @@ export type Database = {
         }
         Relationships: []
       }
-      waitlist: {
+      user_roles: {
         Row: {
           created_at: string
-          email: string
           id: string
-          user_type: Database["public"]["Enums"]["springr_user_type"]
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
         }
         Insert: {
           created_at?: string
-          email: string
           id?: string
-          user_type: Database["public"]["Enums"]["springr_user_type"]
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
         }
         Update: {
           created_at?: string
-          email?: string
           id?: string
-          user_type?: Database["public"]["Enums"]["springr_user_type"]
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
         }
         Relationships: []
       }
@@ -64,9 +121,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
+      app_role: "admin" | "user"
       springr_user_type: "etudiant" | "entreprise"
     }
     CompositeTypes: {
@@ -195,6 +259,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["admin", "user"],
       springr_user_type: ["etudiant", "entreprise"],
     },
   },
