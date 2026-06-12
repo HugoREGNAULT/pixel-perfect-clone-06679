@@ -1,7 +1,20 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import { Loader2 } from "lucide-react";
+import {
+  Loader2,
+  ArrowUpRight,
+  Sparkles,
+  Users,
+  Rocket,
+  Target,
+  Zap,
+  Heart,
+  Trophy,
+  Check,
+  X,
+  GraduationCap,
+} from "lucide-react";
 import { toast } from "sonner";
 import { subscribeNewsletter } from "@/lib/newsletter.functions";
 import { FounderCheckoutDialog } from "@/components/FounderCheckoutDialog";
@@ -10,11 +23,11 @@ import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Springr — Construis ton réseau avant ton premier CDI" },
+      { title: "Springr — Le réseau pro des étudiants" },
       {
         name: "description",
         content:
-          "Springr connecte étudiants, mentors et recruteurs sur une seule plateforme — pensée par et pour les jeunes actifs.",
+          "Springr connecte étudiants, mentors et recruteurs. Le réseau pro pensé par et pour la nouvelle génération.",
       },
     ],
   }),
@@ -29,18 +42,15 @@ function SpringrLanding() {
   return (
     <>
       <PaymentTestModeBanner />
-      <div className="min-h-screen bg-white text-ink">
+      <div className="min-h-screen bg-ink text-white overflow-x-hidden">
         <Nav onFounder={() => setFounderOpen(true)} />
-        <Hero
-          onNewsletter={() => scrollToId("newsletter")}
-          onFounder={() => setFounderOpen(true)}
-        />
-        <Stats />
-        <Solution />
+        <Hero onFounder={() => setFounderOpen(true)} />
+        <Marquee />
+        <Bento onFounder={() => setFounderOpen(true)} />
         <Comparison />
-        <FounderSection onClick={() => setFounderOpen(true)} />
-        <Newsletter />
+        <FounderBlock onClick={() => setFounderOpen(true)} />
         <Roadmap />
+        <Newsletter />
         <Footer />
       </div>
       <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
@@ -48,200 +58,291 @@ function SpringrLanding() {
   );
 }
 
-function scrollToId(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
+/* -------------------------------------------------------------- LOGO / NAV */
 
-
-function LogoSpringr({ className = "" }: { className?: string }) {
+function Logo({ className = "" }: { className?: string }) {
   return (
-    <span className={`font-display font-bold tracking-tight ${className}`}>
-      sprin<span>g</span><span className="text-coral">r</span>
+    <span className={`font-display font-bold tracking-tight text-xl ${className}`}>
+      sprin<span className="text-violet">g</span>
+      <span className="text-lime">r</span>
+      <span className="text-lime">.</span>
     </span>
   );
 }
 
 function Nav({ onFounder }: { onFounder: () => void }) {
   return (
-    <header className="sticky top-0 z-30 bg-white/85 backdrop-blur border-b border-violet-line">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-        <LogoSpringr className="text-2xl" />
-        <nav className="hidden md:flex items-center gap-8 text-sm">
-          <a href="#top" className="text-ink/70 hover:text-ink transition-colors">Accueil</a>
-          <a href="#pourquoi" className="text-ink/70 hover:text-ink transition-colors">Pourquoi Springr</a>
-          <button onClick={onFounder} className="text-ink/70 hover:text-ink transition-colors cursor-pointer">Founder</button>
+    <header className="sticky top-0 z-40 backdrop-blur-xl bg-ink/70 border-b border-white/5">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8 h-16 flex items-center justify-between">
+        <Logo />
+        <nav className="hidden md:flex items-center gap-8 text-sm text-mute">
+          <a href="#bento" className="hover:text-white transition-colors">Concept</a>
+          <a href="#vs" className="hover:text-white transition-colors">vs LinkedIn</a>
+          <a href="#roadmap" className="hover:text-white transition-colors">Roadmap</a>
+          <a href="#newsletter" className="hover:text-white transition-colors">Newsletter</a>
         </nav>
-        <div className="flex items-center gap-2 rounded-full bg-ink px-3 py-1.5 text-[0.7rem] font-mono font-medium text-white">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-coral pulse-dot" />
-          </span>
-          Pré-lancement
-        </div>
+        <button
+          onClick={onFounder}
+          className="group inline-flex items-center gap-2 rounded-full bg-lime px-4 py-2 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform"
+        >
+          Founder · 4,99€
+          <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
+        </button>
       </div>
     </header>
   );
 }
 
-function Hero({ onNewsletter, onFounder }: { onNewsletter: () => void; onFounder: () => void }) {
+/* ----------------------------------------------------------------- HERO */
+
+function Hero({ onFounder }: { onFounder: () => void }) {
   return (
-    <section id="top" className="border-b border-violet-line">
-      <div className="mx-auto max-w-6xl px-5 py-16 md:py-24 grid gap-12 md:gap-8 md:grid-cols-[1.5fr_1fr] items-center">
-        <div>
-          <div className="inline-flex items-center gap-2 eyebrow">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-coral pulse-dot" />
-            </span>
-            Beta privée — Ouverture T4 2025
-          </div>
-          <h1 className="mt-5 font-display font-bold text-[2.5rem] leading-[1.05] sm:text-5xl md:text-[4rem] md:leading-[1.02]">
-            Construis ton réseau<br />
-            <span className="relative inline-block">
-              <span className="absolute inset-x-[-4px] inset-y-1 bg-coral/25 -z-0 rounded-sm" aria-hidden />
-              <span className="relative">avant</span>
-            </span>{" "}
-            ton premier <span style={{ color: "var(--violet)" }}>CDI</span>
-          </h1>
-          <p className="mt-6 max-w-lg text-base sm:text-lg text-mute leading-relaxed">
-            Springr connecte étudiants, mentors et recruteurs sur une seule plateforme — pensée par et pour les jeunes actifs. Ton profil, tes opportunités, ton réseau.
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={onNewsletter}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-white transition-transform hover:-translate-y-0.5 cursor-pointer"
-            >
-              Rejoindre la newsletter →
-            </button>
-            <button
-              onClick={onFounder}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 bg-white px-6 py-3.5 text-sm font-medium text-ink transition-transform hover:-translate-y-0.5 cursor-pointer"
-            >
-              Devenir Founder · 4,99€
-            </button>
-          </div>
+    <section className="relative">
+      <div className="grid-bg absolute inset-0 opacity-60 pointer-events-none" />
+      <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full bg-violet/30 blur-[140px] pointer-events-none" />
+      <div className="relative mx-auto max-w-7xl px-5 lg:px-8 pt-16 pb-24 lg:pt-24 lg:pb-32">
+        <div className="flex items-center gap-2 mb-8">
+          <span className="size-2 rounded-full bg-lime pulse-dot" />
+          <span className="eyebrow">Pré-lancement · Promo 250 founders</span>
         </div>
-        <div className="relative">
-          <NetworkGraph />
+
+        <h1 className="font-display text-[44px] leading-[0.95] sm:text-6xl lg:text-[88px] font-bold max-w-5xl">
+          Le <span className="text-violet">LinkedIn</span> n'a pas été<br />
+          fait pour <span className="relative inline-block">
+            <span className="relative z-10">toi.</span>
+            <span className="absolute inset-x-0 bottom-1 h-3 bg-lime z-0" />
+          </span>
+        </h1>
+
+        <p className="mt-8 max-w-2xl text-lg sm:text-xl text-mute leading-relaxed">
+          Springr, c'est le réseau pro pensé par et pour les étudiants.
+          Profil vivant, mentors accessibles, opportunités matchées —
+          sans le cringe corporate.
+        </p>
+
+        <div className="mt-10 flex flex-wrap gap-3">
+          <button
+            onClick={onFounder}
+            className="group inline-flex items-center gap-2 rounded-full bg-lime px-6 py-4 text-base font-semibold text-ink hover:-translate-y-0.5 transition-transform glow-lime"
+          >
+            Devenir Founder · 4,99€
+            <ArrowUpRight className="size-5 transition-transform group-hover:rotate-45" />
+          </button>
+          <a
+            href="#newsletter"
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-4 text-base font-medium text-white hover:bg-white/5 hover:-translate-y-0.5 transition-all"
+          >
+            Rejoindre la newsletter
+          </a>
+        </div>
+
+        <div className="mt-14 flex flex-wrap items-center gap-x-10 gap-y-4 text-sm text-mute">
+          <Stat n="2 400+" label="déjà inscrits" />
+          <Stat n="48" label="écoles représentées" />
+          <Stat n="120" label="mentors prêts" />
         </div>
       </div>
     </section>
   );
 }
 
-function NetworkGraph() {
-  // Asymmetric signature graph
-  const nodes: Array<{ x: number; y: number; r: number; fill: "violet" | "coral" | "outline" }> = [
-    { x: 70, y: 30, r: 18, fill: "violet" },
-    { x: 180, y: 60, r: 10, fill: "outline" },
-    { x: 240, y: 140, r: 22, fill: "coral" },
-    { x: 130, y: 130, r: 14, fill: "violet" },
-    { x: 50, y: 200, r: 11, fill: "outline" },
-    { x: 170, y: 230, r: 16, fill: "violet" },
-    { x: 280, y: 230, r: 9, fill: "outline" },
-  ];
-  const links: Array<[number, number]> = [
-    [0, 1], [0, 3], [1, 2], [3, 2], [3, 4], [3, 5], [4, 5], [5, 6], [2, 6], [1, 3],
-  ];
-  const fillFor = (k: "violet" | "coral" | "outline") => {
-    if (k === "violet") return { fill: "#6E56CF", stroke: "#6E56CF" };
-    if (k === "coral") return { fill: "#FF6B4A", stroke: "#FF6B4A" };
-    return { fill: "#FFFFFF", stroke: "#6E56CF" };
-  };
+function Stat({ n, label }: { n: string; label: string }) {
   return (
-    <svg viewBox="0 0 340 280" className="w-full h-auto max-w-md mx-auto md:ml-auto" aria-hidden>
-      {links.map(([a, b], i) => (
-        <line
-          key={i}
-          x1={nodes[a].x}
-          y1={nodes[a].y}
-          x2={nodes[b].x}
-          y2={nodes[b].y}
-          stroke="#C9BFEE"
-          strokeWidth="1"
-        />
-      ))}
-      {nodes.map((n, i) => {
-        const { fill, stroke } = fillFor(n.fill);
-        return (
-          <circle
-            key={i}
-            cx={n.x}
-            cy={n.y}
-            r={n.r}
-            fill={fill}
-            stroke={stroke}
-            strokeWidth={n.fill === "outline" ? 1.5 : 0}
-          />
-        );
-      })}
-    </svg>
+    <div className="flex items-baseline gap-2">
+      <span className="font-display text-2xl font-bold text-white">{n}</span>
+      <span>{label}</span>
+    </div>
   );
 }
 
-function Stats() {
-  const stats = [
-    { value: "1.04M", label: "apprentis en France fin 2024, +3% vs 2023", coral: true },
-    { value: "12.5%", label: "des 15-29 ans sont NEET — ni emploi, ni études" },
-    { value: "×5", label: "jeunes mentorés depuis 2020 — 30k → 160k en 2023" },
-    { value: "43%", label: "seulement des 15-24 ans actifs — l'insertion reste difficile" },
+/* --------------------------------------------------------------- MARQUEE */
+
+function Marquee() {
+  const items = [
+    "🎓 Étudiants",
+    "💼 Stages",
+    "🚀 Alternance",
+    "🤝 Mentors",
+    "💡 Side projects",
+    "🏢 Startups",
+    "📚 Écoles",
+    "✨ First job",
   ];
+  const loop = [...items, ...items];
   return (
-    <section className="border-b border-violet-line">
-      <div className="mx-auto max-w-6xl grid sm:grid-cols-2 md:grid-cols-4">
-        {stats.map((s, i) => (
-          <div
-            key={s.value}
-            className={`px-5 py-10 ${i > 0 ? "md:border-l border-violet-line" : ""} ${i > 0 && i < 4 ? "sm:border-l" : ""} ${i >= 2 ? "border-t sm:border-t-0" : ""} md:border-t-0`}
-          >
-            <p
-              className="font-mono font-semibold text-[2.4rem] leading-none"
-              style={{ color: s.coral ? "var(--coral)" : "var(--violet)" }}
-            >
-              {s.value}
-            </p>
-            <p className="mt-3 text-[0.9rem] text-mute leading-snug">{s.label}</p>
-          </div>
+    <section className="border-y border-white/5 bg-ink-2/50 py-5 overflow-hidden">
+      <div className="marquee-track flex gap-12 whitespace-nowrap font-display text-xl text-mute">
+        {loop.map((t, i) => (
+          <span key={i} className="flex items-center gap-12">
+            {t} <span className="text-lime">•</span>
+          </span>
         ))}
       </div>
     </section>
   );
 }
 
-function Solution() {
-  const items = [
-    {
-      n: "01 — PROFIL",
-      title: "Ton profil, vivant",
-      desc: "Pas un CV poussiéreux : projets, expériences, ce qui te fait vibrer. Un profil qui te ressemble vraiment.",
-    },
-    {
-      n: "02 — RÉSEAU",
-      title: "Connexions qui comptent",
-      desc: "Mentors, alumni, étudiants, recruteurs. Bâtis ton réseau au bon moment, pas après ton diplôme.",
-    },
-    {
-      n: "03 — MATCH",
-      title: "Opportunités matchées",
-      desc: "Stages, alternances, premiers jobs. Springr te propose ce qui correspond à ton profil et à tes envies.",
-    },
-  ];
+/* ------------------------------------------------------------------ BENTO */
+
+function Bento({ onFounder }: { onFounder: () => void }) {
   return (
-    <section className="border-b border-violet-line">
-      <div className="mx-auto max-w-6xl px-5 py-20">
-        <p className="eyebrow">La plateforme</p>
-        <h2 className="mt-3 max-w-2xl font-display font-bold text-3xl sm:text-4xl md:text-5xl">
-          Un profil. Un réseau. Toutes tes opportunités.
+    <section id="bento" className="mx-auto max-w-7xl px-5 lg:px-8 py-24 lg:py-32">
+      <div className="mb-14 max-w-3xl">
+        <div className="eyebrow mb-4">Ce qu'on construit</div>
+        <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold">
+          Un réseau qui te ressemble.<br />
+          <span className="text-mute">Pas un CV en ligne.</span>
         </h2>
       </div>
-      <div className="border-t border-violet-line">
-        <div className="mx-auto max-w-6xl grid md:grid-cols-3">
-          {items.map((it, i) => (
+
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-4 auto-rows-[180px]">
+        {/* Big tile : profil vivant */}
+        <Tile className="md:col-span-4 md:row-span-2 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-violet/40 via-violet/10 to-transparent" />
+          <div className="relative h-full p-7 flex flex-col justify-between">
+            <div className="flex items-center gap-2">
+              <Sparkles className="size-5 text-lime" />
+              <span className="eyebrow">Profil vivant</span>
+            </div>
+            <div>
+              <h3 className="font-display text-3xl sm:text-4xl font-bold leading-tight max-w-md">
+                Montre ce que tu fais. Pas ce que tu prétends être.
+              </h3>
+              <p className="mt-3 text-mute max-w-md">
+                Projets, side-jobs, asso, contenu — un profil qui bouge,
+                pas une fiche poussiéreuse.
+              </p>
+            </div>
+            <ProfileMock />
+          </div>
+        </Tile>
+
+        {/* Mentors */}
+        <Tile className="md:col-span-2 group">
+          <div className="p-6 h-full flex flex-col justify-between">
+            <Users className="size-7 text-lime" />
+            <div>
+              <h3 className="font-display text-xl font-bold">Mentors accessibles</h3>
+              <p className="mt-1 text-sm text-mute">DM ouvert, pas de gatekeeping.</p>
+            </div>
+          </div>
+        </Tile>
+
+        {/* Matching */}
+        <Tile className="md:col-span-2 relative overflow-hidden">
+          <div className="absolute -right-8 -bottom-8 size-32 rounded-full bg-lime/15 blur-2xl" />
+          <div className="relative p-6 h-full flex flex-col justify-between">
+            <Target className="size-7 text-lime" />
+            <div>
+              <h3 className="font-display text-xl font-bold">Matching d'offres</h3>
+              <p className="mt-1 text-sm text-mute">Stages, alt, first jobs — pertinents.</p>
+            </div>
+          </div>
+        </Tile>
+
+        {/* Communautés */}
+        <Tile className="md:col-span-3">
+          <div className="p-6 h-full flex flex-col justify-between">
+            <Heart className="size-7 text-lime" />
+            <div>
+              <h3 className="font-display text-xl font-bold">Communautés par école & métier</h3>
+              <p className="mt-1 text-sm text-mute">Ton groupe, tes pairs, tes vibes.</p>
+            </div>
+          </div>
+        </Tile>
+
+        {/* CTA founder */}
+        <Tile className="md:col-span-3 bg-lime text-ink border-lime relative">
+          <button onClick={onFounder} className="absolute inset-0" aria-label="Devenir Founder" />
+          <div className="p-6 h-full flex flex-col justify-between pointer-events-none">
+            <Trophy className="size-7" />
+            <div>
+              <h3 className="font-display text-xl font-bold">Badge Founder à vie</h3>
+              <p className="mt-1 text-sm opacity-80">4,99€ une fois. Prix bloqué pour toujours.</p>
+            </div>
+          </div>
+        </Tile>
+      </div>
+    </section>
+  );
+}
+
+function Tile({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return <div className={`bento bento-hover ${className}`}>{children}</div>;
+}
+
+function ProfileMock() {
+  return (
+    <div className="rounded-xl border border-white/10 bg-ink/60 backdrop-blur p-4 max-w-md">
+      <div className="flex items-center gap-3">
+        <div className="size-10 rounded-full bg-gradient-to-br from-violet to-lime" />
+        <div className="flex-1">
+          <div className="font-display font-semibold text-sm">Léa M.</div>
+          <div className="text-xs text-mute">M1 Sciences Po · Cherche stage UX</div>
+        </div>
+        <span className="text-[10px] font-mono uppercase tracking-wider text-lime border border-lime/40 rounded-full px-2 py-0.5">
+          open to work
+        </span>
+      </div>
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        {["Projet", "Asso", "Article"].map((t) => (
+          <div key={t} className="rounded-md bg-white/5 p-2 text-[10px] text-mute">
+            <div className="size-2 rounded-full bg-lime mb-1" />
+            {t}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------- COMPARISON */
+
+function Comparison() {
+  const rows = [
+    { f: "Conçu pour les étudiants", s: true, l: false },
+    { f: "Mentors accessibles en DM", s: true, l: false },
+    { f: "Profil = projets vivants", s: true, l: false },
+    { f: "Posts pseudo-inspirants", s: false, l: true },
+    { f: "Recruteurs spammeurs", s: false, l: true },
+    { f: "Vibes 2026, pas 2008", s: true, l: false },
+  ];
+
+  return (
+    <section id="vs" className="border-y border-white/5 bg-ink-2/40 py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="mb-12 max-w-2xl">
+          <div className="eyebrow mb-4">Springr vs L*nkedIn</div>
+          <h2 className="font-display text-4xl sm:text-5xl font-bold">
+            Pas un concurrent.<br />
+            <span className="text-mute">Une alternative honnête.</span>
+          </h2>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 overflow-hidden">
+          <div className="grid grid-cols-[1fr_auto_auto] bg-ink-3 text-xs uppercase tracking-wider font-mono text-mute">
+            <div className="px-5 py-4">Feature</div>
+            <div className="px-6 py-4 text-center text-lime">Springr</div>
+            <div className="px-6 py-4 text-center">LinkedIn</div>
+          </div>
+          {rows.map((r, i) => (
             <div
-              key={it.n}
-              className={`px-6 py-10 ${i > 0 ? "md:border-l border-violet-line" : ""} ${i > 0 ? "border-t md:border-t-0" : ""}`}
+              key={i}
+              className="grid grid-cols-[1fr_auto_auto] border-t border-white/5 hover:bg-white/[0.02]"
             >
-              <p className="font-mono text-xs font-semibold tracking-widest text-coral">{it.n}</p>
-              <h3 className="mt-4 font-display font-semibold text-2xl">{it.title}</h3>
-              <p className="mt-3 text-mute leading-relaxed">{it.desc}</p>
+              <div className="px-5 py-4 text-sm">{r.f}</div>
+              <div className="px-6 py-4 text-center">
+                {r.s ? <Check className="size-5 text-lime mx-auto" /> : <X className="size-5 text-mute/40 mx-auto" />}
+              </div>
+              <div className="px-6 py-4 text-center">
+                {r.l ? <Check className="size-5 text-mute mx-auto" /> : <X className="size-5 text-mute/40 mx-auto" />}
+              </div>
             </div>
           ))}
         </div>
@@ -250,122 +351,109 @@ function Solution() {
   );
 }
 
-function Comparison() {
-  const linkedinPoints = [
-    "Froid et générique",
-    "Codes corporate intimidants",
-    "Mentorat absent",
-    "Algorithme pensé pour l'engagement",
-  ];
-  const springrPoints = [
-    "Fait pour et par les étudiants",
-    "Accessible, sans jargon",
-    "Mentorat intégré au profil",
-    "Matching pensé pour trouver",
-  ];
+/* ----------------------------------------------------------- FOUNDER */
+
+function FounderBlock({ onClick }: { onClick: () => void }) {
   return (
-    <section id="pourquoi" className="border-b border-violet-line bg-white">
-      <div className="mx-auto max-w-6xl px-5 py-20">
-        <p className="eyebrow">Pourquoi Springr</p>
-        <h2 className="mt-3 font-display font-bold text-3xl sm:text-4xl md:text-5xl max-w-xl">
-          Pas un LinkedIn de plus
-        </h2>
-        <div className="mt-10 grid md:grid-cols-2 border border-violet-line rounded-2xl overflow-hidden">
-          <div className="p-8 md:p-10" style={{ background: "var(--paper)" }}>
-            <p className="font-mono text-xs uppercase tracking-widest text-mute">LinkedIn / WTTJ</p>
-            <ul className="mt-6 space-y-4">
-              {linkedinPoints.map((p) => (
-                <li key={p} className="flex items-start gap-3 text-[0.95rem] text-ink/80">
-                  <span className="font-mono text-mute mt-0.5">×</span>
-                  {p}
-                </li>
-              ))}
-            </ul>
+    <section className="relative mx-auto max-w-7xl px-5 lg:px-8 py-24 lg:py-32">
+      <div className="relative rounded-3xl border border-violet/30 bg-gradient-to-br from-violet/30 via-ink-2 to-ink-2 p-8 sm:p-14 overflow-hidden noise">
+        <div className="absolute -top-20 -right-20 size-80 rounded-full bg-violet/40 blur-[100px]" />
+        <div className="absolute -bottom-20 -left-20 size-80 rounded-full bg-lime/20 blur-[120px]" />
+
+        <div className="relative grid lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <div className="flex items-center gap-2 mb-5">
+              <Zap className="size-4 text-lime" />
+              <span className="eyebrow">Founder Members · 250 places</span>
+            </div>
+            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05]">
+              Sois là<br />
+              <span className="text-lime">avant tout le monde.</span>
+            </h2>
+            <p className="mt-6 text-mute text-lg max-w-md">
+              4,99€ une seule fois. Badge à vie, accès anticipé à la beta,
+              prix bloqué pour toujours, et ton avis dans la roadmap.
+            </p>
+            <button
+              onClick={onClick}
+              className="mt-8 group inline-flex items-center gap-2 rounded-full bg-lime px-7 py-4 text-base font-semibold text-ink hover:-translate-y-0.5 transition-transform glow-lime"
+            >
+              Réserver ma place
+              <ArrowUpRight className="size-5 transition-transform group-hover:rotate-45" />
+            </button>
           </div>
-          <div className="p-8 md:p-10 border-t md:border-t-0 md:border-l border-violet-line bg-ink text-white">
-            <p className="font-mono text-xs uppercase tracking-widest text-coral">Springr</p>
-            <ul className="mt-6 space-y-4">
-              {springrPoints.map((p) => (
-                <li key={p} className="flex items-start gap-3 text-[0.95rem] text-white/90">
-                  <span className="text-coral mt-0.5">✓</span>
-                  {p}
-                </li>
-              ))}
-            </ul>
-          </div>
+
+          <ul className="space-y-3">
+            {[
+              { i: Trophy, t: "Badge Founder permanent sur ton profil" },
+              { i: Rocket, t: "Accès beta privée 3 mois avant tout le monde" },
+              { i: Heart, t: "Channel Discord privé avec l'équipe" },
+              { i: Sparkles, t: "Prix early bloqué à vie sur les features premium" },
+            ].map(({ i: I, t }, k) => (
+              <li
+                key={k}
+                className="flex items-start gap-4 rounded-xl bg-white/5 border border-white/10 p-4"
+              >
+                <div className="size-10 shrink-0 rounded-lg bg-lime/15 flex items-center justify-center">
+                  <I className="size-5 text-lime" />
+                </div>
+                <span className="text-sm pt-1.5">{t}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
   );
 }
 
-function FounderSection({ onClick }: { onClick: () => void }) {
-  const perks = [
-    "Accès anticipé à la beta",
-    "Badge Founder à vie",
-    "Prix bloqué pour toujours",
-    "Ton avis pris en compte dans la roadmap",
+/* ---------------------------------------------------------- ROADMAP */
+
+function Roadmap() {
+  const steps = [
+    { q: "Q1 2026", t: "Founders Club", d: "250 premiers membres, feedback intensif." },
+    { q: "Q2 2026", t: "Beta privée", d: "Profils + mentors, 5 écoles pilotes." },
+    { q: "Q3 2026", t: "Ouverture publique", d: "Toutes écoles. Matching d'offres v1." },
+    { q: "Q4 2026", t: "Mobile + Communautés", d: "App iOS/Android + groupes verticaux." },
   ];
+
   return (
-    <section id="founder" className="border-b border-violet-line bg-white">
-      <div className="mx-auto max-w-6xl px-5 py-20">
-        <div className="relative overflow-hidden rounded-3xl bg-ink text-white p-8 md:p-14">
+    <section id="roadmap" className="mx-auto max-w-7xl px-5 lg:px-8 py-24 lg:py-32">
+      <div className="mb-12 max-w-2xl">
+        <div className="eyebrow mb-4">Roadmap</div>
+        <h2 className="font-display text-4xl sm:text-5xl font-bold">
+          On construit en public.
+        </h2>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {steps.map((s, i) => (
           <div
-            aria-hidden
-            className="pointer-events-none absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full"
-            style={{ background: "radial-gradient(circle, rgba(110,86,207,0.55), transparent 65%)", filter: "blur(20px)" }}
-          />
-          <div className="relative grid md:grid-cols-[1.3fr_1fr] gap-10 items-center">
-            <div>
-              <p className="font-mono text-xs font-semibold tracking-widest text-coral uppercase">
-                Founder Access
-              </p>
-              <h2 className="mt-3 font-display font-bold text-3xl sm:text-4xl md:text-5xl leading-tight">
-                Entre dans le cercle des premiers Founders
-              </h2>
-              <p className="mt-5 text-white/70 max-w-lg leading-relaxed">
-                Pour les premiers qui croient au projet. Soutiens Springr, façonne le produit, et débloque des avantages réservés au cercle fondateur.
-              </p>
-              <ul className="mt-7 space-y-3">
-                {perks.map((p) => (
-                  <li key={p} className="flex items-start gap-3 text-[0.95rem] text-white/90">
-                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full shrink-0" style={{ background: "var(--coral)" }} />
-                    {p}
-                  </li>
-                ))}
-              </ul>
+            key={i}
+            className="bento bento-hover p-6 h-full"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <span className="font-mono text-xs text-lime">{s.q}</span>
+              <span className="size-8 rounded-full border border-white/10 flex items-center justify-center font-mono text-xs">
+                0{i + 1}
+              </span>
             </div>
-            <div
-              className="rounded-2xl p-8 backdrop-blur-sm"
-              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)" }}
-            >
-              <p className="font-mono text-[3rem] leading-none font-semibold">4,99€</p>
-              <p className="mt-2 font-mono text-xs uppercase tracking-widest text-white/60">
-                Paiement unique · à vie
-              </p>
-              <button
-                onClick={onClick}
-                className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-full bg-coral px-6 py-4 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 cursor-pointer"
-              >
-                Je deviens Founder →
-              </button>
-              <p className="mt-4 text-center text-xs text-white/50">
-                Paiement sécurisé · Stripe
-              </p>
-            </div>
+            <h3 className="font-display text-xl font-bold">{s.t}</h3>
+            <p className="mt-2 text-sm text-mute">{s.d}</p>
           </div>
-        </div>
+        ))}
       </div>
     </section>
   );
 }
+
+/* --------------------------------------------------------- NEWSLETTER */
 
 function Newsletter() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
 
-  async function onSubmit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
     const parsed = emailSchema.safeParse(email);
     if (!parsed.success) {
@@ -374,160 +462,67 @@ function Newsletter() {
     }
     setLoading(true);
     try {
-      const result = await subscribeNewsletter({ data: { email: parsed.data } });
-      if ("error" in result) toast.error(result.error);
-      else {
-        setDone(true);
-        toast.success("Bien reçu, on garde le contact.");
-      }
+      const res = await subscribeNewsletter({ data: { email: parsed.data } });
+      if ("error" in res) throw new Error(res.error);
+      toast.success("Inscrit·e. À très vite ✨");
+      setEmail("");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Erreur");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <section id="newsletter" className="border-b border-violet-line" style={{ background: "var(--paper)" }}>
-      <div className="mx-auto max-w-2xl px-5 py-20 text-center">
-        <p className="eyebrow">Reste connecté</p>
-        <h2 className="mt-3 font-display font-bold text-3xl sm:text-4xl md:text-5xl">
-          On t'écrit quand ça compte
+    <section id="newsletter" className="border-y border-white/5 bg-ink-2/40 py-24 lg:py-32">
+      <div className="mx-auto max-w-3xl px-5 lg:px-8 text-center">
+        <GraduationCap className="size-10 text-lime mx-auto mb-6" />
+        <h2 className="font-display text-4xl sm:text-5xl font-bold">
+          Reste dans la boucle.
         </h2>
-        <p className="mt-5 text-mute leading-relaxed">
-          Lancement, nouvelles fonctionnalités, et quelques conseils stage/alternance qui valent le détour. Pas de spam.
+        <p className="mt-4 text-mute text-lg">
+          Une newsletter par mois. Avancée du produit, places founders restantes,
+          opportunités. Pas de spam.
         </p>
-        {done ? (
-          <p className="mt-10 inline-block rounded-full border border-violet-line bg-white px-5 py-3 text-sm">
-            ✓ Inscription confirmée — à très vite.
-          </p>
-        ) : (
-          <form onSubmit={onSubmit} className="mt-10 flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
-            <input
-              type="email"
-              required
-              placeholder="ton@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 rounded-full border border-violet-line bg-white px-5 py-3.5 text-sm outline-none focus:border-ink/40 transition-colors"
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-white transition-transform hover:-translate-y-0.5 disabled:opacity-60 cursor-pointer"
-            >
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>S'inscrire →</>}
-            </button>
-          </form>
-        )}
+        <form onSubmit={submit} className="mt-8 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="ton@email.com"
+            className="flex-1 rounded-full bg-white/5 border border-white/10 px-5 py-3.5 text-sm placeholder:text-mute/70 focus:outline-none focus:border-lime/60 focus:bg-white/[0.07]"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="group inline-flex items-center justify-center gap-2 rounded-full bg-lime px-6 py-3.5 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform disabled:opacity-60"
+          >
+            {loading ? <Loader2 className="size-4 animate-spin" /> : <>S'inscrire <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" /></>}
+          </button>
+        </form>
       </div>
     </section>
   );
 }
 
-function Roadmap() {
-  const steps = [
-    { tag: "T1 2025", title: "Validation & design", desc: "Recherche utilisateur, identité, pré-lancement.", active: true },
-    { tag: "T2 2025", title: "Développement MVP", desc: "Profils, réseau, premières fonctionnalités." },
-    { tag: "T3 2025", title: "Beta fermée", desc: "Cercle Founders et premiers retours terrain." },
-    { tag: "T4 2025", title: "Lancement officiel", desc: "Ouverture à tous les étudiants en France." },
-  ];
-  return (
-    <section className="border-b border-violet-line bg-white">
-      <div className="mx-auto max-w-6xl px-5 py-20">
-        <p className="eyebrow">La suite</p>
-        <h2 className="mt-3 font-display font-bold text-3xl sm:text-4xl md:text-5xl">Ce qui arrive</h2>
-        <div className="mt-14 relative">
-          <div className="hidden md:block absolute left-0 right-0 top-2 h-px bg-violet-line" />
-          <div className="grid gap-10 md:grid-cols-4 md:gap-6">
-            {steps.map((s) => (
-              <div key={s.tag} className="relative">
-                <div className="hidden md:block">
-                  <span
-                    className="absolute -top-[6px] left-0 inline-block h-4 w-4 rounded-full"
-                    style={
-                      s.active
-                        ? { background: "var(--coral)" }
-                        : { background: "#fff", border: "1.5px solid var(--violet)" }
-                    }
-                  />
-                </div>
-                <p className="mt-8 font-mono text-xs font-semibold tracking-widest text-coral">{s.tag}</p>
-                <p className="mt-3 font-display font-semibold text-lg">{s.title}</p>
-                <p className="mt-2 text-sm text-mute leading-relaxed">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+/* ------------------------------------------------------------ FOOTER */
 
 function Footer() {
-  const cols = [
-    {
-      title: "Navigation",
-      links: [
-        { label: "Accueil", href: "#top" },
-        { label: "Pourquoi Springr", href: "#pourquoi" },
-        { label: "Founder Access", href: "#founder" },
-      ],
-    },
-    {
-      title: "Légal",
-      links: [
-        { label: "Mentions légales", href: "#" },
-        { label: "Contact", href: "#" },
-      ],
-    },
-    {
-      title: "Suivre",
-      links: [
-        { label: "Instagram", href: "#" },
-        { label: "LinkedIn", href: "#" },
-        { label: "Discord", href: "#" },
-      ],
-    },
-  ];
   return (
-    <footer className="bg-ink text-white">
-      <div className="mx-auto max-w-6xl px-5 py-16">
-        <div className="grid gap-12 md:grid-cols-[1fr_2fr]">
-          <div>
-            <LogoSpringr className="text-3xl text-white" />
-            <p className="mt-4 text-sm text-white/60 max-w-xs leading-relaxed">
-              Le réseau pro pensé pour les étudiants. Lancement T4 2025.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
-            {cols.map((c) => (
-              <div key={c.title}>
-                <p className="font-mono text-[0.7rem] uppercase tracking-widest text-white/45">
-                  {c.title}
-                </p>
-                <ul className="mt-4 space-y-2.5">
-                  {c.links.map((l) => (
-                    <li key={l.label}>
-                      <a href={l.href} className="text-sm text-white/85 hover:text-coral transition-colors">
-                        {l.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+    <footer className="border-t border-white/5 bg-ink">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8 py-12 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="flex items-center gap-3">
+          <Logo />
+          <span className="text-xs text-mute font-mono">v0 · pré-lancement</span>
         </div>
-        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
-          <p>© 2025 Springr — Tous droits réservés</p>
-          <p>
-            Fait avec <span className="text-coral">♥</span> par des étudiants, pour des étudiants
-          </p>
+        <div className="flex items-center gap-6 text-sm text-mute">
+          <a href="#" className="hover:text-white transition-colors">Twitter</a>
+          <a href="#" className="hover:text-white transition-colors">Instagram</a>
+          <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+          <a href="mailto:hello@springr.app" className="hover:text-white transition-colors">Contact</a>
         </div>
-        <div className="mt-4 text-center">
-          <Link to="/auth" className="text-[0.65rem] font-mono uppercase tracking-widest text-white/25 hover:text-white/50">
-            Admin
-          </Link>
-        </div>
+        <div className="text-xs text-mute">© 2026 Springr</div>
       </div>
     </footer>
   );
