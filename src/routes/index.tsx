@@ -52,14 +52,6 @@ function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function Wordmark({ className = "" }: { className?: string }) {
-  return (
-    <span className={`font-display font-bold tracking-tight ${className}`}>
-      sprig<span>n</span>
-      <span className="text-coral">r</span>
-    </span>
-  );
-}
 
 function LogoSpringr({ className = "" }: { className?: string }) {
   return (
