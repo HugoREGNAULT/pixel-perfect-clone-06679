@@ -110,16 +110,20 @@ function Nav({
         <div className="flex items-center gap-3">
           {user ? (
             <>
-              <div className="hidden sm:flex items-center gap-2">
-                <div className="size-7 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-xs font-bold">
-                  {user.email?.[0]?.toUpperCase()}
+              <Link
+                to="/profil"
+                className="hidden sm:flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 hover:border-white/25 hover:bg-white/5 transition-all"
+              >
+                <div className="size-5 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-[10px] font-bold">
+                  {(user.user_metadata?.name?.[0] ?? user.email?.[0])?.toUpperCase()}
                 </div>
+                <span className="text-sm text-white">Mon profil</span>
                 {roleLabel && (
-                  <span className="text-xs font-mono uppercase tracking-wider text-lime border border-lime/30 rounded-full px-2 py-0.5">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-lime border border-lime/30 rounded-full px-1.5 py-0.5">
                     {roleLabel}
                   </span>
                 )}
-              </div>
+              </Link>
               <button
                 onClick={onSignOut}
                 className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-2 text-xs font-medium text-mute hover:text-white hover:border-white/25 transition-all"
