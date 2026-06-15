@@ -1,5 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { AppNav } from "@/components/AppNav";
+import { supabase } from "@/integrations/supabase/client";
+import { createSpringrCheckout } from "@/lib/springr.payments.functions";
 import { toast } from "sonner";
 import {
   Check,
@@ -11,6 +14,7 @@ import {
   Shield,
   Rocket,
   Star,
+  Loader2,
 } from "lucide-react";
 
 export const Route = createFileRoute("/recruteurs")({
@@ -23,6 +27,7 @@ export const Route = createFileRoute("/recruteurs")({
 const PLANS = [
   {
     id: "gratuit",
+    lookupKey: null,
     name: "Gratuit",
     price: "0€",
     period: "",
@@ -42,14 +47,15 @@ const PLANS = [
     missing: ["Mise en avant", "Analytics", "Tableau de bord", "Accès aux profils étudiants"],
   },
   {
-    id: "sponsorisee",
-    name: "Sponsorisée",
+    id: "company_starter",
+    lookupKey: "company_starter_per_job",
+    name: "Starter",
     price: "29,99€",
-    period: "/annonce",
+    period: "/offre",
     sub: "Le plus populaire",
     color: "border-violet/50",
     accent: "text-violet-soft",
-    cta: "Publier une annonce",
+    cta: "Publier une offre",
     ctaStyle: "bg-violet text-white hover:bg-violet/90",
     featured: true,
     features: [
@@ -63,14 +69,18 @@ const PLANS = [
     missing: ["Offres illimitées", "Tableau de bord complet", "Accès aux profils"],
   },
   {
-    id: "pro",
-    name: "Pack Pro Illimité",
-    price: "199€",
+    id: "company_pro",
+    lookupKeyMonthly: "company_pro_monthly",
+    lookupKeyYearly: "company_pro_yearly",
+    name: "Pro Illimité",
+    priceMonthly: "199€",
+    priceYearly: "1 990€",
     period: "/mois",
+    periodYearly: "/an",
     sub: "Pour les équipes RH",
     color: "border-lime/40",
     accent: "text-lime",
-    cta: "Démarrer l'essai gratuit",
+    cta: "Passer Pro",
     ctaStyle: "bg-lime text-ink hover:-translate-y-0.5",
     featured: false,
     features: [
@@ -104,13 +114,44 @@ const ADVANTAGES = [
 /* -------------------------------------------------------------------- page */
 
 function RecruteursPage() {
-  function handlePlan(planId: string) {
-    if (planId === "gratuit") {
-      toast.success("Compte recruteur gratuit disponible à la beta — inscris-toi pour être notifié !");
-    } else if (planId === "sponsorisee") {
-      toast.success("Les annonces sponsorisées ouvrent en beta. Tu seras parmi les premiers !");
-    } else {
-      toast.success("Essai gratuit 14 jours disponible au lancement. On te contacte dès que c'est prêt !");
+  const navigate = useNavigate();
+  const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
+  const [loading, setLoading] = useState<string | null>(null);
+
+  async function handlePlan(planId: string, lookupKey: string | null) {
+    if (!lookupKey) {
+      navigate({ to: "/signup" });
+      return;
+    }
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast.error("Connecte-toi pour accéder aux offres payantes.");
+      navigate({ to: "/login" });
+      return;
+    }
+
+    setLoading(planId);
+    try {
+      const origin = window.location.origin;
+      const result = await createSpringrCheckout({
+        data: {
+          lookupKey,
+          successUrl: `${origin}/success?plan=${planId}&session_id={CHECKOUT_SESSION_ID}`,
+          cancelUrl:  `${origin}/cancel?plan=${planId}`,
+          userId:     session.user.id,
+          userEmail:  session.user.email!,
+        },
+      });
+      if ("error" in result) {
+        toast.error(result.error);
+        return;
+      }
+      window.location.href = result.url;
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur lors de la redirection.");
+    } finally {
+      setLoading(null);
     }
   }
 
@@ -134,7 +175,7 @@ function RecruteursPage() {
               <span className="text-violet">avant tout le monde.</span>
             </h1>
             <p className="text-mute text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-              2 400 étudiants qualifiés sur Springr, actifs dans leurs recherches de stage, d'alternance et de premier emploi.
+              2 400 étudiants qualifiés sur Springr, actifs dans leurs recherches.
               Publie tes offres là où ça compte.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
@@ -147,7 +188,6 @@ function RecruteursPage() {
               </a>
             </div>
 
-            {/* trust stats */}
             <div className="mt-14 flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
               {TRUST_STATS.map(({ n, label }) => (
                 <div key={label} className="text-center">
@@ -184,16 +224,106 @@ function RecruteursPage() {
               Simple et transparent.
             </h2>
             <p className="mt-4 text-mute text-lg">Commence gratuitement, monte en puissance quand tu veux.</p>
+
+            {/* Billing toggle (only relevant for Pro plan) */}
+            <div className="mt-6 inline-flex rounded-full border border-white/15 bg-white/5 p-1 gap-1">
+              <button
+                onClick={() => setBilling("monthly")}
+                className={`rounded-full px-5 py-2 text-sm font-medium transition-all ${billing === "monthly" ? "bg-white text-ink" : "text-mute hover:text-white"}`}
+              >
+                Mensuel
+              </button>
+              <button
+                onClick={() => setBilling("yearly")}
+                className={`relative rounded-full px-5 py-2 text-sm font-medium transition-all ${billing === "yearly" ? "bg-white text-ink" : "text-mute hover:text-white"}`}
+              >
+                Annuel
+                <span className="absolute -top-2 -right-2 rounded-full bg-lime text-ink text-[9px] font-bold px-1.5 py-0.5 leading-none">
+                  -17%
+                </span>
+              </button>
+            </div>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-6">
-            {PLANS.map((plan) => (
-              <PricingCard key={plan.id} plan={plan} onSelect={() => handlePlan(plan.id)} />
-            ))}
+            {PLANS.map((plan) => {
+              const isPro = plan.id === "company_pro";
+              const price = isPro
+                ? billing === "monthly"
+                  ? (plan as any).priceMonthly
+                  : (plan as any).priceYearly
+                : (plan as any).price;
+              const period = isPro
+                ? billing === "monthly" ? "/mois" : "/an"
+                : (plan as any).period;
+              const lookupKey = isPro
+                ? billing === "monthly"
+                  ? (plan as any).lookupKeyMonthly
+                  : (plan as any).lookupKeyYearly
+                : (plan as any).lookupKey;
+
+              return (
+                <div
+                  key={plan.id}
+                  className={`relative flex flex-col rounded-2xl border p-6 ${plan.color} ${
+                    plan.featured
+                      ? "bg-gradient-to-b from-violet/15 to-transparent shadow-[0_0_60px_-20px_rgba(124,92,250,0.4)]"
+                      : "bg-gradient-to-b from-white/[0.04] to-transparent"
+                  }`}
+                >
+                  {plan.featured && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-violet px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-white">
+                        <Sparkles className="size-3" /> Populaire
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="mb-6 pt-2">
+                    <div className={`text-xs font-mono uppercase tracking-wider mb-2 ${plan.accent}`}>{plan.sub}</div>
+                    <h3 className="font-display font-bold text-xl mb-4">{plan.name}</h3>
+                    <div className="flex items-baseline gap-1">
+                      <span className="font-display font-bold text-4xl">{price}</span>
+                      {period && <span className="text-mute text-sm">{period}</span>}
+                    </div>
+                  </div>
+
+                  <ul className="space-y-3 mb-8 flex-1">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2.5 text-sm">
+                        <Check className="size-4 text-lime shrink-0 mt-0.5" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                    {plan.missing.map((f) => (
+                      <li key={f} className="flex items-start gap-2.5 text-sm text-mute/50 line-through">
+                        <Check className="size-4 text-white/10 shrink-0 mt-0.5" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    onClick={() => handlePlan(plan.id, lookupKey ?? null)}
+                    disabled={loading === plan.id}
+                    className={`w-full inline-flex items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold transition-all ${plan.ctaStyle} disabled:opacity-60`}
+                  >
+                    {loading === plan.id ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                      <>
+                        {plan.cta}
+                        <ArrowUpRight className="size-4" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              );
+            })}
           </div>
 
           <p className="text-center text-xs text-mute mt-8">
-            Tous les prix sont HT · Facturation mensuelle sans engagement · Annulation à tout moment
+            Tous les prix sont HT · Paiement sécurisé par Stripe · Annulation à tout moment
           </p>
         </section>
 
@@ -220,62 +350,6 @@ function RecruteursPage() {
           </div>
         </section>
       </main>
-    </div>
-  );
-}
-
-/* --------------------------------------------------------- pricing card */
-
-function PricingCard({
-  plan,
-  onSelect,
-}: {
-  plan: (typeof PLANS)[number];
-  onSelect: () => void;
-}) {
-  return (
-    <div className={`relative flex flex-col rounded-2xl border p-6 ${plan.color} ${
-      plan.featured ? "bg-gradient-to-b from-violet/15 to-transparent shadow-[0_0_60px_-20px_rgba(124,92,250,0.4)]" : "bg-gradient-to-b from-white/[0.04] to-transparent"
-    }`}>
-      {plan.featured && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="inline-flex items-center gap-1 rounded-full bg-violet px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-white">
-            <Sparkles className="size-3" /> Populaire
-          </span>
-        </div>
-      )}
-
-      <div className="mb-6 pt-2">
-        <div className={`text-xs font-mono uppercase tracking-wider mb-2 ${plan.accent}`}>{plan.sub}</div>
-        <h3 className="font-display font-bold text-xl mb-4">{plan.name}</h3>
-        <div className="flex items-baseline gap-1">
-          <span className="font-display font-bold text-4xl">{plan.price}</span>
-          {plan.period && <span className="text-mute text-sm">{plan.period}</span>}
-        </div>
-      </div>
-
-      <ul className="space-y-3 mb-8 flex-1">
-        {plan.features.map((f) => (
-          <li key={f} className="flex items-start gap-2.5 text-sm">
-            <Check className="size-4 text-lime shrink-0 mt-0.5" />
-            <span>{f}</span>
-          </li>
-        ))}
-        {plan.missing.map((f) => (
-          <li key={f} className="flex items-start gap-2.5 text-sm text-mute/50 line-through">
-            <Check className="size-4 text-white/10 shrink-0 mt-0.5" />
-            <span>{f}</span>
-          </li>
-        ))}
-      </ul>
-
-      <button
-        onClick={onSelect}
-        className={`w-full inline-flex items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold transition-all ${plan.ctaStyle}`}
-      >
-        {plan.cta}
-        <ArrowUpRight className="size-4" />
-      </button>
     </div>
   );
 }

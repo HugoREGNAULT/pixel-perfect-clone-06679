@@ -6,6 +6,7 @@ import {
   Loader2, MapPin,
 } from "lucide-react";
 import { DashboardLayout, DashCard } from "@/components/DashboardLayout";
+import { SubscriptionSection } from "@/components/SubscriptionSection";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/dashboard/etudiant")({
@@ -223,6 +224,7 @@ function EtudiantDashboard() {
       cards={CARDS}
     >
       <CandidaturesSection />
+      <SubscriptionSection pricingPath="/tarifs" upgradeLabel="Devenir Premium" />
     </DashboardLayout>
   );
 }

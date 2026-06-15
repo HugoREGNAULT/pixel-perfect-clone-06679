@@ -6,6 +6,7 @@ import {
   TrendingUp, FileText, PlusCircle,
 } from "lucide-react";
 import { DashboardLayout, DashCard } from "@/components/DashboardLayout";
+import { SubscriptionSection } from "@/components/SubscriptionSection";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
@@ -232,6 +233,7 @@ function RecruteurDashboard() {
       cards={CARDS}
     >
       <OffresSection />
+      <SubscriptionSection pricingPath="/recruteurs" upgradeLabel="Voir les plans" />
     </DashboardLayout>
   );
 }

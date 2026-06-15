@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { to: "/bons-plans",   label: "Bons Plans"    },
   { to: "/evenements",   label: "JPO"           },
   { to: "/recruteurs",   label: "Recruteurs"    },
+  { to: "/tarifs",       label: "Tarifs"        },
 ] as const;
 
 export function AppNav() {
