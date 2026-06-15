@@ -86,7 +86,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Profil vivant, mentors, opportunités matchées. Pré-lancement en cours." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://springr.app" },
-      { property: "og:image", content: "https://springr.app/og-image.svg" },
+      { property: "og:image", content: "https://springr.app/og-image.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:locale", content: "fr_FR" },
@@ -95,7 +95,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@springrapp" },
       { name: "twitter:title", content: "Springr — Le réseau pro des étudiants" },
       { name: "twitter:description", content: "Profil vivant, mentors, opportunités matchées. Pré-lancement en cours." },
-      { name: "twitter:image", content: "https://springr.app/og-image.svg" },
+      { name: "twitter:image", content: "https://springr.app/og-image.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
