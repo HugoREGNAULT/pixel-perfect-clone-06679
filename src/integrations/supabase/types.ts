@@ -163,19 +163,28 @@ export type Database = {
           id: string
           user_id: string
           offre_id: string
+          status: string
+          notes: string | null
           created_at: string
+          updated_at: string
         }
         Insert: {
           id?: string
           user_id: string
           offre_id: string
+          status?: string
+          notes?: string | null
           created_at?: string
+          updated_at?: string
         }
         Update: {
           id?: string
           user_id?: string
           offre_id?: string
+          status?: string
+          notes?: string | null
           created_at?: string
+          updated_at?: string
         }
         Relationships: [
           {
@@ -193,6 +202,57 @@ export type Database = {
             referencedColumns: ["id"]
           }
         ]
+      }
+      alertes_emploi: {
+        Row: {
+          id: string
+          user_id: string
+          frequency: string
+          sectors: string[]
+          types: string[]
+          active: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          frequency?: string
+          sectors?: string[]
+          types?: string[]
+          active?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          frequency?: string
+          sectors?: string[]
+          types?: string[]
+          active?: boolean
+          created_at?: string
+        }
+        Relationships: []
+      }
+      profile_views: {
+        Row: {
+          id: string
+          profile_id: string
+          viewer_id: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          profile_id: string
+          viewer_id?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          profile_id?: string
+          viewer_id?: string | null
+          created_at?: string
+        }
+        Relationships: []
       }
       mentors: {
         Row: {
