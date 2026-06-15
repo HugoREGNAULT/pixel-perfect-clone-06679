@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { LogOut, Menu, X, ArrowUpRight, Search, MessageSquare } from "lucide-react";
-import type { User } from "@supabase/supabase-js";
+import type { User, RealtimeChannel } from "@supabase/supabase-js";
 
 const NAV_LINKS = [
   { to: "/opportunites", label: "Opportunités" },
@@ -22,18 +22,33 @@ export function AppNav() {
   const [searchQ, setSearchQ]   = useState("");
   const [unread, setUnread]     = useState(0);
   const searchInputRef          = useRef<HTMLInputElement>(null);
+  const realtimeRef             = useRef<RealtimeChannel | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setUser(data.session?.user ?? null);
-      if (data.session?.user) fetchUnread(data.session.user.id);
+      if (data.session?.user) {
+        fetchUnread(data.session.user.id);
+        subscribeUnread(data.session.user.id);
+      }
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_, s) => {
       setUser(s?.user ?? null);
-      if (s?.user) fetchUnread(s.user.id);
-      else setUnread(0);
+      if (s?.user) {
+        fetchUnread(s.user.id);
+        subscribeUnread(s.user.id);
+      } else {
+        setUnread(0);
+        if (realtimeRef.current) {
+          supabase.removeChannel(realtimeRef.current);
+          realtimeRef.current = null;
+        }
+      }
     });
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      if (realtimeRef.current) supabase.removeChannel(realtimeRef.current);
+    };
   }, []);
 
   async function fetchUnread(uid: string) {
@@ -41,14 +56,39 @@ export function AppNav() {
       .from("conversations")
       .select("id")
       .or(`participant_1.eq.${uid},participant_2.eq.${uid}`);
-    if (!convs?.length) return;
+    if (!convs?.length) { setUnread(0); return; }
     const { count } = await supabase
       .from("messages")
       .select("*", { count: "exact", head: true })
       .is("read_at", null)
       .neq("sender_id", uid)
       .in("conversation_id", convs.map(c => c.id));
-    if (count) setUnread(count);
+    setUnread(count ?? 0);
+  }
+
+  function subscribeUnread(uid: string) {
+    if (realtimeRef.current) supabase.removeChannel(realtimeRef.current);
+    const channel = supabase
+      .channel("nav-unread")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        (payload) => {
+          const m = payload.new as { sender_id: string; read_at: string | null };
+          if (m.sender_id !== uid && !m.read_at) {
+            setUnread(prev => prev + 1);
+          }
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "messages" },
+        () => {
+          fetchUnread(uid);
+        }
+      )
+      .subscribe();
+    realtimeRef.current = channel;
   }
 
   async function signOut() {
