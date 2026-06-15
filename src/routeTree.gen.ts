@@ -14,6 +14,7 @@ import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
 import { Route as MentorsRouteImport } from './routes/mentors'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as BonsPlansRouteImport } from './routes/bons-plans'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -44,6 +45,11 @@ const MentorsRoute = MentorsRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BonsPlansRoute = BonsPlansRouteImport.update({
+  id: '/bons-plans',
+  path: '/bons-plans',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -80,6 +86,7 @@ const ApiPublicPaymentsWebhookRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bons-plans': typeof BonsPlansRoute
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bons-plans': typeof BonsPlansRoute
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/bons-plans': typeof BonsPlansRoute
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/bons-plans'
     | '/login'
     | '/mentors'
     | '/opportunites'
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/bons-plans'
     | '/login'
     | '/mentors'
     | '/opportunites'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/bons-plans'
     | '/login'
     | '/mentors'
     | '/opportunites'
@@ -159,6 +171,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BonsPlansRoute: typeof BonsPlansRoute
   LoginRoute: typeof LoginRoute
   MentorsRoute: typeof MentorsRoute
   OpportunitesRoute: typeof OpportunitesRoute
@@ -203,6 +216,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bons-plans': {
+      id: '/bons-plans'
+      path: '/bons-plans'
+      fullPath: '/bons-plans'
+      preLoaderRoute: typeof BonsPlansRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -265,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  BonsPlansRoute: BonsPlansRoute,
   LoginRoute: LoginRoute,
   MentorsRoute: MentorsRoute,
   OpportunitesRoute: OpportunitesRoute,
