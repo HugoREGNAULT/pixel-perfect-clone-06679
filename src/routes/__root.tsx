@@ -16,19 +16,19 @@ import { SiteFooter } from "@/components/SiteFooter";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-ink px-4 text-white">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+        <h1 className="text-7xl font-bold text-white/20">404</h1>
+        <h2 className="mt-4 text-xl font-semibold text-white">Page introuvable</h2>
+        <p className="mt-2 text-sm text-white/50">
+          Cette page n'existe pas ou a été déplacée.
         </p>
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-full bg-lime px-6 py-2.5 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform"
           >
-            Go home
+            Retour à l'accueil
           </Link>
         </div>
       </div>
@@ -44,13 +44,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-ink px-4 text-white">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+        <h1 className="text-xl font-semibold tracking-tight text-white">
+          Une erreur est survenue
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+        <p className="mt-2 text-sm text-white/50">
+          Quelque chose s'est mal passé. Tu peux réessayer ou revenir à l'accueil.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -58,15 +58,15 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-full bg-lime px-6 py-2.5 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform"
           >
-            Try again
+            Réessayer
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="inline-flex items-center justify-center rounded-full border border-white/15 px-6 py-2.5 text-sm font-medium text-white hover:bg-white/5 transition-colors"
           >
-            Go home
+            Retour à l'accueil
           </a>
         </div>
       </div>
@@ -85,9 +85,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Springr — Le réseau pro des étudiants" },
       { property: "og:description", content: "Profil vivant, mentors, opportunités matchées. Pré-lancement en cours." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://springr.app" },
+      { property: "og:image", content: "https://springr.app/og-image.svg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:locale", content: "fr_FR" },
+      { property: "og:site_name", content: "Springr" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@springrapp" },
       { name: "twitter:title", content: "Springr — Le réseau pro des étudiants" },
       { name: "twitter:description", content: "Profil vivant, mentors, opportunités matchées. Pré-lancement en cours." },
+      { name: "twitter:image", content: "https://springr.app/og-image.svg" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -100,6 +108,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "canonical", href: "https://springr.app" },
     ],
   }),
   shellComponent: RootShell,
@@ -110,7 +119,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <head>
         <HeadContent />
       </head>

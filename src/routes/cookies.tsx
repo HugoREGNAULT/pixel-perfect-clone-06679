@@ -157,7 +157,6 @@ function CookiesPage() {
           </LegalSection>
         </div>
       </main>
-      <CookiesLegalFooter />
     </div>
   );
 }
@@ -250,16 +249,3 @@ function LegalSection({ title, children }: { title: string; children: React.Reac
   );
 }
 
-function CookiesLegalFooter() {
-  return (
-    <div className="border-t border-white/5">
-      <div className="mx-auto max-w-3xl px-5 py-6 flex flex-wrap gap-4 text-xs text-mute">
-        <Link to="/cgu" className="hover:text-white transition-colors">CGU</Link>
-        <Link to="/confidentialite" className="hover:text-white transition-colors">Confidentialité</Link>
-        <Link to="/mentions-legales" className="hover:text-white transition-colors">Mentions légales</Link>
-        <Link to="/cookies" className="hover:text-white transition-colors font-semibold text-white">Cookies</Link>
-        <span className="ml-auto">© 2026 Springr</span>
-      </div>
-    </div>
-  );
-}

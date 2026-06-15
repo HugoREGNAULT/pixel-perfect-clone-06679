@@ -95,7 +95,7 @@ function AdminOverview() {
         db.from("subscriptions").select("*", { count: "exact", head: true }).eq("status", "active"),
         db.from("offres").select("*", { count: "exact", head: true }),
         db.from("candidatures").select("*", { count: "exact", head: true }),
-        db.from("evenements").select("*", { count: "exact", head: true }),
+        db.from("jpos").select("*", { count: "exact", head: true }),
         db.from("bons_plans").select("*", { count: "exact", head: true }).eq("actif", true),
         db.from("ecoles").select("*", { count: "exact", head: true }),
         db.from("messages").select("*", { count: "exact", head: true }),

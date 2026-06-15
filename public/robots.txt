@@ -1,12 +1,23 @@
 User-agent: *
 Allow: /
+
+# Authenticated / private routes
 Disallow: /dashboard/
 Disallow: /profil
 Disallow: /messages
 Disallow: /mes-candidatures
 Disallow: /admin
-Disallow: /api/
+Disallow: /parrainage
+
+# Auth flows — no indexing value
 Disallow: /auth
+Disallow: /forgot-password
 Disallow: /reset-password
+Disallow: /success
+Disallow: /cancel
+Disallow: /invite/
+
+# Internal
+Disallow: /api/
 
 Sitemap: https://springr.app/sitemap.xml

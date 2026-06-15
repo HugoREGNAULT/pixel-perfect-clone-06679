@@ -17,12 +17,17 @@
   </url>
   <url>
     <loc>https://springr.app/evenements</loc>
-    <changefreq>weekly</changefreq>
+    <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://springr.app/bons-plans</loc>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://springr.app/ecoles</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
@@ -31,9 +36,14 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://springr.app/tarifs</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://springr.app/recherche</loc>
     <changefreq>always</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://springr.app/signup</loc>
@@ -44,6 +54,21 @@
     <loc>https://springr.app/login</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://springr.app/brand</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://springr.app/brand/assets</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://springr.app/brand/social-kit</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://springr.app/cgu</loc>
@@ -57,6 +82,11 @@
   </url>
   <url>
     <loc>https://springr.app/mentions-legales</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  <url>
+    <loc>https://springr.app/cookies</loc>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>

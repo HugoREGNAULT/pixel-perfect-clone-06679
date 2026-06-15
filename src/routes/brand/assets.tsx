@@ -350,7 +350,6 @@ function AssetsPage() {
         </div>
       </div>
 
-      <BrandFooter />
     </div>
   );
 }
@@ -406,16 +405,3 @@ function AssetCard({
   );
 }
 
-function BrandFooter() {
-  return (
-    <div className="border-t border-white/5">
-      <div className="mx-auto max-w-6xl px-5 lg:px-8 py-6 flex flex-wrap items-center gap-4 text-xs text-mute">
-        <Link to="/" className="hover:text-white transition-colors">Accueil</Link>
-        <Link to="/brand" className="hover:text-white transition-colors">Brand Guidelines</Link>
-        <Link to="/brand/assets" className="hover:text-white transition-colors font-semibold text-white">Assets</Link>
-        <Link to="/brand/social-kit" className="hover:text-white transition-colors">Social Kit</Link>
-        <span className="ml-auto">© 2026 Springr SAS — Tous droits réservés</span>
-      </div>
-    </div>
-  );
-}

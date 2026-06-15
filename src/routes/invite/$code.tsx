@@ -127,12 +127,6 @@ function InvitePage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="border-t border-white/5 px-5 py-4 text-center">
-        <p className="text-xs text-mute">
-          © 2026 Springr · <Link to="/cgu" className="hover:text-white">CGU</Link> · <Link to="/confidentialite" className="hover:text-white">Confidentialité</Link>
-        </p>
-      </footer>
     </div>
   );
 }

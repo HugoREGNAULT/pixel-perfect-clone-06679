@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect, useCallback } from "react";
 import { AppNav } from "@/components/AppNav";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,6 +27,7 @@ interface ReferralRow {
 const REWARD_ICONS = [Shield, Zap, Star, Trophy, Crown, Infinity];
 
 function ParrainagePage() {
+  const navigate = useNavigate();
   const [userId,    setUserId]    = useState("");
   const [firstName, setFirst]     = useState("");
   const [code,      setCode]      = useState("");
@@ -40,7 +41,10 @@ function ParrainagePage() {
 
   const load = useCallback(async () => {
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
+    if (!session) {
+      navigate({ to: "/login" as any, replace: true });
+      return;
+    }
     const u = session.user;
     const m = u.user_metadata ?? {};
     const fn: string = m.firstName ?? m.name?.split(" ")[0] ?? "Springr";

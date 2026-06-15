@@ -1,0 +1,49 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', 'Inter', Arial, sans-serif; }</style>
+    <radialGradient id="glow1" cx="80%" cy="20%" r="50%">
+      <stop offset="0%" stop-color="#7C5CFA" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0A0A14" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="20%" cy="80%" r="45%">
+      <stop offset="0%" stop-color="#B5FF3D" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#0A0A14" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0A0A14"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Top accent bar -->
+  <rect x="0" y="0" width="1200" height="4" fill="#7C5CFA"/>
+
+  <!-- Logo -->
+  <text x="80" y="120" font-size="52" font-weight="800" fill="#FFFFFF" letter-spacing="-2">
+    springr<tspan fill="#B5FF3D">.</tspan>
+  </text>
+
+  <!-- Main headline -->
+  <text x="80" y="270" font-size="88" font-weight="800" fill="#FFFFFF" letter-spacing="-3">
+    Le réseau pro
+  </text>
+  <text x="80" y="368" font-size="88" font-weight="800" fill="#7C5CFA" letter-spacing="-3">
+    des étudiants.
+  </text>
+
+  <!-- Tagline -->
+  <text x="80" y="450" font-size="28" font-weight="400" fill="#8A8AA8">
+    Construis ton réseau avant ton premier CDI.
+  </text>
+
+  <!-- URL badge -->
+  <rect x="80" y="512" width="200" height="50" rx="25" fill="#B5FF3D"/>
+  <text x="180" y="543" font-size="18" font-weight="700" fill="#0A0A14" text-anchor="middle">springr.app</text>
+
+  <!-- Decorative circles -->
+  <circle cx="1080" cy="180" r="160" fill="none" stroke="#7C5CFA" stroke-width="1" stroke-opacity="0.2"/>
+  <circle cx="1080" cy="180" r="100" fill="none" stroke="#7C5CFA" stroke-width="1" stroke-opacity="0.15"/>
+  <circle cx="1080" cy="180" r="50" fill="#7C5CFA" fill-opacity="0.08"/>
+  <circle cx="1120" cy="500" r="80" fill="#B5FF3D" fill-opacity="0.05"/>
+</svg>
