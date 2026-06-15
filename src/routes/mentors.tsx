@@ -44,7 +44,30 @@ interface Mentor {
   avatarColor: string;
 }
 
-/* -------------------------------------------------------------------- data */
+/* -------------------------------------------------------------------- db → model */
+
+const FALLBACK_AVATAR = "from-violet to-violet/40";
+
+type DbMentor = Tables<"mentors">;
+
+function toMentor(row: DbMentor): Mentor {
+  return {
+    id: row.id,
+    firstName: row.first_name,
+    lastName: row.last_name,
+    position: row.position,
+    company: row.company,
+    sector: row.sector,
+    city: row.city,
+    bio: row.bio ?? "",
+    skills: row.skills,
+    availability: row.availability as Availability,
+    sessions: row.sessions,
+    avatarColor: row.avatar_color ?? FALLBACK_AVATAR,
+  };
+}
+
+/* -------------------------------------------------------------------- data (kept for filter list init only) */
 
 const AVATAR_PAIRS = [
   "from-violet to-violet/40",
@@ -56,16 +79,6 @@ const AVATAR_PAIRS = [
   "from-cyan-500 to-cyan-500/40",
   "from-rose-500 to-rose-500/40",
 ];
-
-const MENTORS: Mentor[] = [
-  {
-    id: "1",
-    firstName: "Sophie",  lastName: "Bernard",
-    position: "Engineering Manager", company: "Stripe",
-    sector: "Tech", city: "Paris", bio: "8 ans en ingénierie produit, je t'aide à naviguer ta carrière dev et à décrocher ton premier poste tech.",
-    skills: ["Career path", "Code review", "System design"],
-    availability: "disponible", sessions: 47, avatarColor: AVATAR_PAIRS[0],
-  },
   {
     id: "2",
     firstName: "Karim",  lastName: "Messaoudi",
