@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { DASHBOARD_ROUTE } from "@/lib/dashboard";
 import { toast } from "sonner";
 import { ArrowUpRight, Loader2, Eye, EyeOff } from "lucide-react";
 
@@ -28,7 +29,10 @@ function LoginPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/", replace: true });
+      if (!data.session) return;
+      const role = data.session.user.user_metadata?.role as string | undefined;
+      const dest = (role && DASHBOARD_ROUTE[role]) ? DASHBOARD_ROUTE[role] : "/";
+      navigate({ to: dest as any, replace: true });
     });
   }, [navigate]);
 
@@ -36,10 +40,12 @@ function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data: authData, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       toast.success("Bon retour !");
-      navigate({ to: "/", replace: true });
+      const role = authData.user?.user_metadata?.role as string | undefined;
+      const dest = (role && DASHBOARD_ROUTE[role]) ? DASHBOARD_ROUTE[role] : "/";
+      navigate({ to: dest as any, replace: true });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Email ou mot de passe incorrect.");
     } finally {
