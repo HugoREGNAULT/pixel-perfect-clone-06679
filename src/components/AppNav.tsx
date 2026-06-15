@@ -147,6 +147,7 @@ export function AppNav() {
             {user && (
               <Link
                 to="/messages"
+                search={{ compose: false }}
                 className="relative p-2 rounded-lg text-mute hover:text-white hover:bg-white/5 transition-colors"
                 aria-label="Messages"
               >
@@ -210,6 +211,7 @@ export function AppNav() {
             {user && (
               <Link
                 to="/messages"
+                search={{ compose: false }}
                 className="relative p-2 text-mute hover:text-white transition-colors"
                 aria-label="Messages"
               >
@@ -290,6 +292,7 @@ export function AppNav() {
                 </Link>
                 <Link
                   to="/messages"
+                  search={{ compose: false }}
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/5 transition-colors"
                 >

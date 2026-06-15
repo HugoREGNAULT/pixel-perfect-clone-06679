@@ -258,9 +258,11 @@ function MessagesPage() {
     if (!emailSearch.trim()) return;
     setSearching(true);
     setFoundUser(null);
-    const { data } = await supabase.rpc("find_user_by_email", { p_email: emailSearch.trim() });
-    setFoundUser((data as FoundUser[])?.[0] ?? null);
-    if (!data?.length) toast.error("Aucun utilisateur trouvé avec cet email.");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data } = await (supabase as any).rpc("find_user_by_email", { p_email: emailSearch.trim() });
+    const results = data as FoundUser[] | null;
+    setFoundUser(results?.[0] ?? null);
+    if (!results?.length) toast.error("Aucun utilisateur trouvé avec cet email.");
     setSearching(false);
   }
 
