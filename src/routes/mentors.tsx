@@ -79,147 +79,6 @@ const AVATAR_PAIRS = [
   "from-cyan-500 to-cyan-500/40",
   "from-rose-500 to-rose-500/40",
 ];
-  {
-    id: "2",
-    firstName: "Karim",  lastName: "Messaoudi",
-    position: "Senior Product Designer", company: "Figma",
-    sector: "Design", city: "Remote", bio: "Portfolio critique, UX case studies et préparation aux entretiens design — je réponds à tout.",
-    skills: ["Portfolio review", "UX research", "Design system"],
-    availability: "disponible", sessions: 31, avatarColor: AVATAR_PAIRS[2],
-  },
-  {
-    id: "3",
-    firstName: "Lucie",  lastName: "Fontaine",
-    position: "Growth Lead", company: "Doctolib",
-    sector: "Marketing", city: "Paris", bio: "Ex-agence, maintenant côté produit. Je mentore sur le growth hacking, l'acquisition et les premières expériences marketing.",
-    skills: ["Growth", "SEO", "Paid acquisition"],
-    availability: "sur_demande", sessions: 22, avatarColor: AVATAR_PAIRS[3],
-  },
-  {
-    id: "4",
-    firstName: "Thomas",  lastName: "Girard",
-    position: "CTO & Co-fondateur", company: "Pennylane",
-    sector: "Tech", city: "Paris", bio: "J'accompagne les devs qui veulent comprendre la dimension business et ceux qui aspirent à des rôles de lead.",
-    skills: ["Leadership tech", "Architecture", "Startup"],
-    availability: "sur_demande", sessions: 18, avatarColor: AVATAR_PAIRS[4],
-  },
-  {
-    id: "5",
-    firstName: "Amina",  lastName: "Koné",
-    position: "Analyste M&A", company: "BNP Paribas CIB",
-    sector: "Finance", city: "Paris", bio: "Grands groupes, prépas commerciales, stages IBD — je démystifie le monde de la banque d'affaires.",
-    skills: ["IBD", "Modélisation", "Networking"],
-    availability: "disponible", sessions: 56, avatarColor: AVATAR_PAIRS[5],
-  },
-  {
-    id: "6",
-    firstName: "Hugo",  lastName: "Descamps",
-    position: "Senior Consultant", company: "McKinsey & Company",
-    sector: "Conseil", city: "Paris", bio: "Cabinets de conseil, case interviews, life in consulting — je partage tout sans filtre.",
-    skills: ["Case interview", "Strategy", "Présentation"],
-    availability: "disponible", sessions: 63, avatarColor: AVATAR_PAIRS[6],
-  },
-  {
-    id: "7",
-    firstName: "Inès",  lastName: "Morel",
-    position: "Rédactrice en chef", company: "Le Monde",
-    sector: "Médias", city: "Paris", bio: "Journalisme, pige, écriture web — je conseille les étudiants en communication et info.",
-    skills: ["Journalisme", "Rédaction", "Pige"],
-    availability: "sur_demande", sessions: 14, avatarColor: AVATAR_PAIRS[7],
-  },
-  {
-    id: "8",
-    firstName: "Mehdi",  lastName: "Oualid",
-    position: "Staff Engineer", company: "Datadog",
-    sector: "Tech", city: "Remote", bio: "Backend, infra, interviews techniques big tech — je t'aide à te préparer pour les FAANG et scale-ups.",
-    skills: ["Algo & DS", "System design", "Go / Python"],
-    availability: "disponible", sessions: 89, avatarColor: AVATAR_PAIRS[1],
-  },
-  {
-    id: "9",
-    firstName: "Clara",  lastName: "Petit",
-    position: "Brand Manager", company: "L'Oréal",
-    sector: "Marketing", city: "Paris", bio: "Branding, stage grands groupes, FMCG — je t'aide à décrocher et à performer en marketing beauté.",
-    skills: ["Brand strategy", "FMCG", "Grands groupes"],
-    availability: "occupe", sessions: 28, avatarColor: AVATAR_PAIRS[3],
-  },
-  {
-    id: "10",
-    firstName: "Nicolas",  lastName: "Roux",
-    position: "VC Analyst", company: "Partech",
-    sector: "Finance", city: "Paris", bio: "Startups, pitch decks, monde du VC — je réponds à tes questions sur l'écosystème tech et l'investissement.",
-    skills: ["Venture Capital", "Startup", "Due diligence"],
-    availability: "disponible", sessions: 35, avatarColor: AVATAR_PAIRS[4],
-  },
-  {
-    id: "11",
-    firstName: "Yasmine",  lastName: "Hadj",
-    position: "UX Lead", company: "Publicis Sapient",
-    sector: "Design", city: "Lyon", bio: "Design thinking, research utilisateur, agences vs produit — j'aide les designers juniors à se positionner.",
-    skills: ["UX research", "Workshop", "Agence"],
-    availability: "disponible", sessions: 41, avatarColor: AVATAR_PAIRS[2],
-  },
-  {
-    id: "12",
-    firstName: "Romain",  lastName: "Lecomte",
-    position: "DRH", company: "Decathlon",
-    sector: "RH", city: "Lille", bio: "Recrutement, carrières RH, entretiens — tout ce que tu veux savoir côté RH d'un grand groupe.",
-    skills: ["Entretien", "GPEC", "Recrutement"],
-    availability: "sur_demande", sessions: 19, avatarColor: AVATAR_PAIRS[6],
-  },
-  {
-    id: "13",
-    firstName: "Jade",  lastName: "Marchand",
-    position: "Product Manager", company: "Blablacar",
-    sector: "Tech", city: "Paris", bio: "Transition dev → PM, discovery, priorisation backlog — je partage ma méthode sans jargon.",
-    skills: ["Product discovery", "Priorisation", "OKR"],
-    availability: "disponible", sessions: 52, avatarColor: AVATAR_PAIRS[0],
-  },
-  {
-    id: "14",
-    firstName: "Antoine",  lastName: "Mercier",
-    position: "Ingénieur Énergie", company: "TotalEnergies",
-    sector: "Énergie", city: "Toulouse", bio: "Transition énergétique, grandes écoles d'ingé, stage industrie — je t'aide à te repérer dans ce secteur.",
-    skills: ["EnR", "Industrie", "Grandes écoles"],
-    availability: "sur_demande", sessions: 11, avatarColor: AVATAR_PAIRS[5],
-  },
-  {
-    id: "15",
-    firstName: "Léa",  lastName: "Simon",
-    position: "Frontend Engineer", company: "Alan",
-    sector: "Tech", city: "Paris", bio: "React, accessibilité, impact social en startup — je mentore les devs front qui veulent travailler dans la healthtech.",
-    skills: ["React", "Accessibilité", "Healthtech"],
-    availability: "disponible", sessions: 38, avatarColor: AVATAR_PAIRS[1],
-  },
-  {
-    id: "16",
-    firstName: "Valentin",  lastName: "Dubois",
-    position: "Directeur Conseil", company: "Boston Consulting Group",
-    sector: "Conseil", city: "Paris", bio: "Grandes écoles, consulting stratégie, reconversions — je partage l'envers du décor sans langue de bois.",
-    skills: ["Recrutement BCG", "Stratégie", "Leadership"],
-    availability: "occupe", sessions: 74, avatarColor: AVATAR_PAIRS[7],
-  },
-  {
-    id: "17",
-    firstName: "Océane",  lastName: "Blanchard",
-    position: "Social Media Manager", company: "Brut.",
-    sector: "Médias", city: "Paris", bio: "Création de contenu, UGC, stratégie réseaux — je t'aide à percer dans le marketing digital des médias.",
-    skills: ["TikTok", "Instagram", "Contenu vidéo"],
-    availability: "disponible", sessions: 26, avatarColor: AVATAR_PAIRS[3],
-  },
-  {
-    id: "18",
-    firstName: "Pierre",  lastName: "Laurent",
-    position: "Head of Data", company: "Leboncoin",
-    sector: "Tech", city: "Remote", bio: "Data engineering, ML en prod, analytics — je mentore data analysts et data scientists qui veulent aller plus loin.",
-    skills: ["Python", "SQL", "MLOps"],
-    availability: "disponible", sessions: 44, avatarColor: AVATAR_PAIRS[2],
-  },
-];
-
-const SECTORS = ["Tous", ...new Set(MENTORS.map((m) => m.sector))].filter(
-  (s, i, arr) => arr.indexOf(s) === i
-);
 
 const AVAIL_CONFIG: Record<Availability, { label: string; dot: string; text: string }> = {
   disponible:   { label: "Disponible",   dot: "bg-lime",        text: "text-lime" },
@@ -230,18 +89,36 @@ const AVAIL_CONFIG: Record<Availability, { label: string; dot: string; text: str
 /* -------------------------------------------------------------------- page */
 
 function MentorsPage() {
+  const [mentors, setMentors]       = useState<Mentor[]>([]);
+  const [loading, setLoading]       = useState(true);
   const [search, setSearch]         = useState("");
   const [sectorFilter, setSector]   = useState("Tous");
   const [dmSent, setDmSent]         = useState<Set<string>>(new Set());
 
+  useEffect(() => {
+    supabase
+      .from("mentors")
+      .select("*")
+      .order("sessions", { ascending: false })
+      .then(({ data, error }) => {
+        if (!error && data) setMentors(data.map(toMentor));
+        setLoading(false);
+      });
+  }, []);
+
+  const SECTORS = useMemo(
+    () => ["Tous", ...new Set(mentors.map((m) => m.sector))],
+    [mentors]
+  );
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    return MENTORS.filter((m) => {
+    return mentors.filter((m) => {
       if (sectorFilter !== "Tous" && m.sector !== sectorFilter) return false;
       if (q && !`${m.firstName} ${m.lastName}`.toLowerCase().includes(q) && !m.company.toLowerCase().includes(q) && !m.position.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [search, sectorFilter]);
+  }, [mentors, search, sectorFilter]);
 
   function handleDM(mentor: Mentor) {
     if (dmSent.has(mentor.id)) return;
@@ -324,7 +201,11 @@ function MentorsPage() {
         </div>
 
         {/* ---- grid ---- */}
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center py-32">
+            <Loader2 className="size-7 text-mute animate-spin" />
+          </div>
+        ) : filtered.length === 0 ? (
           <EmptyState onReset={() => { setSearch(""); setSector("Tous"); }} />
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
