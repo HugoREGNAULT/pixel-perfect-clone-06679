@@ -99,7 +99,6 @@ function SpringrLanding() {
         <FounderBlock onClick={() => setFounderOpen(true)} />
         <Roadmap />
         <Newsletter />
-        <Footer />
       </div>
       <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
     </>
@@ -629,82 +628,3 @@ function Newsletter() {
   );
 }
 
-/* ------------------------------------------------------------ FOOTER */
-
-function Footer() {
-  return (
-    <footer className="border-t border-white/5 bg-ink">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8 py-14">
-        {/* Top row — brand + columns */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-12">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-4 lg:col-span-2">
-            <Logo />
-            <p className="text-mute text-sm leading-relaxed mt-4 max-w-xs">
-              Le réseau pro pensé par et pour la nouvelle génération. Construis ton réseau avant ton premier CDI.
-            </p>
-            <div className="flex items-center gap-4 mt-6">
-              <a href="#" aria-label="Twitter / X" className="size-8 rounded-lg border border-white/10 flex items-center justify-center text-mute hover:text-white hover:border-white/25 transition-colors text-xs font-bold">𝕏</a>
-              <a href="#" aria-label="Instagram" className="size-8 rounded-lg border border-white/10 flex items-center justify-center text-mute hover:text-white hover:border-white/25 transition-colors text-xs">📸</a>
-              <a href="#" aria-label="LinkedIn" className="size-8 rounded-lg border border-white/10 flex items-center justify-center text-mute hover:text-white hover:border-white/25 transition-colors text-xs font-bold">in</a>
-              <a href="#" aria-label="TikTok" className="size-8 rounded-lg border border-white/10 flex items-center justify-center text-mute hover:text-white hover:border-white/25 transition-colors text-xs">🎵</a>
-            </div>
-          </div>
-
-          {/* Plateforme */}
-          <div>
-            <p className="text-xs font-mono uppercase tracking-wider text-mute mb-4">Plateforme</p>
-            <ul className="space-y-3 text-sm">
-              {[
-                { to: "/opportunites", label: "Opportunités" },
-                { to: "/mentors",      label: "Mentors" },
-                { to: "/bons-plans",   label: "Bons Plans" },
-                { to: "/evenements",   label: "Événements" },
-                { to: "/recruteurs",   label: "Recruteurs" },
-                { to: "/tarifs",       label: "Tarifs" },
-              ].map(({ to, label }) => (
-                <li key={to}><Link to={to as any} className="text-mute hover:text-white transition-colors">{label}</Link></li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Légal */}
-          <div>
-            <p className="text-xs font-mono uppercase tracking-wider text-mute mb-4">Légal</p>
-            <ul className="space-y-3 text-sm">
-              {[
-                { to: "/mentions-legales", label: "Mentions légales" },
-                { to: "/cgu",              label: "CGU" },
-                { to: "/confidentialite",  label: "Confidentialité" },
-                { to: "/cookies",          label: "Cookies" },
-              ].map(({ to, label }) => (
-                <li key={to}><Link to={to as any} className="text-mute hover:text-white transition-colors">{label}</Link></li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Marque */}
-          <div>
-            <p className="text-xs font-mono uppercase tracking-wider text-mute mb-4">Marque</p>
-            <ul className="space-y-3 text-sm">
-              {[
-                { to: "/brand",        label: "Brand Guidelines" },
-                { to: "/brand/assets", label: "Logo & Assets" },
-              ].map(({ to, label }) => (
-                <li key={to}><Link to={to as any} className="text-mute hover:text-white transition-colors">{label}</Link></li>
-              ))}
-              <li><a href="mailto:hello@springr.app" className="text-mute hover:text-white transition-colors">Contact</a></li>
-              <li><a href="mailto:hello@springr.app" className="text-mute hover:text-white transition-colors">Presse</a></li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom row */}
-        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-mute">
-          <p>© 2026 Springr SAS — Tous droits réservés</p>
-          <p className="font-mono">v0 · pré-lancement · Paris, France 🇫🇷</p>
-        </div>
-      </div>
-    </footer>
-  );
-}
