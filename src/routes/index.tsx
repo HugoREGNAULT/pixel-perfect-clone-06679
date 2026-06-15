@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import {
   Loader2,
@@ -14,11 +14,13 @@ import {
   Check,
   X,
   GraduationCap,
+  LogOut,
 } from "lucide-react";
 import { toast } from "sonner";
 import { subscribeNewsletter } from "@/lib/newsletter.functions";
 import { FounderCheckoutDialog } from "@/components/FounderCheckoutDialog";
-import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+import { supabase } from "@/integrations/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,12 +40,25 @@ const emailSchema = z.string().trim().email("Email invalide").max(255);
 
 function SpringrLanding() {
   const [founderOpen, setFounderOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    toast.success("Déconnecté·e.");
+  }
 
   return (
     <>
-      <PaymentTestModeBanner />
       <div className="min-h-screen bg-ink text-white overflow-x-hidden">
-        <Nav onFounder={() => setFounderOpen(true)} />
+        <Nav onFounder={() => setFounderOpen(true)} user={user} onSignOut={handleSignOut} />
         <Hero onFounder={() => setFounderOpen(true)} />
         <Marquee />
         <Bento onFounder={() => setFounderOpen(true)} />
@@ -70,7 +85,18 @@ function Logo({ className = "" }: { className?: string }) {
   );
 }
 
-function Nav({ onFounder }: { onFounder: () => void }) {
+function Nav({
+  onFounder,
+  user,
+  onSignOut,
+}: {
+  onFounder: () => void;
+  user: User | null;
+  onSignOut: () => void;
+}) {
+  const role = user?.user_metadata?.role as string | undefined;
+  const roleLabel = role === "etudiant" ? "Étudiant" : role === "mentor" ? "Mentor" : role === "recruteur" ? "Recruteur" : null;
+
   return (
     <header className="sticky top-0 z-40 backdrop-blur-xl bg-ink/70 border-b border-white/5">
       <div className="mx-auto max-w-7xl px-5 lg:px-8 h-16 flex items-center justify-between">
@@ -81,13 +107,51 @@ function Nav({ onFounder }: { onFounder: () => void }) {
           <a href="#roadmap" className="hover:text-white transition-colors">Roadmap</a>
           <a href="#newsletter" className="hover:text-white transition-colors">Newsletter</a>
         </nav>
-        <button
-          onClick={onFounder}
-          className="group inline-flex items-center gap-2 rounded-full bg-lime px-4 py-2 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform"
-        >
-          Founder · 4,99€
-          <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
-        </button>
+        <div className="flex items-center gap-3">
+          {user ? (
+            <>
+              <div className="hidden sm:flex items-center gap-2">
+                <div className="size-7 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-xs font-bold">
+                  {user.email?.[0]?.toUpperCase()}
+                </div>
+                {roleLabel && (
+                  <span className="text-xs font-mono uppercase tracking-wider text-lime border border-lime/30 rounded-full px-2 py-0.5">
+                    {roleLabel}
+                  </span>
+                )}
+              </div>
+              <button
+                onClick={onSignOut}
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-2 text-xs font-medium text-mute hover:text-white hover:border-white/25 transition-all"
+              >
+                <LogOut className="size-3.5" />
+                <span className="hidden sm:inline">Déconnexion</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="hidden sm:inline-flex text-sm text-mute hover:text-white transition-colors px-3 py-2"
+              >
+                Connexion
+              </Link>
+              <Link
+                to="/signup"
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-2 text-sm font-medium text-white hover:bg-white/5 transition-all"
+              >
+                S'inscrire
+              </Link>
+            </>
+          )}
+          <button
+            onClick={onFounder}
+            className="group inline-flex items-center gap-2 rounded-full bg-lime px-4 py-2 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform"
+          >
+            Founder · 4,99€
+            <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
+          </button>
+        </div>
       </div>
     </header>
   );
