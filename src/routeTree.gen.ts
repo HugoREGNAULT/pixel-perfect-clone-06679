@@ -18,6 +18,7 @@ import { Route as OpportunitesRouteImport } from './routes/opportunites'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
 import { Route as MentorsRouteImport } from './routes/mentors'
+import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as EvenementsRouteImport } from './routes/evenements'
@@ -79,6 +80,11 @@ const MesCandidaturesRoute = MesCandidaturesRouteImport.update({
 const MentorsRoute = MentorsRouteImport.update({
   id: '/mentors',
   path: '/mentors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -176,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/evenements': typeof EvenementsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
@@ -203,6 +210,7 @@ export interface FileRoutesByTo {
   '/evenements': typeof EvenementsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
@@ -232,6 +240,7 @@ export interface FileRoutesById {
   '/evenements': typeof EvenementsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
@@ -261,6 +270,7 @@ export interface FileRouteTypes {
     | '/evenements'
     | '/forgot-password'
     | '/login'
+    | '/mentions-legales'
     | '/mentors'
     | '/mes-candidatures'
     | '/messages'
@@ -288,6 +298,7 @@ export interface FileRouteTypes {
     | '/evenements'
     | '/forgot-password'
     | '/login'
+    | '/mentions-legales'
     | '/mentors'
     | '/mes-candidatures'
     | '/messages'
@@ -316,6 +327,7 @@ export interface FileRouteTypes {
     | '/evenements'
     | '/forgot-password'
     | '/login'
+    | '/mentions-legales'
     | '/mentors'
     | '/mes-candidatures'
     | '/messages'
@@ -345,6 +357,7 @@ export interface RootRouteChildren {
   EvenementsRoute: typeof EvenementsRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
+  MentionsLegalesRoute: typeof MentionsLegalesRoute
   MentorsRoute: typeof MentorsRoute
   MesCandidaturesRoute: typeof MesCandidaturesRoute
   MessagesRoute: typeof MessagesRoute
@@ -426,6 +439,13 @@ declare module '@tanstack/react-router' {
       path: '/mentors'
       fullPath: '/mentors'
       preLoaderRoute: typeof MentorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mentions-legales': {
+      id: '/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof MentionsLegalesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -571,6 +591,7 @@ const rootRouteChildren: RootRouteChildren = {
   EvenementsRoute: EvenementsRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
+  MentionsLegalesRoute: MentionsLegalesRoute,
   MentorsRoute: MentorsRoute,
   MesCandidaturesRoute: MesCandidaturesRoute,
   MessagesRoute: MessagesRoute,
