@@ -15,6 +15,7 @@ import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
 import { Route as MentorsRouteImport } from './routes/mentors'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as EvenementsRouteImport } from './routes/evenements'
 import { Route as BonsPlansRouteImport } from './routes/bons-plans'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -57,6 +58,11 @@ const MentorsRoute = MentorsRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EvenementsRoute = EvenementsRouteImport.update({
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/bons-plans': typeof BonsPlansRoute
   '/evenements': typeof EvenementsRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/bons-plans': typeof BonsPlansRoute
   '/evenements': typeof EvenementsRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -172,6 +180,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/bons-plans': typeof BonsPlansRoute
   '/evenements': typeof EvenementsRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
   '/opportunites': typeof OpportunitesRoute
@@ -194,6 +203,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bons-plans'
     | '/evenements'
+    | '/forgot-password'
     | '/login'
     | '/mentors'
     | '/opportunites'
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bons-plans'
     | '/evenements'
+    | '/forgot-password'
     | '/login'
     | '/mentors'
     | '/opportunites'
@@ -235,6 +246,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bons-plans'
     | '/evenements'
+    | '/forgot-password'
     | '/login'
     | '/mentors'
     | '/opportunites'
@@ -257,6 +269,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BonsPlansRoute: typeof BonsPlansRoute
   EvenementsRoute: typeof EvenementsRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   MentorsRoute: typeof MentorsRoute
   OpportunitesRoute: typeof OpportunitesRoute
@@ -314,6 +327,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/evenements': {
@@ -427,6 +447,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BonsPlansRoute: BonsPlansRoute,
   EvenementsRoute: EvenementsRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   MentorsRoute: MentorsRoute,
   OpportunitesRoute: OpportunitesRoute,
