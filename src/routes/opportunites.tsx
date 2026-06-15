@@ -100,22 +100,49 @@ function formatDate(date: string) {
 /* -------------------------------------------------------------------- page */
 
 function OpportunitesPage() {
+  const [offers, setOffers]       = useState<Offer[]>([]);
+  const [loading, setLoading]     = useState(true);
   const [search, setSearch]       = useState("");
   const [typeFilter, setType]     = useState<ContractType | "tous">("tous");
   const [secteurFilter, setSect]  = useState("");
   const [villeFilter, setVille]   = useState("");
   const [applied, setApplied]     = useState<Set<string>>(new Set());
 
+  useEffect(() => {
+    supabase
+      .from("offres")
+      .select("*")
+      .order("posted_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (!error && data) setOffers(data.map(toOffer));
+        setLoading(false);
+      });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) return;
+      supabase
+        .from("candidatures")
+        .select("offre_id")
+        .eq("user_id", session.user.id)
+        .then(({ data }) => {
+          if (data) setApplied(new Set(data.map((c) => c.offre_id)));
+        });
+    });
+  }, []);
+
+  const SECTORS = useMemo(() => [...new Set(offers.map((o) => o.sector))].sort(), [offers]);
+  const CITIES  = useMemo(() => [...new Set(offers.map((o) => o.city))].sort(), [offers]);
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    return OFFERS.filter((o) => {
+    return offers.filter((o) => {
       if (typeFilter !== "tous" && o.type !== typeFilter) return false;
       if (secteurFilter && o.sector !== secteurFilter) return false;
       if (villeFilter && o.city !== villeFilter) return false;
       if (q && !o.title.toLowerCase().includes(q) && !o.company.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [search, typeFilter, secteurFilter, villeFilter]);
+  }, [offers, search, typeFilter, secteurFilter, villeFilter]);
 
   const hasFilters = typeFilter !== "tous" || secteurFilter || villeFilter || search;
 
@@ -126,8 +153,20 @@ function OpportunitesPage() {
     setVille("");
   }
 
-  function handleApply(offer: Offer) {
+  async function handleApply(offer: Offer) {
     if (applied.has(offer.id)) return;
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast.error("Connecte-toi pour postuler !");
+      return;
+    }
+    const { error } = await supabase
+      .from("candidatures")
+      .insert({ user_id: session.user.id, offre_id: offer.id });
+    if (error && error.code !== "23505") {
+      toast.error("Erreur lors de la candidature.");
+      return;
+    }
     setApplied((prev) => new Set([...prev, offer.id]));
     toast.success(`Candidature envoyée pour "${offer.title}" chez ${offer.company} !`);
   }
@@ -221,20 +260,22 @@ function OpportunitesPage() {
         </div>
 
         {/* ---- grid ---- */}
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center py-32">
+            <Loader2 className="size-7 text-mute animate-spin" />
+          </div>
+        ) : filtered.length === 0 ? (
           <EmptyState onReset={resetFilters} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered
-              .sort((a, b) => new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime())
-              .map((offer) => (
-                <OfferCard
-                  key={offer.id}
-                  offer={offer}
-                  applied={applied.has(offer.id)}
-                  onApply={() => handleApply(offer)}
-                />
-              ))}
+            {filtered.map((offer) => (
+              <OfferCard
+                key={offer.id}
+                offer={offer}
+                applied={applied.has(offer.id)}
+                onApply={() => handleApply(offer)}
+              />
+            ))}
           </div>
         )}
       </main>
