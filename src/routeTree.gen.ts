@@ -21,8 +21,10 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FounderSuccessRouteImport } from './routes/founder.success'
+import { Route as DashboardRecruteurRouteImport } from './routes/dashboard/recruteur'
 import { Route as DashboardLyceenRouteImport } from './routes/dashboard/lyceen'
 import { Route as DashboardEtudiantRouteImport } from './routes/dashboard/etudiant'
+import { Route as DashboardEcoleRouteImport } from './routes/dashboard/ecole'
 import { Route as DashboardDiplomeRouteImport } from './routes/dashboard/diplome'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
@@ -86,6 +88,11 @@ const FounderSuccessRoute = FounderSuccessRouteImport.update({
   path: '/founder/success',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRecruteurRoute = DashboardRecruteurRouteImport.update({
+  id: '/dashboard/recruteur',
+  path: '/dashboard/recruteur',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardLyceenRoute = DashboardLyceenRouteImport.update({
   id: '/dashboard/lyceen',
   path: '/dashboard/lyceen',
@@ -94,6 +101,11 @@ const DashboardLyceenRoute = DashboardLyceenRouteImport.update({
 const DashboardEtudiantRoute = DashboardEtudiantRouteImport.update({
   id: '/dashboard/etudiant',
   path: '/dashboard/etudiant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardEcoleRoute = DashboardEcoleRouteImport.update({
+  id: '/dashboard/ecole',
+  path: '/dashboard/ecole',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardDiplomeRoute = DashboardDiplomeRouteImport.update({
@@ -126,8 +138,10 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
+  '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
   '/dashboard/lyceen': typeof DashboardLyceenRoute
+  '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/founder/success': typeof FounderSuccessRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -144,8 +158,10 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
+  '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
   '/dashboard/lyceen': typeof DashboardLyceenRoute
+  '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/founder/success': typeof FounderSuccessRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -164,8 +180,10 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
+  '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
   '/dashboard/lyceen': typeof DashboardLyceenRoute
+  '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/founder/success': typeof FounderSuccessRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -184,8 +202,10 @@ export interface FileRouteTypes {
     | '/signup'
     | '/admin'
     | '/dashboard/diplome'
+    | '/dashboard/ecole'
     | '/dashboard/etudiant'
     | '/dashboard/lyceen'
+    | '/dashboard/recruteur'
     | '/founder/success'
     | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
@@ -202,8 +222,10 @@ export interface FileRouteTypes {
     | '/signup'
     | '/admin'
     | '/dashboard/diplome'
+    | '/dashboard/ecole'
     | '/dashboard/etudiant'
     | '/dashboard/lyceen'
+    | '/dashboard/recruteur'
     | '/founder/success'
     | '/api/public/payments/webhook'
   id:
@@ -221,8 +243,10 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_authenticated/admin'
     | '/dashboard/diplome'
+    | '/dashboard/ecole'
     | '/dashboard/etudiant'
     | '/dashboard/lyceen'
+    | '/dashboard/recruteur'
     | '/founder/success'
     | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
@@ -240,8 +264,10 @@ export interface RootRouteChildren {
   RecruteursRoute: typeof RecruteursRoute
   SignupRoute: typeof SignupRoute
   DashboardDiplomeRoute: typeof DashboardDiplomeRoute
+  DashboardEcoleRoute: typeof DashboardEcoleRoute
   DashboardEtudiantRoute: typeof DashboardEtudiantRoute
   DashboardLyceenRoute: typeof DashboardLyceenRoute
+  DashboardRecruteurRoute: typeof DashboardRecruteurRoute
   FounderSuccessRoute: typeof FounderSuccessRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
@@ -332,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FounderSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/recruteur': {
+      id: '/dashboard/recruteur'
+      path: '/dashboard/recruteur'
+      fullPath: '/dashboard/recruteur'
+      preLoaderRoute: typeof DashboardRecruteurRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard/lyceen': {
       id: '/dashboard/lyceen'
       path: '/dashboard/lyceen'
@@ -344,6 +377,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/etudiant'
       fullPath: '/dashboard/etudiant'
       preLoaderRoute: typeof DashboardEtudiantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/ecole': {
+      id: '/dashboard/ecole'
+      path: '/dashboard/ecole'
+      fullPath: '/dashboard/ecole'
+      preLoaderRoute: typeof DashboardEcoleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/diplome': {
@@ -394,8 +434,10 @@ const rootRouteChildren: RootRouteChildren = {
   RecruteursRoute: RecruteursRoute,
   SignupRoute: SignupRoute,
   DashboardDiplomeRoute: DashboardDiplomeRoute,
+  DashboardEcoleRoute: DashboardEcoleRoute,
   DashboardEtudiantRoute: DashboardEtudiantRoute,
   DashboardLyceenRoute: DashboardLyceenRoute,
+  DashboardRecruteurRoute: DashboardRecruteurRoute,
   FounderSuccessRoute: FounderSuccessRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
