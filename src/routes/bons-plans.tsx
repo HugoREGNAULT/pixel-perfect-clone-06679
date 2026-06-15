@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { AppNav } from "@/components/AppNav";
-import { ExternalLink, Home, Tag, Percent, UtensilsCrossed, X, SlidersHorizontal } from "lucide-react";
+import { ExternalLink, Home, Tag, Percent, UtensilsCrossed, X, SlidersHorizontal, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/bons-plans")({
   head: () => ({ meta: [{ title: "Bons Plans — Springr" }] }),
