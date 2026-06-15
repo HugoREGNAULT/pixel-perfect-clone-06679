@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import {
@@ -11,6 +11,7 @@ import {
   Check,
   SlidersHorizontal,
 } from "lucide-react";
+import { AppNav } from "@/components/AppNav";
 
 export const Route = createFileRoute("/opportunites")({
   head: () => ({

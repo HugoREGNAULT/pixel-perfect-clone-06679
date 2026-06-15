@@ -103,71 +103,92 @@ function Nav({
   user: User | null;
   onSignOut: () => void;
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const role = user?.user_metadata?.role as string | undefined;
   const roleLabel = role === "etudiant" ? "Étudiant" : role === "mentor" ? "Mentor" : role === "recruteur" ? "Recruteur" : null;
+  const initials = (user?.user_metadata?.name?.[0] ?? user?.email?.[0])?.toUpperCase();
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-xl bg-ink/70 border-b border-white/5">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8 h-16 flex items-center justify-between">
-        <Logo />
-        <nav className="hidden md:flex items-center gap-8 text-sm text-mute">
-          <a href="#bento" className="hover:text-white transition-colors">Concept</a>
-          <a href="#vs" className="hover:text-white transition-colors">vs LinkedIn</a>
-          <Link to="/opportunites" className="hover:text-white transition-colors">Opportunités</Link>
-          <Link to="/mentors" className="hover:text-white transition-colors">Mentors</Link>
-          <a href="#newsletter" className="hover:text-white transition-colors">Newsletter</a>
-        </nav>
-        <div className="flex items-center gap-3">
-          {user ? (
-            <>
-              <Link
-                to="/profil"
-                className="hidden sm:flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 hover:border-white/25 hover:bg-white/5 transition-all"
-              >
-                <div className="size-5 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-[10px] font-bold">
-                  {(user.user_metadata?.name?.[0] ?? user.email?.[0])?.toUpperCase()}
-                </div>
-                <span className="text-sm text-white">Mon profil</span>
-                {roleLabel && (
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-lime border border-lime/30 rounded-full px-1.5 py-0.5">
-                    {roleLabel}
-                  </span>
-                )}
+    <>
+      <header className="sticky top-0 z-40 backdrop-blur-xl bg-ink/70 border-b border-white/5">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8 h-14 flex items-center justify-between gap-4">
+          <Logo />
+
+          {/* Desktop links */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {NAV_LINKS.map(({ to, label }) => (
+              <Link key={to} to={to} className="px-3 py-1.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/[0.04] transition-colors">
+                {label}
               </Link>
-              <button
-                onClick={onSignOut}
-                className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-2 text-xs font-medium text-mute hover:text-white hover:border-white/25 transition-all"
-              >
-                <LogOut className="size-3.5" />
-                <span className="hidden sm:inline">Déconnexion</span>
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="hidden sm:inline-flex text-sm text-mute hover:text-white transition-colors px-3 py-2"
-              >
-                Connexion
-              </Link>
-              <Link
-                to="/signup"
-                className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-2 text-sm font-medium text-white hover:bg-white/5 transition-all"
-              >
-                S'inscrire
-              </Link>
-            </>
-          )}
-          <button
-            onClick={onFounder}
-            className="group inline-flex items-center gap-2 rounded-full bg-lime px-4 py-2 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform"
-          >
-            Founder · 4,99€
-            <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
-          </button>
+            ))}
+          </nav>
+
+          {/* Desktop auth + founder */}
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
+            {user ? (
+              <>
+                <Link to="/profil" className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 hover:border-white/25 hover:bg-white/5 transition-all">
+                  <div className="size-5 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-[10px] font-bold">{initials}</div>
+                  <span className="text-sm text-white">Mon profil</span>
+                  {roleLabel && <span className="text-[10px] font-mono uppercase tracking-wider text-lime border border-lime/30 rounded-full px-1.5 py-0.5">{roleLabel}</span>}
+                </Link>
+                <button onClick={onSignOut} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-xs text-mute hover:text-white hover:border-white/25 transition-all">
+                  <LogOut className="size-3.5" /> Déconnexion
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="text-sm text-mute hover:text-white transition-colors px-3 py-1.5">Connexion</Link>
+                <Link to="/signup" className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 text-sm font-medium text-white hover:bg-white/5 transition-all">Inscription</Link>
+              </>
+            )}
+            <button onClick={onFounder} className="group inline-flex items-center gap-2 rounded-full bg-lime px-4 py-1.5 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform">
+              Founder · 4,99€
+              <ArrowUpRight className="size-4 transition-transform group-hover:rotate-45" />
+            </button>
+          </div>
+
+          {/* Mobile: founder + hamburger */}
+          <div className="lg:hidden flex items-center gap-2">
+            <button onClick={onFounder} className="inline-flex items-center gap-1 rounded-full bg-lime px-3 py-1.5 text-xs font-semibold text-ink">
+              Founder
+            </button>
+            <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 text-mute hover:text-white transition-colors" aria-label="Menu">
+              {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="lg:hidden fixed inset-x-0 top-14 z-30 bg-ink/95 backdrop-blur-xl border-b border-white/10 px-5 py-4 space-y-1">
+          {NAV_LINKS.map(({ to, label }) => (
+            <Link key={to} to={to} onClick={() => setMenuOpen(false)} className="block px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/[0.04] transition-colors">
+              {label}
+            </Link>
+          ))}
+          <div className="pt-3 border-t border-white/10 space-y-2">
+            {user ? (
+              <>
+                <Link to="/profil" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-white hover:bg-white/5">
+                  <div className="size-6 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-xs font-bold">{initials}</div>
+                  Mon profil
+                </Link>
+                <button onClick={() => { setMenuOpen(false); onSignOut(); }} className="w-full text-left px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/5 flex items-center gap-2">
+                  <LogOut className="size-4" /> Déconnexion
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" onClick={() => setMenuOpen(false)} className="block px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/[0.04]">Connexion</Link>
+                <Link to="/signup" onClick={() => setMenuOpen(false)} className="block px-3 py-2.5 rounded-lg text-sm font-semibold text-ink bg-lime text-center">Inscription</Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
