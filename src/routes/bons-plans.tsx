@@ -24,38 +24,21 @@ interface Deal {
   highlight?: boolean;
 }
 
-/* -------------------------------------------------------------------- data */
+/* -------------------------------------------------------------------- db → model */
 
-const DEALS: Deal[] = [
-  /* Logement */
-  { id: "l1", category: "Logement",    title: "CROUS — Résidences universitaires",   description: "Logements étudiants subventionnés à partir de 150€/mois. Dossier via Mon Dossier CROUS.", badge: "À partir de 150€/mois", url: "#", highlight: true },
-  { id: "l2", category: "Logement",    title: "Garantme — Garant en ligne",          description: "Obtiens un garant certifié instantanément, sans CDI ni parent co-signataire.", badge: "Gratuit à l'inscription", url: "#" },
-  { id: "l3", category: "Logement",    title: "Action Logement — LOCA-PASS",         description: "Avance gratuite du dépôt de garantie et garantie loyer impayé pour les alternants.", badge: "0€ d'intérêt", url: "#" },
-  { id: "l4", category: "Logement",    title: "Studapart — Logements vérifiés",      description: "Plateforme de colocations et studios entre étudiants, avec contrats sécurisés.", badge: "Sans frais d'agence", url: "#" },
-  { id: "l5", category: "Logement",    title: "Visale — Caution CAF",               description: "Caution locative gratuite accordée par Action Logement pour les moins de 30 ans.", badge: "Gratuit", url: "#" },
+type DbDeal = Tables<"bons_plans">;
 
-  /* Réductions */
-  { id: "r1", category: "Réductions",  title: "Carte ISIC — Réductions mondiales",  description: "La carte étudiante internationale valable dans 130 pays pour des milliers de réductions.", badge: "-10% à -50%", url: "#", highlight: true },
-  { id: "r2", category: "Réductions",  title: "UNiDAYS — Mode & Tech",             description: "Réductions exclusives chez Nike, Apple, Samsung, ASOS et 800+ marques partenaires.", badge: "Gratuit", url: "#" },
-  { id: "r3", category: "Réductions",  title: "Spotify Premium Étudiant",           description: "Spotify + Hulu à moitié prix. Éligible avec ton adresse email universitaire.", badge: "5,99€/mois", url: "#" },
-  { id: "r4", category: "Réductions",  title: "Apple Education",                    description: "MacBook, iPad et AirPods à prix réduit avec justificatif étudiant sur l'Apple Store.", badge: "Jusqu'à -200€", url: "#" },
-  { id: "r5", category: "Réductions",  title: "SNCF Carte Avantage Jeune",         description: "Voyages en TGV et Intercités réduits jusqu'à 60% pour les 12-27 ans.", badge: "49€/an", url: "#" },
-  { id: "r6", category: "Réductions",  title: "Carte Musées Nationaux",            description: "Accès gratuit aux collections permanentes pour tous les moins de 26 ans ressortissants UE.", badge: "Gratuit -26 ans UE", url: "#" },
-
-  /* Codes promo */
-  { id: "c1", category: "Codes promo", title: "GitHub Student Developer Pack",      description: "Accès gratuit à 100+ outils dev : GitHub Pro, Copilot, AWS, Figma, Notion et plus.", badge: "100% gratuit", url: "#", highlight: true },
-  { id: "c2", category: "Codes promo", title: "Notion — Plan Plus gratuit 1 an",   description: "Notion Plan Plus offert 1 an pour les étudiants avec email universitaire vérifié.", badge: "0€ pendant 1 an", url: "#" },
-  { id: "c3", category: "Codes promo", title: "Adobe Creative Cloud Étudiant",     description: "Accès à toutes les apps Adobe (Photoshop, Premiere, Illustrator…) à prix étudiant.", badge: "-65% vs tarif normal", url: "#" },
-  { id: "c4", category: "Codes promo", title: "Canva Pro — Gratuit",               description: "Canva Pro offert à vie avec email étudiant. Templates, backgrounds et assets premium.", badge: "Gratuit", url: "#" },
-  { id: "c5", category: "Codes promo", title: "Microsoft 365 Éducation",           description: "Word, Excel, PowerPoint, Teams et 1 To OneDrive gratuits avec email académique.", badge: "Gratuit", url: "#" },
-
-  /* Restos */
-  { id: "f1", category: "Restos",      title: "Restaurants Universitaires CROUS",  description: "Repas complet à 1€ pour les boursiers, 3,30€ pour tous les étudiants. 800 restos en France.", badge: "Dès 1€/repas", url: "#", highlight: true },
-  { id: "f2", category: "Restos",      title: "Too Good To Go — Anti-gaspi",       description: "Récupère des paniers-surprises de restaurants et boulangeries à partir de 2,99€.", badge: "À partir de 2,99€", url: "#" },
-  { id: "f3", category: "Restos",      title: "Deliveroo — 50% le premier mois",  description: "Deliveroo Plus offert 1 mois à l'inscription : livraison gratuite sur toutes tes commandes.", badge: "Livraison offerte", url: "#" },
-  { id: "f4", category: "Restos",      title: "Lunchr / Swile — Titre-restaurant", description: "Si ton employeur le propose, le titre-restaurant couvre 50-60% de tes repas du midi.", badge: "Jusqu'à 13,09€/jour", url: "#" },
-  { id: "f5", category: "Restos",      title: "Youzful — Resto à -50%",           description: "Plateforme qui négocie des deals restos pour les étudiants : midi à moitié prix.", badge: "-50% le midi", url: "#" },
-];
+function toDeal(row: DbDeal): Deal {
+  return {
+    id: row.id,
+    title: row.title,
+    description: row.description ?? "",
+    category: row.category as Category,
+    badge: row.badge ?? undefined,
+    url: row.url ?? "#",
+    highlight: row.highlight,
+  };
+}
 
 const CATEGORIES: ("Tous" | Category)[] = ["Tous", "Logement", "Réductions", "Codes promo", "Restos"];
 
@@ -69,17 +52,30 @@ const CAT_CONFIG: Record<Category, { icon: React.ComponentType<{ className?: str
 /* -------------------------------------------------------------------- page */
 
 function BonsPlansPage() {
+  const [deals, setDeals]   = useState<Deal[]>([]);
+  const [loading, setLoading] = useState(true);
   const [active, setActive] = useState<"Tous" | Category>("Tous");
   const [search, setSearch] = useState("");
 
+  useEffect(() => {
+    supabase
+      .from("bons_plans")
+      .select("*")
+      .order("category")
+      .then(({ data, error }) => {
+        if (!error && data) setDeals(data.map(toDeal));
+        setLoading(false);
+      });
+  }, []);
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    return DEALS.filter((d) => {
+    return deals.filter((d) => {
       if (active !== "Tous" && d.category !== active) return false;
       if (q && !d.title.toLowerCase().includes(q) && !d.description.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [active, search]);
+  }, [deals, active, search]);
 
   return (
     <div className="min-h-screen bg-ink text-white">
@@ -140,7 +136,11 @@ function BonsPlansPage() {
         </div>
 
         {/* grid */}
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center py-32">
+            <Loader2 className="size-7 text-mute animate-spin" />
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <Tag className="size-10 text-mute mb-4" />
             <p className="text-mute">Aucun résultat. <button onClick={() => { setSearch(""); setActive("Tous"); }} className="text-lime underline">Réinitialiser</button></p>

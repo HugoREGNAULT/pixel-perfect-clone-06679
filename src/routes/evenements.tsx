@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { AppNav } from "@/components/AppNav";
-import { Calendar, MapPin, X, ExternalLink, SlidersHorizontal, CalendarDays } from "lucide-react";
+import { Calendar, MapPin, X, ExternalLink, SlidersHorizontal, CalendarDays, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/evenements")({
   head: () => ({ meta: [{ title: "Événements — Springr" }] }),
