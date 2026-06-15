@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecruteursRouteImport } from './routes/recruteurs'
+import { Route as RechercheRouteImport } from './routes/recherche'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
 import { Route as MessagesRouteImport } from './routes/messages'
@@ -46,6 +47,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const RecruteursRoute = RecruteursRouteImport.update({
   id: '/recruteurs',
   path: '/recruteurs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RechercheRoute = RechercheRouteImport.update({
+  id: '/recherche',
+  path: '/recherche',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfilRoute = ProfilRouteImport.update({
@@ -161,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/messages': typeof MessagesRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
+  '/recherche': typeof RechercheRoute
   '/recruteurs': typeof RecruteursRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
@@ -185,6 +192,7 @@ export interface FileRoutesByTo {
   '/messages': typeof MessagesRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
+  '/recherche': typeof RechercheRoute
   '/recruteurs': typeof RecruteursRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   '/messages': typeof MessagesRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
+  '/recherche': typeof RechercheRoute
   '/recruteurs': typeof RecruteursRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
@@ -237,6 +246,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/opportunites'
     | '/profil'
+    | '/recherche'
     | '/recruteurs'
     | '/reset-password'
     | '/signup'
@@ -261,6 +271,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/opportunites'
     | '/profil'
+    | '/recherche'
     | '/recruteurs'
     | '/reset-password'
     | '/signup'
@@ -286,6 +297,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/opportunites'
     | '/profil'
+    | '/recherche'
     | '/recruteurs'
     | '/reset-password'
     | '/signup'
@@ -312,6 +324,7 @@ export interface RootRouteChildren {
   MessagesRoute: typeof MessagesRoute
   OpportunitesRoute: typeof OpportunitesRoute
   ProfilRoute: typeof ProfilRoute
+  RechercheRoute: typeof RechercheRoute
   RecruteursRoute: typeof RecruteursRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
@@ -345,6 +358,13 @@ declare module '@tanstack/react-router' {
       path: '/recruteurs'
       fullPath: '/recruteurs'
       preLoaderRoute: typeof RecruteursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recherche': {
+      id: '/recherche'
+      path: '/recherche'
+      fullPath: '/recherche'
+      preLoaderRoute: typeof RechercheRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profil': {
@@ -514,6 +534,7 @@ const rootRouteChildren: RootRouteChildren = {
   MessagesRoute: MessagesRoute,
   OpportunitesRoute: OpportunitesRoute,
   ProfilRoute: ProfilRoute,
+  RechercheRoute: RechercheRoute,
   RecruteursRoute: RecruteursRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
