@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecruteursRouteImport } from './routes/recruteurs'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
@@ -33,6 +34,11 @@ import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/publi
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecruteursRoute = RecruteursRouteImport.update({
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
   '/recruteurs': typeof RecruteursRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByTo {
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
   '/recruteurs': typeof RecruteursRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
@@ -186,6 +194,7 @@ export interface FileRoutesById {
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
   '/recruteurs': typeof RecruteursRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
@@ -209,6 +218,7 @@ export interface FileRouteTypes {
     | '/opportunites'
     | '/profil'
     | '/recruteurs'
+    | '/reset-password'
     | '/signup'
     | '/admin'
     | '/dashboard/diplome'
@@ -230,6 +240,7 @@ export interface FileRouteTypes {
     | '/opportunites'
     | '/profil'
     | '/recruteurs'
+    | '/reset-password'
     | '/signup'
     | '/admin'
     | '/dashboard/diplome'
@@ -252,6 +263,7 @@ export interface FileRouteTypes {
     | '/opportunites'
     | '/profil'
     | '/recruteurs'
+    | '/reset-password'
     | '/signup'
     | '/_authenticated/admin'
     | '/dashboard/diplome'
@@ -275,6 +287,7 @@ export interface RootRouteChildren {
   OpportunitesRoute: typeof OpportunitesRoute
   ProfilRoute: typeof ProfilRoute
   RecruteursRoute: typeof RecruteursRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
   DashboardDiplomeRoute: typeof DashboardDiplomeRoute
   DashboardEcoleRoute: typeof DashboardEcoleRoute
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recruteurs': {
@@ -453,6 +473,7 @@ const rootRouteChildren: RootRouteChildren = {
   OpportunitesRoute: OpportunitesRoute,
   ProfilRoute: ProfilRoute,
   RecruteursRoute: RecruteursRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
   DashboardDiplomeRoute: DashboardDiplomeRoute,
   DashboardEcoleRoute: DashboardEcoleRoute,
