@@ -32,6 +32,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EcolesIndexRouteImport } from './routes/ecoles/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as FounderSuccessRouteImport } from './routes/founder.success'
 import { Route as EcolesSlugRouteImport } from './routes/ecoles/$slug'
 import { Route as DashboardRecruteurRouteImport } from './routes/dashboard/recruteur'
@@ -158,6 +159,11 @@ const EcolesIndexRoute = EcolesIndexRouteImport.update({
   path: '/ecoles/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FounderSuccessRoute = FounderSuccessRouteImport.update({
   id: '/founder/success',
   path: '/founder/success',
@@ -247,6 +253,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/ecoles/': typeof EcolesIndexRoute
   '/api/public/payments/stripe-webhook': typeof ApiPublicPaymentsStripeWebhookRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -282,6 +289,7 @@ export interface FileRoutesByTo {
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/dashboard': typeof DashboardIndexRoute
   '/ecoles': typeof EcolesIndexRoute
   '/api/public/payments/stripe-webhook': typeof ApiPublicPaymentsStripeWebhookRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -319,6 +327,7 @@ export interface FileRoutesById {
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/ecoles/': typeof EcolesIndexRoute
   '/api/public/payments/stripe-webhook': typeof ApiPublicPaymentsStripeWebhookRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -356,6 +365,7 @@ export interface FileRouteTypes {
     | '/dashboard/recruteur'
     | '/ecoles/$slug'
     | '/founder/success'
+    | '/dashboard/'
     | '/ecoles/'
     | '/api/public/payments/stripe-webhook'
     | '/api/public/payments/webhook'
@@ -391,6 +401,7 @@ export interface FileRouteTypes {
     | '/dashboard/recruteur'
     | '/ecoles/$slug'
     | '/founder/success'
+    | '/dashboard'
     | '/ecoles'
     | '/api/public/payments/stripe-webhook'
     | '/api/public/payments/webhook'
@@ -427,6 +438,7 @@ export interface FileRouteTypes {
     | '/dashboard/recruteur'
     | '/ecoles/$slug'
     | '/founder/success'
+    | '/dashboard/'
     | '/ecoles/'
     | '/api/public/payments/stripe-webhook'
     | '/api/public/payments/webhook'
@@ -463,6 +475,7 @@ export interface RootRouteChildren {
   DashboardRecruteurRoute: typeof DashboardRecruteurRoute
   EcolesSlugRoute: typeof EcolesSlugRoute
   FounderSuccessRoute: typeof FounderSuccessRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
   EcolesIndexRoute: typeof EcolesIndexRoute
   ApiPublicPaymentsStripeWebhookRoute: typeof ApiPublicPaymentsStripeWebhookRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
@@ -631,6 +644,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EcolesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/founder/success': {
       id: '/founder/success'
       path: '/founder/success'
@@ -753,6 +773,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRecruteurRoute: DashboardRecruteurRoute,
   EcolesSlugRoute: EcolesSlugRoute,
   FounderSuccessRoute: FounderSuccessRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
   EcolesIndexRoute: EcolesIndexRoute,
   ApiPublicPaymentsStripeWebhookRoute: ApiPublicPaymentsStripeWebhookRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,

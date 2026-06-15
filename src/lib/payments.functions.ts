@@ -15,7 +15,7 @@ const checkoutSchema = z.object({
 type CheckoutResult = { clientSecret: string } | { error: string };
 
 export const createFounderCheckout = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => checkoutSchema.parse(data))
+  .validator((data: unknown) => checkoutSchema.parse(data))
   .handler(async ({ data }): Promise<CheckoutResult> => {
     try {
       const env: StripeEnv = data.environment;
