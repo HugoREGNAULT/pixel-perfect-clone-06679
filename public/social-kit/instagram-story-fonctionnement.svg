@@ -1,0 +1,82 @@
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }</style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1920" fill="#0D0D0D"/>
+
+  <!-- Decorative circles -->
+  <circle cx="1060" cy="960"  r="400" fill="#111111"/>
+  <circle cx="0"    cy="960"  r="250" fill="#F5C842" fill-opacity="0.02"/>
+  <circle cx="1080" cy="200"  r="150" fill="#F5C842" fill-opacity="0.03"/>
+  <circle cx="0"    cy="1720" r="130" fill="#F5C842" fill-opacity="0.04"/>
+
+  <!-- Top border -->
+  <rect x="0" y="0" width="1080" height="6" fill="#F5C842"/>
+
+  <!-- ── Logo ── -->
+  <text x="540" y="104" font-size="26" font-weight="800" fill="#FFFFFF" fill-opacity="0.5" text-anchor="middle">springr<tspan fill="#F5C842">.</tspan></text>
+
+  <!-- ── Title ── -->
+  <text x="540" y="214" font-size="52" font-weight="800" fill="#F5C842" text-anchor="middle">Comment ça</text>
+  <text x="540" y="282" font-size="52" font-weight="800" fill="#F5C842" text-anchor="middle">marche ?</text>
+
+  <!-- Title underline -->
+  <rect x="290" y="302" width="500" height="2.5" fill="#F5C842" fill-opacity="0.35"/>
+
+  <!-- ── Step 1 ── -->
+  <rect x="80" y="380" width="920" height="260" rx="20" fill="#111111"/>
+  <rect x="80" y="380" width="5"   height="260" rx="2.5" fill="#F5C842"/>
+
+  <!-- Step number -->
+  <text x="140" y="486" font-size="80" font-weight="800" fill="#F5C842" letter-spacing="-2">01</text>
+  <!-- Separator dot -->
+  <rect x="260" y="434" width="2" height="120" fill="#ffffff" fill-opacity="0.08" rx="1"/>
+  <!-- Step content -->
+  <text x="290" y="490" font-size="36" font-weight="700" fill="#FFFFFF">Crée ton profil</text>
+  <text x="290" y="535" font-size="20" font-weight="400" fill="#555555">Présente-toi en 5 minutes.</text>
+  <text x="290" y="563" font-size="20" font-weight="400" fill="#555555">Secteur, dispo, ambitions.</text>
+
+  <!-- ── Step 2 ── -->
+  <rect x="80" y="680" width="920" height="260" rx="20" fill="#111111"/>
+  <rect x="80" y="680" width="5"   height="260" rx="2.5" fill="#F5C842"/>
+
+  <text x="140" y="786" font-size="80" font-weight="800" fill="#F5C842" letter-spacing="-2">02</text>
+  <rect x="260" y="734" width="2" height="120" fill="#ffffff" fill-opacity="0.08" rx="1"/>
+  <text x="290" y="790" font-size="36" font-weight="700" fill="#FFFFFF">Matche avec des offres</text>
+  <text x="290" y="835" font-size="20" font-weight="400" fill="#555555">L'IA analyse ton profil et</text>
+  <text x="290" y="863" font-size="20" font-weight="400" fill="#555555">sélectionne les meilleures offres.</text>
+
+  <!-- Connector line -->
+  <line x1="540" y1="640" x2="540" y2="680" stroke="#F5C842" stroke-width="2" stroke-opacity="0.2" stroke-dasharray="4 4"/>
+
+  <!-- ── Step 3 ── -->
+  <rect x="80" y="980" width="920" height="260" rx="20" fill="#111111"/>
+  <rect x="80" y="980" width="5"   height="260" rx="2.5" fill="#F5C842"/>
+
+  <text x="140" y="1086" font-size="80" font-weight="800" fill="#F5C842" letter-spacing="-2">03</text>
+  <rect x="260" y="1034" width="2" height="120" fill="#ffffff" fill-opacity="0.08" rx="1"/>
+  <text x="290" y="1090" font-size="36" font-weight="700" fill="#FFFFFF">Décroche ton stage</text>
+  <text x="290" y="1135" font-size="20" font-weight="400" fill="#555555">Postule en un clic, contacte</text>
+  <text x="290" y="1163" font-size="20" font-weight="400" fill="#555555">des mentors, décroche le poste.</text>
+
+  <!-- Connector line -->
+  <line x1="540" y1="940" x2="540" y2="980" stroke="#F5C842" stroke-width="2" stroke-opacity="0.2" stroke-dasharray="4 4"/>
+
+  <!-- ── Mid graphic element ── -->
+  <circle cx="540" cy="1340" r="80"  fill="#141414"/>
+  <circle cx="540" cy="1340" r="80"  fill="none" stroke="#F5C842" stroke-width="1.5" stroke-opacity="0.2"/>
+  <text x="540" y="1356" font-size="36" font-weight="800" fill="#F5C842" text-anchor="middle">✓</text>
+
+  <!-- Sub-label -->
+  <text x="540" y="1440" font-size="22" font-weight="400" fill="#444444" text-anchor="middle">100% gratuit pour les étudiants</text>
+
+  <!-- ── Bottom CTA ── -->
+  <text x="540" y="1710" font-size="22" font-weight="400" fill="#555555" text-anchor="middle">Rejoins-nous sur</text>
+
+  <rect x="0" y="1780" width="1080" height="140" fill="#F5C842"/>
+  <text x="540" y="1842" font-size="14" font-weight="700" letter-spacing="4" fill="#0D0D0D" fill-opacity="0.5" text-anchor="middle">INSCRIS-TOI MAINTENANT</text>
+  <text x="540" y="1894" font-size="38" font-weight="800" fill="#0D0D0D" text-anchor="middle">springr.app</text>
+
+</svg>

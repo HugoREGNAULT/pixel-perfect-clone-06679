@@ -1,0 +1,42 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }</style>
+    <radialGradient id="bg-glow" cx="50%" cy="50%" r="70%">
+      <stop offset="0%"   stop-color="#141414"/>
+      <stop offset="100%" stop-color="#0D0D0D"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1080" fill="url(#bg-glow)"/>
+
+  <!-- Decorative large circle bottom right -->
+  <circle cx="980"  cy="980"  r="280" fill="#141414"/>
+  <circle cx="1020" cy="900"  r="160" fill="#1A1A1A"/>
+  <circle cx="900"  cy="1040" r="100" fill="#F5C842" fill-opacity="0.04"/>
+
+  <!-- Decorative top left -->
+  <circle cx="100" cy="120" r="180" fill="#F5C842" fill-opacity="0.025"/>
+
+  <!-- Yellow left bar -->
+  <rect x="0" y="0" width="20" height="1080" fill="#F5C842"/>
+
+  <!-- Top area — subtle eyebrow -->
+  <text x="60" y="96" font-size="13" font-weight="700" letter-spacing="4" fill="#F5C842" fill-opacity="0.8">SPRINGR ·</text>
+  <rect x="60" y="104" width="140" height="1.5" fill="#F5C842" fill-opacity="0.25"/>
+
+  <!-- Main statement — centered -->
+  <text x="540" y="418" font-size="80" font-weight="800" letter-spacing="-2" fill="#FFFFFF" text-anchor="middle">Le LinkedIn</text>
+  <text x="540" y="522" font-size="80" font-weight="800" letter-spacing="-2" fill="#FFFFFF" text-anchor="middle">n'a pas été</text>
+  <text x="540" y="626" font-size="80" font-weight="800" letter-spacing="-2" fill="#FFFFFF" text-anchor="middle">fait pour toi<tspan fill="#F5C842">.</tspan></text>
+
+  <!-- Horizontal rule between statement and subtext -->
+  <rect x="240" y="668" width="600" height="1.5" fill="#ffffff" fill-opacity="0.08"/>
+
+  <!-- Sub-text -->
+  <text x="540" y="716" font-size="22" font-weight="400" fill="#666666" text-anchor="middle">springr. le réseau pro des étudiants</text>
+
+  <!-- Logo bottom right -->
+  <text x="1004" y="1044" font-size="22" font-weight="800" fill="#ffffff" fill-opacity="0.4" text-anchor="end">springr<tspan fill="#F5C842">.</tspan></text>
+
+</svg>

@@ -1,0 +1,53 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }</style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1080" fill="#0D0D0D"/>
+
+  <!-- Decorative corners -->
+  <circle cx="1080" cy="0"    r="200" fill="#F5C842" fill-opacity="0.03"/>
+  <circle cx="0"    cy="1080" r="200" fill="#F5C842" fill-opacity="0.03"/>
+
+  <!-- Top accent bar -->
+  <rect x="0" y="0" width="1080" height="6" fill="#F5C842"/>
+
+  <!-- Eyebrow -->
+  <text x="540" y="80" font-size="13" font-weight="700" letter-spacing="5" fill="#F5C842" text-anchor="middle">SPRINGR EN CHIFFRES</text>
+
+  <!-- Title -->
+  <text x="540" y="148" font-size="44" font-weight="800" fill="#FFFFFF" text-anchor="middle">Ils nous ont déjà rejoints.</text>
+
+  <!-- Yellow separator -->
+  <rect x="80" y="172" width="920" height="2" fill="#F5C842" fill-opacity="0.25"/>
+
+  <!-- ── Stat 1 ── -->
+  <!-- Background card -->
+  <rect x="80" y="200" width="920" height="200" rx="16" fill="#111111"/>
+  <rect x="80" y="200" width="6" height="200" rx="3" fill="#F5C842"/>
+
+  <text x="200" y="316" font-size="84" font-weight="800" letter-spacing="-3" fill="#FFFFFF">2 400<tspan fill="#F5C842">+</tspan></text>
+  <text x="200" y="366" font-size="20" font-weight="400" fill="#666666">étudiants inscrits sur la plateforme</text>
+
+  <!-- ── Stat 2 ── -->
+  <rect x="80" y="420" width="920" height="200" rx="16" fill="#111111"/>
+  <rect x="80" y="420" width="6" height="200" rx="3" fill="#F5C842"/>
+
+  <text x="200" y="536" font-size="84" font-weight="800" letter-spacing="-3" fill="#FFFFFF">120<tspan fill="#F5C842"> </tspan></text>
+  <text x="200" y="586" font-size="20" font-weight="400" fill="#666666">mentors prêts à t'accompagner</text>
+
+  <!-- ── Stat 3 ── -->
+  <rect x="80" y="640" width="920" height="200" rx="16" fill="#111111"/>
+  <rect x="80" y="640" width="6" height="200" rx="3" fill="#F5C842"/>
+
+  <text x="200" y="756" font-size="84" font-weight="800" letter-spacing="-3" fill="#FFFFFF">48<tspan fill="#F5C842"> </tspan></text>
+  <text x="200" y="806" font-size="20" font-weight="400" fill="#666666">écoles de France représentées</text>
+
+  <!-- Bottom yellow bar -->
+  <rect x="0" y="900" width="1080" height="120" fill="#F5C842"/>
+
+  <text x="540" y="958" font-size="13" font-weight="700" letter-spacing="3" fill="#0D0D0D" fill-opacity="0.6" text-anchor="middle">REJOINS LA COMMUNAUTÉ</text>
+  <text x="540" y="1002" font-size="36" font-weight="800" fill="#0D0D0D" text-anchor="middle">springr.app</text>
+
+</svg>

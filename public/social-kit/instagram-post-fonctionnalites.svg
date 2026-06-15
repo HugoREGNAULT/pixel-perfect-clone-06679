@@ -1,0 +1,68 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }</style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1080" fill="#0D0D0D"/>
+
+  <!-- Decorative circles -->
+  <circle cx="1080" cy="1080" r="300" fill="#141414"/>
+  <circle cx="0"    cy="0"    r="200" fill="#F5C842" fill-opacity="0.02"/>
+
+  <!-- Left yellow bar -->
+  <rect x="0" y="0" width="20" height="1080" fill="#F5C842"/>
+
+  <!-- Eyebrow -->
+  <text x="60" y="88" font-size="13" font-weight="700" letter-spacing="4" fill="#F5C842" fill-opacity="0.8">LE COMPARATIF</text>
+  <rect x="60" y="96" width="120" height="1.5" fill="#F5C842" fill-opacity="0.25"/>
+
+  <!-- Title -->
+  <text x="60" y="164" font-size="52" font-weight="800" fill="#FFFFFF">Tout ce que</text>
+  <text x="60" y="232" font-size="52" font-weight="800" fill="#FFFFFF">LinkedIn fait pas<tspan fill="#F5C842">.</tspan></text>
+
+  <!-- Divider -->
+  <rect x="60" y="256" width="960" height="1.5" fill="#ffffff" fill-opacity="0.08"/>
+
+  <!-- ── Checklist items ── -->
+  <!-- Item 1 -->
+  <rect x="60"  y="292" width="48" height="48" rx="12" fill="#F5C842"/>
+  <text x="84"  y="326" font-size="22" font-weight="800" fill="#0D0D0D" text-anchor="middle">✓</text>
+  <text x="132" y="325" font-size="28" font-weight="700" fill="#FFFFFF">Mentors accessibles en DM</text>
+  <rect x="60" y="352" width="960" height="1" fill="#ffffff" fill-opacity="0.05"/>
+
+  <!-- Item 2 -->
+  <rect x="60"  y="378" width="48" height="48" rx="12" fill="#F5C842"/>
+  <text x="84"  y="412" font-size="22" font-weight="800" fill="#0D0D0D" text-anchor="middle">✓</text>
+  <text x="132" y="411" font-size="28" font-weight="700" fill="#FFFFFF">Matching offres par IA</text>
+  <rect x="60" y="438" width="960" height="1" fill="#ffffff" fill-opacity="0.05"/>
+
+  <!-- Item 3 -->
+  <rect x="60"  y="464" width="48" height="48" rx="12" fill="#F5C842"/>
+  <text x="84"  y="498" font-size="22" font-weight="800" fill="#0D0D0D" text-anchor="middle">✓</text>
+  <text x="132" y="497" font-size="28" font-weight="700" fill="#FFFFFF">Avis sur les écoles</text>
+  <rect x="60" y="524" width="960" height="1" fill="#ffffff" fill-opacity="0.05"/>
+
+  <!-- Item 4 -->
+  <rect x="60"  y="550" width="48" height="48" rx="12" fill="#F5C842"/>
+  <text x="84"  y="584" font-size="22" font-weight="800" fill="#0D0D0D" text-anchor="middle">✓</text>
+  <text x="132" y="583" font-size="28" font-weight="700" fill="#FFFFFF">Bons plans vérifiés</text>
+  <rect x="60" y="610" width="960" height="1" fill="#ffffff" fill-opacity="0.05"/>
+
+  <!-- Item 5 -->
+  <rect x="60"  y="636" width="48" height="48" rx="12" fill="#F5C842"/>
+  <text x="84"  y="670" font-size="22" font-weight="800" fill="#0D0D0D" text-anchor="middle">✓</text>
+  <text x="132" y="669" font-size="28" font-weight="700" fill="#FFFFFF">JPO de toutes les écoles de France</text>
+  <rect x="60" y="696" width="960" height="1" fill="#ffffff" fill-opacity="0.05"/>
+
+  <!-- Sub-note -->
+  <text x="60" y="760" font-size="18" fill="#444444">Et c'est juste le début.</text>
+
+  <!-- Bottom CTA area -->
+  <rect x="60" y="880" width="960" height="140" rx="20" fill="#111111"/>
+  <rect x="60" y="880" width="960" height="140" rx="20" stroke="#F5C842" stroke-width="1.5" fill="none" stroke-opacity="0.2"/>
+
+  <text x="540" y="944" font-size="18" font-weight="500" fill="#888888" text-anchor="middle">Inscris-toi gratuitement sur</text>
+  <text x="540" y="994" font-size="38" font-weight="800" fill="#F5C842" text-anchor="middle">springr.app</text>
+
+</svg>

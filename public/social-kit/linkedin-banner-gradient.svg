@@ -1,0 +1,63 @@
+<svg width="1584" height="396" viewBox="0 0 1584 396" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }</style>
+    <linearGradient id="bg-gradient" x1="0" y1="0" x2="1584" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#0D0D0D"/>
+      <stop offset="100%" stop-color="#1A1A2E"/>
+    </linearGradient>
+    <linearGradient id="bar-gradient" x1="0" y1="0" x2="0" y2="396" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#F5C842"/>
+      <stop offset="100%" stop-color="#E0A800"/>
+    </linearGradient>
+    <radialGradient id="glow-right" cx="80%" cy="80%" r="40%">
+      <stop offset="0%"   stop-color="#F5C842" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#1A1A2E" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background gradient -->
+  <rect width="1584" height="396" fill="url(#bg-gradient)"/>
+
+  <!-- Subtle radial glow bottom right -->
+  <rect width="1584" height="396" fill="url(#glow-right)"/>
+
+  <!-- Decorative circles — bottom right -->
+  <circle cx="1400" cy="340" r="170" fill="#1A1A2E" fill-opacity="0.8"/>
+  <circle cx="1520" cy="400" r="120" fill="#141428" fill-opacity="0.6"/>
+  <circle cx="1340" cy="410" r="90"  fill="#F5C842" fill-opacity="0.05"/>
+  <circle cx="1550" cy="310" r="80"  fill="#F5C842" fill-opacity="0.03"/>
+  <circle cx="1460" cy="430" r="150" fill="#F5C842" fill-opacity="0.025"/>
+  <circle cx="1280" cy="360" r="55"  fill="#1E1E2E"/>
+
+  <!-- Horizontal rule -->
+  <rect x="220" y="275" width="900" height="1" fill="#ffffff" fill-opacity="0.07"/>
+
+  <!-- Yellow vertical bar — gradient -->
+  <rect x="0" y="0" width="60" height="396" fill="url(#bar-gradient)"/>
+  <circle cx="30" cy="198" r="8" fill="#0D0D0D" fill-opacity="0.2"/>
+
+  <!-- Photo zone guide -->
+  <circle cx="109" cy="396" r="87" fill="#151520"/>
+  <circle cx="109" cy="396" r="85" fill="#111119" stroke="#F5C842" stroke-width="1.5" stroke-opacity="0.15"/>
+
+  <!-- "springr." -->
+  <text x="220" y="202" font-size="72" font-weight="800" letter-spacing="-2" fill="#FFFFFF">springr<tspan fill="#F5C842">.</tspan></text>
+
+  <!-- Tagline -->
+  <text x="222" y="248" font-size="24" font-weight="400" fill="#8888AA">Le réseau pro des étudiants.</text>
+
+  <!-- Accent line -->
+  <rect x="220" y="264" width="340" height="2" fill="#F5C842" fill-opacity="0.35"/>
+
+  <!-- Stars/dots decorative -->
+  <circle cx="900" cy="80"  r="2" fill="#F5C842" fill-opacity="0.3"/>
+  <circle cx="1050" cy="140" r="1.5" fill="#ffffff" fill-opacity="0.2"/>
+  <circle cx="1150" cy="60"  r="1" fill="#F5C842" fill-opacity="0.25"/>
+  <circle cx="850"  cy="180" r="1.5" fill="#ffffff" fill-opacity="0.15"/>
+  <circle cx="1200" cy="300" r="2" fill="#F5C842" fill-opacity="0.2"/>
+
+  <!-- Badge -->
+  <rect x="1434" y="349" width="130" height="34" rx="6" fill="#F5C842"/>
+  <text x="1499" y="372" font-size="14" font-weight="700" fill="#0D0D0D" text-anchor="middle" letter-spacing="0.3">springr.app</text>
+
+</svg>

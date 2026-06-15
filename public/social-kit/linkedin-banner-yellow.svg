@@ -1,0 +1,46 @@
+<svg width="1584" height="396" viewBox="0 0 1584 396" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }</style>
+  </defs>
+
+  <!-- Background yellow -->
+  <rect width="1584" height="396" fill="#F5C842"/>
+
+  <!-- Decorative circles — bottom right (ink tones) -->
+  <circle cx="1390" cy="330" r="160" fill="#0D0D0D" fill-opacity="0.08"/>
+  <circle cx="1510" cy="390" r="110" fill="#0D0D0D" fill-opacity="0.05"/>
+  <circle cx="1320" cy="400" r="80"  fill="#0D0D0D" fill-opacity="0.04"/>
+  <circle cx="1540" cy="310" r="70"  fill="#0D0D0D" fill-opacity="0.06"/>
+  <circle cx="1450" cy="420" r="140" fill="#0D0D0D" fill-opacity="0.03"/>
+
+  <!-- Subtle texture lines -->
+  <rect x="0" y="0" width="1584" height="1" fill="#0D0D0D" fill-opacity="0.08"/>
+  <rect x="0" y="395" width="1584" height="1" fill="#0D0D0D" fill-opacity="0.1"/>
+
+  <!-- Ink vertical bar — left edge -->
+  <rect x="0" y="0" width="60" height="396" fill="#0D0D0D"/>
+
+  <!-- Bar accent -->
+  <circle cx="30" cy="198" r="8" fill="#F5C842" fill-opacity="0.3"/>
+
+  <!-- Photo zone guide -->
+  <circle cx="109" cy="396" r="87" fill="#0D0D0D" fill-opacity="0.12"/>
+  <circle cx="109" cy="396" r="85" fill="#0D0D0D" fill-opacity="0.1" stroke="#0D0D0D" stroke-width="1.5" stroke-opacity="0.15"/>
+
+  <!-- Horizontal rule -->
+  <rect x="220" y="275" width="900" height="1" fill="#0D0D0D" fill-opacity="0.12"/>
+
+  <!-- "springr." in Ink -->
+  <text x="220" y="202" font-size="72" font-weight="800" letter-spacing="-2" fill="#0D0D0D">springr<tspan fill="#0D0D0D" fill-opacity="0.5">.</tspan></text>
+
+  <!-- Tagline -->
+  <text x="222" y="248" font-size="24" font-weight="400" fill="#0D0D0D" fill-opacity="0.55">Le réseau pro des étudiants.</text>
+
+  <!-- Accent line -->
+  <rect x="220" y="264" width="340" height="2" fill="#0D0D0D" fill-opacity="0.2"/>
+
+  <!-- Badge — bottom right (ink bg) -->
+  <rect x="1434" y="349" width="130" height="34" rx="6" fill="#0D0D0D"/>
+  <text x="1499" y="372" font-size="14" font-weight="700" fill="#F5C842" text-anchor="middle" letter-spacing="0.3">springr.app</text>
+
+</svg>

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppNav } from "@/components/AppNav";
-import { ArrowLeft, Download, CheckCircle2, Package } from "lucide-react";
+import { ArrowLeft, Download, CheckCircle2, Package, Linkedin, Twitter, Instagram, ExternalLink } from "lucide-react";
 
 export const Route = createFileRoute("/brand/assets")({
   head: () => ({
@@ -264,6 +264,80 @@ function AssetsPage() {
           </div>
         </div>
 
+        {/* ── Social Media Kit section ── */}
+        <div className="rounded-2xl border border-white/8 bg-ink-2 overflow-hidden">
+          <div className="px-6 py-5 border-b border-white/8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="font-display font-bold text-xl text-white mb-1">Social Media Kit</h2>
+              <p className="text-mute text-sm">Templates LinkedIn, Twitter/X et Instagram — SVG vectoriels prêts à l'emploi.</p>
+            </div>
+            <Link
+              to="/brand/social-kit"
+              className="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/12 text-sm text-mute hover:text-white hover:border-white/25 transition-colors"
+            >
+              <ExternalLink className="size-4" /> Voir tous les templates
+            </Link>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-white/5">
+            {[
+              {
+                icon: Linkedin,
+                color: "text-blue-400",
+                platform: "LinkedIn",
+                items: [
+                  { name: "Bannière Dark",     file: "/social-kit/linkedin-banner-dark.svg",     dim: "1584×396" },
+                  { name: "Bannière Yellow",   file: "/social-kit/linkedin-banner-yellow.svg",   dim: "1584×396" },
+                  { name: "Bannière Gradient", file: "/social-kit/linkedin-banner-gradient.svg", dim: "1584×396" },
+                ],
+              },
+              {
+                icon: Twitter,
+                color: "text-white",
+                platform: "Twitter / X",
+                items: [
+                  { name: "Bannière Dark", file: "/social-kit/twitter-banner.svg", dim: "1500×500" },
+                ],
+              },
+              {
+                icon: Instagram,
+                color: "text-pink-400",
+                platform: "Instagram",
+                items: [
+                  { name: "Post Manifeste",     file: "/social-kit/instagram-post-manifeste.svg",       dim: "1080×1080" },
+                  { name: "Post Stats",          file: "/social-kit/instagram-post-stats.svg",            dim: "1080×1080" },
+                  { name: "Post Fonctionnalités",file: "/social-kit/instagram-post-fonctionnalites.svg", dim: "1080×1080" },
+                  { name: "Story Teaser",        file: "/social-kit/instagram-story-teaser.svg",          dim: "1080×1920" },
+                  { name: "Story Comment ça marche",file: "/social-kit/instagram-story-fonctionnement.svg",dim: "1080×1920" },
+                ],
+              },
+            ].map(({ icon: Icon, color, platform, items }) => (
+              <div key={platform} className="p-5">
+                <div className={`flex items-center gap-2 mb-4 text-sm font-semibold ${color}`}>
+                  <Icon className="size-4" />{platform}
+                </div>
+                <div className="space-y-2">
+                  {items.map(({ name, file, dim }) => (
+                    <div key={name} className="flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="text-sm text-white/70 truncate">{name}</p>
+                        <p className="text-[10px] font-mono text-mute">{dim}</p>
+                      </div>
+                      <a
+                        href={file}
+                        download
+                        className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-white/10 text-xs text-mute hover:text-white hover:border-white/25 transition-colors"
+                      >
+                        <Download className="size-3" /> SVG
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Contact */}
         <div className="text-center py-8">
           <p className="text-mute text-sm mb-4">Besoin d'un format spécifique ou d'une autorisation d'usage ?</p>
@@ -339,6 +413,7 @@ function BrandFooter() {
         <Link to="/" className="hover:text-white transition-colors">Accueil</Link>
         <Link to="/brand" className="hover:text-white transition-colors">Brand Guidelines</Link>
         <Link to="/brand/assets" className="hover:text-white transition-colors font-semibold text-white">Assets</Link>
+        <Link to="/brand/social-kit" className="hover:text-white transition-colors">Social Kit</Link>
         <span className="ml-auto">© 2026 Springr SAS — Tous droits réservés</span>
       </div>
     </div>

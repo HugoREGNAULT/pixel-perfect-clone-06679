@@ -1,0 +1,49 @@
+<svg width="1584" height="396" viewBox="0 0 1584 396" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }</style>
+    <clipPath id="clip-main">
+      <rect width="1584" height="396"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1584" height="396" fill="#0D0D0D"/>
+
+  <!-- Decorative circles — bottom right -->
+  <circle cx="1390" cy="330" r="160" fill="#141414"/>
+  <circle cx="1510" cy="390" r="110" fill="#1A1A1A"/>
+  <circle cx="1320" cy="400" r="80"  fill="#F5C842" fill-opacity="0.06"/>
+  <circle cx="1540" cy="310" r="70"  fill="#F5C842" fill-opacity="0.04"/>
+  <circle cx="1450" cy="420" r="140" fill="#F5C842" fill-opacity="0.03"/>
+  <circle cx="1260" cy="360" r="50"  fill="#1E1E1E"/>
+
+  <!-- Subtle horizontal rule -->
+  <rect x="220" y="275" width="900" height="1" fill="#ffffff" fill-opacity="0.06"/>
+
+  <!-- Yellow vertical bar — left edge -->
+  <rect x="0" y="0" width="60" height="396" fill="#F5C842"/>
+
+  <!-- Accent dot on bar -->
+  <circle cx="30" cy="198" r="8" fill="#0D0D0D" fill-opacity="0.3"/>
+
+  <!-- Photo zone guide (shows where LinkedIn profile picture will appear) -->
+  <!-- Center: x=109, y=396 (bottom edge), r=85 -->
+  <circle cx="109" cy="396" r="87" fill="#191919"/>
+  <circle cx="109" cy="396" r="85" fill="#111111" stroke="#F5C842" stroke-width="1.5" stroke-opacity="0.2"/>
+
+  <!-- ── Main content ── -->
+
+  <!-- "springr." -->
+  <text x="220" y="202" font-size="72" font-weight="800" letter-spacing="-2" fill="#FFFFFF">springr<tspan fill="#F5C842">.</tspan></text>
+
+  <!-- Tagline -->
+  <text x="222" y="248" font-size="24" font-weight="400" fill="#888888">Le réseau pro des étudiants.</text>
+
+  <!-- Thin yellow accent line under tagline -->
+  <rect x="220" y="264" width="340" height="2" fill="#F5C842" fill-opacity="0.4"/>
+
+  <!-- Badge — bottom right -->
+  <rect x="1434" y="349" width="130" height="34" rx="6" fill="#F5C842"/>
+  <text x="1499" y="372" font-size="14" font-weight="700" fill="#0D0D0D" text-anchor="middle" letter-spacing="0.3">springr.app</text>
+
+</svg>

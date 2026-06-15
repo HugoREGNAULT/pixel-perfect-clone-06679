@@ -1,0 +1,49 @@
+<svg width="1500" height="500" viewBox="0 0 1500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>text { font-family: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif; }</style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1500" height="500" fill="#0D0D0D"/>
+
+  <!-- ── Background floating words ── -->
+  <g fill="#1F1F1F" font-weight="700">
+    <text x="82"  y="148" font-size="18" transform="rotate(-8, 82, 148)">stages</text>
+    <text x="380" y="88"  font-size="15" transform="rotate(4, 380, 88)">alternance</text>
+    <text x="1180" y="155" font-size="16" transform="rotate(-5, 1180, 155)">mentors</text>
+    <text x="1340" y="390" font-size="24" transform="rotate(-3, 1340, 390)">JPO</text>
+    <text x="175"  y="418" font-size="13" transform="rotate(6, 175, 418)">bons plans</text>
+    <text x="1060" y="68"  font-size="20" transform="rotate(-6, 1060, 68)">réseau</text>
+    <text x="850"  y="440" font-size="15" transform="rotate(5, 850, 440)">étudiants</text>
+    <text x="55"   y="300" font-size="12" transform="rotate(-12, 55, 300)">networking</text>
+    <text x="1380" y="240" font-size="14" transform="rotate(8, 1380, 240)">LinkedIn</text>
+    <text x="800"  y="105" font-size="12" transform="rotate(2, 800, 105)">stage</text>
+    <text x="555"  y="455" font-size="14" transform="rotate(-4, 555, 455)">carrière</text>
+    <text x="620"  y="80"  font-size="13" transform="rotate(3, 620, 80)">profil</text>
+    <text x="1220" y="460" font-size="11" transform="rotate(-7, 1220, 460)">écoles</text>
+    <text x="290"  y="350" font-size="11" transform="rotate(9, 290, 350)">offres</text>
+    <text x="1050" y="430" font-size="16" transform="rotate(-2, 1050, 430)">matching</text>
+    <text x="1390" y="100" font-size="12" transform="rotate(5, 1390, 100)">avis</text>
+    <text x="450"  y="180" font-size="11" transform="rotate(-9, 450, 180)">diplôme</text>
+    <text x="130"  y="480" font-size="13" transform="rotate(3, 130, 480)">recruteurs</text>
+    <text x="940"  y="52"  font-size="14" transform="rotate(-4, 940, 52)">BTS</text>
+    <text x="700"  y="460" font-size="12" transform="rotate(6, 700, 460)">licence</text>
+  </g>
+
+  <!-- Yellow bottom bar -->
+  <rect x="0" y="492" width="1500" height="8" fill="#F5C842"/>
+
+  <!-- Subtle left accent bar -->
+  <rect x="0" y="0" width="4" height="500" fill="#F5C842" fill-opacity="0.4"/>
+
+  <!-- Center content -->
+  <!-- "springr." -->
+  <text x="750" y="238" font-size="96" font-weight="800" letter-spacing="-3" fill="#FFFFFF" text-anchor="middle">springr<tspan fill="#F5C842">.</tspan></text>
+
+  <!-- Tagline -->
+  <text x="750" y="298" font-size="26" font-weight="400" fill="#888888" text-anchor="middle">Le réseau pro des étudiants.</text>
+
+  <!-- Subtle underline -->
+  <rect x="530" y="316" width="440" height="1.5" fill="#F5C842" fill-opacity="0.3"/>
+
+</svg>

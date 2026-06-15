@@ -46,6 +46,7 @@ import { Route as DashboardLyceenRouteImport } from './routes/dashboard/lyceen'
 import { Route as DashboardEtudiantRouteImport } from './routes/dashboard/etudiant'
 import { Route as DashboardEcoleRouteImport } from './routes/dashboard/ecole'
 import { Route as DashboardDiplomeRouteImport } from './routes/dashboard/diplome'
+import { Route as BrandSocialKitRouteImport } from './routes/brand/social-kit'
 import { Route as BrandAssetsRouteImport } from './routes/brand/assets'
 import { Route as AdminUtilisateursRouteImport } from './routes/admin/utilisateurs'
 import { Route as AdminParametresRouteImport } from './routes/admin/parametres'
@@ -243,6 +244,11 @@ const DashboardDiplomeRoute = DashboardDiplomeRouteImport.update({
   path: '/dashboard/diplome',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrandSocialKitRoute = BrandSocialKitRouteImport.update({
+  id: '/brand/social-kit',
+  path: '/brand/social-kit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BrandAssetsRoute = BrandAssetsRouteImport.update({
   id: '/brand/assets',
   path: '/brand/assets',
@@ -340,6 +346,7 @@ export interface FileRoutesByFullPath {
   '/admin/parametres': typeof AdminParametresRoute
   '/admin/utilisateurs': typeof AdminUtilisateursRoute
   '/brand/assets': typeof BrandAssetsRoute
+  '/brand/social-kit': typeof BrandSocialKitRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
@@ -389,6 +396,7 @@ export interface FileRoutesByTo {
   '/admin/parametres': typeof AdminParametresRoute
   '/admin/utilisateurs': typeof AdminUtilisateursRoute
   '/brand/assets': typeof BrandAssetsRoute
+  '/brand/social-kit': typeof BrandSocialKitRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
@@ -440,6 +448,7 @@ export interface FileRoutesById {
   '/admin/parametres': typeof AdminParametresRoute
   '/admin/utilisateurs': typeof AdminUtilisateursRoute
   '/brand/assets': typeof BrandAssetsRoute
+  '/brand/social-kit': typeof BrandSocialKitRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
@@ -491,6 +500,7 @@ export interface FileRouteTypes {
     | '/admin/parametres'
     | '/admin/utilisateurs'
     | '/brand/assets'
+    | '/brand/social-kit'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
     | '/dashboard/etudiant'
@@ -540,6 +550,7 @@ export interface FileRouteTypes {
     | '/admin/parametres'
     | '/admin/utilisateurs'
     | '/brand/assets'
+    | '/brand/social-kit'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
     | '/dashboard/etudiant'
@@ -590,6 +601,7 @@ export interface FileRouteTypes {
     | '/admin/parametres'
     | '/admin/utilisateurs'
     | '/brand/assets'
+    | '/brand/social-kit'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
     | '/dashboard/etudiant'
@@ -633,6 +645,7 @@ export interface RootRouteChildren {
   SuccessRoute: typeof SuccessRoute
   TarifsRoute: typeof TarifsRoute
   BrandAssetsRoute: typeof BrandAssetsRoute
+  BrandSocialKitRoute: typeof BrandSocialKitRoute
   DashboardDiplomeRoute: typeof DashboardDiplomeRoute
   DashboardEcoleRoute: typeof DashboardEcoleRoute
   DashboardEtudiantRoute: typeof DashboardEtudiantRoute
@@ -909,6 +922,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardDiplomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brand/social-kit': {
+      id: '/brand/social-kit'
+      path: '/brand/social-kit'
+      fullPath: '/brand/social-kit'
+      preLoaderRoute: typeof BrandSocialKitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/brand/assets': {
       id: '/brand/assets'
       path: '/brand/assets'
@@ -1060,6 +1080,7 @@ const rootRouteChildren: RootRouteChildren = {
   SuccessRoute: SuccessRoute,
   TarifsRoute: TarifsRoute,
   BrandAssetsRoute: BrandAssetsRoute,
+  BrandSocialKitRoute: BrandSocialKitRoute,
   DashboardDiplomeRoute: DashboardDiplomeRoute,
   DashboardEcoleRoute: DashboardEcoleRoute,
   DashboardEtudiantRoute: DashboardEtudiantRoute,
