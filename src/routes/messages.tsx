@@ -142,9 +142,10 @@ function MessagesPage() {
         c.participant_1 === uid ? c.participant_2 : c.participant_1
       );
 
-      const { data: nameData } = await supabase.rpc("get_users_display_names", { user_ids: otherIds });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: nameData } = await (supabase as any).rpc("get_users_display_names", { user_ids: otherIds });
       const nameMap: Record<string, FoundUser> = {};
-      (nameData ?? []).forEach((u: FoundUser) => { nameMap[u.id] = u; });
+      ((nameData ?? []) as FoundUser[]).forEach((u: FoundUser) => { nameMap[u.id] = u; });
 
       const { data: msgData } = await supabase
         .from("messages")

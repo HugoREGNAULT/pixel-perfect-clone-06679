@@ -623,6 +623,13 @@ function Footer() {
         </div>
         <div className="text-xs text-mute">© 2026 Springr</div>
       </div>
+      <div className="border-t border-white/5">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8 py-4 flex flex-wrap items-center gap-4 text-xs text-mute">
+          <Link to="/cgu" className="hover:text-white transition-colors">CGU</Link>
+          <Link to="/confidentialite" className="hover:text-white transition-colors">Confidentialité</Link>
+          <Link to="/mentions-legales" className="hover:text-white transition-colors">Mentions légales</Link>
+        </div>
+      </div>
     </footer>
   );
 }
