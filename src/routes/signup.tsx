@@ -647,12 +647,10 @@ function SignupPage() {
       });
       if (error) throw error;
       if (authData.session) {
-        // Email confirmation disabled — user is immediately signed in
         const dest = DASHBOARD_ROUTE[profile] ?? "/";
         navigate({ to: dest as any, replace: true });
       } else {
-        toast.success("Compte créé ! Vérifie ton email pour confirmer ton inscription.");
-        navigate({ to: "/", replace: true });
+        setEmailSent(true);
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erreur");
@@ -680,6 +678,40 @@ function SignupPage() {
     lyceen: "Lycéen·ne", etudiant: "Étudiant·e", diplome: "Jeune diplômé·e",
     entreprise: "Recruteur", ecole: "École",
   };
+
+  if (emailSent) {
+    return (
+      <div className="min-h-screen bg-ink text-white flex flex-col items-center justify-center px-5">
+        <div className="w-full max-w-sm text-center animate-in fade-in duration-300">
+          <div className="size-20 rounded-3xl bg-lime/15 border border-lime/30 flex items-center justify-center mx-auto mb-7">
+            <Check className="size-10 text-lime" />
+          </div>
+          <h1 className="font-display text-3xl font-bold mb-3">Vérifie tes mails !</h1>
+          <p className="text-mute text-sm leading-relaxed mb-8">
+            On a envoyé un lien de confirmation à{" "}
+            <strong className="text-white">{data.email}</strong>.<br />
+            Clique dessus pour activer ton compte Springr.
+          </p>
+          <p className="text-xs text-mute">
+            Pas de mail ? Vérifie tes spams ou{" "}
+            <button
+              onClick={() => setEmailSent(false)}
+              className="text-lime hover:underline"
+            >
+              renvoie le mail
+            </button>
+            .
+          </p>
+          <Link
+            to="/"
+            className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm text-mute hover:text-white hover:bg-white/5 transition-all"
+          >
+            Retour à l'accueil
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-ink text-white">

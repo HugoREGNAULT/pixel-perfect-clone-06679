@@ -98,9 +98,9 @@ function LoginPage() {
               <label htmlFor="password" className="block text-sm font-medium">
                 Mot de passe
               </label>
-              <a href="#" className="text-xs text-mute hover:text-white transition-colors">
+              <Link to="/forgot-password" className="text-xs text-mute hover:text-white transition-colors">
                 Mot de passe oublié ?
-              </a>
+              </Link>
             </div>
             <div className="relative">
               <input
