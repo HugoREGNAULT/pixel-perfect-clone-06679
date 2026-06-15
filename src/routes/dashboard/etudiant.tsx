@@ -4,12 +4,13 @@ import {
   Briefcase, Users, CalendarDays, Gift, FileText,
   ArrowUpRight, Clock, Eye, CheckCircle, XCircle,
   Loader2, MapPin, Star, Building2, Tag, Check,
-  UserCircle, GraduationCap,
+  UserCircle, GraduationCap, Copy, Share2,
 } from "lucide-react";
 import { DashboardLayout, DashCard } from "@/components/DashboardLayout";
 import { SubscriptionSection } from "@/components/SubscriptionSection";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { getOrCreateCode, countReferrals, REWARDS } from "@/lib/referral";
 
 export const Route = createFileRoute("/dashboard/etudiant")({
   head: () => ({ meta: [{ title: "Dashboard — Springr" }] }),
@@ -560,6 +561,80 @@ function ProfileCompletionSection() {
   );
 }
 
+// ── Section 4 — Parrainage ────────────────────────────────────────────────────
+
+function ReferralCard() {
+  const [code,  setCode]  = useState("");
+  const [count, setCount] = useState(0);
+  const [copied,setCopied]= useState(false);
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://springr.app";
+
+  useEffect(() => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) return;
+      const u = session.user;
+      const fn: string = u.user_metadata?.firstName ?? u.user_metadata?.name?.split(" ")?.[0] ?? "Springr";
+      const c = await getOrCreateCode(u.id, fn);
+      const n = await countReferrals(u.id);
+      setCode(c);
+      setCount(n);
+    });
+  }, []);
+
+  const next   = REWARDS.find(r => r.count > count);
+  const inviteUrl = `${origin}/invite/${code}`;
+
+  function copy() {
+    navigator.clipboard.writeText(inviteUrl).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
+  }
+
+  return (
+    <section className="mt-8">
+      <div className="rounded-2xl border border-violet/20 bg-violet/5 p-5 sm:p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <p className="text-xs font-mono uppercase tracking-widest text-mute mb-0.5">Parrainage</p>
+            <h2 className="font-display font-bold text-lg">Invite tes amis</h2>
+          </div>
+          <div className="size-10 rounded-xl bg-violet/20 border border-violet/30 flex items-center justify-center">
+            <Share2 className="size-4 text-violet-soft" />
+          </div>
+        </div>
+
+        <p className="text-sm text-mute mb-4">
+          {next
+            ? <><span className="text-white font-semibold">{count}/{next.count} filleuls</span> — encore {next.count - count} pour <strong className="text-lime">{next.label}</strong></>
+            : <span className="text-lime">🎉 Tu as tout débloqué !</span>
+          }
+        </p>
+
+        {next && (
+          <div className="h-1.5 rounded-full bg-white/8 mb-4 overflow-hidden">
+            <div className="h-full rounded-full bg-gradient-to-r from-violet to-lime" style={{ width: `${Math.min(Math.round((count/next.count)*100), 100)}%` }} />
+          </div>
+        )}
+
+        {code && (
+          <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 mb-4">
+            <span className="font-mono text-xs text-mute flex-1 truncate">{inviteUrl}</span>
+            <button onClick={copy} className={`flex items-center gap-1 text-xs font-medium transition-colors shrink-0 ${copied ? "text-lime" : "text-mute hover:text-white"}`}>
+              {copied ? <><Check className="size-3"/>Copié</> : <><Copy className="size-3"/>Copier</>}
+            </button>
+          </div>
+        )}
+
+        <div className="flex items-center gap-3">
+          <Link to="/parrainage"
+            className="inline-flex items-center gap-1.5 rounded-full bg-lime text-ink px-4 py-2 text-xs font-semibold hover:-translate-y-0.5 transition-transform">
+            Inviter mes amis <ArrowUpRight className="size-3.5" />
+          </Link>
+          <span className="text-xs text-mute">{count} ami{count !== 1 ? "s" : ""} parrainé{count !== 1 ? "s" : ""}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ── Shared empty state ────────────────────────────────────────────────────────
 
 function EmptyState({
@@ -606,6 +681,7 @@ function EtudiantDashboard() {
       <CandidaturesSection />
       <BonsPlansSection />
       <ProfileCompletionSection />
+      <ReferralCard />
       <SubscriptionSection pricingPath="/tarifs" upgradeLabel="Devenir Premium" />
     </DashboardLayout>
   );

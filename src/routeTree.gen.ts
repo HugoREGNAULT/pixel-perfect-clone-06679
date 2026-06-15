@@ -16,6 +16,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecruteursRouteImport } from './routes/recruteurs'
 import { Route as RechercheRouteImport } from './routes/recherche'
 import { Route as ProfilRouteImport } from './routes/profil'
+import { Route as ParrainageRouteImport } from './routes/parrainage'
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
@@ -35,6 +36,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as EcolesIndexRouteImport } from './routes/ecoles/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as BrandIndexRouteImport } from './routes/brand/index'
+import { Route as InviteCodeRouteImport } from './routes/invite/$code'
 import { Route as FounderSuccessRouteImport } from './routes/founder.success'
 import { Route as EcolesSlugRouteImport } from './routes/ecoles/$slug'
 import { Route as DashboardRecruteurRouteImport } from './routes/dashboard/recruteur'
@@ -81,6 +83,11 @@ const RechercheRoute = RechercheRouteImport.update({
 const ProfilRoute = ProfilRouteImport.update({
   id: '/profil',
   path: '/profil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParrainageRoute = ParrainageRouteImport.update({
+  id: '/parrainage',
+  path: '/parrainage',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpportunitesRoute = OpportunitesRouteImport.update({
@@ -177,6 +184,11 @@ const BrandIndexRoute = BrandIndexRouteImport.update({
   path: '/brand/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InviteCodeRoute = InviteCodeRouteImport.update({
+  id: '/invite/$code',
+  path: '/invite/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FounderSuccessRoute = FounderSuccessRouteImport.update({
   id: '/founder/success',
   path: '/founder/success',
@@ -256,6 +268,7 @@ export interface FileRoutesByFullPath {
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
   '/opportunites': typeof OpportunitesRoute
+  '/parrainage': typeof ParrainageRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
   '/recruteurs': typeof RecruteursRoute
@@ -273,6 +286,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/invite/$code': typeof InviteCodeRoute
   '/brand/': typeof BrandIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/ecoles/': typeof EcolesIndexRoute
@@ -295,6 +309,7 @@ export interface FileRoutesByTo {
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
   '/opportunites': typeof OpportunitesRoute
+  '/parrainage': typeof ParrainageRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
   '/recruteurs': typeof RecruteursRoute
@@ -312,6 +327,7 @@ export interface FileRoutesByTo {
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/invite/$code': typeof InviteCodeRoute
   '/brand': typeof BrandIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/ecoles': typeof EcolesIndexRoute
@@ -336,6 +352,7 @@ export interface FileRoutesById {
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
   '/opportunites': typeof OpportunitesRoute
+  '/parrainage': typeof ParrainageRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
   '/recruteurs': typeof RecruteursRoute
@@ -353,6 +370,7 @@ export interface FileRoutesById {
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/invite/$code': typeof InviteCodeRoute
   '/brand/': typeof BrandIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/ecoles/': typeof EcolesIndexRoute
@@ -377,6 +395,7 @@ export interface FileRouteTypes {
     | '/mes-candidatures'
     | '/messages'
     | '/opportunites'
+    | '/parrainage'
     | '/profil'
     | '/recherche'
     | '/recruteurs'
@@ -394,6 +413,7 @@ export interface FileRouteTypes {
     | '/dashboard/recruteur'
     | '/ecoles/$slug'
     | '/founder/success'
+    | '/invite/$code'
     | '/brand/'
     | '/dashboard/'
     | '/ecoles/'
@@ -416,6 +436,7 @@ export interface FileRouteTypes {
     | '/mes-candidatures'
     | '/messages'
     | '/opportunites'
+    | '/parrainage'
     | '/profil'
     | '/recherche'
     | '/recruteurs'
@@ -433,6 +454,7 @@ export interface FileRouteTypes {
     | '/dashboard/recruteur'
     | '/ecoles/$slug'
     | '/founder/success'
+    | '/invite/$code'
     | '/brand'
     | '/dashboard'
     | '/ecoles'
@@ -456,6 +478,7 @@ export interface FileRouteTypes {
     | '/mes-candidatures'
     | '/messages'
     | '/opportunites'
+    | '/parrainage'
     | '/profil'
     | '/recherche'
     | '/recruteurs'
@@ -473,6 +496,7 @@ export interface FileRouteTypes {
     | '/dashboard/recruteur'
     | '/ecoles/$slug'
     | '/founder/success'
+    | '/invite/$code'
     | '/brand/'
     | '/dashboard/'
     | '/ecoles/'
@@ -497,6 +521,7 @@ export interface RootRouteChildren {
   MesCandidaturesRoute: typeof MesCandidaturesRoute
   MessagesRoute: typeof MessagesRoute
   OpportunitesRoute: typeof OpportunitesRoute
+  ParrainageRoute: typeof ParrainageRoute
   ProfilRoute: typeof ProfilRoute
   RechercheRoute: typeof RechercheRoute
   RecruteursRoute: typeof RecruteursRoute
@@ -513,6 +538,7 @@ export interface RootRouteChildren {
   DashboardRecruteurRoute: typeof DashboardRecruteurRoute
   EcolesSlugRoute: typeof EcolesSlugRoute
   FounderSuccessRoute: typeof FounderSuccessRoute
+  InviteCodeRoute: typeof InviteCodeRoute
   BrandIndexRoute: typeof BrandIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   EcolesIndexRoute: typeof EcolesIndexRoute
@@ -569,6 +595,13 @@ declare module '@tanstack/react-router' {
       path: '/profil'
       fullPath: '/profil'
       preLoaderRoute: typeof ProfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parrainage': {
+      id: '/parrainage'
+      path: '/parrainage'
+      fullPath: '/parrainage'
+      preLoaderRoute: typeof ParrainageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/opportunites': {
@@ -704,6 +737,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrandIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/invite/$code': {
+      id: '/invite/$code'
+      path: '/invite/$code'
+      fullPath: '/invite/$code'
+      preLoaderRoute: typeof InviteCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/founder/success': {
       id: '/founder/success'
       path: '/founder/success'
@@ -819,6 +859,7 @@ const rootRouteChildren: RootRouteChildren = {
   MesCandidaturesRoute: MesCandidaturesRoute,
   MessagesRoute: MessagesRoute,
   OpportunitesRoute: OpportunitesRoute,
+  ParrainageRoute: ParrainageRoute,
   ProfilRoute: ProfilRoute,
   RechercheRoute: RechercheRoute,
   RecruteursRoute: RecruteursRoute,
@@ -835,6 +876,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRecruteurRoute: DashboardRecruteurRoute,
   EcolesSlugRoute: EcolesSlugRoute,
   FounderSuccessRoute: FounderSuccessRoute,
+  InviteCodeRoute: InviteCodeRoute,
   BrandIndexRoute: BrandIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   EcolesIndexRoute: EcolesIndexRoute,

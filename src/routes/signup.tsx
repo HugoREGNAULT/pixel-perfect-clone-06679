@@ -5,8 +5,9 @@ import { DASHBOARD_ROUTE } from "@/lib/dashboard";
 import { toast } from "sonner";
 import {
   ArrowUpRight, ArrowLeft, Loader2, Eye, EyeOff,
-  GraduationCap, BookOpen, Award, Building2, School, Check,
+  GraduationCap, BookOpen, Award, Building2, School, Check, Gift,
 } from "lucide-react";
+import { processReferralSignup, lookupCode } from "@/lib/referral";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({ meta: [{ title: "Inscription — Springr" }] }),
@@ -585,7 +586,10 @@ function NavButtons({ onBack, onNext, isLast, canProceed, loading }: {
 /* ----------------------------------------------------------------- main page */
 
 function SignupPage() {
-  const navigate = useNavigate();
+  const navigate  = useNavigate();
+  const ref = typeof window !== "undefined"
+    ? (new URLSearchParams(window.location.search).get("ref") ?? "")
+    : "";
   const [profile, setProfile]   = useState<ProfileType | null>(null);
   const [step, setStep]         = useState(0);
   const [data, setData]         = useState<Data>({ sectors: [], companySeeks: [] });
@@ -593,6 +597,7 @@ function SignupPage() {
   const [animKey, setAnimKey]   = useState(0);
   const [loading, setLoading]   = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [refName,  setRefName]  = useState("");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -601,7 +606,8 @@ function SignupPage() {
       const dest = (role && DASHBOARD_ROUTE[role]) ? DASHBOARD_ROUTE[role] : "/";
       navigate({ to: dest as any, replace: true });
     });
-  }, [navigate]);
+    if (ref) lookupCode(ref).then(r => { if (r) setRefName(r.first_name); });
+  }, [navigate, ref]);
 
   function update(key: string, value: any) {
     setData(prev => ({ ...prev, [key]: value }));
@@ -646,7 +652,14 @@ function SignupPage() {
         },
       });
       if (error) throw error;
+
+      // Process referral if present
+      if (ref && authData.user) {
+        await processReferralSignup(ref, authData.user.id);
+      }
+
       if (authData.session) {
+        if (ref && refName) toast.success(`🎁 7 jours de Premium offerts grâce à ${refName} !`, { duration: 6000 });
         const dest = DASHBOARD_ROUTE[profile] ?? "/";
         navigate({ to: dest as any, replace: true });
       } else {
@@ -732,6 +745,17 @@ function SignupPage() {
 
       {/* main */}
       <main className="relative z-10 mx-auto max-w-2xl px-5 pt-2 pb-24">
+        {/* Referral welcome banner */}
+        {ref && refName && (
+          <div className="flex items-center gap-3 rounded-2xl border border-lime/25 bg-lime/8 px-4 py-3 mb-6">
+            <Gift className="size-5 text-lime shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-white">Tu as été invité par <span className="text-lime">{refName}</span> !</p>
+              <p className="text-xs text-mute">Crée ton compte et reçois 7 jours de Premium offerts 🎁</p>
+            </div>
+          </div>
+        )}
+
         {!profile ? (
           <ProfileSelector onSelect={selectProfile} />
         ) : (

@@ -261,6 +261,7 @@ export function AppNav() {
                 </Link>
                 <Link
                   to="/signup"
+
                   className="inline-flex items-center gap-1.5 rounded-full bg-lime px-4 py-1.5 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform"
                 >
                   Inscription
@@ -412,6 +413,7 @@ export function AppNav() {
                 </Link>
                 <Link
                   to="/signup"
+
                   onClick={() => setOpen(false)}
                   className="block px-3 py-2.5 rounded-lg text-sm font-semibold text-ink bg-lime text-center"
                 >
