@@ -21,6 +21,9 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FounderSuccessRouteImport } from './routes/founder.success'
+import { Route as DashboardLyceenRouteImport } from './routes/dashboard/lyceen'
+import { Route as DashboardEtudiantRouteImport } from './routes/dashboard/etudiant'
+import { Route as DashboardDiplomeRouteImport } from './routes/dashboard/diplome'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
@@ -83,6 +86,21 @@ const FounderSuccessRoute = FounderSuccessRouteImport.update({
   path: '/founder/success',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardLyceenRoute = DashboardLyceenRouteImport.update({
+  id: '/dashboard/lyceen',
+  path: '/dashboard/lyceen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardEtudiantRoute = DashboardEtudiantRouteImport.update({
+  id: '/dashboard/etudiant',
+  path: '/dashboard/etudiant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardDiplomeRoute = DashboardDiplomeRouteImport.update({
+  id: '/dashboard/diplome',
+  path: '/dashboard/diplome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -107,6 +125,9 @@ export interface FileRoutesByFullPath {
   '/recruteurs': typeof RecruteursRoute
   '/signup': typeof SignupRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/dashboard/diplome': typeof DashboardDiplomeRoute
+  '/dashboard/etudiant': typeof DashboardEtudiantRoute
+  '/dashboard/lyceen': typeof DashboardLyceenRoute
   '/founder/success': typeof FounderSuccessRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -122,6 +143,9 @@ export interface FileRoutesByTo {
   '/recruteurs': typeof RecruteursRoute
   '/signup': typeof SignupRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/dashboard/diplome': typeof DashboardDiplomeRoute
+  '/dashboard/etudiant': typeof DashboardEtudiantRoute
+  '/dashboard/lyceen': typeof DashboardLyceenRoute
   '/founder/success': typeof FounderSuccessRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -139,6 +163,9 @@ export interface FileRoutesById {
   '/recruteurs': typeof RecruteursRoute
   '/signup': typeof SignupRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/dashboard/diplome': typeof DashboardDiplomeRoute
+  '/dashboard/etudiant': typeof DashboardEtudiantRoute
+  '/dashboard/lyceen': typeof DashboardLyceenRoute
   '/founder/success': typeof FounderSuccessRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -156,6 +183,9 @@ export interface FileRouteTypes {
     | '/recruteurs'
     | '/signup'
     | '/admin'
+    | '/dashboard/diplome'
+    | '/dashboard/etudiant'
+    | '/dashboard/lyceen'
     | '/founder/success'
     | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
@@ -171,6 +201,9 @@ export interface FileRouteTypes {
     | '/recruteurs'
     | '/signup'
     | '/admin'
+    | '/dashboard/diplome'
+    | '/dashboard/etudiant'
+    | '/dashboard/lyceen'
     | '/founder/success'
     | '/api/public/payments/webhook'
   id:
@@ -187,6 +220,9 @@ export interface FileRouteTypes {
     | '/recruteurs'
     | '/signup'
     | '/_authenticated/admin'
+    | '/dashboard/diplome'
+    | '/dashboard/etudiant'
+    | '/dashboard/lyceen'
     | '/founder/success'
     | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
@@ -203,6 +239,9 @@ export interface RootRouteChildren {
   ProfilRoute: typeof ProfilRoute
   RecruteursRoute: typeof RecruteursRoute
   SignupRoute: typeof SignupRoute
+  DashboardDiplomeRoute: typeof DashboardDiplomeRoute
+  DashboardEtudiantRoute: typeof DashboardEtudiantRoute
+  DashboardLyceenRoute: typeof DashboardLyceenRoute
   FounderSuccessRoute: typeof FounderSuccessRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
@@ -293,6 +332,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FounderSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/lyceen': {
+      id: '/dashboard/lyceen'
+      path: '/dashboard/lyceen'
+      fullPath: '/dashboard/lyceen'
+      preLoaderRoute: typeof DashboardLyceenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/etudiant': {
+      id: '/dashboard/etudiant'
+      path: '/dashboard/etudiant'
+      fullPath: '/dashboard/etudiant'
+      preLoaderRoute: typeof DashboardEtudiantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/diplome': {
+      id: '/dashboard/diplome'
+      path: '/dashboard/diplome'
+      fullPath: '/dashboard/diplome'
+      preLoaderRoute: typeof DashboardDiplomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -333,6 +393,9 @@ const rootRouteChildren: RootRouteChildren = {
   ProfilRoute: ProfilRoute,
   RecruteursRoute: RecruteursRoute,
   SignupRoute: SignupRoute,
+  DashboardDiplomeRoute: DashboardDiplomeRoute,
+  DashboardEtudiantRoute: DashboardEtudiantRoute,
+  DashboardLyceenRoute: DashboardLyceenRoute,
   FounderSuccessRoute: FounderSuccessRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
