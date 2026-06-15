@@ -49,12 +49,12 @@ export const createSpringrCheckout = createServerFn({ method: "POST" })
       // Récupère ou crée le customer Stripe
       let customerId: string;
       const { data: existing } = await supabaseAdmin
-        .from("subscriptions" as never)
+        .from("subscriptions")
         .select("stripe_customer_id")
         .eq("user_id", data.userId)
         .not("stripe_customer_id", "is", null)
         .limit(1)
-        .maybeSingle() as { data: { stripe_customer_id: string } | null };
+        .maybeSingle();
 
       if (existing?.stripe_customer_id) {
         customerId = existing.stripe_customer_id;
@@ -106,12 +106,12 @@ export const createSpringrPortal = createServerFn({ method: "POST" })
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
       const { data: sub } = await supabaseAdmin
-        .from("subscriptions" as never)
+        .from("subscriptions")
         .select("stripe_customer_id")
         .eq("user_id", data.userId)
         .not("stripe_customer_id", "is", null)
         .limit(1)
-        .maybeSingle() as { data: { stripe_customer_id: string } | null };
+        .maybeSingle();
 
       if (!sub?.stripe_customer_id) {
         throw new Error("Aucun abonnement actif trouvé pour cet utilisateur");
@@ -139,14 +139,14 @@ export const getMySubscription = createServerFn({ method: "GET" })
     try {
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
       const { data: sub } = await supabaseAdmin
-        .from("subscriptions" as never)
+        .from("subscriptions")
         .select("id, plan_id, billing_period, status, current_period_end, stripe_customer_id, created_at")
         .eq("user_id", data.userId)
         .in("status", ["active", "trialing"])
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle();
-      return (sub as Subscription | null) ?? null;
+      return sub ?? null;
     } catch {
       return null;
     }

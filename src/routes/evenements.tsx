@@ -149,9 +149,9 @@ function EvenementsPage() {
 
         {/* ── Filtres ───────────────────────────────────────────────────────*/}
         <div className="sticky top-14 z-30 -mx-5 px-5 py-4 bg-ink/90 backdrop-blur-xl border-b border-white/5 mb-8 space-y-3">
-          {/* Search + reset */}
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1 max-w-sm">
+          {/* Search + selects + reset */}
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="relative flex-1 min-w-[180px] max-w-sm">
               <School className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-mute pointer-events-none" />
               <input
                 value={search}

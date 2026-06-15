@@ -17,10 +17,12 @@ CREATE TABLE IF NOT EXISTS public.subscriptions (
 ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
 
 -- Les utilisateurs peuvent lire leurs propres abonnements
+DROP POLICY IF EXISTS "subs_own_read" ON public.subscriptions;
 CREATE POLICY "subs_own_read" ON public.subscriptions
   FOR SELECT TO authenticated USING (auth.uid() = user_id);
 
 -- Le service role (webhook) peut tout faire
+DROP POLICY IF EXISTS "subs_service_all" ON public.subscriptions;
 CREATE POLICY "subs_service_all" ON public.subscriptions
   FOR ALL TO service_role USING (true) WITH CHECK (true);
 
@@ -34,6 +36,7 @@ CREATE OR REPLACE FUNCTION public.update_subscriptions_updated_at()
 BEGIN NEW.updated_at = now(); RETURN NEW; END;
 $$;
 
+DROP TRIGGER IF EXISTS trg_subs_updated_at ON public.subscriptions;
 CREATE TRIGGER trg_subs_updated_at
   BEFORE UPDATE ON public.subscriptions
   FOR EACH ROW EXECUTE FUNCTION public.update_subscriptions_updated_at();

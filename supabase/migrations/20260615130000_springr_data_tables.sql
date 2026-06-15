@@ -18,7 +18,9 @@ CREATE TABLE public.offres (
 );
 
 ALTER TABLE public.offres ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "offres_public_read" ON public.offres;
 CREATE POLICY "offres_public_read"  ON public.offres FOR SELECT TO anon, authenticated USING (true);
+DROP POLICY IF EXISTS "offres_service_write" ON public.offres;
 CREATE POLICY "offres_service_write" ON public.offres FOR ALL TO service_role USING (true) WITH CHECK (true);
 
 GRANT SELECT ON public.offres TO anon, authenticated;
@@ -34,8 +36,11 @@ CREATE TABLE public.candidatures (
 );
 
 ALTER TABLE public.candidatures ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "candidatures_own_read" ON public.candidatures;
 CREATE POLICY "candidatures_own_read"   ON public.candidatures FOR SELECT    TO authenticated USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "candidatures_own_insert" ON public.candidatures;
 CREATE POLICY "candidatures_own_insert" ON public.candidatures FOR INSERT    TO authenticated WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "candidatures_own_delete" ON public.candidatures;
 CREATE POLICY "candidatures_own_delete" ON public.candidatures FOR DELETE    TO authenticated USING (auth.uid() = user_id);
 
 GRANT SELECT, INSERT, DELETE ON public.candidatures TO authenticated;
@@ -59,7 +64,9 @@ CREATE TABLE public.mentors (
 );
 
 ALTER TABLE public.mentors ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "mentors_public_read" ON public.mentors;
 CREATE POLICY "mentors_public_read"   ON public.mentors FOR SELECT TO anon, authenticated USING (true);
+DROP POLICY IF EXISTS "mentors_service_write" ON public.mentors;
 CREATE POLICY "mentors_service_write" ON public.mentors FOR ALL    TO service_role USING (true) WITH CHECK (true);
 
 GRANT SELECT ON public.mentors TO anon, authenticated;
@@ -80,7 +87,9 @@ CREATE TABLE public.evenements (
 );
 
 ALTER TABLE public.evenements ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "evenements_public_read" ON public.evenements;
 CREATE POLICY "evenements_public_read"   ON public.evenements FOR SELECT TO anon, authenticated USING (true);
+DROP POLICY IF EXISTS "evenements_service_write" ON public.evenements;
 CREATE POLICY "evenements_service_write" ON public.evenements FOR ALL    TO service_role USING (true) WITH CHECK (true);
 
 GRANT SELECT ON public.evenements TO anon, authenticated;
@@ -99,7 +108,9 @@ CREATE TABLE public.bons_plans (
 );
 
 ALTER TABLE public.bons_plans ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "bons_plans_public_read" ON public.bons_plans;
 CREATE POLICY "bons_plans_public_read"   ON public.bons_plans FOR SELECT TO anon, authenticated USING (true);
+DROP POLICY IF EXISTS "bons_plans_service_write" ON public.bons_plans;
 CREATE POLICY "bons_plans_service_write" ON public.bons_plans FOR ALL    TO service_role USING (true) WITH CHECK (true);
 
 GRANT SELECT ON public.bons_plans TO anon, authenticated;
@@ -118,7 +129,9 @@ CREATE TABLE public.ecoles (
 );
 
 ALTER TABLE public.ecoles ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "ecoles_public_read" ON public.ecoles;
 CREATE POLICY "ecoles_public_read"   ON public.ecoles FOR SELECT TO anon, authenticated USING (true);
+DROP POLICY IF EXISTS "ecoles_service_write" ON public.ecoles;
 CREATE POLICY "ecoles_service_write" ON public.ecoles FOR ALL    TO service_role USING (true) WITH CHECK (true);
 
 GRANT SELECT ON public.ecoles TO anon, authenticated;
@@ -136,8 +149,11 @@ CREATE TABLE public.avis_ecoles (
 );
 
 ALTER TABLE public.avis_ecoles ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "avis_ecoles_public_read" ON public.avis_ecoles;
 CREATE POLICY "avis_ecoles_public_read"   ON public.avis_ecoles FOR SELECT TO anon, authenticated USING (true);
+DROP POLICY IF EXISTS "avis_ecoles_own_insert" ON public.avis_ecoles;
 CREATE POLICY "avis_ecoles_own_insert"    ON public.avis_ecoles FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "avis_ecoles_own_update" ON public.avis_ecoles;
 CREATE POLICY "avis_ecoles_own_update"    ON public.avis_ecoles FOR UPDATE TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
 
 GRANT SELECT ON public.avis_ecoles TO anon, authenticated;
@@ -155,14 +171,17 @@ CREATE TABLE public.conversations (
 );
 
 ALTER TABLE public.conversations ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "conversations_participant_read" ON public.conversations;
 CREATE POLICY "conversations_participant_read" ON public.conversations FOR SELECT TO authenticated
   USING (auth.uid() = participant_1 OR auth.uid() = participant_2);
+DROP POLICY IF EXISTS "conversations_participant_insert" ON public.conversations;
 CREATE POLICY "conversations_participant_insert" ON public.conversations FOR INSERT TO authenticated
   WITH CHECK (auth.uid() = participant_1 OR auth.uid() = participant_2);
 
 GRANT SELECT, INSERT ON public.conversations TO authenticated;
 GRANT ALL            ON public.conversations TO service_role;
 
+DROP TRIGGER IF EXISTS conversations_updated_at ON public.conversations;
 CREATE TRIGGER conversations_updated_at
   BEFORE UPDATE ON public.conversations
   FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
@@ -178,6 +197,7 @@ CREATE TABLE public.messages (
 );
 
 ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "messages_conversation_read" ON public.messages;
 CREATE POLICY "messages_conversation_read" ON public.messages FOR SELECT TO authenticated
   USING (
     EXISTS (
@@ -186,6 +206,7 @@ CREATE POLICY "messages_conversation_read" ON public.messages FOR SELECT TO auth
         AND (c.participant_1 = auth.uid() OR c.participant_2 = auth.uid())
     )
   );
+DROP POLICY IF EXISTS "messages_own_insert" ON public.messages;
 CREATE POLICY "messages_own_insert" ON public.messages FOR INSERT TO authenticated
   WITH CHECK (
     auth.uid() = sender_id

@@ -3,6 +3,7 @@
 -- ============================================================
 
 -- ------------------------------------------------------------------ Messages: allow mark-as-read UPDATE
+DROP POLICY IF EXISTS "messages_mark_read" ON public.messages;
 CREATE POLICY "messages_mark_read" ON public.messages
   FOR UPDATE TO authenticated
   USING (
@@ -18,6 +19,7 @@ CREATE POLICY "messages_mark_read" ON public.messages
 GRANT UPDATE ON public.messages TO authenticated;
 
 -- ------------------------------------------------------------------ Conversations: allow UPDATE for sort
+DROP POLICY IF EXISTS "conversations_participant_update" ON public.conversations;
 CREATE POLICY "conversations_participant_update" ON public.conversations
   FOR UPDATE TO authenticated
   USING (auth.uid() = participant_1 OR auth.uid() = participant_2);
@@ -33,6 +35,7 @@ BEGIN
 END;
 $$;
 
+DROP TRIGGER IF EXISTS messages_bump_conversation ON public.messages;
 CREATE TRIGGER messages_bump_conversation
   AFTER INSERT ON public.messages
   FOR EACH ROW EXECUTE FUNCTION public.bump_conversation_updated_at();

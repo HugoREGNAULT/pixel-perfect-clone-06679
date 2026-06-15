@@ -26,6 +26,7 @@ CREATE INDEX bons_plans_ordre_idx      ON public.bons_plans (categorie, ordre_af
 ALTER TABLE public.bons_plans ENABLE ROW LEVEL SECURITY;
 
 -- Tout le monde peut lire les bons plans actifs
+DROP POLICY IF EXISTS "bp_select_active" ON public.bons_plans;
 CREATE POLICY "bp_select_active" ON public.bons_plans
   FOR SELECT USING (
     actif = true
@@ -36,6 +37,7 @@ CREATE POLICY "bp_select_active" ON public.bons_plans
   );
 
 -- Seuls les admins peuvent écrire
+DROP POLICY IF EXISTS "bp_admin_write" ON public.bons_plans;
 CREATE POLICY "bp_admin_write" ON public.bons_plans
   FOR ALL
   USING (EXISTS (SELECT 1 FROM public.user_roles WHERE user_id = auth.uid() AND role = 'admin'))
@@ -46,6 +48,7 @@ CREATE OR REPLACE FUNCTION public.bp_set_updated_at()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
 BEGIN NEW.updated_at = now(); RETURN NEW; END;
 $$;
+DROP TRIGGER IF EXISTS bp_updated_at ON public.bons_plans;
 CREATE TRIGGER bp_updated_at
   BEFORE UPDATE ON public.bons_plans
   FOR EACH ROW EXECUTE FUNCTION public.bp_set_updated_at();
