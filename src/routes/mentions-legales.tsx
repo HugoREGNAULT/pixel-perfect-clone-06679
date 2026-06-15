@@ -120,6 +120,7 @@ function LegalFooter() {
         <Link to="/cgu" className="hover:text-white transition-colors">CGU</Link>
         <Link to="/confidentialite" className="hover:text-white transition-colors">Confidentialité</Link>
         <Link to="/mentions-legales" className="hover:text-white transition-colors font-semibold text-white">Mentions légales</Link>
+        <Link to="/cookies" className="hover:text-white transition-colors">Cookies</Link>
         <span className="ml-auto">© 2026 Springr</span>
       </div>
     </div>

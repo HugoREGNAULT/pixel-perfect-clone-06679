@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="7" fill="#0A0A14"/>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Sora:wght@700&amp;display=swap');
+      .icon-text { font-family: 'Sora', system-ui, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.05em; }
+    </style>
+  </defs>
+  <text class="icon-text" x="5" y="23" fill="#FFFFFF">s</text>
+  <text class="icon-text" x="16" y="23" fill="#B5FF3D">.</text>
+</svg>
