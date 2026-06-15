@@ -26,40 +26,25 @@ interface Event {
   featured?: boolean;
 }
 
-/* -------------------------------------------------------------------- data */
+/* -------------------------------------------------------------------- db → model */
 
-const EVENTS: Event[] = [
-  /* JPOs */
-  { id: "j1", type: "JPO",    title: "Journée Portes Ouvertes — Sciences Po Paris",     organizer: "Sciences Po",        date: "2027-01-22", city: "Paris",     description: "Découvrez les formations, rencontrez des étudiants et assistez à des conférences avec les équipes pédagogiques.",   url: "#", featured: true },
-  { id: "j2", type: "JPO",    title: "Journée Découverte — HEC Paris",                  organizer: "HEC Paris",           date: "2027-02-05", city: "Jouy-en-Josas", description: "Campus ouvert, présentations des grandes voies et rencontres avec alumni et professeurs.",                      url: "#" },
-  { id: "j3", type: "JPO",    title: "JPO CentraleSupélec",                            organizer: "CentraleSupélec",     date: "2027-02-15", city: "Paris",     description: "Portes ouvertes de l'une des meilleures écoles d'ingénieurs françaises. Visites, ateliers et demos labo.",       url: "#" },
-  { id: "j4", type: "JPO",    title: "JPO ESCP Business School",                       organizer: "ESCP",                date: "2027-03-08", city: "Paris",     description: "Rencontrez les équipes d'admission et des étudiants des programmes Bachelor, Master et MBA.",                   url: "#" },
-  { id: "j5", type: "JPO",    title: "JPO KEDGE Business School",                      organizer: "KEDGE BS",            date: "2027-01-30", city: "Bordeaux",  description: "Journée portes ouvertes du campus de Bordeaux avec mini-cours et rencontre avec les responsables de filières.", url: "#" },
-  { id: "j6", type: "JPO",    title: "JPO emlyon business school",                     organizer: "emlyon",              date: "2027-02-20", city: "Lyon",      description: "Présentation des formations, de la vie campus et des opportunités d'entrepreneuriat de l'école.",                url: "#" },
+type DbEvent = Tables<"evenements">;
 
-  /* Forums */
-  { id: "f1", type: "Forum",  title: "Forum Entreprises Polytechnique",               organizer: "Binet Entreprises",   date: "2026-11-15", city: "Paris",     description: "Le plus grand forum étudiant de France : 200 entreprises, networking intensif et remise de CV.",               url: "#", featured: true },
-  { id: "f2", type: "Forum",  title: "Forum ESSEC Entreprises",                       organizer: "ESSEC",               date: "2026-10-20", city: "Cergy",     description: "Forum de recrutement avec les plus grands employeurs : cabinets de conseil, banques, startups tech.",           url: "#" },
-  { id: "f3", type: "Forum",  title: "Forum Jeunes Talents HEC",                     organizer: "HEC Carrières",       date: "2026-11-10", city: "Jouy-en-Josas", description: "Rencontres entre étudiants et recruteurs dans un format speed-dating professionnel.",                        url: "#" },
-  { id: "f4", type: "Forum",  title: "Forum Horizon Carrières",                      organizer: "Université de Lyon",  date: "2026-11-25", city: "Lyon",      description: "Forum pluridisciplinaire ouvert à tous les étudiants lyonnais. Stages, alternances et premiers emplois.",    url: "#" },
-
-  /* Salons */
-  { id: "s1", type: "Salon",  title: "Salon de l'Étudiant — Paris",                  organizer: "L'Étudiant",          date: "2027-01-25", city: "Paris",     description: "Le salon de référence pour s'informer sur les études supérieures. 300 stands, conférences et tests d'orientation.", url: "#", featured: true },
-  { id: "s2", type: "Salon",  title: "Salon Alternance & Apprentissage",             organizer: "Reed Expositions",    date: "2026-11-05", city: "Paris",     description: "Le seul salon 100% dédié à l'alternance avec 250 entreprises à la recherche d'alternants.",                 url: "#" },
-  { id: "s3", type: "Salon",  title: "Futur.e.s in Tech — Diversité & Numérique",   organizer: "HubHouse",            date: "2026-12-10", city: "Paris",     description: "Festival dédié à la diversité dans la tech. Talks, ateliers et rencontres avec des pros engagés.",            url: "#" },
-  { id: "s4", type: "Salon",  title: "Welcome to the Jungle Campus Tour",            organizer: "WTTJ",                date: "2026-10-30", city: "Bordeaux",  description: "Le salon de l'emploi nouvelle génération en tournée dans les grandes villes. Rencontrez les entreprises cool.", url: "#" },
-  { id: "s5", type: "Salon",  title: "Go Entrepreneurs — Salon de l'Entrepreneuriat", organizer: "CCI Paris",         date: "2026-11-20", city: "Paris",     description: "Le salon incontournable pour les entrepreneurs et ceux qui veulent se lancer. Conférences et pitchs.",        url: "#" },
-
-  /* Soirées */
-  { id: "n1", type: "Soirée", title: "Springr Before Carrière — Paris",              organizer: "Springr",            date: "2026-10-30", city: "Paris",     description: "Notre propre soirée networking pour connecter étudiants, mentors et recruteurs dans une ambiance détendue.",   url: "#", featured: true },
-  { id: "n2", type: "Soirée", title: "Meetup UX/Design Paris",                      organizer: "UX Collective",       date: "2026-12-08", city: "Paris",     description: "Soirée portfolio reviews et talks lightning par des designers seniors. Pizza + drinks offerts.",                url: "#" },
-  { id: "n3", type: "Soirée", title: "FinTech Networking Lyon",                     organizer: "Lyon FinTech",        date: "2026-11-15", city: "Lyon",      description: "Soirée de networking dédiée à l'écosystème FinTech lyonnais. Startups, banques et étudiants se retrouvent.",  url: "#" },
-  { id: "n4", type: "Soirée", title: "Before Jobs Tech — Bordeaux",                 organizer: "Bordeaux Tech",       date: "2026-11-22", city: "Bordeaux",  description: "Rencontres informelles entre profils tech et entreprises locales. Format afterwork, entrée libre.",            url: "#" },
-  { id: "n5", type: "Soirée", title: "Startup Weekend Nantes",                      organizer: "Techstars",           date: "2026-12-05", city: "Nantes",    description: "54 heures pour créer une startup de zéro. Ouvert aux étudiants, développeurs, designers et bizdevs.",         url: "#" },
-];
+function toEvent(row: DbEvent): Event {
+  return {
+    id: row.id,
+    title: row.title,
+    organizer: row.organizer,
+    date: row.date,
+    city: row.city,
+    type: row.type as EventType,
+    description: row.description ?? "",
+    url: row.url ?? "#",
+    featured: row.featured,
+  };
+}
 
 const TYPES: ("Tous" | EventType)[] = ["Tous", "JPO", "Forum", "Salon", "Soirée"];
-const CITIES = ["Toutes", ...new Set(EVENTS.map((e) => e.city))].filter((c, i, a) => a.indexOf(c) === i);
 
 const TYPE_CONFIG: Record<EventType, { color: string; bg: string; border: string }> = {
   JPO:    { color: "text-violet-soft", bg: "bg-violet/10",    border: "border-violet/30"    },
@@ -79,21 +64,37 @@ function isUpcoming(date: string) {
 /* -------------------------------------------------------------------- page */
 
 function EvenementsPage() {
+  const [events, setEvents]   = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
   const [typeFilter, setType] = useState<"Tous" | EventType>("Tous");
   const [cityFilter, setCity] = useState("Toutes");
   const [search, setSearch]   = useState("");
 
+  useEffect(() => {
+    supabase
+      .from("evenements")
+      .select("*")
+      .order("date", { ascending: true })
+      .then(({ data, error }) => {
+        if (!error && data) setEvents(data.map(toEvent));
+        setLoading(false);
+      });
+  }, []);
+
+  const CITIES = useMemo(
+    () => ["Toutes", ...new Set(events.map((e) => e.city))],
+    [events]
+  );
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    return EVENTS
-      .filter((e) => {
-        if (typeFilter !== "Tous" && e.type !== typeFilter) return false;
-        if (cityFilter !== "Toutes" && e.city !== cityFilter) return false;
-        if (q && !e.title.toLowerCase().includes(q) && !e.organizer.toLowerCase().includes(q)) return false;
-        return true;
-      })
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  }, [typeFilter, cityFilter, search]);
+    return events.filter((e) => {
+      if (typeFilter !== "Tous" && e.type !== typeFilter) return false;
+      if (cityFilter !== "Toutes" && e.city !== cityFilter) return false;
+      if (q && !e.title.toLowerCase().includes(q) && !e.organizer.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [events, typeFilter, cityFilter, search]);
 
   const hasFilters = typeFilter !== "Tous" || cityFilter !== "Toutes" || search;
 
@@ -168,7 +169,11 @@ function EvenementsPage() {
         </div>
 
         {/* list */}
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center py-32">
+            <Loader2 className="size-7 text-mute animate-spin" />
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <CalendarDays className="size-10 text-mute mb-4" />
             <p className="text-mute">Aucun événement trouvé. <button onClick={() => { setType("Tous"); setCity("Toutes"); setSearch(""); }} className="text-lime underline">Réinitialiser</button></p>
