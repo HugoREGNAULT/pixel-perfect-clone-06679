@@ -28,7 +28,9 @@ import { Route as BonsPlansRouteImport } from './routes/bons-plans'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EcolesIndexRouteImport } from './routes/ecoles/index'
 import { Route as FounderSuccessRouteImport } from './routes/founder.success'
+import { Route as EcolesSlugRouteImport } from './routes/ecoles/$slug'
 import { Route as DashboardRecruteurRouteImport } from './routes/dashboard/recruteur'
 import { Route as DashboardLyceenRouteImport } from './routes/dashboard/lyceen'
 import { Route as DashboardEtudiantRouteImport } from './routes/dashboard/etudiant'
@@ -132,9 +134,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EcolesIndexRoute = EcolesIndexRouteImport.update({
+  id: '/ecoles/',
+  path: '/ecoles/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FounderSuccessRoute = FounderSuccessRouteImport.update({
   id: '/founder/success',
   path: '/founder/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EcolesSlugRoute = EcolesSlugRouteImport.update({
+  id: '/ecoles/$slug',
+  path: '/ecoles/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRecruteurRoute = DashboardRecruteurRouteImport.update({
@@ -205,7 +217,9 @@ export interface FileRoutesByFullPath {
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
   '/dashboard/lyceen': typeof DashboardLyceenRoute
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
+  '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/ecoles/': typeof EcolesIndexRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
@@ -234,7 +248,9 @@ export interface FileRoutesByTo {
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
   '/dashboard/lyceen': typeof DashboardLyceenRoute
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
+  '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/ecoles': typeof EcolesIndexRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
@@ -265,7 +281,9 @@ export interface FileRoutesById {
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
   '/dashboard/lyceen': typeof DashboardLyceenRoute
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
+  '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/ecoles/': typeof EcolesIndexRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
@@ -296,7 +314,9 @@ export interface FileRouteTypes {
     | '/dashboard/etudiant'
     | '/dashboard/lyceen'
     | '/dashboard/recruteur'
+    | '/ecoles/$slug'
     | '/founder/success'
+    | '/ecoles/'
     | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -325,7 +345,9 @@ export interface FileRouteTypes {
     | '/dashboard/etudiant'
     | '/dashboard/lyceen'
     | '/dashboard/recruteur'
+    | '/ecoles/$slug'
     | '/founder/success'
+    | '/ecoles'
     | '/api/public/payments/webhook'
   id:
     | '__root__'
@@ -355,7 +377,9 @@ export interface FileRouteTypes {
     | '/dashboard/etudiant'
     | '/dashboard/lyceen'
     | '/dashboard/recruteur'
+    | '/ecoles/$slug'
     | '/founder/success'
+    | '/ecoles/'
     | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
@@ -385,7 +409,9 @@ export interface RootRouteChildren {
   DashboardEtudiantRoute: typeof DashboardEtudiantRoute
   DashboardLyceenRoute: typeof DashboardLyceenRoute
   DashboardRecruteurRoute: typeof DashboardRecruteurRoute
+  EcolesSlugRoute: typeof EcolesSlugRoute
   FounderSuccessRoute: typeof FounderSuccessRoute
+  EcolesIndexRoute: typeof EcolesIndexRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
@@ -524,11 +550,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ecoles/': {
+      id: '/ecoles/'
+      path: '/ecoles'
+      fullPath: '/ecoles/'
+      preLoaderRoute: typeof EcolesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/founder/success': {
       id: '/founder/success'
       path: '/founder/success'
       fullPath: '/founder/success'
       preLoaderRoute: typeof FounderSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ecoles/$slug': {
+      id: '/ecoles/$slug'
+      path: '/ecoles/$slug'
+      fullPath: '/ecoles/$slug'
+      preLoaderRoute: typeof EcolesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/recruteur': {
@@ -627,7 +667,9 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardEtudiantRoute: DashboardEtudiantRoute,
   DashboardLyceenRoute: DashboardLyceenRoute,
   DashboardRecruteurRoute: DashboardRecruteurRoute,
+  EcolesSlugRoute: EcolesSlugRoute,
   FounderSuccessRoute: FounderSuccessRoute,
+  EcolesIndexRoute: EcolesIndexRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport

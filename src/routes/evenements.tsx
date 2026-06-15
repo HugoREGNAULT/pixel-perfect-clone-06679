@@ -71,6 +71,7 @@ function EvenementsPage() {
   const [monthFilter, setMonth]   = useState("Tous");
   const [search, setSearch]       = useState("");
   const [showPast, setShowPast]   = useState(false);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   useEffect(() => {
     supabase
@@ -78,7 +79,13 @@ function EvenementsPage() {
       .select("*")
       .order("date", { ascending: true })
       .then(({ data, error }) => {
-        if (!error && data) setJpos(data as Jpo[]);
+        console.log("[JPO] Supabase response:", { count: data?.length, error });
+        if (error) {
+          console.error("[JPO] Erreur Supabase:", error.message, error.code);
+          setFetchError(error.message);
+        } else {
+          setJpos((data ?? []) as Jpo[]);
+        }
         setLoading(false);
       });
   }, []);
@@ -229,8 +236,20 @@ function EvenementsPage() {
 
         {/* ── Liste ─────────────────────────────────────────────────────────*/}
         {loading ? (
-          <div className="flex items-center justify-center py-32">
+          <div className="flex flex-col items-center justify-center py-32 gap-4">
             <Loader2 className="size-7 text-mute animate-spin" />
+            <p className="text-mute text-sm">Chargement des JPO…</p>
+          </div>
+        ) : fetchError ? (
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <CalendarDays className="size-10 text-red-400 mb-4" />
+            <h3 className="font-display text-xl font-bold mb-2">Erreur de chargement</h3>
+            <p className="text-mute text-sm max-w-xs mb-2">
+              Impossible de charger les JPO depuis Supabase.
+            </p>
+            <code className="text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2 max-w-sm break-all">
+              {fetchError}
+            </code>
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">

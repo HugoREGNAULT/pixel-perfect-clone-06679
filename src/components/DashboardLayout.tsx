@@ -21,6 +21,7 @@ interface Props {
   subtitle?: (meta: Record<string, any>) => string;
   cards: DashCard[];
   pageTitle: string;
+  children?: React.ReactNode;
 }
 
 const ACCENT = {
@@ -39,7 +40,7 @@ function MetaTag({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function DashboardLayout({ allowedRole, badge, greeting, subtitle, cards, pageTitle }: Props) {
+export function DashboardLayout({ allowedRole, badge, greeting, subtitle, cards, pageTitle, children }: Props) {
   const navigate = useNavigate();
   const [meta, setMeta]     = useState<Record<string, any> | null>(null);
   const [loading, setLoading] = useState(true);
@@ -140,6 +141,9 @@ export function DashboardLayout({ allowedRole, badge, greeting, subtitle, cards,
             })}
           </div>
         </section>
+
+        {/* ---- extra sections ---- */}
+        {children}
 
         {/* ---- bottom row ---- */}
         <section className="mt-6 grid sm:grid-cols-2 gap-4">

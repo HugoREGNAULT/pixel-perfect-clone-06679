@@ -399,6 +399,18 @@ export type Database = {
           description: string | null
           logo_url: string | null
           created_at: string
+          type_etablissement: string | null
+          statut: string | null
+          region: string | null
+          code_postal: string | null
+          adresse: string | null
+          telephone: string | null
+          email: string | null
+          site_web: string | null
+          diplomes: string[] | null
+          slug: string | null
+          nombre_etudiants: number | null
+          updated_at: string | null
         }
         Insert: {
           id?: string
@@ -409,6 +421,18 @@ export type Database = {
           description?: string | null
           logo_url?: string | null
           created_at?: string
+          type_etablissement?: string | null
+          statut?: string | null
+          region?: string | null
+          code_postal?: string | null
+          adresse?: string | null
+          telephone?: string | null
+          email?: string | null
+          site_web?: string | null
+          diplomes?: string[] | null
+          slug?: string | null
+          nombre_etudiants?: number | null
+          updated_at?: string | null
         }
         Update: {
           id?: string
@@ -419,6 +443,18 @@ export type Database = {
           description?: string | null
           logo_url?: string | null
           created_at?: string
+          type_etablissement?: string | null
+          statut?: string | null
+          region?: string | null
+          code_postal?: string | null
+          adresse?: string | null
+          telephone?: string | null
+          email?: string | null
+          site_web?: string | null
+          diplomes?: string[] | null
+          slug?: string | null
+          nombre_etudiants?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -430,6 +466,12 @@ export type Database = {
           rating: number
           comment: string | null
           created_at: string
+          rating_ambiance: number | null
+          rating_enseignement: number | null
+          rating_vie_etudiante: number | null
+          rating_insertion_pro: number | null
+          rating_infrastructures: number | null
+          updated_at: string | null
         }
         Insert: {
           id?: string
@@ -438,6 +480,12 @@ export type Database = {
           rating: number
           comment?: string | null
           created_at?: string
+          rating_ambiance?: number | null
+          rating_enseignement?: number | null
+          rating_vie_etudiante?: number | null
+          rating_insertion_pro?: number | null
+          rating_infrastructures?: number | null
+          updated_at?: string | null
         }
         Update: {
           id?: string
@@ -446,6 +494,12 @@ export type Database = {
           rating?: number
           comment?: string | null
           created_at?: string
+          rating_ambiance?: number | null
+          rating_enseignement?: number | null
+          rating_vie_etudiante?: number | null
+          rating_insertion_pro?: number | null
+          rating_infrastructures?: number | null
+          updated_at?: string | null
         }
         Relationships: [
           {

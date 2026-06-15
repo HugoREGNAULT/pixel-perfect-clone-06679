@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { to: "/opportunites", label: "Opportunités" },
   { to: "/mentors",      label: "Mentors"       },
   { to: "/bons-plans",   label: "Bons Plans"    },
-  { to: "/evenements",   label: "Événements"    },
+  { to: "/evenements",   label: "JPO"           },
   { to: "/recruteurs",   label: "Recruteurs"    },
 ] as const;
 
