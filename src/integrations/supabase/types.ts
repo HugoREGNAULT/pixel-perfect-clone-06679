@@ -116,6 +116,345 @@ export type Database = {
         }
         Relationships: []
       }
+      offres: {
+        Row: {
+          id: string
+          title: string
+          company: string
+          city: string
+          remote: boolean
+          type: string
+          sector: string
+          posted_at: string
+          tags: string[]
+          apply_url: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          company: string
+          city: string
+          remote?: boolean
+          type: string
+          sector: string
+          posted_at?: string
+          tags?: string[]
+          apply_url?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          company?: string
+          city?: string
+          remote?: boolean
+          type?: string
+          sector?: string
+          posted_at?: string
+          tags?: string[]
+          apply_url?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      candidatures: {
+        Row: {
+          id: string
+          user_id: string
+          offre_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          offre_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          offre_id?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidatures_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidatures_offre_id_fkey"
+            columns: ["offre_id"]
+            isOneToOne: false
+            referencedRelation: "offres"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      mentors: {
+        Row: {
+          id: string
+          first_name: string
+          last_name: string
+          position: string
+          company: string
+          sector: string
+          city: string
+          bio: string | null
+          skills: string[]
+          availability: string
+          sessions: number
+          avatar_color: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          first_name: string
+          last_name: string
+          position: string
+          company: string
+          sector: string
+          city: string
+          bio?: string | null
+          skills?: string[]
+          availability?: string
+          sessions?: number
+          avatar_color?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          first_name?: string
+          last_name?: string
+          position?: string
+          company?: string
+          sector?: string
+          city?: string
+          bio?: string | null
+          skills?: string[]
+          availability?: string
+          sessions?: number
+          avatar_color?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      evenements: {
+        Row: {
+          id: string
+          title: string
+          organizer: string
+          date: string
+          city: string
+          type: string
+          description: string | null
+          url: string | null
+          featured: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          organizer: string
+          date: string
+          city: string
+          type: string
+          description?: string | null
+          url?: string | null
+          featured?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          organizer?: string
+          date?: string
+          city?: string
+          type?: string
+          description?: string | null
+          url?: string | null
+          featured?: boolean
+          created_at?: string
+        }
+        Relationships: []
+      }
+      bons_plans: {
+        Row: {
+          id: string
+          title: string
+          description: string | null
+          category: string
+          badge: string | null
+          url: string | null
+          highlight: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description?: string | null
+          category: string
+          badge?: string | null
+          url?: string | null
+          highlight?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string | null
+          category?: string
+          badge?: string | null
+          url?: string | null
+          highlight?: boolean
+          created_at?: string
+        }
+        Relationships: []
+      }
+      ecoles: {
+        Row: {
+          id: string
+          name: string
+          type: string
+          city: string
+          website: string | null
+          description: string | null
+          logo_url: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          type: string
+          city: string
+          website?: string | null
+          description?: string | null
+          logo_url?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          type?: string
+          city?: string
+          website?: string | null
+          description?: string | null
+          logo_url?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      avis_ecoles: {
+        Row: {
+          id: string
+          ecole_id: string
+          user_id: string
+          rating: number
+          comment: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          ecole_id: string
+          user_id: string
+          rating: number
+          comment?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          ecole_id?: string
+          user_id?: string
+          rating?: number
+          comment?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "avis_ecoles_ecole_id_fkey"
+            columns: ["ecole_id"]
+            isOneToOne: false
+            referencedRelation: "ecoles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "avis_ecoles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      conversations: {
+        Row: {
+          id: string
+          participant_1: string
+          participant_2: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          participant_1: string
+          participant_2: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          participant_1?: string
+          participant_2?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          id: string
+          conversation_id: string
+          sender_id: string
+          content: string
+          read_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          conversation_id: string
+          sender_id: string
+          content: string
+          read_at?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          conversation_id?: string
+          sender_id?: string
+          content?: string
+          read_at?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
