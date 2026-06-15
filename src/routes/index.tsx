@@ -1,6 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { z } from "zod";
+import { DASHBOARD_ROUTE } from "@/lib/dashboard";
 import {
   Loader2,
   ArrowUpRight,
@@ -48,13 +49,28 @@ export const Route = createFileRoute("/")({
 const emailSchema = z.string().trim().email("Email invalide").max(255);
 
 function SpringrLanding() {
+  const navigate = useNavigate();
   const [founderOpen, setFounderOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  function redirectToDashboard(u: User) {
+    const role = u.user_metadata?.role as string | undefined;
+    const target = role ? (DASHBOARD_ROUTE[role] ?? "/dashboard") : "/dashboard";
+    navigate({ to: target as any, replace: true });
+  }
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
+    supabase.auth.getSession().then(({ data }) => {
+      const u = data.session?.user ?? null;
+      setUser(u);
+      setAuthChecked(true);
+      if (u) redirectToDashboard(u);
+    });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user ?? null);
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) redirectToDashboard(u);
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -62,6 +78,14 @@ function SpringrLanding() {
   async function handleSignOut() {
     await supabase.auth.signOut();
     toast.success("Déconnecté·e.");
+  }
+
+  if (!authChecked || user) {
+    return (
+      <div className="min-h-screen bg-ink flex items-center justify-center">
+        <Loader2 className="size-6 text-mute animate-spin" />
+      </div>
+    );
   }
 
   return (

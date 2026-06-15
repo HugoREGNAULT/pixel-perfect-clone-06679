@@ -2,8 +2,15 @@ import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { LogOut, Menu, X, ArrowUpRight, Search, MessageSquare } from "lucide-react";
+import { LogOut, Menu, X, Search, MessageSquare, LayoutDashboard, UserCircle, Settings, ChevronDown } from "lucide-react";
 import type { User, RealtimeChannel } from "@supabase/supabase-js";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const NAV_LINKS = [
   { to: "/opportunites", label: "Opportunités" },
@@ -202,29 +209,51 @@ export function AppNav() {
             )}
 
             {user ? (
-              <>
-                <Link
-                  to="/profil"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 hover:border-white/25 hover:bg-white/5 transition-all"
-                >
-                  <div className="size-5 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-[10px] font-bold">
-                    {initials}
-                  </div>
-                  <span className="text-sm text-white">Mon profil</span>
-                  {roleLabel && (
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-lime border border-lime/30 rounded-full px-1.5 py-0.5">
-                      {roleLabel}
-                    </span>
-                  )}
-                </Link>
-                <button
-                  onClick={signOut}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-xs text-mute hover:text-white hover:border-white/25 transition-all"
-                >
-                  <LogOut className="size-3.5" />
-                  Déconnexion
-                </button>
-              </>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 hover:border-white/25 hover:bg-white/5 transition-all focus:outline-none">
+                    <div className="size-5 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-[10px] font-bold shrink-0">
+                      {initials}
+                    </div>
+                    <span className="text-sm text-white">{(user.user_metadata?.name as string)?.split(" ")[0] ?? "Mon compte"}</span>
+                    {roleLabel && (
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-lime border border-lime/30 rounded-full px-1.5 py-0.5">
+                        {roleLabel}
+                      </span>
+                    )}
+                    <ChevronDown className="size-3 text-mute" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-52 bg-ink-2 border border-white/10 text-white shadow-xl">
+                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-white/5 focus:bg-white/5 focus:text-white">
+                    <Link to="/profil"><UserCircle className="size-4 text-mute shrink-0" /> Mon profil</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-white/5 focus:bg-white/5 focus:text-white">
+                    <Link to={"/dashboard" as any}><LayoutDashboard className="size-4 text-mute shrink-0" /> Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-white/5 focus:bg-white/5 focus:text-white">
+                    <Link to="/messages" search={{ compose: false }}>
+                      <MessageSquare className="size-4 text-mute shrink-0" />
+                      Messages
+                      {unread > 0 && (
+                        <span className="ml-auto size-4 rounded-full bg-lime text-ink text-[9px] font-bold flex items-center justify-center shrink-0">
+                          {unread > 9 ? "9+" : unread}
+                        </span>
+                      )}
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-white/5 focus:bg-white/5 focus:text-white">
+                    <Link to="/profil"><Settings className="size-4 text-mute shrink-0" /> Paramètres</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-white/10" />
+                  <DropdownMenuItem
+                    onClick={signOut}
+                    className="gap-2.5 cursor-pointer text-sm text-mute hover:text-white hover:bg-white/5 focus:bg-white/5 focus:text-white"
+                  >
+                    <LogOut className="size-4 shrink-0" /> Déconnexion
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <>
                 <Link to="/login" className="text-sm text-mute hover:text-white transition-colors px-3 py-1.5">
@@ -234,7 +263,7 @@ export function AppNav() {
                   to="/signup"
                   className="inline-flex items-center gap-1.5 rounded-full bg-lime px-4 py-1.5 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform"
                 >
-                  Inscription <ArrowUpRight className="size-3.5" />
+                  Inscription
                 </Link>
               </>
             )}
@@ -321,15 +350,28 @@ export function AppNav() {
           <div className="pt-3 border-t border-white/10 space-y-2">
             {user ? (
               <>
+                <div className="flex items-center gap-2 px-3 py-2 mb-1">
+                  <div className="size-7 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-xs font-bold shrink-0">
+                    {initials}
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-white">{(user.user_metadata?.name as string) ?? user.email}</div>
+                    {roleLabel && <div className="text-[10px] font-mono uppercase tracking-wider text-lime">{roleLabel}</div>}
+                  </div>
+                </div>
+                <Link
+                  to={"/dashboard" as any}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/5 transition-colors"
+                >
+                  <LayoutDashboard className="size-4" /> Dashboard
+                </Link>
                 <Link
                   to="/profil"
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-white hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/5 transition-colors"
                 >
-                  <div className="size-6 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-xs font-bold">
-                    {initials}
-                  </div>
-                  Mon profil
+                  <UserCircle className="size-4" /> Mon profil
                 </Link>
                 <Link
                   to="/messages"
@@ -344,6 +386,13 @@ export function AppNav() {
                       {unread}
                     </span>
                   )}
+                </Link>
+                <Link
+                  to="/profil"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/5 transition-colors"
+                >
+                  <Settings className="size-4" /> Paramètres
                 </Link>
                 <button
                   onClick={signOut}

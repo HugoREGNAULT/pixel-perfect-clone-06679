@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import {
   CreditCard, Users, CalendarDays, BarChart3,
   ArrowUpRight, Briefcase, MapPin, Loader2,
-  TrendingUp, FileText, PlusCircle,
+  TrendingUp, FileText, PlusCircle, Clock, CheckCircle, XCircle, Eye,
 } from "lucide-react";
 import { DashboardLayout, DashCard } from "@/components/DashboardLayout";
 import { SubscriptionSection } from "@/components/SubscriptionSection";
@@ -214,6 +214,126 @@ function OffresSection() {
   );
 }
 
+// ── Candidatures à traiter ────────────────────────────────────────────────────
+
+type CandStatus = "envoyée" | "vue" | "refusée" | "acceptée";
+
+const CAND_STATUS: Record<CandStatus, { label: string; icon: React.ElementType; color: string; bg: string; border: string }> = {
+  envoyée:  { label: "Nouvelle",  icon: Clock,        color: "text-lime",          bg: "bg-lime/10",     border: "border-lime/30"    },
+  vue:      { label: "Vue",       icon: Eye,          color: "text-violet-soft",   bg: "bg-violet/10",   border: "border-violet/30"  },
+  refusée:  { label: "Refusée",   icon: XCircle,      color: "text-mute",          bg: "bg-white/5",     border: "border-white/15"   },
+  acceptée: { label: "Acceptée",  icon: CheckCircle,  color: "text-lime",          bg: "bg-lime/10",     border: "border-lime/30"    },
+};
+
+interface PendingCand {
+  id: string;
+  status: CandStatus;
+  created_at: string;
+  message: string | null;
+  offres: { title: string; type: string } | null;
+  profiles: { name: string | null; email: string | null } | null;
+}
+
+function PendingCandidaturesSection() {
+  const [cands,   setCands]   = useState<PendingCand[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) { setLoading(false); return; }
+
+      const company = session.user.user_metadata?.companyName as string | undefined;
+      if (!company) { setLoading(false); return; }
+
+      const { data: offresData } = await supabase
+        .from("offres")
+        .select("id")
+        .eq("company", company);
+
+      const offresIds = (offresData ?? []).map((o) => o.id);
+      if (!offresIds.length) { setLoading(false); return; }
+
+      const { data } = await supabase
+        .from("candidatures")
+        .select("id, status, created_at, message, offres!inner(title, type)")
+        .in("offre_id", offresIds)
+        .in("status", ["envoyée", "vue"])
+        .order("created_at", { ascending: false })
+        .limit(5);
+
+      setCands((data ?? []) as unknown as PendingCand[]);
+      setLoading(false);
+    });
+  }, []);
+
+  const pending = cands.filter((c) => c.status === "envoyée").length;
+
+  return (
+    <section className="mt-8">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <p className="text-xs font-mono uppercase tracking-widest text-mute mb-0.5">
+            À traiter{pending > 0 ? ` · ${pending} nouvelle${pending > 1 ? "s" : ""}` : ""}
+          </p>
+          <h2 className="font-display font-bold text-lg">Candidatures reçues</h2>
+        </div>
+        <Link to="/opportunites"
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-4 py-2 text-xs text-mute hover:text-white hover:border-white/30 transition-all">
+          Tout voir <ArrowUpRight className="size-3.5" />
+        </Link>
+      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="size-5 text-mute animate-spin" />
+        </div>
+      ) : cands.length === 0 ? (
+        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 text-center">
+          <FileText className="size-7 text-mute mx-auto mb-2" />
+          <p className="text-sm text-mute mb-3">Aucune candidature en attente.</p>
+          <Link to="/recruteurs"
+            className="inline-flex items-center gap-1.5 rounded-full bg-violet text-white px-5 py-2 text-xs font-semibold hover:-translate-y-0.5 transition-transform">
+            <PlusCircle className="size-3.5" /> Publier une offre
+          </Link>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {cands.map((c) => {
+            const cfg = CAND_STATUS[c.status] ?? CAND_STATUS["envoyée"];
+            const age = Math.floor((Date.now() - new Date(c.created_at).getTime()) / 86_400_000);
+            return (
+              <div key={c.id}
+                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 hover:border-white/20 hover:bg-white/[0.04] transition-all">
+                <div className="size-8 rounded-full bg-gradient-to-br from-violet/60 to-violet/20 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                  ?
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium text-sm truncate">Candidature — {(c.offres as any)?.title ?? "Offre"}</div>
+                  <div className="text-[10px] text-mute mt-0.5">
+                    {age === 0 ? "Aujourd'hui" : age === 1 ? "Hier" : `Il y a ${age}j`}
+                    {(c.offres as any)?.type && (
+                      <span className="ml-1 font-mono">· {(c.offres as any).type}</span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <div className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] ${cfg.bg} ${cfg.border} ${cfg.color}`}>
+                    <cfg.icon className="size-2.5" />{cfg.label}
+                  </div>
+                  <Link to="/opportunites"
+                    className="inline-flex items-center gap-1 rounded-full border border-white/15 px-2.5 py-1 text-[10px] text-mute hover:text-white hover:border-white/25 transition-colors">
+                    Voir
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+}
+
 // ── Dashboard ────────────────────────────────────────────────────────────────
 
 function RecruteurDashboard() {
@@ -233,6 +353,7 @@ function RecruteurDashboard() {
       cards={CARDS}
     >
       <OffresSection />
+      <PendingCandidaturesSection />
       <SubscriptionSection pricingPath="/recruteurs" upgradeLabel="Voir les plans" />
     </DashboardLayout>
   );
