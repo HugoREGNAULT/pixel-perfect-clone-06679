@@ -515,6 +515,45 @@ export type Database = {
           }
         ]
       }
+      jpos: {
+        Row: {
+          id: string
+          nom_ecole: string
+          date: string
+          ville: string
+          region: string
+          type_ecole: string
+          lien_inscription: string | null
+          source_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          nom_ecole: string
+          date: string
+          ville: string
+          region?: string
+          type_ecole?: string
+          lien_inscription?: string | null
+          source_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          nom_ecole?: string
+          date?: string
+          ville?: string
+          region?: string
+          type_ecole?: string
+          lien_inscription?: string | null
+          source_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
