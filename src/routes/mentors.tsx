@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo, useEffect } from "react";
 import { toast } from "sonner";
 import {
@@ -89,11 +89,11 @@ const AVAIL_CONFIG: Record<Availability, { label: string; dot: string; text: str
 /* -------------------------------------------------------------------- page */
 
 function MentorsPage() {
+  const navigate = useNavigate();
   const [mentors, setMentors]       = useState<Mentor[]>([]);
   const [loading, setLoading]       = useState(true);
   const [search, setSearch]         = useState("");
   const [sectorFilter, setSector]   = useState("Tous");
-  const [dmSent, setDmSent]         = useState<Set<string>>(new Set());
 
   useEffect(() => {
     supabase
@@ -120,10 +120,8 @@ function MentorsPage() {
     });
   }, [mentors, search, sectorFilter]);
 
-  function handleDM(mentor: Mentor) {
-    if (dmSent.has(mentor.id)) return;
-    setDmSent((prev) => new Set([...prev, mentor.id]));
-    toast.success(`Message envoyé à ${mentor.firstName} ! Tu recevras une réponse bientôt.`);
+  function handleDM(_mentor: Mentor) {
+    navigate({ to: "/messages", search: { compose: true } });
   }
 
   const hasFilters = sectorFilter !== "Tous" || search;
@@ -213,7 +211,6 @@ function MentorsPage() {
               <MentorCard
                 key={mentor.id}
                 mentor={mentor}
-                sent={dmSent.has(mentor.id)}
                 onDM={() => handleDM(mentor)}
               />
             ))}
@@ -228,11 +225,9 @@ function MentorsPage() {
 
 function MentorCard({
   mentor,
-  sent,
   onDM,
 }: {
   mentor: Mentor;
-  sent: boolean;
   onDM: () => void;
 }) {
   const avail = AVAIL_CONFIG[mentor.availability];
@@ -295,21 +290,15 @@ function MentorCard({
       {/* DM button */}
       <button
         onClick={onDM}
-        disabled={sent || unavailable}
+        disabled={unavailable}
         title={unavailable ? "Ce mentor n'est pas disponible pour l'instant" : undefined}
         className={`w-full inline-flex items-center justify-center gap-2 rounded-full py-2.5 text-sm font-semibold border transition-all ${
-          sent
-            ? "border-lime/30 bg-lime/10 text-lime cursor-default"
-            : unavailable
+          unavailable
             ? "border-white/10 text-mute cursor-not-allowed opacity-50"
             : "border-violet/40 bg-violet/10 text-violet-soft hover:bg-violet/20 hover:border-violet/60 hover:-translate-y-0.5"
         }`}
       >
-        {sent ? (
-          <><MessageCircle className="size-4 fill-lime/30" /> Message envoyé</>
-        ) : (
-          <><MessageCircle className="size-4" /> Contacter en DM</>
-        )}
+        <MessageCircle className="size-4" /> Contacter en DM
       </button>
     </article>
   );
