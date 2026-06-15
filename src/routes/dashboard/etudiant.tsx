@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Briefcase, Users, CalendarDays, Gift } from "lucide-react";
+import { Briefcase, Users, CalendarDays, Gift, FileText } from "lucide-react";
 import { DashboardLayout, DashCard } from "@/components/DashboardLayout";
 
 export const Route = createFileRoute("/dashboard/etudiant")({
@@ -16,25 +16,32 @@ const CARDS: DashCard[] = [
     accent: "violet",
   },
   {
+    to: "/mes-candidatures",
+    icon: FileText,
+    label: "Mes candidatures",
+    desc: "Suis tes candidatures et leur statut en temps réel.",
+    accent: "lime",
+  },
+  {
     to: "/mentors",
     icon: Users,
     label: "Trouver un mentor",
     desc: "Un pro de ton secteur pour te guider dans ta carrière.",
-    accent: "lime",
+    accent: "cyan",
   },
   {
     to: "/evenements",
     icon: CalendarDays,
     label: "Événements",
     desc: "Forums entreprises, conférences et soirées networking.",
-    accent: "cyan",
+    accent: "amber",
   },
   {
     to: "/bons-plans",
     icon: Gift,
     label: "Bons Plans",
     desc: "Réductions et codes promo exclusifs pour les étudiants.",
-    accent: "amber",
+    accent: "rose",
   },
 ];
 
