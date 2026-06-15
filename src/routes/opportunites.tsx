@@ -152,6 +152,7 @@ function OpportunitesPage() {
           <nav className="hidden sm:flex items-center gap-6 text-sm text-mute">
             <Link to="/" className="hover:text-white transition-colors">Accueil</Link>
             <Link to="/opportunites" className="text-white font-medium">Opportunités</Link>
+            <Link to="/mentors" className="hover:text-white transition-colors">Mentors</Link>
             <Link to="/profil" className="hover:text-white transition-colors">Mon profil</Link>
           </nav>
           <Link

@@ -105,6 +105,7 @@ function Nav({
           <a href="#bento" className="hover:text-white transition-colors">Concept</a>
           <a href="#vs" className="hover:text-white transition-colors">vs LinkedIn</a>
           <Link to="/opportunites" className="hover:text-white transition-colors">Opportunités</Link>
+          <Link to="/mentors" className="hover:text-white transition-colors">Mentors</Link>
           <a href="#newsletter" className="hover:text-white transition-colors">Newsletter</a>
         </nav>
         <div className="flex items-center gap-3">
