@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { toast } from "sonner";
 import {
   Search,
@@ -9,8 +9,11 @@ import {
   Users,
   SlidersHorizontal,
   Star,
+  Loader2,
 } from "lucide-react";
 import { AppNav } from "@/components/AppNav";
+import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/mentors")({
   head: () => ({

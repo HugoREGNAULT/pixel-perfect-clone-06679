@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { toast } from "sonner";
 import {
   MapPin,
@@ -10,8 +10,11 @@ import {
   Briefcase,
   Check,
   SlidersHorizontal,
+  Loader2,
 } from "lucide-react";
 import { AppNav } from "@/components/AppNav";
+import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/opportunites")({
   head: () => ({
@@ -40,37 +43,24 @@ interface Offer {
   applyUrl?: string;
 }
 
-/* -------------------------------------------------------------------- data */
+/* -------------------------------------------------------------------- db → model */
 
-const OFFERS: Offer[] = [
-  { id: "1",  title: "UX Designer",               company: "Notion",          city: "Paris",     remote: true,  type: "stage",       sector: "Tech",       postedAt: "2026-06-13", tags: ["Figma", "User research"] },
-  { id: "2",  title: "Développeur·se React",       company: "Alan",            city: "Paris",     remote: true,  type: "alternance",  sector: "Tech",       postedAt: "2026-06-12", tags: ["React", "TypeScript"] },
-  { id: "3",  title: "Chef de projet Marketing",   company: "Doctolib",        city: "Paris",     remote: false, type: "stage",       sector: "Marketing",  postedAt: "2026-06-10", tags: ["SEO", "Analytics"] },
-  { id: "4",  title: "Data Analyst",               company: "BlaBlaCar",       city: "Paris",     remote: true,  type: "stage",       sector: "Tech",       postedAt: "2026-06-08", tags: ["SQL", "Python"] },
-  { id: "5",  title: "Chargé·e de Communication",  company: "Mano Mano",       city: "Bordeaux",  remote: false, type: "alternance",  sector: "Marketing",  postedAt: "2026-06-11", tags: ["Réseaux sociaux", "Canva"] },
-  { id: "6",  title: "Business Developer",         company: "Pennylane",       city: "Lyon",      remote: false, type: "job",         sector: "Finance",    postedAt: "2026-06-09", tags: ["B2B", "SaaS"] },
-  { id: "7",  title: "Product Manager Junior",     company: "Swile",           city: "Paris",     remote: true,  type: "job",         sector: "Tech",       postedAt: "2026-06-07", tags: ["Agile", "Roadmap"] },
-  { id: "8",  title: "Graphiste Motion Design",    company: "Brut.",           city: "Paris",     remote: false, type: "stage",       sector: "Médias",     postedAt: "2026-06-14", tags: ["After Effects", "Premiere"] },
-  { id: "9",  title: "Développeur·se Full Stack",  company: "Qonto",           city: "Paris",     remote: true,  type: "alternance",  sector: "Tech",       postedAt: "2026-06-06", tags: ["Ruby", "Vue.js"] },
-  { id: "10", title: "Analyste Financier·ère",     company: "BNP Paribas",     city: "Paris",     remote: false, type: "stage",       sector: "Finance",    postedAt: "2026-06-05", tags: ["Excel", "Modélisation"] },
-  { id: "11", title: "Consultant·e Junior",        company: "McKinsey",        city: "Paris",     remote: false, type: "job",         sector: "Conseil",    postedAt: "2026-06-04", tags: ["Stratégie", "PowerPoint"] },
-  { id: "12", title: "Brand Content Manager",      company: "LVMH",            city: "Paris",     remote: false, type: "alternance",  sector: "Marketing",  postedAt: "2026-06-03", tags: ["Rédaction", "Luxe"] },
-  { id: "13", title: "Ingénieur·e DevOps",         company: "OVHcloud",        city: "Lille",     remote: true,  type: "job",         sector: "Tech",       postedAt: "2026-06-02", tags: ["Kubernetes", "CI/CD"] },
-  { id: "14", title: "Chargé·e RH",               company: "Decathlon",       city: "Lille",     remote: false, type: "alternance",  sector: "RH",         postedAt: "2026-06-01", tags: ["Recrutement", "SIRH"] },
-  { id: "15", title: "Designer Produit",           company: "Contentsquare",   city: "Lyon",      remote: true,  type: "stage",       sector: "Tech",       postedAt: "2026-05-30", tags: ["Figma", "Prototypage"] },
-  { id: "16", title: "Développeur·se Mobile",      company: "Lydia",           city: "Paris",     remote: true,  type: "alternance",  sector: "Tech",       postedAt: "2026-05-29", tags: ["Flutter", "Kotlin"] },
-  { id: "17", title: "Growth Hacker",              company: "Payfit",          city: "Bordeaux",  remote: true,  type: "stage",       sector: "Marketing",  postedAt: "2026-05-28", tags: ["A/B testing", "CRM"] },
-  { id: "18", title: "Ingénieur·e Data Science",   company: "Enedis",          city: "Lyon",      remote: false, type: "job",         sector: "Énergie",    postedAt: "2026-05-27", tags: ["Python", "Machine Learning"] },
-  { id: "19", title: "Responsable E-commerce",     company: "Cdiscount",       city: "Bordeaux",  remote: false, type: "job",         sector: "E-commerce", postedAt: "2026-05-26", tags: ["Shopify", "Analytics"] },
-  { id: "20", title: "Coordinateur·rice Projets",  company: "Médecins Sans Frontières", city: "Paris", remote: false, type: "stage", sector: "Éducation", postedAt: "2026-06-15", tags: ["Gestion de projet", "ONG"] },
-  { id: "21", title: "Ingénieur·e Logiciel",       company: "Withings",        city: "Nantes",    remote: true,  type: "job",         sector: "Tech",       postedAt: "2026-06-14", tags: ["C++", "Embedded"] },
-  { id: "22", title: "Chargé·e SEO & Content",     company: "Leboncoin",       city: "Paris",     remote: true,  type: "alternance",  sector: "Marketing",  postedAt: "2026-06-13", tags: ["SEO", "WordPress"] },
-  { id: "23", title: "Avocat·e Junior",            company: "Peugeot",         city: "Paris",     remote: false, type: "stage",       sector: "Conseil",    postedAt: "2026-06-11", tags: ["Droit des affaires"] },
-  { id: "24", title: "UI Designer",                company: "Deezer",          city: "Paris",     remote: true,  type: "stage",       sector: "Médias",     postedAt: "2026-06-10", tags: ["Figma", "Design System"] },
-];
+type DbOffer = Tables<"offres">;
 
-const SECTORS = [...new Set(OFFERS.map((o) => o.sector))].sort();
-const CITIES  = [...new Set(OFFERS.map((o) => o.city))].sort();
+function toOffer(row: DbOffer): Offer {
+  return {
+    id: row.id,
+    title: row.title,
+    company: row.company,
+    city: row.city,
+    remote: row.remote,
+    type: row.type as ContractType,
+    sector: row.sector,
+    postedAt: row.posted_at,
+    tags: row.tags,
+    applyUrl: row.apply_url ?? undefined,
+  };
+}
 
 const TYPE_LABELS: Record<ContractType | "tous", string> = {
   tous: "Tous",
