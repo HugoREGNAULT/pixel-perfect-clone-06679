@@ -21,6 +21,7 @@ import { Route as MentorsRouteImport } from './routes/mentors'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as EvenementsRouteImport } from './routes/evenements'
+import { Route as CguRouteImport } from './routes/cgu'
 import { Route as BonsPlansRouteImport } from './routes/bons-plans'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -94,6 +95,11 @@ const EvenementsRoute = EvenementsRouteImport.update({
   path: '/evenements',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CguRoute = CguRouteImport.update({
+  id: '/cgu',
+  path: '/cgu',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BonsPlansRoute = BonsPlansRouteImport.update({
   id: '/bons-plans',
   path: '/bons-plans',
@@ -159,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/bons-plans': typeof BonsPlansRoute
+  '/cgu': typeof CguRoute
   '/evenements': typeof EvenementsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -184,6 +191,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/bons-plans': typeof BonsPlansRoute
+  '/cgu': typeof CguRoute
   '/evenements': typeof EvenementsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/bons-plans': typeof BonsPlansRoute
+  '/cgu': typeof CguRoute
   '/evenements': typeof EvenementsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -238,6 +247,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/bons-plans'
+    | '/cgu'
     | '/evenements'
     | '/forgot-password'
     | '/login'
@@ -263,6 +273,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/bons-plans'
+    | '/cgu'
     | '/evenements'
     | '/forgot-password'
     | '/login'
@@ -289,6 +300,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/bons-plans'
+    | '/cgu'
     | '/evenements'
     | '/forgot-password'
     | '/login'
@@ -316,6 +328,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BonsPlansRoute: typeof BonsPlansRoute
+  CguRoute: typeof CguRoute
   EvenementsRoute: typeof EvenementsRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
@@ -423,6 +436,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EvenementsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cgu': {
+      id: '/cgu'
+      path: '/cgu'
+      fullPath: '/cgu'
+      preLoaderRoute: typeof CguRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/bons-plans': {
       id: '/bons-plans'
       path: '/bons-plans'
@@ -526,6 +546,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   BonsPlansRoute: BonsPlansRoute,
+  CguRoute: CguRoute,
   EvenementsRoute: EvenementsRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
