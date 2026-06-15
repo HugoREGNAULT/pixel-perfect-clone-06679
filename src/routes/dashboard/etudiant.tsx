@@ -11,6 +11,7 @@ import { SubscriptionSection } from "@/components/SubscriptionSection";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { getOrCreateCode, countReferrals, REWARDS } from "@/lib/referral";
+import { searchJobsForProfile, type JobOffer } from "@/lib/job-search";
 
 export const Route = createFileRoute("/dashboard/etudiant")({
   head: () => ({ meta: [{ title: "Dashboard — Springr" }] }),
@@ -112,6 +113,84 @@ function companyGradient(name: string) {
 function daysSince(d: string) { return Math.floor((Date.now() - new Date(d).getTime()) / 86_400_000); }
 function formatDate(d: string) {
   return new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long" }).format(new Date(d));
+}
+
+// ── Section 0 — Offres pour toi (real API) ───────────────────────────────────
+
+const JOB_TYPE_COLORS: Record<string, string> = {
+  stage:      "border-violet/30 bg-violet/10 text-violet-soft",
+  alternance: "border-lime/30  bg-lime/10   text-lime",
+  cdi:        "border-blue-400/30 bg-blue-400/10 text-blue-300",
+  cdd:        "border-amber-400/30 bg-amber-400/10 text-amber-300",
+  job:        "border-pink-400/30 bg-pink-400/10 text-pink-300",
+};
+const JOB_TYPE_LABELS: Record<string, string> = {
+  stage: "Stage", alternance: "Alternance", cdi: "CDI", cdd: "CDD", job: "Job",
+};
+const SOURCE_LABELS: Record<string, string> = {
+  france_travail: "France Travail", bonne_alternance: "La Bonne Alternance", local: "Springr",
+};
+
+function ProfileOffresSection() {
+  const [offers,  setOffers]  = useState<JobOffer[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) { setLoading(false); return; }
+      const meta = session.user.user_metadata ?? {};
+      const matched = await searchJobsForProfile(meta);
+      setOffers(matched);
+      setLoading(false);
+    });
+  }, []);
+
+  if (!loading && offers.length === 0) return null;
+
+  return (
+    <section className="mt-8">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <p className="text-xs font-mono uppercase tracking-widest text-mute mb-0.5">En direct · France Travail</p>
+          <h2 className="font-display font-bold text-lg">Offres pour toi</h2>
+        </div>
+        <Link to="/opportunites"
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3.5 py-1.5 text-xs text-mute hover:text-white hover:border-white/25 transition-all">
+          Tout voir <ArrowUpRight className="size-3.5" />
+        </Link>
+      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="size-4 text-mute animate-spin" />
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {offers.map((o) => (
+            <a key={o.id} href={o.applyUrl || "#"} target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 hover:border-lime/30 hover:bg-white/[0.04] transition-all group">
+              <div className={`size-9 rounded-lg bg-gradient-to-br ${companyGradient(o.company)} flex items-center justify-center font-bold text-sm text-white shrink-0`}>
+                {o.company[0]}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="font-medium text-sm truncate group-hover:text-lime transition-colors">{o.title}</div>
+                <div className="flex items-center gap-1.5 text-[10px] text-mute mt-0.5 flex-wrap">
+                  <span>{o.company}</span>
+                  {o.city && <><span>·</span><MapPin className="size-2.5"/><span>{o.city}</span></>}
+                </div>
+              </div>
+              <div className="flex flex-col items-end gap-1 shrink-0">
+                <span className={`text-[10px] border rounded-full px-1.5 py-0.5 font-mono ${JOB_TYPE_COLORS[o.type] ?? "border-white/15 text-mute"}`}>
+                  {JOB_TYPE_LABELS[o.type] ?? o.type}
+                </span>
+                <span className="text-[10px] text-mute">{SOURCE_LABELS[o.source] ?? o.source}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+  );
 }
 
 // ── Section 1 — Matching du jour ─────────────────────────────────────────────
@@ -677,6 +756,7 @@ function EtudiantDashboard() {
       }}
       cards={CARDS}
     >
+      <ProfileOffresSection />
       <MatchingSection />
       <CandidaturesSection />
       <BonsPlansSection />
