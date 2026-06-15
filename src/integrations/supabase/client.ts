@@ -2,16 +2,25 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
+// Primary project: ujjpfcdcyvdliofvadul (all data tables live here)
+// Set VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY in .env or Lovable project settings.
+const _FALLBACK_URL = "https://ujjpfcdcyvdliofvadul.supabase.co";
+const _FALLBACK_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqanBmY2RjeXZkbGlvZnZhZHVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1MTQ1MjQsImV4cCI6MjA5NzA5MDUyNH0.U44NEYkYgX7WJiMTo8GgkQbRfqzi074TcJozk3Zc5Mw";
+
 function createSupabaseClient() {
   // Use import.meta.env for client-side (Vite build-time replacement)
   // Fall back to process.env for SSR (server-side rendering)
-  const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+  const SUPABASE_URL =
+    import.meta.env.VITE_SUPABASE_URL ||
+    process.env.SUPABASE_URL ||
+    _FALLBACK_URL;
   // Accept standard Supabase naming (VITE_SUPABASE_ANON_KEY) or Lovable naming (VITE_SUPABASE_PUBLISHABLE_KEY)
   const SUPABASE_PUBLISHABLE_KEY =
     import.meta.env.VITE_SUPABASE_ANON_KEY ||
     import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
     process.env.SUPABASE_ANON_KEY ||
-    process.env.SUPABASE_PUBLISHABLE_KEY;
+    process.env.SUPABASE_PUBLISHABLE_KEY ||
+    _FALLBACK_KEY;
 
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
     const missing = [

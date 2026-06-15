@@ -24,6 +24,7 @@ import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as EvenementsRouteImport } from './routes/evenements'
+import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
 import { Route as CguRouteImport } from './routes/cgu'
 import { Route as CancelRouteImport } from './routes/cancel'
@@ -33,6 +34,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EcolesIndexRouteImport } from './routes/ecoles/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as BrandIndexRouteImport } from './routes/brand/index'
 import { Route as FounderSuccessRouteImport } from './routes/founder.success'
 import { Route as EcolesSlugRouteImport } from './routes/ecoles/$slug'
 import { Route as DashboardRecruteurRouteImport } from './routes/dashboard/recruteur'
@@ -40,6 +42,7 @@ import { Route as DashboardLyceenRouteImport } from './routes/dashboard/lyceen'
 import { Route as DashboardEtudiantRouteImport } from './routes/dashboard/etudiant'
 import { Route as DashboardEcoleRouteImport } from './routes/dashboard/ecole'
 import { Route as DashboardDiplomeRouteImport } from './routes/dashboard/diplome'
+import { Route as BrandAssetsRouteImport } from './routes/brand/assets'
 import { Route as AdminBonsPlansRouteImport } from './routes/admin/bons-plans'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
@@ -120,6 +123,11 @@ const EvenementsRoute = EvenementsRouteImport.update({
   path: '/evenements',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConfidentialiteRoute = ConfidentialiteRouteImport.update({
   id: '/confidentialite',
   path: '/confidentialite',
@@ -164,6 +172,11 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/dashboard/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrandIndexRoute = BrandIndexRouteImport.update({
+  id: '/brand/',
+  path: '/brand/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FounderSuccessRoute = FounderSuccessRouteImport.update({
   id: '/founder/success',
   path: '/founder/success',
@@ -199,6 +212,11 @@ const DashboardDiplomeRoute = DashboardDiplomeRouteImport.update({
   path: '/dashboard/diplome',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrandAssetsRoute = BrandAssetsRouteImport.update({
+  id: '/brand/assets',
+  path: '/brand/assets',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBonsPlansRoute = AdminBonsPlansRouteImport.update({
   id: '/admin/bons-plans',
   path: '/admin/bons-plans',
@@ -229,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/cancel': typeof CancelRoute
   '/cgu': typeof CguRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -246,6 +265,7 @@ export interface FileRoutesByFullPath {
   '/tarifs': typeof TarifsRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/admin/bons-plans': typeof AdminBonsPlansRoute
+  '/brand/assets': typeof BrandAssetsRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
@@ -253,6 +273,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/brand/': typeof BrandIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/ecoles/': typeof EcolesIndexRoute
   '/api/public/payments/stripe-webhook': typeof ApiPublicPaymentsStripeWebhookRoute
@@ -265,6 +286,7 @@ export interface FileRoutesByTo {
   '/cancel': typeof CancelRoute
   '/cgu': typeof CguRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -282,6 +304,7 @@ export interface FileRoutesByTo {
   '/tarifs': typeof TarifsRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/admin/bons-plans': typeof AdminBonsPlansRoute
+  '/brand/assets': typeof BrandAssetsRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
@@ -289,6 +312,7 @@ export interface FileRoutesByTo {
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/brand': typeof BrandIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/ecoles': typeof EcolesIndexRoute
   '/api/public/payments/stripe-webhook': typeof ApiPublicPaymentsStripeWebhookRoute
@@ -303,6 +327,7 @@ export interface FileRoutesById {
   '/cancel': typeof CancelRoute
   '/cgu': typeof CguRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -320,6 +345,7 @@ export interface FileRoutesById {
   '/tarifs': typeof TarifsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/admin/bons-plans': typeof AdminBonsPlansRoute
+  '/brand/assets': typeof BrandAssetsRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
@@ -327,6 +353,7 @@ export interface FileRoutesById {
   '/dashboard/recruteur': typeof DashboardRecruteurRoute
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
+  '/brand/': typeof BrandIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/ecoles/': typeof EcolesIndexRoute
   '/api/public/payments/stripe-webhook': typeof ApiPublicPaymentsStripeWebhookRoute
@@ -341,6 +368,7 @@ export interface FileRouteTypes {
     | '/cancel'
     | '/cgu'
     | '/confidentialite'
+    | '/cookies'
     | '/evenements'
     | '/forgot-password'
     | '/login'
@@ -358,6 +386,7 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/admin'
     | '/admin/bons-plans'
+    | '/brand/assets'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
     | '/dashboard/etudiant'
@@ -365,6 +394,7 @@ export interface FileRouteTypes {
     | '/dashboard/recruteur'
     | '/ecoles/$slug'
     | '/founder/success'
+    | '/brand/'
     | '/dashboard/'
     | '/ecoles/'
     | '/api/public/payments/stripe-webhook'
@@ -377,6 +407,7 @@ export interface FileRouteTypes {
     | '/cancel'
     | '/cgu'
     | '/confidentialite'
+    | '/cookies'
     | '/evenements'
     | '/forgot-password'
     | '/login'
@@ -394,6 +425,7 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/admin'
     | '/admin/bons-plans'
+    | '/brand/assets'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
     | '/dashboard/etudiant'
@@ -401,6 +433,7 @@ export interface FileRouteTypes {
     | '/dashboard/recruteur'
     | '/ecoles/$slug'
     | '/founder/success'
+    | '/brand'
     | '/dashboard'
     | '/ecoles'
     | '/api/public/payments/stripe-webhook'
@@ -414,6 +447,7 @@ export interface FileRouteTypes {
     | '/cancel'
     | '/cgu'
     | '/confidentialite'
+    | '/cookies'
     | '/evenements'
     | '/forgot-password'
     | '/login'
@@ -431,6 +465,7 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/_authenticated/admin'
     | '/admin/bons-plans'
+    | '/brand/assets'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
     | '/dashboard/etudiant'
@@ -438,6 +473,7 @@ export interface FileRouteTypes {
     | '/dashboard/recruteur'
     | '/ecoles/$slug'
     | '/founder/success'
+    | '/brand/'
     | '/dashboard/'
     | '/ecoles/'
     | '/api/public/payments/stripe-webhook'
@@ -452,6 +488,7 @@ export interface RootRouteChildren {
   CancelRoute: typeof CancelRoute
   CguRoute: typeof CguRoute
   ConfidentialiteRoute: typeof ConfidentialiteRoute
+  CookiesRoute: typeof CookiesRoute
   EvenementsRoute: typeof EvenementsRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
@@ -468,6 +505,7 @@ export interface RootRouteChildren {
   SuccessRoute: typeof SuccessRoute
   TarifsRoute: typeof TarifsRoute
   AdminBonsPlansRoute: typeof AdminBonsPlansRoute
+  BrandAssetsRoute: typeof BrandAssetsRoute
   DashboardDiplomeRoute: typeof DashboardDiplomeRoute
   DashboardEcoleRoute: typeof DashboardEcoleRoute
   DashboardEtudiantRoute: typeof DashboardEtudiantRoute
@@ -475,6 +513,7 @@ export interface RootRouteChildren {
   DashboardRecruteurRoute: typeof DashboardRecruteurRoute
   EcolesSlugRoute: typeof EcolesSlugRoute
   FounderSuccessRoute: typeof FounderSuccessRoute
+  BrandIndexRoute: typeof BrandIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   EcolesIndexRoute: typeof EcolesIndexRoute
   ApiPublicPaymentsStripeWebhookRoute: typeof ApiPublicPaymentsStripeWebhookRoute
@@ -588,6 +627,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EvenementsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/confidentialite': {
       id: '/confidentialite'
       path: '/confidentialite'
@@ -651,6 +697,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brand/': {
+      id: '/brand/'
+      path: '/brand'
+      fullPath: '/brand/'
+      preLoaderRoute: typeof BrandIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/founder/success': {
       id: '/founder/success'
       path: '/founder/success'
@@ -698,6 +751,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/diplome'
       fullPath: '/dashboard/diplome'
       preLoaderRoute: typeof DashboardDiplomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/brand/assets': {
+      id: '/brand/assets'
+      path: '/brand/assets'
+      fullPath: '/brand/assets'
+      preLoaderRoute: typeof BrandAssetsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/bons-plans': {
@@ -750,6 +810,7 @@ const rootRouteChildren: RootRouteChildren = {
   CancelRoute: CancelRoute,
   CguRoute: CguRoute,
   ConfidentialiteRoute: ConfidentialiteRoute,
+  CookiesRoute: CookiesRoute,
   EvenementsRoute: EvenementsRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
@@ -766,6 +827,7 @@ const rootRouteChildren: RootRouteChildren = {
   SuccessRoute: SuccessRoute,
   TarifsRoute: TarifsRoute,
   AdminBonsPlansRoute: AdminBonsPlansRoute,
+  BrandAssetsRoute: BrandAssetsRoute,
   DashboardDiplomeRoute: DashboardDiplomeRoute,
   DashboardEcoleRoute: DashboardEcoleRoute,
   DashboardEtudiantRoute: DashboardEtudiantRoute,
@@ -773,6 +835,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRecruteurRoute: DashboardRecruteurRoute,
   EcolesSlugRoute: EcolesSlugRoute,
   FounderSuccessRoute: FounderSuccessRoute,
+  BrandIndexRoute: BrandIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   EcolesIndexRoute: EcolesIndexRoute,
   ApiPublicPaymentsStripeWebhookRoute: ApiPublicPaymentsStripeWebhookRoute,
