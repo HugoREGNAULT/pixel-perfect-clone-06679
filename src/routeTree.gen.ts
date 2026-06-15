@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as RecruteursRouteImport } from './routes/recruteurs'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
 import { Route as MentorsRouteImport } from './routes/mentors'
@@ -26,6 +27,11 @@ import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/publi
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecruteursRoute = RecruteursRouteImport.update({
+  id: '/recruteurs',
+  path: '/recruteurs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfilRoute = ProfilRouteImport.update({
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/mentors': typeof MentorsRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
+  '/recruteurs': typeof RecruteursRoute
   '/signup': typeof SignupRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/founder/success': typeof FounderSuccessRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/mentors': typeof MentorsRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
+  '/recruteurs': typeof RecruteursRoute
   '/signup': typeof SignupRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/founder/success': typeof FounderSuccessRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/mentors': typeof MentorsRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
+  '/recruteurs': typeof RecruteursRoute
   '/signup': typeof SignupRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/founder/success': typeof FounderSuccessRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/mentors'
     | '/opportunites'
     | '/profil'
+    | '/recruteurs'
     | '/signup'
     | '/admin'
     | '/founder/success'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/mentors'
     | '/opportunites'
     | '/profil'
+    | '/recruteurs'
     | '/signup'
     | '/admin'
     | '/founder/success'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/mentors'
     | '/opportunites'
     | '/profil'
+    | '/recruteurs'
     | '/signup'
     | '/_authenticated/admin'
     | '/founder/success'
@@ -189,6 +201,7 @@ export interface RootRouteChildren {
   MentorsRoute: typeof MentorsRoute
   OpportunitesRoute: typeof OpportunitesRoute
   ProfilRoute: typeof ProfilRoute
+  RecruteursRoute: typeof RecruteursRoute
   SignupRoute: typeof SignupRoute
   FounderSuccessRoute: typeof FounderSuccessRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
@@ -201,6 +214,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recruteurs': {
+      id: '/recruteurs'
+      path: '/recruteurs'
+      fullPath: '/recruteurs'
+      preLoaderRoute: typeof RecruteursRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profil': {
@@ -311,6 +331,7 @@ const rootRouteChildren: RootRouteChildren = {
   MentorsRoute: MentorsRoute,
   OpportunitesRoute: OpportunitesRoute,
   ProfilRoute: ProfilRoute,
+  RecruteursRoute: RecruteursRoute,
   SignupRoute: SignupRoute,
   FounderSuccessRoute: FounderSuccessRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
