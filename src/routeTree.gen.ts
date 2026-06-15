@@ -34,6 +34,7 @@ import { Route as DashboardLyceenRouteImport } from './routes/dashboard/lyceen'
 import { Route as DashboardEtudiantRouteImport } from './routes/dashboard/etudiant'
 import { Route as DashboardEcoleRouteImport } from './routes/dashboard/ecole'
 import { Route as DashboardDiplomeRouteImport } from './routes/dashboard/diplome'
+import { Route as AdminBonsPlansRouteImport } from './routes/admin/bons-plans'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
@@ -161,6 +162,11 @@ const DashboardDiplomeRoute = DashboardDiplomeRouteImport.update({
   path: '/dashboard/diplome',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminBonsPlansRoute = AdminBonsPlansRouteImport.update({
+  id: '/admin/bons-plans',
+  path: '/admin/bons-plans',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -193,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/admin/bons-plans': typeof AdminBonsPlansRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
@@ -221,6 +228,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/admin/bons-plans': typeof AdminBonsPlansRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
@@ -251,6 +259,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/admin/bons-plans': typeof AdminBonsPlansRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
   '/dashboard/etudiant': typeof DashboardEtudiantRoute
@@ -281,6 +290,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/admin'
+    | '/admin/bons-plans'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
     | '/dashboard/etudiant'
@@ -309,6 +319,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/admin'
+    | '/admin/bons-plans'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
     | '/dashboard/etudiant'
@@ -338,6 +349,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/_authenticated/admin'
+    | '/admin/bons-plans'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
     | '/dashboard/etudiant'
@@ -367,6 +379,7 @@ export interface RootRouteChildren {
   RecruteursRoute: typeof RecruteursRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
+  AdminBonsPlansRoute: typeof AdminBonsPlansRoute
   DashboardDiplomeRoute: typeof DashboardDiplomeRoute
   DashboardEcoleRoute: typeof DashboardEcoleRoute
   DashboardEtudiantRoute: typeof DashboardEtudiantRoute
@@ -553,6 +566,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardDiplomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/bons-plans': {
+      id: '/admin/bons-plans'
+      path: '/admin/bons-plans'
+      fullPath: '/admin/bons-plans'
+      preLoaderRoute: typeof AdminBonsPlansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -601,6 +621,7 @@ const rootRouteChildren: RootRouteChildren = {
   RecruteursRoute: RecruteursRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
+  AdminBonsPlansRoute: AdminBonsPlansRoute,
   DashboardDiplomeRoute: DashboardDiplomeRoute,
   DashboardEcoleRoute: DashboardEcoleRoute,
   DashboardEtudiantRoute: DashboardEtudiantRoute,
