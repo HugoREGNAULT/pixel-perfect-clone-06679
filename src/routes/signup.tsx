@@ -586,12 +586,13 @@ function NavButtons({ onBack, onNext, isLast, canProceed, loading }: {
 
 function SignupPage() {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<ProfileType | null>(null);
-  const [step, setStep]       = useState(0);
-  const [data, setData]       = useState<Data>({ sectors: [], companySeeks: [] });
-  const [dir, setDir]         = useState<"forward" | "back">("forward");
-  const [animKey, setAnimKey] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [profile, setProfile]   = useState<ProfileType | null>(null);
+  const [step, setStep]         = useState(0);
+  const [data, setData]         = useState<Data>({ sectors: [], companySeeks: [] });
+  const [dir, setDir]           = useState<"forward" | "back">("forward");
+  const [animKey, setAnimKey]   = useState(0);
+  const [loading, setLoading]   = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {

@@ -14,6 +14,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecruteursRouteImport } from './routes/recruteurs'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
+import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
 import { Route as MentorsRouteImport } from './routes/mentors'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
@@ -54,6 +55,11 @@ const ProfilRoute = ProfilRouteImport.update({
 const OpportunitesRoute = OpportunitesRouteImport.update({
   id: '/opportunites',
   path: '/opportunites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MesCandidaturesRoute = MesCandidaturesRouteImport.update({
+  id: '/mes-candidatures',
+  path: '/mes-candidatures',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MentorsRoute = MentorsRouteImport.update({
@@ -145,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
+  '/mes-candidatures': typeof MesCandidaturesRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
   '/recruteurs': typeof RecruteursRoute
@@ -167,6 +174,7 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
+  '/mes-candidatures': typeof MesCandidaturesRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
   '/recruteurs': typeof RecruteursRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
+  '/mes-candidatures': typeof MesCandidaturesRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
   '/recruteurs': typeof RecruteursRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/mentors'
+    | '/mes-candidatures'
     | '/opportunites'
     | '/profil'
     | '/recruteurs'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/mentors'
+    | '/mes-candidatures'
     | '/opportunites'
     | '/profil'
     | '/recruteurs'
@@ -260,6 +271,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/mentors'
+    | '/mes-candidatures'
     | '/opportunites'
     | '/profil'
     | '/recruteurs'
@@ -284,6 +296,7 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   MentorsRoute: typeof MentorsRoute
+  MesCandidaturesRoute: typeof MesCandidaturesRoute
   OpportunitesRoute: typeof OpportunitesRoute
   ProfilRoute: typeof ProfilRoute
   RecruteursRoute: typeof RecruteursRoute
@@ -333,6 +346,13 @@ declare module '@tanstack/react-router' {
       path: '/opportunites'
       fullPath: '/opportunites'
       preLoaderRoute: typeof OpportunitesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mes-candidatures': {
+      id: '/mes-candidatures'
+      path: '/mes-candidatures'
+      fullPath: '/mes-candidatures'
+      preLoaderRoute: typeof MesCandidaturesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mentors': {
@@ -470,6 +490,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   MentorsRoute: MentorsRoute,
+  MesCandidaturesRoute: MesCandidaturesRoute,
   OpportunitesRoute: OpportunitesRoute,
   ProfilRoute: ProfilRoute,
   RecruteursRoute: RecruteursRoute,
