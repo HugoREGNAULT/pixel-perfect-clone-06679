@@ -14,6 +14,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecruteursRouteImport } from './routes/recruteurs'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as OpportunitesRouteImport } from './routes/opportunites'
+import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
 import { Route as MentorsRouteImport } from './routes/mentors'
 import { Route as LoginRouteImport } from './routes/login'
@@ -55,6 +56,11 @@ const ProfilRoute = ProfilRouteImport.update({
 const OpportunitesRoute = OpportunitesRouteImport.update({
   id: '/opportunites',
   path: '/opportunites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MessagesRoute = MessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MesCandidaturesRoute = MesCandidaturesRouteImport.update({
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
+  '/messages': typeof MessagesRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
   '/recruteurs': typeof RecruteursRoute
@@ -175,6 +182,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
+  '/messages': typeof MessagesRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
   '/recruteurs': typeof RecruteursRoute
@@ -200,6 +208,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
+  '/messages': typeof MessagesRoute
   '/opportunites': typeof OpportunitesRoute
   '/profil': typeof ProfilRoute
   '/recruteurs': typeof RecruteursRoute
@@ -225,6 +234,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/mentors'
     | '/mes-candidatures'
+    | '/messages'
     | '/opportunites'
     | '/profil'
     | '/recruteurs'
@@ -248,6 +258,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/mentors'
     | '/mes-candidatures'
+    | '/messages'
     | '/opportunites'
     | '/profil'
     | '/recruteurs'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/mentors'
     | '/mes-candidatures'
+    | '/messages'
     | '/opportunites'
     | '/profil'
     | '/recruteurs'
@@ -297,6 +309,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   MentorsRoute: typeof MentorsRoute
   MesCandidaturesRoute: typeof MesCandidaturesRoute
+  MessagesRoute: typeof MessagesRoute
   OpportunitesRoute: typeof OpportunitesRoute
   ProfilRoute: typeof ProfilRoute
   RecruteursRoute: typeof RecruteursRoute
@@ -346,6 +359,13 @@ declare module '@tanstack/react-router' {
       path: '/opportunites'
       fullPath: '/opportunites'
       preLoaderRoute: typeof OpportunitesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mes-candidatures': {
@@ -491,6 +511,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   MentorsRoute: MentorsRoute,
   MesCandidaturesRoute: MesCandidaturesRoute,
+  MessagesRoute: MessagesRoute,
   OpportunitesRoute: OpportunitesRoute,
   ProfilRoute: ProfilRoute,
   RecruteursRoute: RecruteursRoute,
