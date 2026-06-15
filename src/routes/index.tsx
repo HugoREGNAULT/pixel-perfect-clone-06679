@@ -15,12 +15,21 @@ import {
   X,
   GraduationCap,
   LogOut,
+  Menu,
 } from "lucide-react";
 import { toast } from "sonner";
 import { subscribeNewsletter } from "@/lib/newsletter.functions";
 import { FounderCheckoutDialog } from "@/components/FounderCheckoutDialog";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
+
+const NAV_LINKS = [
+  { to: "/opportunites", label: "Opportunités" },
+  { to: "/mentors",      label: "Mentors"      },
+  { to: "/bons-plans",   label: "Bons Plans"   },
+  { to: "/evenements",   label: "Événements"   },
+  { to: "/recruteurs",   label: "Recruteurs"   },
+] as const;
 
 export const Route = createFileRoute("/")({
   head: () => ({
