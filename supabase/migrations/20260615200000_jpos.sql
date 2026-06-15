@@ -26,6 +26,7 @@ CREATE INDEX IF NOT EXISTS jpos_ville_idx  ON public.jpos (ville);
 
 -- RLS
 ALTER TABLE public.jpos ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "jpos_select_all" ON public.jpos;
 CREATE POLICY "jpos_select_all"  ON public.jpos FOR SELECT USING (true);
 
 -- updated_at trigger
@@ -33,6 +34,7 @@ CREATE OR REPLACE FUNCTION public.jpos_set_updated_at()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
 BEGIN NEW.updated_at = now(); RETURN NEW; END;
 $$;
+DROP TRIGGER IF EXISTS jpos_updated_at ON public.jpos;
 CREATE TRIGGER jpos_updated_at
   BEFORE UPDATE ON public.jpos
   FOR EACH ROW EXECUTE FUNCTION public.jpos_set_updated_at();
