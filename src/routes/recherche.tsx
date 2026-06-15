@@ -107,7 +107,7 @@ function RecherchePage() {
       supabase.from("offres").select("*").or(`title.ilike.${pattern},company.ilike.${pattern},sector.ilike.${pattern},city.ilike.${pattern}`).limit(30),
       supabase.from("mentors").select("*").or(`first_name.ilike.${pattern},last_name.ilike.${pattern},company.ilike.${pattern},sector.ilike.${pattern},position.ilike.${pattern}`).limit(20),
       supabase.from("evenements").select("*").or(`title.ilike.${pattern},organizer.ilike.${pattern},city.ilike.${pattern}`).limit(20),
-      supabase.from("bons_plans").select("*").or(`title.ilike.${pattern},description.ilike.${pattern},category.ilike.${pattern}`).limit(10),
+      supabase.from("bons_plans").select("*").eq("actif", true).or(`titre.ilike.${pattern},description.ilike.${pattern},categorie.ilike.${pattern}`).limit(10),
     ]);
 
     const mapped: BaseResult[] = [
@@ -138,10 +138,10 @@ function RecherchePage() {
       })),
       ...(dealsRes.data ?? []).map((d: DbDeal): BaseResult => ({
         id: d.id, kind: "deal",
-        title: d.title,
-        subtitle: d.description ?? "",
-        meta: d.category,
-        badge: d.category,
+        title: d.titre,
+        subtitle: d.description,
+        meta: d.categorie,
+        badge: d.badge_texte || d.categorie,
         badgeCls: "border-amber-400/30 bg-amber-400/10 text-amber-300",
       })),
     ];

@@ -344,33 +344,48 @@ export type Database = {
       bons_plans: {
         Row: {
           id: string
-          title: string
-          description: string | null
-          category: string
-          badge: string | null
-          url: string | null
-          highlight: boolean
+          titre: string
+          description: string
+          categorie: string
+          badge_texte: string
+          badge_couleur: string
+          lien_url: string | null
+          code_promo: string | null
+          valeur_reduction: string | null
+          actif: boolean
+          ordre_affichage: number
           created_at: string
+          updated_at: string
         }
         Insert: {
           id?: string
-          title: string
-          description?: string | null
-          category: string
-          badge?: string | null
-          url?: string | null
-          highlight?: boolean
+          titre: string
+          description?: string
+          categorie: string
+          badge_texte?: string
+          badge_couleur?: string
+          lien_url?: string | null
+          code_promo?: string | null
+          valeur_reduction?: string | null
+          actif?: boolean
+          ordre_affichage?: number
           created_at?: string
+          updated_at?: string
         }
         Update: {
           id?: string
-          title?: string
-          description?: string | null
-          category?: string
-          badge?: string | null
-          url?: string | null
-          highlight?: boolean
+          titre?: string
+          description?: string
+          categorie?: string
+          badge_texte?: string
+          badge_couleur?: string
+          lien_url?: string | null
+          code_promo?: string | null
+          valeur_reduction?: string | null
+          actif?: boolean
+          ordre_affichage?: number
           created_at?: string
+          updated_at?: string
         }
         Relationships: []
       }
