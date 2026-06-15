@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { DASHBOARD_ROUTE } from "@/lib/dashboard";
 import { toast } from "sonner";
 import {
   ArrowUpRight, ArrowLeft, Loader2, Eye, EyeOff,
@@ -594,7 +595,10 @@ function SignupPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate({ to: "/", replace: true });
+      if (!session) return;
+      const role = session.user.user_metadata?.role as string | undefined;
+      const dest = (role && DASHBOARD_ROUTE[role]) ? DASHBOARD_ROUTE[role] : "/";
+      navigate({ to: dest as any, replace: true });
     });
   }, [navigate]);
 
@@ -632,17 +636,23 @@ function SignupPage() {
     if (!profile) return;
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data: authData, error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
           data: buildMetadata(profile, data),
-          emailRedirectTo: `${window.location.origin}/`,
+          emailRedirectTo: `${window.location.origin}/dashboard/${profile === "entreprise" ? "recruteur" : profile}`,
         },
       });
       if (error) throw error;
-      toast.success("Compte créé ! Vérifie ton email pour confirmer.");
-      navigate({ to: "/", replace: true });
+      if (authData.session) {
+        // Email confirmation disabled — user is immediately signed in
+        const dest = DASHBOARD_ROUTE[profile] ?? "/";
+        navigate({ to: dest as any, replace: true });
+      } else {
+        toast.success("Compte créé ! Vérifie ton email pour confirmer ton inscription.");
+        navigate({ to: "/", replace: true });
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erreur");
     } finally {
