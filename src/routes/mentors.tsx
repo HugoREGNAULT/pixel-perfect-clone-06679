@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import {
@@ -10,6 +10,7 @@ import {
   SlidersHorizontal,
   Star,
 } from "lucide-react";
+import { AppNav } from "@/components/AppNav";
 
 export const Route = createFileRoute("/mentors")({
   head: () => ({
@@ -236,26 +237,7 @@ function MentorsPage() {
 
   return (
     <div className="min-h-screen bg-ink text-white">
-      {/* ---- nav ---- */}
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-ink/80 border-b border-white/5">
-        <div className="mx-auto max-w-6xl px-5 h-14 flex items-center justify-between gap-4">
-          <Link to="/" className="font-display font-bold tracking-tight text-lg shrink-0">
-            sprin<span className="text-violet">g</span><span className="text-lime">r.</span>
-          </Link>
-          <nav className="hidden sm:flex items-center gap-6 text-sm text-mute">
-            <Link to="/" className="hover:text-white transition-colors">Accueil</Link>
-            <Link to="/opportunites" className="hover:text-white transition-colors">Opportunités</Link>
-            <Link to="/mentors" className="text-white font-medium">Mentors</Link>
-            <Link to="/profil" className="hover:text-white transition-colors">Mon profil</Link>
-          </nav>
-          <Link
-            to="/signup"
-            className="inline-flex items-center gap-1.5 rounded-full bg-lime px-4 py-1.5 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform shrink-0"
-          >
-            S'inscrire <ArrowUpRight className="size-3.5" />
-          </Link>
-        </div>
-      </header>
+      <AppNav />
 
       <main className="mx-auto max-w-6xl px-5 py-10 pb-24">
         {/* ---- hero ---- */}
