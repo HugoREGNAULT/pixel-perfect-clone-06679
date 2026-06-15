@@ -31,11 +31,13 @@ import { Route as CguRouteImport } from './routes/cgu'
 import { Route as CancelRouteImport } from './routes/cancel'
 import { Route as BonsPlansRouteImport } from './routes/bons-plans'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EcolesIndexRouteImport } from './routes/ecoles/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as BrandIndexRouteImport } from './routes/brand/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as InviteCodeRouteImport } from './routes/invite/$code'
 import { Route as FounderSuccessRouteImport } from './routes/founder.success'
 import { Route as EcolesSlugRouteImport } from './routes/ecoles/$slug'
@@ -45,6 +47,13 @@ import { Route as DashboardEtudiantRouteImport } from './routes/dashboard/etudia
 import { Route as DashboardEcoleRouteImport } from './routes/dashboard/ecole'
 import { Route as DashboardDiplomeRouteImport } from './routes/dashboard/diplome'
 import { Route as BrandAssetsRouteImport } from './routes/brand/assets'
+import { Route as AdminUtilisateursRouteImport } from './routes/admin/utilisateurs'
+import { Route as AdminParametresRouteImport } from './routes/admin/parametres'
+import { Route as AdminPaiementsRouteImport } from './routes/admin/paiements'
+import { Route as AdminOffresRouteImport } from './routes/admin/offres'
+import { Route as AdminModerationRouteImport } from './routes/admin/moderation'
+import { Route as AdminJpoRouteImport } from './routes/admin/jpo'
+import { Route as AdminEcolesRouteImport } from './routes/admin/ecoles'
 import { Route as AdminBonsPlansRouteImport } from './routes/admin/bons-plans'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
@@ -160,6 +169,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -183,6 +197,11 @@ const BrandIndexRoute = BrandIndexRouteImport.update({
   id: '/brand/',
   path: '/brand/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const InviteCodeRoute = InviteCodeRouteImport.update({
   id: '/invite/$code',
@@ -229,10 +248,45 @@ const BrandAssetsRoute = BrandAssetsRouteImport.update({
   path: '/brand/assets',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminUtilisateursRoute = AdminUtilisateursRouteImport.update({
+  id: '/utilisateurs',
+  path: '/utilisateurs',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminParametresRoute = AdminParametresRouteImport.update({
+  id: '/parametres',
+  path: '/parametres',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPaiementsRoute = AdminPaiementsRouteImport.update({
+  id: '/paiements',
+  path: '/paiements',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOffresRoute = AdminOffresRouteImport.update({
+  id: '/offres',
+  path: '/offres',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminModerationRoute = AdminModerationRouteImport.update({
+  id: '/moderation',
+  path: '/moderation',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminJpoRoute = AdminJpoRouteImport.update({
+  id: '/jpo',
+  path: '/jpo',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminEcolesRoute = AdminEcolesRouteImport.update({
+  id: '/ecoles',
+  path: '/ecoles',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminBonsPlansRoute = AdminBonsPlansRouteImport.update({
-  id: '/admin/bons-plans',
-  path: '/admin/bons-plans',
-  getParentRoute: () => rootRouteImport,
+  id: '/bons-plans',
+  path: '/bons-plans',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
@@ -254,6 +308,7 @@ const ApiPublicPaymentsStripeWebhookRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/auth': typeof AuthRoute
   '/bons-plans': typeof BonsPlansRoute
   '/cancel': typeof CancelRoute
@@ -276,8 +331,14 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/success': typeof SuccessRoute
   '/tarifs': typeof TarifsRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/admin/bons-plans': typeof AdminBonsPlansRoute
+  '/admin/ecoles': typeof AdminEcolesRoute
+  '/admin/jpo': typeof AdminJpoRoute
+  '/admin/moderation': typeof AdminModerationRoute
+  '/admin/offres': typeof AdminOffresRoute
+  '/admin/paiements': typeof AdminPaiementsRoute
+  '/admin/parametres': typeof AdminParametresRoute
+  '/admin/utilisateurs': typeof AdminUtilisateursRoute
   '/brand/assets': typeof BrandAssetsRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
@@ -287,6 +348,7 @@ export interface FileRoutesByFullPath {
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
   '/invite/$code': typeof InviteCodeRoute
+  '/admin/': typeof AdminIndexRoute
   '/brand/': typeof BrandIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/ecoles/': typeof EcolesIndexRoute
@@ -317,8 +379,15 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/success': typeof SuccessRoute
   '/tarifs': typeof TarifsRoute
-  '/admin': typeof AuthenticatedAdminRoute
+  '/admin': typeof AdminIndexRoute
   '/admin/bons-plans': typeof AdminBonsPlansRoute
+  '/admin/ecoles': typeof AdminEcolesRoute
+  '/admin/jpo': typeof AdminJpoRoute
+  '/admin/moderation': typeof AdminModerationRoute
+  '/admin/offres': typeof AdminOffresRoute
+  '/admin/paiements': typeof AdminPaiementsRoute
+  '/admin/parametres': typeof AdminParametresRoute
+  '/admin/utilisateurs': typeof AdminUtilisateursRoute
   '/brand/assets': typeof BrandAssetsRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
@@ -338,6 +407,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/bons-plans': typeof BonsPlansRoute
   '/cancel': typeof CancelRoute
@@ -362,6 +432,13 @@ export interface FileRoutesById {
   '/tarifs': typeof TarifsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/admin/bons-plans': typeof AdminBonsPlansRoute
+  '/admin/ecoles': typeof AdminEcolesRoute
+  '/admin/jpo': typeof AdminJpoRoute
+  '/admin/moderation': typeof AdminModerationRoute
+  '/admin/offres': typeof AdminOffresRoute
+  '/admin/paiements': typeof AdminPaiementsRoute
+  '/admin/parametres': typeof AdminParametresRoute
+  '/admin/utilisateurs': typeof AdminUtilisateursRoute
   '/brand/assets': typeof BrandAssetsRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
   '/dashboard/ecole': typeof DashboardEcoleRoute
@@ -371,6 +448,7 @@ export interface FileRoutesById {
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
   '/invite/$code': typeof InviteCodeRoute
+  '/admin/': typeof AdminIndexRoute
   '/brand/': typeof BrandIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/ecoles/': typeof EcolesIndexRoute
@@ -381,6 +459,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/auth'
     | '/bons-plans'
     | '/cancel'
@@ -403,8 +482,14 @@ export interface FileRouteTypes {
     | '/signup'
     | '/success'
     | '/tarifs'
-    | '/admin'
     | '/admin/bons-plans'
+    | '/admin/ecoles'
+    | '/admin/jpo'
+    | '/admin/moderation'
+    | '/admin/offres'
+    | '/admin/paiements'
+    | '/admin/parametres'
+    | '/admin/utilisateurs'
     | '/brand/assets'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
@@ -414,6 +499,7 @@ export interface FileRouteTypes {
     | '/ecoles/$slug'
     | '/founder/success'
     | '/invite/$code'
+    | '/admin/'
     | '/brand/'
     | '/dashboard/'
     | '/ecoles/'
@@ -446,6 +532,13 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/admin'
     | '/admin/bons-plans'
+    | '/admin/ecoles'
+    | '/admin/jpo'
+    | '/admin/moderation'
+    | '/admin/offres'
+    | '/admin/paiements'
+    | '/admin/parametres'
+    | '/admin/utilisateurs'
     | '/brand/assets'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
@@ -464,6 +557,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/admin'
     | '/auth'
     | '/bons-plans'
     | '/cancel'
@@ -488,6 +582,13 @@ export interface FileRouteTypes {
     | '/tarifs'
     | '/_authenticated/admin'
     | '/admin/bons-plans'
+    | '/admin/ecoles'
+    | '/admin/jpo'
+    | '/admin/moderation'
+    | '/admin/offres'
+    | '/admin/paiements'
+    | '/admin/parametres'
+    | '/admin/utilisateurs'
     | '/brand/assets'
     | '/dashboard/diplome'
     | '/dashboard/ecole'
@@ -497,6 +598,7 @@ export interface FileRouteTypes {
     | '/ecoles/$slug'
     | '/founder/success'
     | '/invite/$code'
+    | '/admin/'
     | '/brand/'
     | '/dashboard/'
     | '/ecoles/'
@@ -507,6 +609,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   BonsPlansRoute: typeof BonsPlansRoute
   CancelRoute: typeof CancelRoute
@@ -529,7 +632,6 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   SuccessRoute: typeof SuccessRoute
   TarifsRoute: typeof TarifsRoute
-  AdminBonsPlansRoute: typeof AdminBonsPlansRoute
   BrandAssetsRoute: typeof BrandAssetsRoute
   DashboardDiplomeRoute: typeof DashboardDiplomeRoute
   DashboardEcoleRoute: typeof DashboardEcoleRoute
@@ -702,6 +804,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -736,6 +845,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/brand/'
       preLoaderRoute: typeof BrandIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/invite/$code': {
       id: '/invite/$code'
@@ -800,12 +916,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrandAssetsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/utilisateurs': {
+      id: '/admin/utilisateurs'
+      path: '/utilisateurs'
+      fullPath: '/admin/utilisateurs'
+      preLoaderRoute: typeof AdminUtilisateursRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/parametres': {
+      id: '/admin/parametres'
+      path: '/parametres'
+      fullPath: '/admin/parametres'
+      preLoaderRoute: typeof AdminParametresRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/paiements': {
+      id: '/admin/paiements'
+      path: '/paiements'
+      fullPath: '/admin/paiements'
+      preLoaderRoute: typeof AdminPaiementsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/offres': {
+      id: '/admin/offres'
+      path: '/offres'
+      fullPath: '/admin/offres'
+      preLoaderRoute: typeof AdminOffresRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/moderation': {
+      id: '/admin/moderation'
+      path: '/moderation'
+      fullPath: '/admin/moderation'
+      preLoaderRoute: typeof AdminModerationRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/jpo': {
+      id: '/admin/jpo'
+      path: '/jpo'
+      fullPath: '/admin/jpo'
+      preLoaderRoute: typeof AdminJpoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/ecoles': {
+      id: '/admin/ecoles'
+      path: '/ecoles'
+      fullPath: '/admin/ecoles'
+      preLoaderRoute: typeof AdminEcolesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/bons-plans': {
       id: '/admin/bons-plans'
-      path: '/admin/bons-plans'
+      path: '/bons-plans'
       fullPath: '/admin/bons-plans'
       preLoaderRoute: typeof AdminBonsPlansRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -842,9 +1007,36 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface AdminRouteChildren {
+  AdminBonsPlansRoute: typeof AdminBonsPlansRoute
+  AdminEcolesRoute: typeof AdminEcolesRoute
+  AdminJpoRoute: typeof AdminJpoRoute
+  AdminModerationRoute: typeof AdminModerationRoute
+  AdminOffresRoute: typeof AdminOffresRoute
+  AdminPaiementsRoute: typeof AdminPaiementsRoute
+  AdminParametresRoute: typeof AdminParametresRoute
+  AdminUtilisateursRoute: typeof AdminUtilisateursRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminBonsPlansRoute: AdminBonsPlansRoute,
+  AdminEcolesRoute: AdminEcolesRoute,
+  AdminJpoRoute: AdminJpoRoute,
+  AdminModerationRoute: AdminModerationRoute,
+  AdminOffresRoute: AdminOffresRoute,
+  AdminPaiementsRoute: AdminPaiementsRoute,
+  AdminParametresRoute: AdminParametresRoute,
+  AdminUtilisateursRoute: AdminUtilisateursRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   BonsPlansRoute: BonsPlansRoute,
   CancelRoute: CancelRoute,
@@ -867,7 +1059,6 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   SuccessRoute: SuccessRoute,
   TarifsRoute: TarifsRoute,
-  AdminBonsPlansRoute: AdminBonsPlansRoute,
   BrandAssetsRoute: BrandAssetsRoute,
   DashboardDiplomeRoute: DashboardDiplomeRoute,
   DashboardEcoleRoute: DashboardEcoleRoute,

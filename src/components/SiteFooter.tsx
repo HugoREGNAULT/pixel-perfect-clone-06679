@@ -2,7 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Mail, ExternalLink } from "lucide-react";
 
 // Excluded routes where the footer should NOT appear
-const EXCLUDED = ["/messages"];
+const EXCLUDED = ["/messages", "/admin"];
 
 export function SiteFooter() {
   const { location } = useRouterState();
