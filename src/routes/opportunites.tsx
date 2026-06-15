@@ -106,7 +106,8 @@ function OpportunitesPage() {
   const [typeFilter, setType]     = useState<ContractType | "tous">("tous");
   const [secteurFilter, setSect]  = useState("");
   const [villeFilter, setVille]   = useState("");
-  const [applied, setApplied]     = useState<Set<string>>(new Set());
+  const [applied,   setApplied]   = useState<Set<string>>(new Set());
+  const [fetchErr,  setFetchErr]  = useState<string | null>(null);
 
   useEffect(() => {
     supabase
@@ -114,7 +115,9 @@ function OpportunitesPage() {
       .select("*")
       .order("posted_at", { ascending: false })
       .then(({ data, error }) => {
-        if (!error && data) setOffers(data.map(toOffer));
+        console.log("[Opportunités] Supabase offres:", { count: data?.length, error });
+        if (error) { setFetchErr(error.message); setLoading(false); return; }
+        setOffers((data ?? []).map(toOffer));
         setLoading(false);
       });
 
@@ -263,6 +266,12 @@ function OpportunitesPage() {
         {loading ? (
           <div className="flex items-center justify-center py-32">
             <Loader2 className="size-7 text-mute animate-spin" />
+          </div>
+        ) : fetchErr ? (
+          <div className="flex flex-col items-center justify-center py-24 text-center gap-3">
+            <Briefcase className="size-10 text-red-400" />
+            <p className="text-mute text-sm">Erreur de chargement des offres.</p>
+            <code className="text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2 max-w-sm break-all">{fetchErr}</code>
           </div>
         ) : filtered.length === 0 ? (
           <EmptyState onReset={resetFilters} />

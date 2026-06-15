@@ -93,6 +93,7 @@ function MentorsPage() {
   const [loading, setLoading]       = useState(true);
   const [search, setSearch]         = useState("");
   const [sectorFilter, setSector]   = useState("Tous");
+  const [fetchErr, setFetchErr]     = useState<string | null>(null);
 
   useEffect(() => {
     supabase
@@ -100,7 +101,9 @@ function MentorsPage() {
       .select("*")
       .order("sessions", { ascending: false })
       .then(({ data, error }) => {
-        if (!error && data) setMentors(data.map(toMentor));
+        console.log("[Mentors] Supabase mentors:", { count: data?.length, error });
+        if (error) { setFetchErr(error.message); setLoading(false); return; }
+        setMentors((data ?? []).map(toMentor));
         setLoading(false);
       });
   }, []);
@@ -201,6 +204,12 @@ function MentorsPage() {
         {loading ? (
           <div className="flex items-center justify-center py-32">
             <Loader2 className="size-7 text-mute animate-spin" />
+          </div>
+        ) : fetchErr ? (
+          <div className="flex flex-col items-center justify-center py-24 text-center gap-3">
+            <Users className="size-10 text-red-400" />
+            <p className="text-mute text-sm">Erreur de chargement des mentors.</p>
+            <code className="text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2 max-w-sm break-all">{fetchErr}</code>
           </div>
         ) : filtered.length === 0 ? (
           <EmptyState onReset={() => { setSearch(""); setSector("Tous"); }} />
