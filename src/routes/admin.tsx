@@ -37,6 +37,8 @@ export const Route = createFileRoute("/admin")({
       .eq("id", user.id)
       .single();
 
+    console.log("[admin] user.id:", user.id, "profile.role:", profile?.role);
+
     if (!profile || profile.role !== "admin") {
       throw redirect({ to: "/" as any });
     }

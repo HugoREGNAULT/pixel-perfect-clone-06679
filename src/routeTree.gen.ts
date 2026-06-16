@@ -56,7 +56,6 @@ import { Route as AdminModerationRouteImport } from './routes/admin/moderation'
 import { Route as AdminJpoRouteImport } from './routes/admin/jpo'
 import { Route as AdminEcolesRouteImport } from './routes/admin/ecoles'
 import { Route as AdminBonsPlansRouteImport } from './routes/admin/bons-plans'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicPaymentsStripeWebhookRouteImport } from './routes/api/public/payments/stripe-webhook'
 
@@ -294,11 +293,6 @@ const AdminBonsPlansRoute = AdminBonsPlansRouteImport.update({
   path: '/bons-plans',
   getParentRoute: () => AdminRoute,
 } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const ApiPublicPaymentsWebhookRoute =
   ApiPublicPaymentsWebhookRouteImport.update({
     id: '/api/public/payments/webhook',
@@ -314,7 +308,6 @@ const ApiPublicPaymentsStripeWebhookRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/auth': typeof AuthRoute
   '/bons-plans': typeof BonsPlansRoute
   '/cancel': typeof CancelRoute
@@ -438,7 +431,6 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/success': typeof SuccessRoute
   '/tarifs': typeof TarifsRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/admin/bons-plans': typeof AdminBonsPlansRoute
   '/admin/ecoles': typeof AdminEcolesRoute
   '/admin/jpo': typeof AdminJpoRoute
@@ -591,7 +583,6 @@ export interface FileRouteTypes {
     | '/signup'
     | '/success'
     | '/tarifs'
-    | '/_authenticated/admin'
     | '/admin/bons-plans'
     | '/admin/ecoles'
     | '/admin/jpo'
@@ -992,13 +983,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBonsPlansRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/api/public/payments/webhook': {
       id: '/api/public/payments/webhook'
       path: '/api/public/payments/webhook'
@@ -1016,16 +1000,8 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
-}
-
-const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
-}
-
 const AuthenticatedRouteRouteWithChildren =
-  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+  AuthenticatedRouteRoute._addFileChildren({})
 
 interface AdminRouteChildren {
   AdminBonsPlansRoute: typeof AdminBonsPlansRoute
