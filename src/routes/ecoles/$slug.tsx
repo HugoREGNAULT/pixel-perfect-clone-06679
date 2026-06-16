@@ -240,32 +240,73 @@ function EcoleDetailPage() {
     <div className="min-h-screen bg-ink text-white">
       <AppNav />
 
-      <main className="mx-auto max-w-5xl px-5 py-10 pb-24">
+      {/* ── Cover image ───────────────────────────────────────────────────*/}
+      {(ecole as any).cover_url && (
+        <div className="relative w-full h-48 sm:h-64 overflow-hidden bg-white/5">
+          <img
+            src={(ecole as any).cover_url}
+            alt=""
+            className="w-full h-full object-cover opacity-40"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-transparent" />
+        </div>
+      )}
+
+      <main className={`mx-auto max-w-5xl px-5 pb-24 ${(ecole as any).cover_url ? "-mt-16 relative z-10" : "py-10"}`}>
 
         {/* ── Back ────────────────────────────────────────────────────────*/}
-        <Link to={"/ecoles" as any} className="inline-flex items-center gap-1.5 text-sm text-mute hover:text-white transition-colors mb-8">
+        <Link to={"/ecoles" as any} className="inline-flex items-center gap-1.5 text-sm text-mute hover:text-white transition-colors mb-6">
           <ChevronLeft className="size-4" /> Annuaire
         </Link>
 
         {/* ── Header ──────────────────────────────────────────────────────*/}
         <div className="flex gap-5 items-start mb-8">
-          <div className="size-16 rounded-2xl bg-violet/10 border border-violet/20 flex items-center justify-center text-3xl shrink-0">
-            {ecole.type_etablissement?.includes("Lycée") ? "🏫" :
-             ecole.type_etablissement?.includes("commerce") ? "📈" :
-             ecole.type_etablissement?.includes("ingénieur") ? "⚙️" :
-             ecole.type_etablissement?.includes("Université") || ecole.type?.includes("Université") ? "🎓" :
-             ecole.type_etablissement?.includes("IUT") ? "🔬" : "🏛️"}
+          {/* Logo */}
+          <div className="size-20 rounded-2xl bg-white border border-white/20 flex items-center justify-center shrink-0 overflow-hidden shadow-lg">
+            {ecole.logo_url ? (
+              <img
+                src={ecole.logo_url}
+                alt={ecole.name}
+                className="size-full object-contain p-1.5"
+                onError={(e) => {
+                  const el = e.currentTarget as HTMLImageElement;
+                  el.style.display = "none";
+                  (el.parentElement as HTMLElement).innerHTML = `<span class="text-3xl">${
+                    ecole.type_etablissement?.includes("Université") || ecole.type?.includes("Université") ? "🎓" :
+                    ecole.type_etablissement?.includes("commerce") ? "📈" :
+                    ecole.type_etablissement?.includes("ingénieur") ? "⚙️" :
+                    ecole.type_etablissement?.includes("IUT") ? "🔬" : "🏛️"
+                  }</span>`;
+                }}
+              />
+            ) : (
+              <span className="text-3xl">
+                {ecole.type_etablissement?.includes("Lycée") ? "🏫" :
+                 ecole.type_etablissement?.includes("commerce") ? "📈" :
+                 ecole.type_etablissement?.includes("ingénieur") ? "⚙️" :
+                 ecole.type_etablissement?.includes("Université") || ecole.type?.includes("Université") ? "🎓" :
+                 ecole.type_etablissement?.includes("IUT") ? "🔬" : "🏛️"}
+              </span>
+            )}
           </div>
+
           <div className="flex-1 min-w-0">
-            <h1 className="font-display text-3xl sm:text-4xl font-bold leading-tight mb-2">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold leading-tight mb-1">
               {ecole.name}
             </h1>
+            {(ecole as any).sigle && (ecole as any).sigle !== ecole.name && (
+              <p className="text-sm font-mono text-mute mb-2">{(ecole as any).sigle}</p>
+            )}
             <div className="flex flex-wrap items-center gap-3 text-sm text-mute">
               <span className="flex items-center gap-1"><MapPin className="size-3.5" /> {ecole.city}{ecole.region ? `, ${ecole.region}` : ""}</span>
               {ecole.nombre_etudiants && (
                 <span className="flex items-center gap-1"><Users className="size-3.5" /> {ecole.nombre_etudiants.toLocaleString("fr-FR")} étudiants</span>
               )}
-              {globalAvg && (
+              {(ecole as any).annee_creation && (
+                <span className="flex items-center gap-1 text-mute">fondée en {(ecole as any).annee_creation}</span>
+              )}
+              {globalAvg !== null && (
                 <span className="flex items-center gap-1 text-amber-400">
                   <Star className="size-3.5 fill-amber-400" />
                   {globalAvg.toFixed(1)} <span className="text-mute">({avis.length} avis)</span>
@@ -286,6 +327,32 @@ function EcoleDetailPage() {
                   <CalendarDays className="size-3" /> {upcomingJpos.length} JPO
                 </span>
               )}
+            </div>
+
+            {/* CTA buttons */}
+            <div className="flex flex-wrap gap-3 mt-4">
+              {(ecole.site_web || ecole.website) && (
+                <a
+                  href={ecole.site_web || ecole.website!}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm hover:bg-white/5 transition-all"
+                >
+                  <Globe className="size-3.5" /> Site officiel
+                </a>
+              )}
+              <button
+                onClick={() => setTab("jpo")}
+                className="inline-flex items-center gap-2 rounded-full bg-lime/15 border border-lime/30 text-lime px-4 py-2 text-sm font-medium hover:bg-lime/20 transition-all"
+              >
+                <CalendarDays className="size-3.5" /> JPO
+              </button>
+              <button
+                onClick={() => { setTab("avis"); setShowForm(true); }}
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm hover:bg-white/5 transition-all"
+              >
+                <Star className="size-3.5" /> Laisser un avis
+              </button>
             </div>
           </div>
         </div>
@@ -336,10 +403,46 @@ function EcoleDetailPage() {
               {ecole.region && (
                 <StatCard icon={MapPin} label="Région" value={ecole.region} />
               )}
+              {(ecole as any).annee_creation && (
+                <StatCard icon={CalendarDays} label="Fondée en" value={String((ecole as any).annee_creation)} />
+              )}
               {ecole.diplomes?.length ? (
-                <StatCard icon={GraduationCap} label="Diplômes" value={`${ecole.diplomes.length} formation${ecole.diplomes.length > 1 ? "s" : ""}`} />
+                <StatCard icon={GraduationCap} label="Formations" value={`${ecole.diplomes.length} formation${ecole.diplomes.length > 1 ? "s" : ""}`} />
               ) : null}
+              {ecole.statut && (
+                <StatCard icon={Building2} label="Statut" value={ecole.statut === "privé" ? "Établissement privé" : "Établissement public"} />
+              )}
+              {ecole.code_postal && (
+                <StatCard icon={MapPin} label="Code postal" value={ecole.code_postal} />
+              )}
             </div>
+
+            {/* Réseaux sociaux */}
+            {((ecole as any).compte_instagram || (ecole as any).compte_linkedin || (ecole as any).compte_twitter) && (
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                <h3 className="text-xs font-mono uppercase tracking-widest text-mute mb-3">Réseaux sociaux</h3>
+                <div className="flex flex-wrap gap-3">
+                  {(ecole as any).compte_instagram && (
+                    <a href={`https://instagram.com/${(ecole as any).compte_instagram}`} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm hover:bg-white/5 transition-all">
+                      Instagram
+                    </a>
+                  )}
+                  {(ecole as any).compte_linkedin && (
+                    <a href={`https://linkedin.com/company/${(ecole as any).compte_linkedin}`} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm hover:bg-white/5 transition-all">
+                      LinkedIn
+                    </a>
+                  )}
+                  {(ecole as any).compte_twitter && (
+                    <a href={`https://twitter.com/${(ecole as any).compte_twitter}`} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm hover:bg-white/5 transition-all">
+                      Twitter / X
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* FAQ */}
             <div>
