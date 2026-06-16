@@ -60,17 +60,18 @@ export function AppNav() {
   }, []);
 
   async function fetchUnread(uid: string) {
-    const { data: convs } = await supabase
+    const db = supabase as any;
+    const { data: convs } = await db
       .from("conversations")
       .select("id")
       .or(`participant_1.eq.${uid},participant_2.eq.${uid}`);
     if (!convs?.length) { setUnread(0); return; }
-    const { count } = await supabase
+    const { count } = await db
       .from("messages")
       .select("*", { count: "exact", head: true })
       .is("read_at", null)
       .neq("sender_id", uid)
-      .in("conversation_id", convs.map(c => c.id));
+      .in("conversation_id", convs.map((c: { id: string }) => c.id));
     setUnread(count ?? 0);
   }
 
