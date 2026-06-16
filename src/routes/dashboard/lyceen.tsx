@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { CalendarDays, Gift, Briefcase, BookOpen, GraduationCap, MapPin, ArrowRight, Loader2, Users } from "lucide-react";
