@@ -32,7 +32,6 @@ import { Route as CancelRouteImport } from './routes/cancel'
 import { Route as BonsPlansRouteImport } from './routes/bons-plans'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EcolesIndexRouteImport } from './routes/ecoles/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
@@ -174,10 +173,6 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -308,6 +303,7 @@ const ApiPublicPaymentsStripeWebhookRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/bons-plans': typeof BonsPlansRoute
   '/cancel': typeof CancelRoute
@@ -379,7 +375,6 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/success': typeof SuccessRoute
   '/tarifs': typeof TarifsRoute
-  '/admin': typeof AdminIndexRoute
   '/admin/bons-plans': typeof AdminBonsPlansRoute
   '/admin/ecoles': typeof AdminEcolesRoute
   '/admin/jpo': typeof AdminJpoRoute
@@ -398,6 +393,7 @@ export interface FileRoutesByTo {
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
   '/invite/$code': typeof InviteCodeRoute
+  '/admin': typeof AdminIndexRoute
   '/brand': typeof BrandIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/ecoles': typeof EcolesIndexRoute
@@ -407,7 +403,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/bons-plans': typeof BonsPlansRoute
@@ -532,7 +527,6 @@ export interface FileRouteTypes {
     | '/signup'
     | '/success'
     | '/tarifs'
-    | '/admin'
     | '/admin/bons-plans'
     | '/admin/ecoles'
     | '/admin/jpo'
@@ -551,6 +545,7 @@ export interface FileRouteTypes {
     | '/ecoles/$slug'
     | '/founder/success'
     | '/invite/$code'
+    | '/admin'
     | '/brand'
     | '/dashboard'
     | '/ecoles'
@@ -559,7 +554,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_authenticated'
     | '/admin'
     | '/auth'
     | '/bons-plans'
@@ -611,7 +605,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   BonsPlansRoute: typeof BonsPlansRoute
@@ -815,13 +808,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -1000,9 +986,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-const AuthenticatedRouteRouteWithChildren =
-  AuthenticatedRouteRoute._addFileChildren({})
-
 interface AdminRouteChildren {
   AdminBonsPlansRoute: typeof AdminBonsPlansRoute
   AdminEcolesRoute: typeof AdminEcolesRoute
@@ -1031,7 +1014,6 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   BonsPlansRoute: BonsPlansRoute,
