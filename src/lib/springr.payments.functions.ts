@@ -33,7 +33,7 @@ const checkoutSchema = z.object({
 });
 
 export const createSpringrCheckout = createServerFn({ method: "POST" })
-  .validator((d: unknown) => checkoutSchema.parse(d))
+  .inputValidator((d: unknown) => checkoutSchema.parse(d))
   .handler(async ({ data }): Promise<{ url: string } | { error: string }> => {
     try {
       const { createStripe, getOrCreatePrice, STRIPE_PLANS } =
@@ -99,7 +99,7 @@ const portalSchema = z.object({
 });
 
 export const createSpringrPortal = createServerFn({ method: "POST" })
-  .validator((d: unknown) => portalSchema.parse(d))
+  .inputValidator((d: unknown) => portalSchema.parse(d))
   .handler(async ({ data }): Promise<{ url: string } | { error: string }> => {
     try {
       const { createStripe } = await import("@/lib/stripe.direct.server");
@@ -134,7 +134,7 @@ export const createSpringrPortal = createServerFn({ method: "POST" })
 const subSchema = z.object({ userId: z.string().uuid() });
 
 export const getMySubscription = createServerFn({ method: "GET" })
-  .validator((d: unknown) => subSchema.parse(d))
+  .inputValidator((d: unknown) => subSchema.parse(d))
   .handler(async ({ data }): Promise<Subscription | null> => {
     try {
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

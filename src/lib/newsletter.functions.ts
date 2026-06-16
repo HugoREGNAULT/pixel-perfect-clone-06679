@@ -8,7 +8,7 @@ const schema = z.object({
 type Result = { ok: true } | { error: string };
 
 export const subscribeNewsletter = createServerFn({ method: "POST" })
-  .validator((data: unknown) => schema.parse(data))
+  .inputValidator((data: unknown) => schema.parse(data))
   .handler(async ({ data }): Promise<Result> => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
