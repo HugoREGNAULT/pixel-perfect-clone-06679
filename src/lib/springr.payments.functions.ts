@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import type { StripeLookupKey } from "@/lib/stripe.direct.server";

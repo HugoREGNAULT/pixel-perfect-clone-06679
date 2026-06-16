@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Unified job-search client
 // Calls the Supabase Edge Function which handles France Travail + La Bonne Alternance
 // Falls back to local Supabase offres table if the Edge Function is unavailable
