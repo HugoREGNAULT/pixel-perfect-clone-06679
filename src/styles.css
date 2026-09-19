@@ -3,8 +3,10 @@
 @import "tw-animate-css";
 
 @theme inline {
-  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: "Poppins", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
+  --font-poppins: "Poppins", system-ui, sans-serif;
+  --font-inter: "Inter", system-ui, sans-serif;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -83,6 +85,29 @@
 
   --success: #E8F5EE;
   --success-foreground: #1F7A4D;
+
+  /* Figma Homepage Tokens */
+  --color-primary: #0066ff;
+  --color-highlight: #fdcb58;
+  --color-text-dark: #111827;
+  --color-text-gray-1: #4b5563;
+  --color-text-gray-2: #6b7280;
+  --color-text-gray-3: #9ca3af;
+  --color-bg-white: #ffffff;
+  --color-bg-light-blue: #eff6ff;
+  --color-bg-light-yellow: #fefce8;
+  --color-bg-light-gray: #f3f4f6;
+  --color-success: #00d084;
+  --color-dark-navy: #111827;
+
+  /* Ombres */
+  --shadow-hard-4px: 4px 4px 0px rgba(0, 0, 0, 1);
+  --shadow-hard-8px: 8px 8px 0px rgba(0, 0, 0, 1);
+  --shadow-soft: 0 1px 2px rgba(22, 21, 29, 0.04);
+
+  /* Radius */
+  --radius-card: 12px;
+  --radius-button: 12px;
 }
 
 @layer base {

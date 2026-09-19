@@ -72,9 +72,9 @@ function SpringrLanding() {
   }, []);
 
   useEffect(() => {
-    supabase
+    (supabase
       .from("profiles")
-      .select("id", { count: "exact", head: true })
+      .select("id", { count: "exact", head: true }) as unknown as Promise<{ count: number | null }>)
       .then(({ count }) => {
         if (count && count > 100) setProfileCount(count);
       })
