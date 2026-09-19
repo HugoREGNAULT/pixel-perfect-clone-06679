@@ -25,6 +25,8 @@ type TypeEcole = "université" | "école de commerce" | "ingé" | "BTS" | "lycé
 
 type Jpo = Tables<"jpos">;
 
+type JpoEvent = Jpo & { source?: "jpos" | "submissions" };
+
 /* ── Config d'affichage ──────────────────────────────────────────────────────*/
 
 const TYPE_CONFIG: Record<TypeEcole, { label: string; color: string; bg: string; border: string; icon: typeof School }> = {
@@ -75,18 +77,35 @@ function EvenementsPage() {
   const [fetchError, setFetchError] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase
-      .from("jpos")
-      .select("*")
-      .order("date", { ascending: true })
-      .then(({ data, error }) => {
-        console.log("[JPO] Supabase response:", { count: data?.length, error });
-        if (error) {
-          console.error("[JPO] Erreur Supabase:", error.message, error.code);
-          setFetchError(error.message);
-        } else {
-          setJpos((data ?? []) as Jpo[]);
+    const db = supabase as any;
+    Promise.all([
+      db.from("jpos").select("*").order("date", { ascending: true }),
+      db.from("jpo_submissions").select("*").eq("status", "approved").order("date_jpo", { ascending: true }),
+    ])
+      .then(([{ data: jposData, error: jposError }, { data: subData, error: subError }]) => {
+        if (jposError) {
+          console.error("[JPO] Erreur Supabase:", jposError.message);
+          setFetchError(jposError.message);
         }
+
+        const jposArray = (jposData ?? []) as Jpo[];
+        const submissionsArray = (subData ?? []).map((s: any) => ({
+          id: s.id,
+          nom_ecole: s.nom_ecole,
+          date: s.date_jpo,
+          ville: "", // submissions don't have ville
+          region: "", // submissions don't have region
+          type_ecole: "autre" as TypeEcole,
+          lien_inscription: s.lien,
+          updated_at: s.created_at,
+          source: "submissions" as const,
+        }));
+
+        const combined = [...jposArray, ...submissionsArray].sort(
+          (a, b) => new Date(a.date ?? "").getTime() - new Date(b.date ?? "").getTime()
+        );
+
+        setJpos(combined as any);
         setLoading(false);
       });
   }, []);

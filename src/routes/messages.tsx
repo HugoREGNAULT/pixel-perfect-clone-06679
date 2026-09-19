@@ -41,7 +41,6 @@ interface ConvItem {
   id: string;
   otherUserId: string;
   otherDisplayName: string;
-  otherEmail: string;
   lastMsg?: DbMsg;
   unreadCount: number;
   updatedAt: string;
@@ -50,7 +49,6 @@ interface ConvItem {
 interface FoundUser {
   id: string;
   display_name: string;
-  email: string;
 }
 
 /* ------------------------------------------------------------------- utils */
@@ -168,7 +166,6 @@ function MessagesPage() {
           id: c.id,
           otherUserId: otherId,
           otherDisplayName: nameMap[otherId]?.display_name ?? "Utilisateur",
-          otherEmail: nameMap[otherId]?.email ?? "",
           lastMsg: msgs[msgs.length - 1],
           unreadCount: msgs.filter(m => !m.read_at && m.sender_id !== uid).length,
           updatedAt: c.updated_at,
@@ -284,7 +281,6 @@ function MessagesPage() {
         id: data.id,
         otherUserId: foundUser.id,
         otherDisplayName: foundUser.display_name,
-        otherEmail: foundUser.email,
         unreadCount: 0,
         updatedAt: data.updated_at,
       };
@@ -380,7 +376,6 @@ function MessagesPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-sm">{foundUser.display_name}</p>
-                  <p className="text-xs text-mute truncate">{foundUser.email}</p>
                 </div>
                 <ArrowUpRight className="size-4 text-lime shrink-0" />
               </div>
@@ -510,7 +505,6 @@ function MessagesPage() {
                 </div>
                 <div className="min-w-0">
                   <p className="font-semibold text-sm leading-none">{selectedConv.otherDisplayName}</p>
-                  <p className="text-xs text-mute truncate">{selectedConv.otherEmail}</p>
                 </div>
               </div>
 
