@@ -1,6 +1,6 @@
 # Handoff — Refonte Design Springr
 
-**Status** : Phases 1–2 + ÉTAPE B + Pages 1–2 complétées. Checkpoint après page 2. Pages 3–10 restantes.
+**Status** : Phases 1–2 + ÉTAPE B + ÉTAPE C (partielle). Corrections faites + 2 sections Homepage. Pages 3–10 restantes.
 
 ## Étapes terminées
 
@@ -40,28 +40,49 @@ src/components/ui/*                     — Composants vérifiés light-theme
 src/routes/opportunites.tsx             — Layout colonnes + détail
 ```
 
-## Pages complétées (Session 2)
+## Corrections faites (Session 2)
 
-### ÉTAPE C — Pages 1–2 (Checkpoint 1)
+### ÉTAPE C — Corrections (Pre-Homepage)
 
-1. **Homepage** (node 3:2) — ✅ DONE (`5a01bcf`)
-   - Hero: "Vivez votre avenir dès maintenant"
-   - Why Springr: 3 cartes (profils vivants, mentors, opportunités)
-   - Need section: 2 colonnes + mockup dashboard
-   - Newsletter CTA
-   - Suppression: Marquee, Bento, Comparison, FounderBlock, Roadmap
+1. **Header** — ✅ Badge rôle (`42ab398`)
+   - text-xs font-medium (pas font-mono)
+   - Format normal (pas uppercase)
 
-2. **/opportunites** (node 5:1218) — ✅ DONE (`ba5ff39`)
-   - Hero: "Trouvez votre opportunité parfaite"
-   - Stats: offres actives (API), 850+ entreprises, 96% matching, 48h
-   - Explorez par domaine: 8 catégories cliquables
-   - Layout liste + détail: GARDÉ
+2. **/opportunites** — ✅ Stats 100% réelles (`4969594`)
+   - Offres: result.total de searchJobs API
+   - Écoles: count table ecoles
+   - JPO: count jpos + jpo_submissions approuvées
+   - Retire stats manquantes (pas d'invention)
 
-## Reste à faire (Pages Figma 3–10)
+### Homepage sections — ÉTAPE C (en cours)
 
-1. **Homepage** — DONE ✓
-2. **/opportunites** — DONE ✓
-3. **/login, /signup** (node 12:5553) — Auth pages
+1. **Hero** (node 3:3) — ✅ DONE (`fc84fa4`)
+   - Texte exact: "Boostez votre avenir dès maintenant."
+   - "avenir" surligné (#fdcb58)
+   - CTA: "Commencer gratuitement" + "Voir la démo"
+   - Ombre dure 3px 3px 0 #16151D sur boutons
+   - Badge: "La plateforme #1 pour les 15-29 ans"
+   - Suppression: faux profils, bande logos
+
+2. **Pourquoi Springr?** (node 3:128) — ✅ DONE (`68c3b44`)
+   - 3 cartes: Fragmentation, Isolement, Bons plans introuvables
+   - Retrait fond jaune pleine largeur (règle thème clair)
+   - Cartes blanches avec icônes
+
+## Reste à faire
+
+### Homepage sections restantes (node IDs)
+3. **Fonctionnalités à onglets** (node 3:166)
+4. **Dernières opportunités** (node 3:395) — 3 vraies offres searchJobs
+5. **Mentorat** (node 3:556) — aperçu grisé "Bientôt disponible"
+6. **Tarifs** (node 3:622) — contenu de /tarifs
+7. **CTA newsletter** (node 3:704)
+8. **Footer** (node 3:480)
+9. **Nav** (node 3:721) — vérifier conformité
+
+### Pages restantes (3–10)
+1. **/login, /signup** (node 12:5553) — Auth pages
+2. **/onboarding** (node 19:12551) — Profil onboarding
 4. **/onboarding** (node 19:12551) — Profil onboarding
 5. **/tarifs** (node 10:1678) — Grille tarif + toggle
 6. **/fonctionnalites** (new) (node 5:765) — Features + badges "Bientôt"
