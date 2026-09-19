@@ -140,14 +140,38 @@ function OpportunitesPage() {
       <AppNav />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero */}
-        <div className="mb-10">
+        <div className="mb-12">
           <h1 className="font-display text-5xl lg:text-6xl font-bold leading-tight mb-3">
-            Stages, alternances et premiers emplois
+            Trouvez votre opportunité parfaite
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl">
-            Découvre les meilleures opportunités en direct depuis France Travail et La Bonne Alternance.
+            Stages, alternances, premiers emplois et bien plus. Toutes les offres réunies au même endroit.
           </p>
         </div>
+
+        {/* Stats */}
+        {result && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 p-8 bg-foreground text-background rounded-lg">
+            <div>
+              <div className="font-display text-2xl md:text-3xl font-bold">
+                {(result.total || 0).toLocaleString("fr-FR")}+
+              </div>
+              <p className="text-sm text-background/70 mt-1">offres actives</p>
+            </div>
+            <div>
+              <div className="font-display text-2xl md:text-3xl font-bold">850+</div>
+              <p className="text-sm text-background/70 mt-1">entreprises partenaires</p>
+            </div>
+            <div>
+              <div className="font-display text-2xl md:text-3xl font-bold">96%</div>
+              <p className="text-sm text-background/70 mt-1">taux de matching</p>
+            </div>
+            <div>
+              <div className="font-display text-2xl md:text-3xl font-bold">48h</div>
+              <p className="text-sm text-background/70 mt-1">temps de réponse</p>
+            </div>
+          </div>
+        )}
 
         {/* Search Card */}
         <div className="bg-card border border-border rounded-xl p-5 mb-10 shadow-sm">
@@ -220,6 +244,36 @@ function OpportunitesPage() {
             </button>
           )}
         </div>
+
+        {/* Explore by sector */}
+        {!hasFilters && !loading && (
+          <div className="mb-12">
+            <h2 className="font-display text-2xl font-bold mb-2">Explorez par domaine</h2>
+            <p className="text-muted-foreground mb-6">
+              Trouvez les meilleures opportunités dans votre domaine d'intérêt
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: "Tech", color: "bg-blue-50 border-blue-200 text-blue-700" },
+                { label: "Finance", color: "bg-purple-50 border-purple-200 text-purple-700" },
+                { label: "Marketing", color: "bg-green-50 border-green-200 text-green-700" },
+                { label: "Design", color: "bg-pink-50 border-pink-200 text-pink-700" },
+                { label: "Santé", color: "bg-red-50 border-red-200 text-red-700" },
+                { label: "RH", color: "bg-yellow-50 border-yellow-200 text-yellow-700" },
+                { label: "Commerce", color: "bg-teal-50 border-teal-200 text-teal-700" },
+                { label: "Communication", color: "bg-indigo-50 border-indigo-200 text-indigo-700" },
+              ].map((category) => (
+                <button
+                  key={category.label}
+                  onClick={() => { setSector(category.label); setPage(1); }}
+                  className={`rounded-lg border-2 p-4 text-sm font-semibold transition-all hover:shadow-md ${category.color}`}
+                >
+                  {category.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Main content */}
         {loading ? (
