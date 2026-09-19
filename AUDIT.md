@@ -7,9 +7,27 @@
 
 ---
 
+## 🚀 Sprint 1 Status — TERMINÉ ✅
+
+**Date :** 19 Septembre 2026  
+**Branch :** `fix/sprint-1` (5 commits)  
+**Migrations à déployer :** 2
+
+| Fix | Titre | Statut | Migration |
+|-----|-------|--------|-----------|
+| C1+C2 | Restrict RPC email exposure | ✅ COMMITÉ | `20260919000000_fix_email_leaks.sql` |
+| — | Remove claimFirstAdmin | ✅ COMMITÉ | — |
+| C5 | Job-search: LBA v1 → Apprentissage API + logging | ✅ COMMITÉ | — |
+| C3 | Remove JPO scraping + add moderated submissions | ✅ COMMITÉ | `20260919000001_jpo_submissions.sql` |
+| — | Audit Stripe webhooks (documentation) | ✅ COMMITÉ | — |
+
+**Prochaine étape :** `git push -u origin fix/sprint-1` → PR → Review migrations → Supabase deploy
+
+---
+
 ## 🎯 Résumé Exécutif (10 lignes)
 
-Springr est une plateforme **partiellement fonctionnelle** avec une excellente couverture des parcours critiques (signup 5 rôles, messagerie, paiements Stripe). Cependant, **5 failles critiques** bloquent la production : secrets exposés en clair (Supabase + France Travail), scraping JPO illégal, chunks bundle > 500 kB, et absence totale de logging d'erreurs API. L'accessibilité et le SEO sont insuffisants (images sans alt, pages écoles sans meta). **MVP viable** si recentré sur offres alternance + pages écoles + données d'insertion. Requires **Sprint 1 critique** pour sécurité (secrets, scraping), puis Sprint 2 pour stabilité (performance, logging), Sprint 3 pour accessibilité/SEO.
+Springr est une plateforme **partiellement fonctionnelle** avec une excellente couverture des parcours critiques (signup 5 rôles, messagerie, paiements Stripe). **Sprint 1 sécurité est TERMINÉ** (5 fixes commités, 2 migrations prêtes à déployer). Les failles critiques ont été adressées : RPC emails restreintes, claimFirstAdmin supprimée, job-search migré vers API Apprentissage + logging ajouté, scraping JPO supprimé + système modération ajouté, webhooks Stripe documentés. L'accessibilité et le SEO restent à fixer (Sprint 3). **Prochaine étape :** Déployer migrations Sprint 1 → Tests staging → Sprint 2 (performance bundle, typage) → Sprint 3 (a11y, SEO).
 
 ---
 
@@ -327,4 +345,35 @@ bun run build && sitemap-gen generate
 
 ---
 
-**Audit terminé.** Ready for Sprint Planning. 🚀
+---
+
+## 🗄️ Migrations Supabase — À Déployer (Sprint 1)
+
+**Exécuter dans l'ordre :**
+
+```sql
+-- 1. Fix email leaks: restrindre RPC, enlever email de referral_codes public access
+supabase/migrations/20260919000000_fix_email_leaks.sql
+
+-- 2. JPO submissions: table modérée pour remplacer le scraping
+supabase/migrations/20260919000001_jpo_submissions.sql
+```
+
+**Déploiement :**
+```bash
+# Via Supabase CLI
+supabase db push
+
+# Ou manuellement dans Supabase dashboard → SQL Editor
+```
+
+## 🔑 Secrets à Configurer (Sprint 1)
+
+```bash
+# À ajouter à .env.production ou Supabase secrets:
+LBA_API_TOKEN=<token api.apprentissage.beta.gouv.fr>
+```
+
+---
+
+**Audit terminé.** Sprint 1 commité — Ready for deployment. 🚀
