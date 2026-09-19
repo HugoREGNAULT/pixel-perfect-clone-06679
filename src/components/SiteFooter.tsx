@@ -9,7 +9,7 @@ export function SiteFooter() {
   if (EXCLUDED.some(p => location.pathname.startsWith(p))) return null;
 
   return (
-    <footer className="border-t border-white/5 bg-ink mt-auto">
+    <footer className="border-t border-border bg-background mt-auto">
       <div className="mx-auto max-w-7xl px-5 lg:px-8 py-14">
         {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-10 mb-12">
@@ -17,7 +17,7 @@ export function SiteFooter() {
           {/* Brand — spans 2 cols on large */}
           <div className="col-span-2 sm:col-span-3 lg:col-span-2">
             <FooterLogo />
-            <p className="text-mute text-sm leading-relaxed mt-4 max-w-xs">
+            <p className="text-muted-foreground text-sm leading-relaxed mt-4 max-w-xs">
               Le réseau pro pensé par et pour la nouvelle génération.
               Construis ton réseau avant ton premier CDI.
             </p>
@@ -57,26 +57,26 @@ export function SiteFooter() {
 
           {/* Contact */}
           <div>
-            <p className="text-xs font-mono uppercase tracking-wider text-mute mb-4">Contact</p>
+            <p className="text-xs font-medium text-muted-foreground mb-4">Contact</p>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="mailto:hello@springr.app" className="text-mute hover:text-white transition-colors flex items-center gap-1.5">
+                <a href="mailto:hello@springr.app" className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
                   <Mail className="size-3 shrink-0 opacity-60"/>
                   hello@springr.app
                 </a>
               </li>
               <li>
-                <a href="mailto:presse@springr.app" className="text-mute hover:text-white transition-colors">
+                <a href="mailto:presse@springr.app" className="text-muted-foreground hover:text-foreground transition-colors">
                   Presse
                 </a>
               </li>
               <li>
-                <a href="mailto:partenariats@springr.app" className="text-mute hover:text-white transition-colors">
+                <a href="mailto:partenariats@springr.app" className="text-muted-foreground hover:text-foreground transition-colors">
                   Partenariats
                 </a>
               </li>
               <li>
-                <a href="https://discord.gg/springr" target="_blank" rel="noopener noreferrer" className="text-mute hover:text-white transition-colors flex items-center gap-1">
+                <a href="https://discord.gg/springr" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
                   Discord <ExternalLink className="size-3 opacity-50"/>
                 </a>
               </li>
@@ -99,9 +99,9 @@ export function SiteFooter() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-mute">
+        <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <p>© 2026 Springr SAS — Tous droits réservés</p>
-          <p className="font-mono">v0 · pré-lancement · Paris, France 🇫🇷</p>
+          <p>v0 · pré-lancement · Paris, France 🇫🇷</p>
         </div>
       </div>
     </footer>
@@ -112,8 +112,8 @@ export function SiteFooter() {
 
 function FooterLogo() {
   return (
-    <Link to="/" className="inline-block font-display font-bold tracking-tight text-xl">
-      sprin<span className="text-violet">g</span><span className="text-lime">r.</span>
+    <Link to="/" className="inline-block font-display font-bold tracking-tight text-xl text-foreground">
+      springr.
     </Link>
   );
 }
@@ -121,11 +121,11 @@ function FooterLogo() {
 function FooterCol({ title, links }: { title: string; links: { to: string; label: string }[] }) {
   return (
     <div>
-      <p className="text-xs font-mono uppercase tracking-wider text-mute mb-4">{title}</p>
+      <p className="text-xs font-medium text-muted-foreground mb-4">{title}</p>
       <ul className="space-y-3 text-sm">
         {links.map(({ to, label }) => (
           <li key={to}>
-            <Link to={to as any} className="text-mute hover:text-white transition-colors">
+            <Link to={to as any} className="text-muted-foreground hover:text-primary transition-colors">
               {label}
             </Link>
           </li>
@@ -142,7 +142,7 @@ function SocialLink({ href, label, children }: { href: string; label: string; ch
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="size-8 rounded-lg border border-white/10 flex items-center justify-center text-mute hover:text-white hover:border-white/25 transition-colors"
+      className="size-8 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
     >
       {children}
     </a>

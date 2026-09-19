@@ -133,15 +133,15 @@ export function AppNav() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-ink/80 border-b border-white/5">
-        <div className="mx-auto max-w-7xl px-5 h-14 flex items-center justify-between gap-4">
+      <header className="sticky top-0 z-40 backdrop-blur bg-background border-b border-border h-17 flex items-center">
+        <div className="mx-auto max-w-7xl px-5 w-full flex items-center justify-between gap-4">
           {/* Logo */}
           <Link
             to="/"
             onClick={() => setOpen(false)}
-            className="font-display font-bold tracking-tight text-lg shrink-0"
+            className="font-display font-bold tracking-tight text-lg shrink-0 text-foreground"
           >
-            sprin<span className="text-violet">g</span><span className="text-lime">r.</span>
+            springr.
           </Link>
 
           {/* Desktop nav links */}
@@ -151,7 +151,7 @@ export function AppNav() {
                 key={to}
                 to={to}
                 className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                  isActive(to) ? "text-white font-semibold bg-white/5" : "text-mute hover:text-white hover:bg-white/[0.04]"
+                  isActive(to) ? "text-primary font-semibold bg-primary-soft" : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}
               >
                 {label}
@@ -165,19 +165,19 @@ export function AppNav() {
             {searchOpen ? (
               <form onSubmit={submitSearch} className="flex items-center gap-2 animate-in fade-in slide-in-from-right-2 duration-150">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-mute pointer-events-none" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground pointer-events-none" />
                   <input
                     ref={searchInputRef}
                     value={searchQ}
                     onChange={e => setSearchQ(e.target.value)}
                     placeholder="Rechercher…"
-                    className="w-48 rounded-xl bg-white/5 border border-white/15 pl-8 pr-3 py-1.5 text-sm placeholder:text-mute/50 focus:outline-none focus:border-violet/60 focus:w-64 transition-all"
+                    className="w-48 rounded-lg bg-muted border border-border pl-8 pr-3 py-1.5 text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:w-64 transition-all text-foreground"
                   />
                 </div>
                 <button
                   type="button"
                   onClick={() => { setSearchOpen(false); setSearchQ(""); }}
-                  className="text-mute hover:text-white transition-colors"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X className="size-4" />
                 </button>
@@ -185,7 +185,7 @@ export function AppNav() {
             ) : (
               <button
                 onClick={openSearch}
-                className="p-2 rounded-lg text-mute hover:text-white hover:bg-white/5 transition-colors"
+                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 aria-label="Recherche"
               >
                 <Search className="size-4" />
@@ -197,12 +197,12 @@ export function AppNav() {
               <Link
                 to="/messages"
                 search={{ compose: false }}
-                className="relative p-2 rounded-lg text-mute hover:text-white hover:bg-white/5 transition-colors"
+                className="relative p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 aria-label="Messages"
               >
                 <MessageSquare className="size-4" />
                 {unread > 0 && (
-                  <span className="absolute top-0.5 right-0.5 size-4 rounded-full bg-lime text-ink text-[9px] font-bold flex items-center justify-center">
+                  <span className="absolute top-0.5 right-0.5 size-4 rounded-full bg-primary text-primary-foreground text-[9px] font-bold flex items-center justify-center">
                     {unread > 9 ? "9+" : unread}
                   </span>
                 )}
@@ -212,44 +212,44 @@ export function AppNav() {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 hover:border-white/25 hover:bg-white/5 transition-all focus:outline-none">
-                    <div className="size-5 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-[10px] font-bold shrink-0">
+                  <button className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 hover:border-primary hover:bg-primary-soft transition-all focus:outline-none">
+                    <div className="size-5 rounded-lg bg-muted flex items-center justify-center text-foreground-2 text-[10px] font-semibold shrink-0">
                       {initials}
                     </div>
-                    <span className="text-sm text-white">{(user.user_metadata?.name as string)?.split(" ")[0] ?? "Mon compte"}</span>
+                    <span className="text-sm text-foreground">{(user.user_metadata?.name as string)?.split(" ")[0] ?? "Mon compte"}</span>
                     {roleLabel && (
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-lime border border-lime/30 rounded-full px-1.5 py-0.5">
+                      <span className="text-xs font-medium text-muted-foreground border border-border rounded-full px-2 py-0.5">
                         {roleLabel}
                       </span>
                     )}
-                    <ChevronDown className="size-3 text-mute" />
+                    <ChevronDown className="size-3 text-muted-foreground" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-52 bg-ink-2 border border-white/10 text-white shadow-xl">
-                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-white/5 focus:bg-white/5 focus:text-white">
-                    <Link to="/profil"><UserCircle className="size-4 text-mute shrink-0" /> Mon profil</Link>
+                <DropdownMenuContent align="end" className="w-52 bg-card border border-border text-foreground">
+                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-muted focus:bg-muted focus:text-foreground">
+                    <Link to="/profil"><UserCircle className="size-4 text-muted-foreground shrink-0" /> Mon profil</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-white/5 focus:bg-white/5 focus:text-white">
-                    <Link to={"/dashboard" as any}><LayoutDashboard className="size-4 text-mute shrink-0" /> Dashboard</Link>
+                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-muted focus:bg-muted focus:text-foreground">
+                    <Link to={"/dashboard" as any}><LayoutDashboard className="size-4 text-muted-foreground shrink-0" /> Dashboard</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-white/5 focus:bg-white/5 focus:text-white">
+                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-muted focus:bg-muted focus:text-foreground">
                     <Link to="/messages" search={{ compose: false }}>
-                      <MessageSquare className="size-4 text-mute shrink-0" />
+                      <MessageSquare className="size-4 text-muted-foreground shrink-0" />
                       Messages
                       {unread > 0 && (
-                        <span className="ml-auto size-4 rounded-full bg-lime text-ink text-[9px] font-bold flex items-center justify-center shrink-0">
+                        <span className="ml-auto size-4 rounded-full bg-primary text-primary-foreground text-[9px] font-bold flex items-center justify-center shrink-0">
                           {unread > 9 ? "9+" : unread}
                         </span>
                       )}
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-white/5 focus:bg-white/5 focus:text-white">
-                    <Link to="/profil"><Settings className="size-4 text-mute shrink-0" /> Paramètres</Link>
+                  <DropdownMenuItem asChild className="gap-2.5 cursor-pointer text-sm hover:bg-muted focus:bg-muted focus:text-foreground">
+                    <Link to="/profil"><Settings className="size-4 text-muted-foreground shrink-0" /> Paramètres</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-white/10" />
+                  <DropdownMenuSeparator className="bg-border" />
                   <DropdownMenuItem
                     onClick={signOut}
-                    className="gap-2.5 cursor-pointer text-sm text-mute hover:text-white hover:bg-white/5 focus:bg-white/5 focus:text-white"
+                    className="gap-2.5 cursor-pointer text-sm text-muted-foreground hover:text-foreground hover:bg-muted focus:bg-muted focus:text-foreground"
                   >
                     <LogOut className="size-4 shrink-0" /> Déconnexion
                   </DropdownMenuItem>
@@ -257,13 +257,12 @@ export function AppNav() {
               </DropdownMenu>
             ) : (
               <>
-                <Link to="/login" className="text-sm text-mute hover:text-white transition-colors px-3 py-1.5">
+                <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5">
                   Connexion
                 </Link>
                 <Link
                   to="/signup"
-
-                  className="inline-flex items-center gap-1.5 rounded-full bg-lime px-4 py-1.5 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
                 >
                   Inscription
                 </Link>
@@ -275,7 +274,7 @@ export function AppNav() {
           <div className="flex items-center gap-1 lg:hidden">
             <button
               onClick={openSearch}
-              className="p-2 text-mute hover:text-white transition-colors"
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Recherche"
             >
               <Search className="size-5" />
@@ -284,12 +283,12 @@ export function AppNav() {
               <Link
                 to="/messages"
                 search={{ compose: false }}
-                className="relative p-2 text-mute hover:text-white transition-colors"
+                className="relative p-2 text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Messages"
               >
                 <MessageSquare className="size-5" />
                 {unread > 0 && (
-                  <span className="absolute top-1 right-1 size-3.5 rounded-full bg-lime text-ink text-[8px] font-bold flex items-center justify-center">
+                  <span className="absolute top-1 right-1 size-3.5 rounded-full bg-primary text-primary-foreground text-[8px] font-bold flex items-center justify-center">
                     {unread > 9 ? "9+" : unread}
                   </span>
                 )}
@@ -297,7 +296,7 @@ export function AppNav() {
             )}
             <button
               onClick={() => setOpen(!open)}
-              className="p-2 text-mute hover:text-white transition-colors"
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Menu"
             >
               {open ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -307,25 +306,25 @@ export function AppNav() {
 
         {/* Mobile inline search */}
         {searchOpen && (
-          <div className="lg:hidden border-t border-white/5 px-5 py-3 bg-ink/95 animate-in fade-in slide-in-from-top-1 duration-150">
+          <div className="lg:hidden border-t border-border px-5 py-3 bg-background animate-in fade-in slide-in-from-top-1 duration-150">
             <form onSubmit={submitSearch} className="flex gap-2">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-mute pointer-events-none" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
                 <input
                   ref={searchInputRef}
                   value={searchQ}
                   onChange={e => setSearchQ(e.target.value)}
                   placeholder="Offre, mentor, événement…"
-                  className="w-full rounded-xl bg-white/5 border border-white/10 pl-10 pr-4 py-2.5 text-sm placeholder:text-mute/50 focus:outline-none focus:border-violet/60 transition-colors"
+                  className="w-full rounded-lg bg-muted border border-border pl-10 pr-4 py-2.5 text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors text-foreground"
                 />
               </div>
-              <button type="submit" className="rounded-xl bg-lime px-4 text-sm font-semibold text-ink">
+              <button type="submit" className="rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground">
                 OK
               </button>
               <button
                 type="button"
                 onClick={() => { setSearchOpen(false); setSearchQ(""); }}
-                className="p-2 text-mute hover:text-white transition-colors"
+                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <X className="size-4" />
               </button>
@@ -336,42 +335,42 @@ export function AppNav() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="lg:hidden fixed inset-x-0 top-14 z-30 bg-ink/95 backdrop-blur-xl border-b border-white/10 px-5 py-4 space-y-1">
+        <div className="lg:hidden fixed inset-x-0 top-17 z-30 bg-background backdrop-blur border-b border-border px-5 py-4 space-y-1">
           {NAV_LINKS.map(({ to, label }) => (
             <Link
               key={to}
               to={to}
               onClick={() => setOpen(false)}
               className={`block px-3 py-2.5 rounded-lg text-sm transition-colors ${
-                isActive(to) ? "text-white font-semibold bg-white/5" : "text-mute hover:text-white hover:bg-white/[0.04]"
+                isActive(to) ? "text-primary font-semibold bg-primary-soft" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
             >
               {label}
             </Link>
           ))}
-          <div className="pt-3 border-t border-white/10 space-y-2">
+          <div className="pt-3 border-t border-border space-y-2">
             {user ? (
               <>
                 <div className="flex items-center gap-2 px-3 py-2 mb-1">
-                  <div className="size-7 rounded-full bg-gradient-to-br from-violet to-lime flex items-center justify-center text-ink text-xs font-bold shrink-0">
+                  <div className="size-7 rounded-lg bg-muted flex items-center justify-center text-foreground-2 text-xs font-semibold shrink-0">
                     {initials}
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-white">{(user.user_metadata?.name as string) ?? user.email}</div>
-                    {roleLabel && <div className="text-[10px] font-mono uppercase tracking-wider text-lime">{roleLabel}</div>}
+                    <div className="text-sm font-medium text-foreground">{(user.user_metadata?.name as string) ?? user.email}</div>
+                    {roleLabel && <div className="text-xs font-medium text-muted-foreground">{roleLabel}</div>}
                   </div>
                 </div>
                 <Link
                   to={"/dashboard" as any}
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 >
                   <LayoutDashboard className="size-4" /> Dashboard
                 </Link>
                 <Link
                   to="/profil"
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 >
                   <UserCircle className="size-4" /> Mon profil
                 </Link>
@@ -379,12 +378,12 @@ export function AppNav() {
                   to="/messages"
                   search={{ compose: false }}
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 >
                   <MessageSquare className="size-4" />
                   Messages
                   {unread > 0 && (
-                    <span className="ml-auto size-5 rounded-full bg-lime text-ink text-[10px] font-bold flex items-center justify-center">
+                    <span className="ml-auto size-5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
                       {unread}
                     </span>
                   )}
@@ -392,13 +391,13 @@ export function AppNav() {
                 <Link
                   to="/profil"
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 >
                   <Settings className="size-4" /> Paramètres
                 </Link>
                 <button
                   onClick={signOut}
-                  className="w-full text-left px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                  className="w-full text-left px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex items-center gap-2"
                 >
                   <LogOut className="size-4" /> Déconnexion
                 </button>
@@ -408,15 +407,14 @@ export function AppNav() {
                 <Link
                   to="/login"
                   onClick={() => setOpen(false)}
-                  className="block px-3 py-2.5 rounded-lg text-sm text-mute hover:text-white hover:bg-white/[0.04] transition-colors"
+                  className="block px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 >
                   Connexion
                 </Link>
                 <Link
                   to="/signup"
-
                   onClick={() => setOpen(false)}
-                  className="block px-3 py-2.5 rounded-lg text-sm font-semibold text-ink bg-lime text-center"
+                  className="block px-3 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground bg-primary text-center"
                 >
                   Inscription
                 </Link>

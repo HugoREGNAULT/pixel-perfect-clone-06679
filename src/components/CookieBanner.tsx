@@ -53,24 +53,24 @@ export function CookieBanner() {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50 sm:left-auto sm:right-6 sm:bottom-6 sm:max-w-md">
-      <div className="rounded-2xl border border-white/10 bg-ink-2/95 backdrop-blur-xl shadow-2xl overflow-hidden">
+      <div className="rounded-2xl border border-border bg-card backdrop-blur overflow-hidden shadow">
         <div className="p-5">
           <div className="flex items-start gap-3 mb-4">
-            <div className="size-8 rounded-lg bg-lime/10 flex items-center justify-center shrink-0 mt-0.5">
-              <Cookie className="size-4 text-lime" />
+            <div className="size-8 rounded-lg bg-primary-soft flex items-center justify-center shrink-0 mt-0.5">
+              <Cookie className="size-4 text-primary" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-white mb-1">Gestion des cookies</p>
-              <p className="text-xs text-mute leading-relaxed">
+              <p className="text-sm font-semibold text-foreground mb-1">Gestion des cookies</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 Nous utilisons des cookies pour améliorer votre expérience. Consultez notre{" "}
-                <Link to="/cookies" className="text-lime hover:underline">politique cookies</Link>.
+                <Link to="/cookies" className="text-primary hover:underline">politique cookies</Link>.
               </p>
             </div>
           </div>
 
           {/* Customize panel */}
           {expanded && (
-            <div className="mb-4 space-y-3 border border-white/8 rounded-xl p-4 bg-white/2">
+            <div className="mb-4 space-y-3 border border-border rounded-lg p-4 bg-muted">
               <ToggleRow
                 label="Cookies essentiels"
                 description="Authentification, session. Toujours actifs."
@@ -96,20 +96,20 @@ export function CookieBanner() {
             <div className="flex gap-2">
               <button
                 onClick={acceptAll}
-                className="flex-1 rounded-xl bg-lime text-ink text-sm font-semibold px-4 py-2.5 hover:bg-lime/90 transition-colors"
+                className="flex-1 rounded-lg bg-primary text-primary-foreground text-sm font-semibold px-4 py-2.5 hover:bg-primary-hover transition-colors"
               >
                 Accepter tout
               </button>
               <button
                 onClick={rejectAll}
-                className="flex-1 rounded-xl border border-white/10 text-white text-sm font-medium px-4 py-2.5 hover:bg-white/5 transition-colors"
+                className="flex-1 rounded-lg border border-border text-foreground text-sm font-medium px-4 py-2.5 hover:bg-muted transition-colors"
               >
                 Refuser
               </button>
             </div>
             <button
               onClick={() => setExpanded(v => !v)}
-              className="flex items-center justify-center gap-1.5 text-xs text-mute hover:text-white transition-colors py-1"
+              className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
             >
               {expanded ? <ChevronUp className="size-3" /> : <ChevronDown className="size-3" />}
               {expanded ? "Masquer les options" : "Personnaliser"}
@@ -117,7 +117,7 @@ export function CookieBanner() {
             {expanded && (
               <button
                 onClick={saveCustom}
-                className="rounded-xl border border-violet/40 text-violet-soft text-sm font-medium px-4 py-2.5 hover:bg-violet/10 transition-colors"
+                className="rounded-lg border border-primary text-primary text-sm font-medium px-4 py-2.5 hover:bg-primary-soft transition-colors"
               >
                 Enregistrer mes choix
               </button>
@@ -145,8 +145,8 @@ function ToggleRow({
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-semibold text-white">{label}</p>
-        <p className="text-[11px] text-mute mt-0.5">{description}</p>
+        <p className="text-xs font-semibold text-foreground">{label}</p>
+        <p className="text-[11px] text-muted-foreground mt-0.5">{description}</p>
       </div>
       <button
         role="switch"
@@ -155,14 +155,14 @@ function ToggleRow({
         onClick={() => onChange?.(!checked)}
         className={`relative shrink-0 mt-0.5 h-5 w-9 rounded-full transition-colors focus:outline-none ${
           disabled
-            ? "bg-white/20 cursor-not-allowed"
+            ? "bg-muted cursor-not-allowed"
             : checked
-            ? "bg-lime"
-            : "bg-white/10"
+            ? "bg-primary"
+            : "bg-border"
         }`}
       >
         <span
-          className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow transition-transform ${
+          className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white transition-transform ${
             checked ? "translate-x-4" : "translate-x-0"
           }`}
         />
