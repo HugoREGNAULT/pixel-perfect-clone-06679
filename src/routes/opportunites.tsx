@@ -71,6 +71,7 @@ function OpportunitesPage() {
   const [error, setError] = useState<string | null>(null);
   const [applied, setApplied] = useState<Set<string>>(new Set());
   const [selectedOffer, setSelectedOffer] = useState<JobOffer | null>(null);
+  const [stats, setStats] = useState<{ schools: number; upcomingJpos: number } | null>(null);
 
   const [q, setQ] = useState("");
   const [type, setType] = useState("tous");
@@ -113,6 +114,30 @@ function OpportunitesPage() {
     });
   }, []);
 
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        const today = new Date().toISOString().split('T')[0];
+        const [schoolsRes, jposRes] = await Promise.all([
+          supabase.from("ecoles").select("id", { count: "exact", head: true }),
+          supabase.from("jpos").select("id").gte("date", today).then(({ data, error: e1 }) => {
+            if (e1) return { data: [], error: e1 };
+            return supabase.from("jpo_submissions").select("id").eq("status", "approved").gte("created_at", today).then(({ data: jpoData }) => ({
+              data: (data || []).concat(jpoData || []),
+            }));
+          }),
+        ]);
+        setStats({
+          schools: schoolsRes.count || 0,
+          upcomingJpos: jposRes.data?.length || 0,
+        });
+      } catch (e) {
+        setStats({ schools: 0, upcomingJpos: 0 });
+      }
+    }
+    loadStats();
+  }, []);
+
   function resetFilters() {
     setQ(""); setType("tous"); setCity(""); setSector(""); setEdu(""); setPage(1);
   }
@@ -150,7 +175,7 @@ function OpportunitesPage() {
         </div>
 
         {/* Stats */}
-        {result && (
+        {result && stats && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 p-8 bg-foreground text-background rounded-lg">
             <div>
               <div className="font-display text-2xl md:text-3xl font-bold">
@@ -158,18 +183,18 @@ function OpportunitesPage() {
               </div>
               <p className="text-sm text-background/70 mt-1">offres actives</p>
             </div>
-            <div>
-              <div className="font-display text-2xl md:text-3xl font-bold">850+</div>
-              <p className="text-sm text-background/70 mt-1">entreprises partenaires</p>
-            </div>
-            <div>
-              <div className="font-display text-2xl md:text-3xl font-bold">96%</div>
-              <p className="text-sm text-background/70 mt-1">taux de matching</p>
-            </div>
-            <div>
-              <div className="font-display text-2xl md:text-3xl font-bold">48h</div>
-              <p className="text-sm text-background/70 mt-1">temps de réponse</p>
-            </div>
+            {stats.schools > 0 && (
+              <div>
+                <div className="font-display text-2xl md:text-3xl font-bold">{stats.schools}</div>
+                <p className="text-sm text-background/70 mt-1">écoles référencées</p>
+              </div>
+            )}
+            {stats.upcomingJpos > 0 && (
+              <div>
+                <div className="font-display text-2xl md:text-3xl font-bold">{stats.upcomingJpos}</div>
+                <p className="text-sm text-background/70 mt-1">JPO à venir</p>
+              </div>
+            )}
           </div>
         )}
 
