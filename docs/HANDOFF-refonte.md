@@ -56,27 +56,36 @@ src/routes/opportunites.tsx             — Layout colonnes + détail
 
 ### Homepage sections — ÉTAPE C (en cours)
 
-1. **Hero** (node 3:3) — ✅ DONE (`fc84fa4`)
-   - Texte exact: "Boostez votre avenir dès maintenant."
-   - "avenir" surligné (#fdcb58)
-   - CTA: "Commencer gratuitement" + "Voir la démo"
-   - Ombre dure 3px 3px 0 #16151D sur boutons
-   - Badge: "La plateforme #1 pour les 15-29 ans"
-   - Suppression: faux profils, bande logos
+1. **Hero** (node 3:3) — ✅ DONE (`18a7242`)
+   - Texte exact: "Boostez votre avenir dès maintenant"
+   - "avenir" surligné jaune
+   - CTA primaire: bg-primary (token) + ombre dure 3px 3px 0 + bordure 1.5px
+   - CTA secondaire: border-strong, pas d'ombre
+   - "Voir la démo" → ancre #fonctionnalites
+   - Compteur réel profiles (si > 100)
+   - Composition produit: dashboard card + offer card + notification flottante
 
 2. **Pourquoi Springr?** (node 3:128) — ✅ DONE (`68c3b44`)
    - 3 cartes: Fragmentation, Isolement, Bons plans introuvables
-   - Retrait fond jaune pleine largeur (règle thème clair)
-   - Cartes blanches avec icônes
+
+3. **Fonctionnalités à onglets** (node 3:166) — ✅ DONE (`d993c24`)
+   - 4 onglets: Offres, Mentorat, Bons Plans, Communauté
+   - id="fonctionnalites" pour ancre
+
+## Corrections appliquées (ÉTAPE C)
+
+1. **Header badge rôle** (`42ab398`) — text-xs font-medium
+2. **/opportunites stats** (`4969594`) — API + DB réelles
+3. **Hero corrections** (`18a7242`) — tokens primary, ombre/bordure primaire, ancre, compteur, composition
+4. **/opportunites JPO filter** (`5814af4`) — date_jpo >= today
 
 ## Reste à faire
 
 ### Homepage sections restantes (node IDs)
-3. **Fonctionnalités à onglets** (node 3:166)
 4. **Dernières opportunités** (node 3:395) — 3 vraies offres searchJobs
 5. **Mentorat** (node 3:556) — aperçu grisé "Bientôt disponible"
 6. **Tarifs** (node 3:622) — contenu de /tarifs
-7. **CTA newsletter** (node 3:704)
+7. **CTA newsletter** (node 3:704) — --primary-deep
 8. **Footer** (node 3:480)
 9. **Nav** (node 3:721) — vérifier conformité
 
