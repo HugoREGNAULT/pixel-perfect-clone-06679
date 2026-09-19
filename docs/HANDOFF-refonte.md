@@ -79,15 +79,73 @@ src/routes/opportunites.tsx             — Layout colonnes + détail
 3. **Hero corrections** (`18a7242`) — tokens primary, ombre/bordure primaire, ancre, compteur, composition
 4. **/opportunites JPO filter** (`5814af4`) — date_jpo >= today
 
-## Reste à faire
+## Specs Figma relevées — MODE FIDÉLITÉ FIGMA
 
-### Homepage sections restantes (node IDs)
-4. **Dernières opportunités** (node 3:395) — 3 vraies offres searchJobs
-5. **Mentorat** (node 3:556) — aperçu grisé "Bientôt disponible"
-6. **Tarifs** (node 3:622) — contenu de /tarifs
-7. **CTA newsletter** (node 3:704) — --primary-deep
-8. **Footer** (node 3:480)
-9. **Nav** (node 3:721) — vérifier conformité
+**Consigne:** Reproduire EXACTEMENT les maquettes Figma, pixel par pixel. Relever et utiliser les valeurs suivantes pour chaque section via get_design_context.
+
+### Polices
+- **Titres (H1):** Poppins ExtraBold, 72px, line-height 72px, letter-spacing 0, color #111827
+- **Titres (H2/H3):** Poppins Bold, 20px, color #111827
+- **Description:** Inter Regular, 20px, line-height 32.5px, color #4b5563
+- **Texte courant:** Inter Regular, 14px, color #111827
+- **Labels:** Inter Bold, 14px, color #6b7280
+
+### Couleurs principales
+- **Bleu primaire:** #06f (boutons CTA)
+- **Jaune highlight:** #fdcb58 (surligné "avenir")
+- **Noir texte:** #111827
+- **Gris texte:** #4b5563, #6b7280, #9ca3af
+- **Fond blanc:** #FFFFFF
+- **Fond gris:** #eff6ff, #fefce8, #f3f4f6
+- **Vert succès:** #00d084
+- **Bleu nuit (offer card):** #111827
+
+### Espacements & Radius
+- **Padding héro:** py-[160px] pb-[112px] px-5 lg:px-8
+- **Gap grille:** gap-16 (64px)
+- **Radius cartes:** 12px à 16px (border-radius)
+- **Radius boutons:** 12px
+
+### Ombres
+- **Ombre dure noire:** 4px 4px 0px black (boutons, cartes)
+- **Ombre sombre:** 8px 8px 0px black (composition hero)
+- **Rotation éléments:** -2deg (highlight jaune), 3deg (mentor card)
+
+### Bordures
+- **Bordure épaisse:** border-2 black (boutons, cartes)
+- **Bordure fine:** border-1 (couleurs légères)
+
+## Vérification Playwright obligatoire
+
+**Avant chaque section:** 
+1. get_screenshot de la maquette Figma
+2. Capturer http://localhost:8080 en 1440px
+3. Comparer pixel par pixel → corriger jusqu'à identique
+4. Tester aussi en 375px (frames mobiles dans 18:5998 "Base")
+
+**Exceptions autorisées SEULEMENT:**
+- Nom: Springr (pas UpNest)
+- Badge: "La plateforme des 15-29 ans" (pas "des 15-29 ans #1")
+- Aucun faux chiffre, avis, logo d'entreprise
+- Illustrations produit: contenu exact de la maquette (titres, chiffres tableau de bord)
+- Dernières opp: layout maquette + 3 vraies offres via searchJobs
+- Mentorat: layout maquette + avatars neutres
+- Photos/profils fake: remplacer par avatars neutres
+
+## Reste à faire — Prochaine session (budget frais)
+
+### Homepage sections à refaire en fidélité Figma
+1. **Nav** (node 3:721)
+2. **Hero** (node 3:3) — COMPLÈTE refonte
+3. **Pourquoi Springr?** (node 3:128)
+4. **Fonctionnalités à onglets** (node 3:166)
+5. **Dernières opportunités** (node 3:395) — 3 vraies offres
+6. **Mentorat** (node 3:556) — aperçu grisé
+7. **Tarifs** (node 3:622) — contenu de /tarifs
+8. **CTA newsletter** (node 3:704)
+9. **Footer** (node 3:480)
+
+**Chaque section:** 1 commit avec get_design_context + vérification Playwright 1440/375
 
 ### Pages restantes (3–10)
 1. **/login, /signup** (node 12:5553) — Auth pages
