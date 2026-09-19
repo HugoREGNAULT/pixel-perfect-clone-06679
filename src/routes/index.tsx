@@ -263,37 +263,41 @@ function Hero({ onFounder }: { onFounder: () => void }) {
 function WhySpringr() {
   const features = [
     {
-      title: "Profils vivants",
-      description: "Montre tes projets, pas un CV poussiéreux.",
+      title: "Fragmentation",
+      description: "Fatigué de jongler entre LinkedIn, Indeed, et 10 autres sites ? Nous centralisons tout au même endroit.",
       icon: Sparkles,
     },
     {
-      title: "Mentors proches",
-      description: "Des mentors accessibles, pas des célébrités éloignées.",
+      title: "Isolement",
+      description: "Difficile de se faire un réseau sans expérience ? Accédez à des mentors vérifiés prêts à vous aider.",
       icon: Users,
     },
     {
-      title: "Opportunités matchées",
-      description: "Des stages, alternances et jobs vraiment pertinents.",
+      title: "Bons plans introuvables",
+      description: "Ne ratez plus les aides au logement ou les réductions étudiantes. Tout est vérifié et accessible.",
       icon: Target,
     },
   ];
 
   return (
     <section className="mx-auto max-w-7xl px-5 lg:px-8 py-16 lg:py-24 border-t border-border">
-      <h2 className="font-display text-4xl font-bold mb-4">Pourquoi Springr ?</h2>
-      <p className="text-muted-foreground mb-12 max-w-2xl">
-        Conçu par et pour les étudiants. Sans le cringe corporate.
-      </p>
+      <div className="text-center mb-12">
+        <h2 className="font-display text-4xl font-bold mb-4">Pourquoi Springr ?</h2>
+        <p className="text-muted-foreground max-w-3xl mx-auto">
+          La vie étudiante est déjà assez compliquée. Trouver un job ou un mentor ne devrait pas l'être.
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {features.map((f, i) => {
           const Icon = f.icon;
           return (
-            <div key={i} className="card-base p-6">
-              <Icon className="size-6 text-primary mb-3" />
-              <h3 className="font-display font-semibold mb-2">{f.title}</h3>
-              <p className="text-sm text-muted-foreground">{f.description}</p>
+            <div key={i} className="card-base p-8 border-2 border-foreground rounded-2xl">
+              <div className="mb-4 inline-flex items-center justify-center size-12 rounded-lg bg-primary/10">
+                <Icon className="size-6 text-primary" />
+              </div>
+              <h3 className="font-display text-xl font-bold mb-3">{f.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{f.description}</p>
             </div>
           );
         })}
