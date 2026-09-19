@@ -47,8 +47,9 @@ export async function getOrCreateCode(userId: string, firstName: string): Promis
 }
 
 export async function lookupCode(code: string): Promise<{ user_id: string; first_name: string } | null> {
-  const { data } = await db.from("referral_codes").select("user_id, first_name").eq("code", code.toUpperCase()).maybeSingle();
-  return (data as { user_id: string; first_name: string } | null) ?? null;
+  const { data, error } = await supabase.rpc("get_referrer_by_code", { p_code: code.toUpperCase() });
+  if (error || !data) return null;
+  return (data[0] as { user_id: string; first_name: string } | null) ?? null;
 }
 
 export async function countReferrals(referrerId: string): Promise<number> {
