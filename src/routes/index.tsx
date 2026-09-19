@@ -143,7 +143,7 @@ function Nav({
                 <Link to="/profil" className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 hover:border-border-strong hover:bg-muted transition-all">
                   <div className="size-5 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-[10px] font-bold">{initials}</div>
                   <span className="text-sm text-foreground">Mon profil</span>
-                  {roleLabel && <span className="text-[10px] font-mono uppercase tracking-wider text-primary border border-primary/30 rounded-full px-1.5 py-0.5">{roleLabel}</span>}
+                  {roleLabel && <span className="text-xs font-medium text-primary border border-primary/30 rounded-full px-2 py-0.5">{roleLabel}</span>}
                 </Link>
                 <button onClick={onSignOut} className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:border-border-strong transition-all">
                   <LogOut className="size-3.5" /> Déconnexion
