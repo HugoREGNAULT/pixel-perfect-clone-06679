@@ -283,21 +283,24 @@ function mapApprentissageOffer(r: Record<string, any>): JobOffer {
   const contract = r.contract ?? {};
   const apply = r.apply ?? {};
 
+  const targetDiploma = offer.target_diploma;
+  const education = typeof targetDiploma === "string" ? targetDiploma : (targetDiploma?.label ?? "");
+
   return {
     id: `apprentissage-${identifier.id}`,
     source: "bonne_alternance",
-    title: decodeHtml(offer.title ?? "Alternance"),
-    company: decodeHtml(workplace.legal_name ?? workplace.name ?? ""),
-    city: workplace.location?.address ?? "France",
+    title: String(decodeHtml(offer.title ?? "Alternance")),
+    company: String(decodeHtml(workplace.legal_name ?? workplace.name ?? "")),
+    city: String(workplace.location?.address ?? "France"),
     type: "alternance",
-    sector: (offer.rome_codes?.[0] ?? "") as any,
-    description: decodeHtml(offer.description ?? ""),
+    sector: String(offer.rome_codes?.[0] ?? ""),
+    description: String(decodeHtml(offer.description ?? "")),
     publishedAt: offer.publication?.creation ?? new Date().toISOString(),
     applyUrl: apply.url ?? "https://api.apprentissage.beta.gouv.fr",
     remote: contract.remote === true,
-    tags: [...(contract.type ?? [])].filter(Boolean).slice(0, 2),
+    tags: (contract.type ?? []).filter((tag: any) => typeof tag === "string").slice(0, 2),
     experience: "",
-    education: offer.target_diploma ?? "",
+    education: String(education),
     salary: "",
   };
 }
