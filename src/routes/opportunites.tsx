@@ -3,9 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { toast } from "sonner";
 import {
-  MapPin, Calendar, Search, X, ArrowUpRight, Briefcase, Check,
-  SlidersHorizontal, Loader2, ExternalLink, Building2, ChevronLeft,
-  ChevronRight, RefreshCw, Zap, AlertTriangle, Radio, BookOpen,
+  MapPin, Calendar, Search, X, ArrowUpRight, Briefcase, Check, Loader2, ExternalLink, Building2,
+  ChevronLeft, ChevronRight, RefreshCw, AlertTriangle, Radio, BookOpen, Heart,
 } from "lucide-react";
 import { AppNav } from "@/components/AppNav";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,23 +20,21 @@ export const Route = createFileRoute("/opportunites")({
   component: OpportunitesPage,
 });
 
-/* ─── constants ─── */
-
 const PER_PAGE = 20;
 
 const TYPE_META: Record<string, { label: string; color: string; dot: string }> = {
-  tous:        { label: "Tous",           color: "border-white/20 text-mute",              dot: "bg-mute"         },
-  stage:       { label: "Stage",          color: "border-violet/40 bg-violet/15 text-violet-soft", dot: "bg-violet-soft" },
-  alternance:  { label: "Alternance",     color: "border-lime/40 bg-lime/10 text-lime",    dot: "bg-lime"         },
-  cdi:         { label: "CDI",            color: "border-blue-400/40 bg-blue-400/10 text-blue-300", dot: "bg-blue-400" },
-  cdd:         { label: "CDD",            color: "border-amber-400/40 bg-amber-400/10 text-amber-300", dot: "bg-amber-400" },
-  job:         { label: "Job étudiant",   color: "border-pink-400/40 bg-pink-400/10 text-pink-300", dot: "bg-pink-400" },
+  tous:        { label: "Tous",           color: "border-border text-muted-foreground",              dot: "bg-muted"         },
+  stage:       { label: "Stage",          color: "border-primary/40 bg-primary-soft text-primary", dot: "bg-primary" },
+  alternance:  { label: "Alternance",     color: "border-primary/40 bg-primary-soft text-primary",    dot: "bg-primary"         },
+  cdi:         { label: "CDI",            color: "border-blue-400/40 bg-blue-400/10 text-blue-600", dot: "bg-blue-400" },
+  cdd:         { label: "CDD",            color: "border-amber-400/40 bg-amber-400/10 text-amber-600", dot: "bg-amber-400" },
+  job:         { label: "Job étudiant",   color: "border-pink-400/40 bg-pink-400/10 text-pink-600", dot: "bg-pink-400" },
 };
 
 const SOURCE_META: Record<string, { label: string; color: string }> = {
-  france_travail:   { label: "France Travail",        color: "text-blue-400 border-blue-400/30 bg-blue-400/8"  },
-  bonne_alternance: { label: "La Bonne Alternance",   color: "text-lime border-lime/30 bg-lime/8"               },
-  local:            { label: "Springr",               color: "text-violet-soft border-violet/30 bg-violet/8"    },
+  france_travail:   { label: "France Travail",        color: "text-blue-600 border-blue-400/30 bg-blue-400/8"  },
+  bonne_alternance: { label: "La Bonne Alternance",   color: "text-primary border-primary/30 bg-primary-soft"               },
+  local:            { label: "Springr",               color: "text-primary border-primary/30 bg-primary-soft"    },
 };
 
 const EDUCATION_OPTIONS = [
@@ -48,40 +45,39 @@ const EDUCATION_OPTIONS = [
   { value: "bac+5", label: "Bac+5" },
 ];
 
-const COMPANY_COLORS = [
-  "from-violet/60 to-violet/30",   "from-lime/50 to-lime/20",
-  "from-blue-500/60 to-blue-500/20","from-emerald-500/50 to-emerald-500/20",
-  "from-pink-500/50 to-pink-500/20","from-orange-500/50 to-orange-500/20",
-  "from-cyan-500/50 to-cyan-500/20","from-amber-500/50 to-amber-500/20",
-];
-
-function companyGradient(name: string) {
-  return COMPANY_COLORS[(name.charCodeAt(0) + name.charCodeAt(name.length - 1)) % COMPANY_COLORS.length];
-}
-
 function daysAgo(date: string) {
-  return Math.floor((Date.now() - new Date(date).getTime()) / 86_400_000);
+  const now = new Date();
+  const offerDate = new Date(date);
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const offer = new Date(offerDate.getFullYear(), offerDate.getMonth(), offerDate.getDate());
+  return Math.floor((today.getTime() - offer.getTime()) / 86_400_000);
 }
 
-function formatDate(date: string) {
+function formatDateRelative(date: string) {
+  const days = daysAgo(date);
+  if (days === 0) return "Aujourd'hui";
+  if (days === 1) return "Hier";
+  if (days < 30) return `Il y a ${days} j`;
   return new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short" }).format(new Date(date));
 }
 
-/* ─── page ─── */
+function getInitials(company: string): string {
+  return company.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase().slice(0, 2);
+}
 
 function OpportunitesPage() {
-  const [result,   setResult]   = useState<SearchResult | null>(null);
-  const [loading,  setLoading]  = useState(true);
-  const [error,    setError]    = useState<string | null>(null);
-  const [applied,  setApplied]  = useState<Set<string>>(new Set());
+  const [result, setResult] = useState<SearchResult | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [applied, setApplied] = useState<Set<string>>(new Set());
+  const [selectedOffer, setSelectedOffer] = useState<JobOffer | null>(null);
 
-  // filters
-  const [q,        setQ]        = useState("");
-  const [type,     setType]     = useState("tous");
-  const [city,     setCity]     = useState("");
-  const [sector,   setSector]   = useState("");
-  const [education,setEdu]      = useState("");
-  const [page,     setPage]     = useState(1);
+  const [q, setQ] = useState("");
+  const [type, setType] = useState("tous");
+  const [city, setCity] = useState("");
+  const [sector, setSector] = useState("");
+  const [education, setEdu] = useState("");
+  const [page, setPage] = useState(1);
 
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -91,14 +87,16 @@ function OpportunitesPage() {
     try {
       const res = await searchJobs(params);
       setResult(res);
+      if (res.offers.length > 0 && !selectedOffer) {
+        setSelectedOffer(res.offers[0]);
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Erreur de chargement");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [selectedOffer]);
 
-  // Debounced search on param change
   useEffect(() => {
     if (searchTimer.current) clearTimeout(searchTimer.current);
     searchTimer.current = setTimeout(() => {
@@ -107,7 +105,6 @@ function OpportunitesPage() {
     return () => { if (searchTimer.current) clearTimeout(searchTimer.current); };
   }, [q, type, city, sector, education, page, load]);
 
-  // Load applied candidatures
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) return;
@@ -123,7 +120,6 @@ function OpportunitesPage() {
   const hasFilters = type !== "tous" || !!q || !!city || !!sector || !!education;
 
   async function handleApply(offer: JobOffer) {
-    // External offers → open apply URL directly
     if (offer.source !== "local" && offer.applyUrl) {
       window.open(offer.applyUrl, "_blank", "noopener,noreferrer");
       return;
@@ -140,286 +136,298 @@ function OpportunitesPage() {
   const totalPages = result ? Math.ceil(result.total / PER_PAGE) : 1;
 
   return (
-    <div className="min-h-screen bg-ink text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <AppNav />
-      <main className="mx-auto max-w-6xl px-4 sm:px-5 py-10 pb-24">
-
-        {/* ── Hero ── */}
-        <div className="mb-8">
-          <div className="eyebrow mb-3">En direct depuis France Travail & La Bonne Alternance</div>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05]">Opportunités</h1>
-          <p className="mt-4 text-mute text-lg max-w-xl">
-            Stages, alternances, CDI et jobs étudiants — offres officielles en temps réel.
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        {/* Hero */}
+        <div className="mb-10">
+          <h1 className="font-display text-5xl lg:text-6xl font-bold leading-tight mb-3">
+            Stages, alternances et premiers emplois
+          </h1>
+          <p className="text-muted-foreground text-lg max-w-2xl">
+            Découvre les meilleures opportunités en direct depuis France Travail et La Bonne Alternance.
           </p>
-          {/* Source legend */}
-          <div className="flex flex-wrap items-center gap-3 mt-4">
-            {Object.entries(SOURCE_META).map(([key, s]) => (
-              <span key={key} className={`inline-flex items-center gap-1.5 text-xs border rounded-full px-2.5 py-1 ${s.color}`}>
-                <span className="size-1.5 rounded-full bg-current opacity-70"/>
-                {s.label}
-              </span>
-            ))}
-          </div>
         </div>
 
-        {/* ── Filters bar ── */}
-        <div className="sticky top-14 z-30 -mx-4 sm:-mx-5 px-4 sm:px-5 py-4 bg-ink/95 backdrop-blur-xl border-b border-white/5 mb-8">
-          {/* Row 1: search + reset */}
-          <div className="flex items-center gap-3 mb-3">
-            <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-mute pointer-events-none" />
-              <input value={q} onChange={e => { setQ(e.target.value); setPage(1); }}
+        {/* Search Card */}
+        <div className="bg-card border border-border rounded-xl p-5 mb-10 shadow-sm">
+          <div className="flex gap-3 flex-col sm:flex-row">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              <input
+                value={q}
+                onChange={e => { setQ(e.target.value); setPage(1); }}
                 placeholder="Poste, entreprise, mot-clé…"
-                className="w-full rounded-xl bg-white/5 border border-white/10 pl-10 pr-4 py-2.5 text-sm placeholder:text-mute/60 focus:outline-none focus:border-violet/60 focus:bg-white/[0.07] transition-colors" />
-              {q && <button onClick={() => setQ("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-mute hover:text-white"><X className="size-4"/></button>}
+                className="w-full rounded-lg bg-background border border-input px-10 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              />
             </div>
-            <input value={city} onChange={e => { setCity(e.target.value); setPage(1); }}
-              placeholder="Ville"
-              className="rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-sm placeholder:text-mute/60 focus:outline-none focus:border-violet/60 focus:bg-white/[0.07] transition-colors w-32 sm:w-40" />
-            {hasFilters && (
-              <button onClick={resetFilters} className="inline-flex items-center gap-1.5 text-xs text-mute hover:text-white transition-colors whitespace-nowrap">
-                <X className="size-3.5"/> Réinitialiser
-              </button>
-            )}
-          </div>
-
-          {/* Row 2: type pills + select filters */}
-          <div className="flex flex-wrap items-center gap-2">
-            <SlidersHorizontal className="size-4 text-mute shrink-0" />
-            {Object.entries(TYPE_META).map(([t, m]) => (
-              <button key={t} onClick={() => { setType(t); setPage(1); }}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium border transition-all ${
-                  type === t ? "bg-white text-ink border-white" : "border-white/15 text-mute hover:border-white/30 hover:text-white"
-                }`}>
-                {m.label}
-              </button>
-            ))}
-            <div className="w-px h-4 bg-white/10 mx-1" />
-            <select value={sector} onChange={e => { setSector(e.target.value); setPage(1); }}
-              className="rounded-full bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-mute focus:outline-none focus:border-violet/60 transition-colors cursor-pointer">
-              <option value="">Tous les secteurs</option>
-              {["Tech", "Marketing", "Finance", "Santé", "Commerce", "Communication", "Ingénierie", "Design", "RH", "Juridique"].map(s => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-            <select value={education} onChange={e => { setEdu(e.target.value); setPage(1); }}
-              className="rounded-full bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-mute focus:outline-none focus:border-violet/60 transition-colors cursor-pointer">
-              {EDUCATION_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-            </select>
-          </div>
-        </div>
-
-        {/* ── Result count + source info ── */}
-        {result && !loading && (
-          <div className="flex items-center gap-3 mb-6 flex-wrap">
-            <span className="font-display font-bold text-2xl">{result.total.toLocaleString("fr-FR")}</span>
-            <span className="text-mute text-sm">offre{result.total !== 1 ? "s" : ""} trouvée{result.total !== 1 ? "s" : ""}</span>
-            {result.cached && (
-              <span className="text-xs font-mono text-mute border border-white/10 rounded-full px-2 py-0.5 flex items-center gap-1">
-                <RefreshCw className="size-2.5"/> Cache
-              </span>
-            )}
-            {hasFilters && (
-              <span className="text-xs font-mono text-lime bg-lime/10 border border-lime/20 rounded-full px-2 py-0.5">Filtres actifs</span>
-            )}
-            {/* API errors as soft warnings */}
-            {result.errors?.france_travail && (
-              <span className="text-xs text-amber-400/70 flex items-center gap-1">
-                <AlertTriangle className="size-3"/> France Travail indisponible
-              </span>
-            )}
-          </div>
-        )}
-
-        {/* ── Grid ── */}
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-32 gap-4">
-            <Loader2 className="size-8 text-mute animate-spin" />
-            <p className="text-sm text-mute">Recherche en cours sur France Travail & La Bonne Alternance…</p>
-          </div>
-        ) : error ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center gap-3">
-            <AlertTriangle className="size-10 text-amber-400/60" />
-            <p className="text-mute text-sm">Erreur de chargement des offres.</p>
-            <code className="text-xs text-amber-400/70 bg-amber-400/5 border border-amber-400/15 rounded-lg px-3 py-2 max-w-sm break-all">{error}</code>
-            <button onClick={() => load({ q, type, city, sector, education, page })}
-              className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-white/15 px-4 py-2 text-sm text-mute hover:text-white hover:border-white/30 transition-colors">
-              <RefreshCw className="size-3.5"/> Réessayer
+            <div className="relative flex-1 sm:flex-none sm:w-40">
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              <input
+                value={city}
+                onChange={e => { setCity(e.target.value); setPage(1); }}
+                placeholder="Ville"
+                className="w-full rounded-lg bg-background border border-input px-10 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+            <button
+              onClick={() => load({ q, type, city, sector, education, page })}
+              className="rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
+            >
+              Rechercher
             </button>
           </div>
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-wrap items-center gap-2 mb-8">
+          {Object.entries(TYPE_META).map(([t, m]) => (
+            <button
+              key={t}
+              onClick={() => { setType(t); setPage(1); }}
+              className={`rounded-full px-4 py-2 text-xs font-medium border transition-all ${
+                type === t
+                  ? "bg-primary-soft border-primary text-primary-soft-foreground"
+                  : "border-border text-muted-foreground hover:border-border/80 hover:text-foreground"
+              }`}
+            >
+              {m.label}
+            </button>
+          ))}
+          <select
+            value={sector}
+            onChange={e => { setSector(e.target.value); setPage(1); }}
+            className="rounded-full bg-background border border-border px-4 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+          >
+            <option value="">Tous les secteurs</option>
+            {["Tech", "Marketing", "Finance", "Santé", "Commerce", "Communication", "Ingénierie", "Design", "RH", "Juridique"].map(s => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+          <select
+            value={education}
+            onChange={e => { setEdu(e.target.value); setPage(1); }}
+            className="rounded-full bg-background border border-border px-4 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+          >
+            {EDUCATION_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+          </select>
+          {hasFilters && (
+            <button
+              onClick={resetFilters}
+              className="ml-auto inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <X className="size-3.5" /> Réinitialiser
+            </button>
+          )}
+        </div>
+
+        {/* Main content */}
+        {loading ? (
+          <div className="flex items-center justify-center py-24">
+            <Loader2 className="size-6 text-muted-foreground animate-spin" />
+          </div>
+        ) : error ? (
+          <div className="text-center py-24">
+            <AlertTriangle className="size-10 text-highlight mx-auto mb-3" />
+            <p className="text-muted-foreground">{error}</p>
+          </div>
         ) : !result || result.offers.length === 0 ? (
-          <EmptyState onReset={resetFilters} hasFilters={hasFilters} />
+          <div className="text-center py-24">
+            <Briefcase className="size-12 text-muted-foreground/30 mx-auto mb-3" />
+            <p className="text-foreground font-medium">Aucune offre trouvée</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              {hasFilters ? "Essaie d'élargir tes critères." : "Les offres vont bientôt s'afficher."}
+            </p>
+          </div>
         ) : (
-          <>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {result.offers.map(offer => (
-                <OfferCard
+          <div className="grid grid-cols-1 lg:grid-cols-[520px_1fr] gap-8">
+            {/* Left: List */}
+            <div className="space-y-3">
+              <div className="text-xs font-medium text-muted-foreground mb-4">
+                {result.total.toLocaleString("fr-FR")} offre{result.total !== 1 ? "s" : ""}
+              </div>
+              {result.offers.map((offer) => (
+                <OfferListItem
                   key={offer.id}
                   offer={offer}
-                  applied={applied.has(offer.id)}
-                  onApply={() => handleApply(offer)}
+                  selected={selectedOffer?.id === offer.id}
+                  onSelect={() => setSelectedOffer(offer)}
                 />
               ))}
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between gap-2 mt-8 pt-6 border-t border-border">
+                  <button
+                    onClick={() => setPage(Math.max(1, page - 1))}
+                    disabled={page === 1}
+                    className="p-2 rounded-lg border border-border text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <ChevronLeft className="size-4" />
+                  </button>
+                  <span className="text-xs text-muted-foreground">
+                    Page {page} sur {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setPage(Math.min(totalPages, page + 1))}
+                    disabled={page === totalPages}
+                    className="p-2 rounded-lg border border-border text-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <ChevronRight className="size-4" />
+                  </button>
+                </div>
+              )}
             </div>
 
-            {/* ── Pagination ── */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-10">
-                <button
-                  onClick={() => setPage(p => Math.max(1, p - 1))}
-                  disabled={page === 1}
-                  className="flex items-center gap-1.5 rounded-xl border border-white/15 px-4 py-2.5 text-sm text-mute hover:text-white hover:border-white/30 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
-                  <ChevronLeft className="size-4"/> Précédent
-                </button>
-
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
-                    let p: number;
-                    if (totalPages <= 7) p = i + 1;
-                    else if (page <= 4) p = i + 1;
-                    else if (page >= totalPages - 3) p = totalPages - 6 + i;
-                    else p = page - 3 + i;
-                    return (
-                      <button key={p} onClick={() => setPage(p)}
-                        className={`size-9 rounded-xl text-sm font-mono transition-all ${
-                          p === page
-                            ? "bg-lime text-ink font-bold"
-                            : "text-mute hover:text-white hover:bg-white/5"
-                        }`}>
-                        {p}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <button
-                  onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                  disabled={page === totalPages}
-                  className="flex items-center gap-1.5 rounded-xl border border-white/15 px-4 py-2.5 text-sm text-mute hover:text-white hover:border-white/30 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
-                  Suivant <ChevronRight className="size-4"/>
-                </button>
+            {/* Right: Detail */}
+            {selectedOffer && (
+              <div className="hidden lg:block">
+                <DetailPanel
+                  offer={selectedOffer}
+                  applied={applied.has(selectedOffer.id)}
+                  onApply={() => handleApply(selectedOffer)}
+                />
               </div>
             )}
-          </>
+          </div>
         )}
       </main>
     </div>
   );
 }
 
-/* ─── offer card ─── */
-
-function OfferCard({ offer, applied, onApply }: { offer: JobOffer; applied: boolean; onApply: () => void }) {
-  const age   = daysAgo(offer.publishedAt);
-  const isNew = age <= 3;
-  const typeMeta   = TYPE_META[offer.type]   ?? TYPE_META.job;
-  const sourceMeta = SOURCE_META[offer.source] ?? SOURCE_META.local;
-  const isExternal = offer.source !== "local";
+function OfferListItem({
+  offer,
+  selected,
+  onSelect,
+}: {
+  offer: JobOffer;
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  const age = daysAgo(offer.publishedAt);
+  const isNew = age < 3;
+  const typeMeta = TYPE_META[offer.type] ?? TYPE_META.job;
+  const initials = getInitials(offer.company);
 
   return (
-    <article className="group relative flex flex-col rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-5 hover:border-violet/40 hover:-translate-y-0.5 transition-all duration-200">
-      {/* top row */}
-      <div className="flex items-start justify-between gap-3 mb-4">
-        <div className={`size-10 rounded-xl bg-gradient-to-br ${companyGradient(offer.company)} flex items-center justify-center font-display font-bold text-base text-white shrink-0`}>
-          {offer.company[0]}
+    <button
+      onClick={onSelect}
+      className={`w-full text-left p-4 rounded-lg border transition-all ${
+        selected
+          ? "bg-card border-primary shadow-sm"
+          : "bg-card border-border hover:border-border/80"
+      }`}
+    >
+      <div className="flex gap-4 items-start">
+        {/* Logo */}
+        <div className="size-12 rounded-lg bg-muted border border-border flex items-center justify-center shrink-0">
+          <span className="text-xs font-semibold text-muted-foreground">{initials}</span>
         </div>
-        <div className="flex items-center gap-1.5 flex-wrap justify-end">
-          {isNew && (
-            <span className="text-[10px] font-mono uppercase tracking-wider text-lime bg-lime/10 border border-lime/25 rounded-full px-2 py-0.5 flex items-center gap-1">
-              <Radio className="size-2.5"/> Nouveau
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-sm text-foreground line-clamp-1">{offer.title}</div>
+          <div className="text-xs text-muted-foreground mt-1">
+            {offer.company} · {offer.city}
+          </div>
+          <div className="flex gap-2 mt-2 flex-wrap">
+            <span className={`text-[10px] px-2 py-1 rounded ${typeMeta.color}`}>
+              {typeMeta.label}
             </span>
-          )}
-          <span className={`text-[10px] font-mono uppercase tracking-wider border rounded-full px-2 py-0.5 ${typeMeta.color}`}>
-            {typeMeta.label}
-          </span>
+            {isNew && (
+              <span className="text-[10px] px-2 py-1 rounded bg-highlight text-highlight-foreground flex items-center gap-1">
+                <Radio className="size-2" /> Nouveau
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Date */}
+        <div className="text-xs text-muted-foreground shrink-0">
+          {formatDateRelative(offer.publishedAt)}
         </div>
       </div>
-
-      {/* title + company */}
-      <div className="flex-1 mb-3">
-        <h2 className="font-display font-bold text-sm leading-snug group-hover:text-lime transition-colors line-clamp-2">{offer.title}</h2>
-        <p className="mt-0.5 text-xs text-mute">{offer.company}</p>
-      </div>
-
-      {/* description snippet */}
-      {offer.description && (
-        <p className="text-xs text-mute/70 leading-relaxed line-clamp-2 mb-3">{offer.description}</p>
-      )}
-
-      {/* tags */}
-      {offer.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          {offer.tags.slice(0, 3).map(tag => (
-            <span key={tag} className="text-[10px] font-mono bg-white/5 border border-white/10 rounded-full px-2 py-0.5 text-mute">{tag}</span>
-          ))}
-        </div>
-      )}
-
-      {/* salary / education */}
-      {(offer.salary || offer.education) && (
-        <div className="flex flex-wrap gap-3 text-[11px] text-mute mb-3">
-          {offer.salary    && <span className="flex items-center gap-1"><Zap className="size-3 text-lime"/>{offer.salary}</span>}
-          {offer.education && <span className="flex items-center gap-1"><BookOpen className="size-3"/>{offer.education}</span>}
-        </div>
-      )}
-
-      {/* meta: city + date + source */}
-      <div className="flex items-center justify-between gap-2 text-[11px] text-mute mb-4">
-        <span className="flex items-center gap-1 truncate">
-          <MapPin className="size-3 shrink-0" />
-          <span className="truncate">{offer.city}{offer.remote && " · Remote"}</span>
-        </span>
-        <span className="flex items-center gap-1 shrink-0">
-          <Calendar className="size-3" />
-          {age === 0 ? "Auj." : age === 1 ? "Hier" : formatDate(offer.publishedAt)}
-        </span>
-      </div>
-
-      {/* source badge */}
-      <div className="mb-4">
-        <span className={`text-[10px] border rounded-full px-2 py-0.5 font-mono ${sourceMeta.color}`}>{sourceMeta.label}</span>
-      </div>
-
-      {/* apply button */}
-      <button
-        onClick={onApply}
-        disabled={!isExternal && applied}
-        className={`w-full inline-flex items-center justify-center gap-2 rounded-full py-2.5 text-sm font-semibold transition-all ${
-          !isExternal && applied
-            ? "bg-lime/15 border border-lime/30 text-lime cursor-default"
-            : "bg-lime text-ink hover:-translate-y-0.5 hover:shadow-[0_0_20px_-4px_rgba(181,255,61,0.4)]"
-        }`}>
-        {!isExternal && applied ? (
-          <><Check className="size-4"/> Candidature envoyée</>
-        ) : isExternal ? (
-          <>Postuler <ExternalLink className="size-4"/></>
-        ) : (
-          <>Postuler <ArrowUpRight className="size-4"/></>
-        )}
-      </button>
-    </article>
+    </button>
   );
 }
 
-/* ─── empty state ─── */
+function DetailPanel({
+  offer,
+  applied,
+  onApply,
+}: {
+  offer: JobOffer;
+  applied: boolean;
+  onApply: () => void;
+}) {
+  const age = daysAgo(offer.publishedAt);
+  const initials = getInitials(offer.company);
+  const sourceMeta = SOURCE_META[offer.source] ?? SOURCE_META.local;
 
-function EmptyState({ onReset, hasFilters }: { onReset: () => void; hasFilters: boolean }) {
   return (
-    <div className="flex flex-col items-center justify-center py-24 text-center gap-4">
-      <Briefcase className="size-12 text-mute opacity-20" />
+    <div className="sticky top-20 bg-card border border-border rounded-xl p-6 space-y-6">
+      {/* Header */}
       <div>
-        <p className="font-semibold text-white">Aucune offre trouvée</p>
-        <p className="text-sm text-mute mt-1">
-          {hasFilters
-            ? "Essaie d'élargir tes critères de recherche."
-            : "Les offres externes mettent parfois quelques secondes à charger."}
-        </p>
+        <div className="size-14 rounded-lg bg-muted border border-border flex items-center justify-center mb-4">
+          <span className="text-sm font-semibold text-muted-foreground">{initials}</span>
+        </div>
+        <div className="text-sm text-muted-foreground">{offer.company}</div>
+        <h2 className="font-display text-2xl font-bold text-foreground mt-2">{offer.title}</h2>
+        <div className="text-xs text-muted-foreground mt-3">
+          {offer.type} · {offer.city} · {formatDateRelative(offer.publishedAt)}
+        </div>
       </div>
-      {hasFilters && (
-        <button onClick={onReset} className="inline-flex items-center gap-2 rounded-full bg-lime text-ink px-5 py-2.5 text-sm font-semibold hover:-translate-y-0.5 transition-transform">
-          <X className="size-4"/> Réinitialiser les filtres
+
+      {/* Actions */}
+      <div className="space-y-2">
+        <button
+          onClick={onApply}
+          className={`w-full py-3 rounded-lg font-semibold text-sm transition-colors ${
+            applied
+              ? "bg-primary-soft text-primary-soft-foreground border border-primary/30"
+              : "bg-primary text-primary-foreground hover:bg-primary-hover"
+          }`}
+        >
+          {applied ? <Check className="size-4 mr-2 inline" /> : null}
+          {applied ? "Candidature envoyée" : "Postuler"}
         </button>
+        <button className="w-full py-3 rounded-lg border border-border text-foreground hover:bg-muted font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+          <Heart className="size-4" /> Enregistrer
+        </button>
+      </div>
+
+      {/* Info grid */}
+      <div className="grid grid-cols-3 gap-3 py-4 border-y border-border">
+        <div>
+          <div className="text-[10px] font-medium text-muted-foreground mb-1">Type</div>
+          <div className="text-sm font-medium text-foreground">{offer.type}</div>
+        </div>
+        <div>
+          <div className="text-[10px] font-medium text-muted-foreground mb-1">Lieu</div>
+          <div className="text-sm font-medium text-foreground">{offer.city}</div>
+        </div>
+        <div>
+          <div className="text-[10px] font-medium text-muted-foreground mb-1">Publié</div>
+          <div className="text-sm font-medium text-foreground">{formatDateRelative(offer.publishedAt)}</div>
+        </div>
+      </div>
+
+      {/* Description */}
+      {offer.description && (
+        <div>
+          <h3 className="font-semibold text-foreground mb-2">À propos du poste</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-5">{offer.description}</p>
+        </div>
       )}
+
+      {/* Source */}
+      <div className="pt-4 border-t border-border">
+        <div className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border ${sourceMeta.color}`}>
+          <span className="size-1.5 rounded-full bg-current" />
+          Offre officielle · {sourceMeta.label}
+        </div>
+      </div>
     </div>
   );
 }
