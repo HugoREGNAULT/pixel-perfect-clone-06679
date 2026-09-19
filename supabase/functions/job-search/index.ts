@@ -16,7 +16,7 @@ const CORS = {
 
 const FT_TOKEN_URL = "https://entreprise.francetravail.fr/connexion/oauth2/access_token?realm=%2Fpartenaire";
 const FT_SEARCH_URL = "https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search";
-const LBA_SEARCH_URL = "https://labonnealternance.apprentissage.beta.gouv.fr/api/v1/jobs/matcha";
+const APPRENTISSAGE_SEARCH_URL = "https://api.apprentissage.beta.gouv.fr/v1/offres";
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
 
 // Module-level token cache (warm within a Deno isolate)
@@ -98,7 +98,10 @@ async function fetchAll(p: {
   ]);
 
   const ftOffers  = ftResult.status  === "fulfilled" ? (ftResult.value as JobOffer[])  : [];
+  if (ftResult.status === "rejected") console.error("[job-search] France Travail error:", ftResult.reason);
+
   const lbaOffers = lbaResult.status === "fulfilled" ? (lbaResult.value as JobOffer[]) : [];
+  if (lbaResult.status === "rejected") console.error("[job-search] Apprentissage API error:", lbaResult.reason);
 
   // Deduplicate by normalising title+company
   const seen = new Set<string>();
@@ -245,46 +248,46 @@ const DEFAULT_ROMES = "M1805,M1803,M1807,M1403,M1702,E1104,D1406,K2401,H2502";
 async function fetchBonneAlternance(p: {
   keywords: string; city: string; sector: string; page: number; perPage: number;
 }): Promise<JobOffer[]> {
-  const cityKey = p.city.toLowerCase().trim();
-  const coords  = CITY_COORDS[cityKey] ?? CITY_COORDS["paris"];
+  const lbaToken = Deno.env.get("LBA_API_TOKEN");
+  if (!lbaToken) throw new Error("LBA_API_TOKEN not configured");
 
   const qs = new URLSearchParams({
-    caller:    "springr",
-    longitude: String(coords[1]),
-    latitude:  String(coords[0]),
-    radius:    "30",
-    romes:     DEFAULT_ROMES,
+    keywords: p.keywords || "",
+    ville: p.city || "",
+    page: String(p.page),
+    limit: String(p.perPage),
   });
 
-  const res = await fetch(`${LBA_SEARCH_URL}?${qs}`, {
-    headers: { Accept: "application/json" },
+  const res = await fetch(`${APPRENTISSAGE_SEARCH_URL}?${qs}`, {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${lbaToken}`,
+    },
   });
-  if (!res.ok) throw new Error(`LBA error: ${res.status}`);
+  if (!res.ok) throw new Error(`Apprentissage API error: ${res.status}`);
 
   const json = await res.json();
-  const items = json.matchas ?? json.jobs ?? json.results ?? [];
-  return (items as Record<string, any>[]).map(mapLBAOffer);
+  const items = json.results ?? json.data ?? json.offres ?? [];
+  return (items as Record<string, any>[]).map(mapApprentissageOffer);
 }
 
-function mapLBAOffer(r: Record<string, any>): JobOffer {
-  const job  = r.job ?? r;
-  const comp = r.company ?? r.entreprise ?? {};
+function mapApprentissageOffer(r: Record<string, any>): JobOffer {
   return {
-    id:          `lba-${r.id ?? r._id ?? crypto.randomUUID()}`,
+    id:          `apprentissage-${r.id ?? crypto.randomUUID()}`,
     source:      "bonne_alternance",
-    title:       job.title ?? job.appellationlibelle ?? r.title ?? "Alternance",
-    company:     comp.name ?? comp.nom ?? "Entreprise",
-    city:        job.location?.city ?? comp.city ?? comp.ville ?? "France",
+    title:       r.intitule ?? r.titre ?? "Alternance",
+    company:     r.nom_entreprise ?? r.entreprise ?? "Entreprise",
+    city:        r.ville ?? r.localite ?? "France",
     type:        "alternance",
-    sector:      job.rome_appellation_label ?? r.romeLabel ?? "Alternance",
-    description: job.description ?? r.description ?? "",
-    publishedAt: job.createdAt ?? r.createdAt ?? new Date().toISOString(),
-    applyUrl:    r.url ?? r.applyUrl ?? `https://labonnealternance.apprentissage.beta.gouv.fr/recherche-apprentissage`,
-    remote:      false,
-    tags:        ["Alternance", job.contractType ?? "Apprentissage"].filter(Boolean),
-    experience:  "",
-    education:   "",
-    salary:      job.salary ?? "",
+    sector:      r.code_rome ?? r.secteur ?? "Alternance",
+    description: r.description ?? "",
+    publishedAt: r.date_creation ?? r.createdAt ?? new Date().toISOString(),
+    applyUrl:    r.url ?? `https://api.apprentissage.beta.gouv.fr/offres/${r.id}`,
+    remote:      r.teletravail ?? false,
+    tags:        ["Alternance", r.type_contrat ?? "Apprentissage"].filter(Boolean),
+    experience:  r.experience ?? "",
+    education:   r.niveau_etude ?? "",
+    salary:      r.salaire ?? "",
   };
 }
 
