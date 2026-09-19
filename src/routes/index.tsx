@@ -19,6 +19,7 @@ import { FounderCheckoutDialog } from "@/components/FounderCheckoutDialog";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import { Nav } from "@/components/homepage/Nav";
+import { Hero } from "@/components/homepage/Hero";
 
 const NAV_LINKS = [
   { to: "/opportunites", label: "Opportunités" },
@@ -99,7 +100,7 @@ function HomePage() {
     <>
       <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
         <Nav />
-        <Hero profileCount={profileCount} />
+        <Hero />
         <WhySpringr />
         <NeedSection />
         <FeaturesSection />
@@ -274,127 +275,6 @@ function NavLegacy({
         </div>
       )}
     </>
-  );
-}
-
-/* ----------------------------------------------------------------- HERO */
-
-function Hero({ profileCount }: { profileCount: number }) {
-  return (
-    <section className="relative py-24 lg:py-32 px-5 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left: Text Content */}
-          <div>
-            {/* Badge */}
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-primary-soft px-3 py-2">
-              <div className="size-2 rounded-full bg-primary" />
-              <span className="text-xs font-semibold text-primary-soft-foreground">La plateforme #1 pour les 15-29 ans</span>
-            </div>
-
-            {/* H1 avec "avenir" surligné */}
-            <h1 className="font-display text-5xl lg:text-6xl font-black leading-[1.1] mb-6">
-              <span>Boostez votre </span>
-              <span className="relative inline-block">
-                <span className="relative z-10">avenir</span>
-                <span className="absolute inset-x-0 bottom-1 h-4 bg-yellow-300 -z-0" />
-              </span>
-              <br />
-              <span>dès maintenant.</span>
-            </h1>
-
-            {/* Description */}
-            <p className="text-lg text-muted-foreground max-w-2xl mb-8 leading-relaxed">
-              Centralisez stages, alternances, mentorat et bons plans dans une seule app. Rejoignez la communauté qui connecte étudiants, écoles et entreprises.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Link
-                to="/signup"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-8 py-4 text-base font-bold text-primary-foreground hover:bg-primary-hover transition-colors border-[1.5px] border-foreground"
-                style={{
-                  boxShadow: "3px 3px 0 rgba(22, 21, 29, 1)"
-                }}
-              >
-                Commencer gratuitement
-                <ArrowUpRight className="size-5" />
-              </Link>
-              <a
-                href="#fonctionnalites"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-border-strong px-8 py-4 text-base font-bold text-foreground hover:bg-muted transition-colors"
-              >
-                Voir la démo
-              </a>
-            </div>
-
-            {/* Real profile count */}
-            {profileCount > 100 && (
-              <p className="text-sm text-muted-foreground">
-                Rejoints par +{profileCount.toLocaleString("fr-FR")} étudiants
-              </p>
-            )}
-          </div>
-
-          {/* Right: Product Composition */}
-          <div className="hidden lg:block">
-            <HeroProductComposition />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function HeroProductComposition() {
-  return (
-    <div className="relative">
-      {/* Dashboard Card */}
-      <div className="card-base p-6 mb-6 relative z-20">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h3 className="font-display font-bold">Tableau de bord</h3>
-            <p className="text-xs text-muted-foreground">Bienvenue</p>
-          </div>
-          <span className="text-xs font-semibold text-primary bg-primary-soft px-2 py-1 rounded-full">Étudiant</span>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-foreground">0</div>
-            <p className="text-xs text-muted-foreground">Candidatures</p>
-          </div>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-foreground">0</div>
-            <p className="text-xs text-muted-foreground">Entretiens</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Offer Match Card */}
-      <div className="bg-foreground text-background rounded-lg p-6 relative z-10 shadow-lg">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <span className="inline-block bg-success text-success-foreground text-xs font-bold px-2 py-1 rounded">98% Match</span>
-          </div>
-        </div>
-        <h4 className="font-bold text-lg mb-1">Offre de stage</h4>
-        <p className="text-xs text-background/70 mb-4">À compléter depuis l'API</p>
-        <button className="w-full bg-background text-foreground font-bold py-2 rounded hover:bg-muted transition-colors">
-          Postuler en 1 clic
-        </button>
-      </div>
-
-      {/* Floating notification */}
-      <div className="absolute -top-4 -right-4 bg-background border-2 border-foreground rounded-lg p-3 shadow-lg z-30">
-        <div className="flex items-start gap-2">
-          <Check className="size-4 text-success flex-shrink-0 mt-0.5" />
-          <div className="text-xs">
-            <p className="font-bold">Candidature envoyée !</p>
-            <p className="text-muted-foreground text-[10px]">À compléter</p>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }
 
