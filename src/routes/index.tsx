@@ -202,36 +202,57 @@ function Nav({
 
 function Hero({ onFounder }: { onFounder: () => void }) {
   return (
-    <section className="relative py-16 lg:py-32">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="max-w-3xl">
-          <h1 className="font-display text-5xl lg:text-6xl font-bold leading-tight">
-            Vivez votre avenir dès maintenant.
-          </h1>
-
-          <p className="mt-6 text-lg text-muted-foreground max-w-2xl">
-            Springr connecte les étudiants avec des mentors, des opportunités et une communauté qui les comprend.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              to="/signup"
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-base font-semibold text-primary-foreground hover:bg-primary-hover transition-colors shadow-sm"
-              style={{
-                boxShadow: "0 4px 12px rgba(110, 86, 207, 0.3), 0 1px 2px rgba(22, 21, 29, 0.04)"
-              }}
-            >
-              Commencer
-              <ArrowUpRight className="size-5" />
-            </Link>
-            <a
-              href="#newsletter"
-              className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 text-base font-medium text-foreground hover:bg-muted transition-colors"
-            >
-              En savoir plus
-            </a>
-          </div>
+    <section className="relative py-24 lg:py-32 px-5 lg:px-8">
+      <div className="mx-auto max-w-4xl">
+        {/* Badge */}
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-primary-soft px-3 py-2">
+          <div className="size-2 rounded-full bg-primary" />
+          <span className="text-xs font-semibold text-primary-soft-foreground">La plateforme #1 pour les 15-29 ans</span>
         </div>
+
+        {/* H1 avec "avenir" surligné */}
+        <h1 className="font-display text-5xl lg:text-6xl font-black leading-[1.1] mb-6">
+          <span>Boostez votre </span>
+          <span className="relative">
+            <span className="relative z-10">avenir</span>
+            <span className="absolute inset-x-0 bottom-1 h-4 bg-[#fdcb58] z-0" />
+          </span>
+          <span> dès</span>
+          <br />
+          <span>maintenant.</span>
+        </h1>
+
+        {/* Description */}
+        <p className="text-lg text-muted-foreground max-w-2xl mb-8 leading-relaxed">
+          Centralisez stages, alternances, mentorat et bons plans dans une seule app. Rejoignez la communauté qui connecte étudiants, écoles et entreprises.
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-12">
+          <Link
+            to="/signup"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#0066ff] px-8 py-4 text-base font-bold text-white hover:bg-blue-600 transition-colors"
+            style={{
+              boxShadow: "3px 3px 0 rgba(22, 21, 29, 1)"
+            }}
+          >
+            Commencer gratuitement
+            <ArrowUpRight className="size-5" />
+          </Link>
+          <button
+            className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-foreground px-8 py-4 text-base font-bold text-foreground hover:bg-muted transition-colors"
+            style={{
+              boxShadow: "3px 3px 0 rgba(22, 21, 29, 1)"
+            }}
+          >
+            Voir la démo
+          </button>
+        </div>
+
+        {/* Social proof (simplified - no fake avatars) */}
+        <p className="text-sm text-muted-foreground">
+          Rejoint par +1500 étudiants cette semaine
+        </p>
       </div>
     </section>
   );
