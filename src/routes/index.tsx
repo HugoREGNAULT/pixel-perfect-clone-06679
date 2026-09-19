@@ -18,6 +18,7 @@ import { subscribeNewsletter } from "@/lib/newsletter.functions";
 import { FounderCheckoutDialog } from "@/components/FounderCheckoutDialog";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import { Nav } from "@/components/homepage/Nav";
 
 const NAV_LINKS = [
   { to: "/opportunites", label: "Opportunités" },
@@ -38,10 +39,76 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
-  component: SpringrLanding,
+  component: HomePage,
 });
 
 const emailSchema = z.string().trim().email("Email invalide").max(255);
+
+function HomePage() {
+  const navigate = useNavigate();
+  const [founderOpen, setFounderOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [profileCount, setProfileCount] = useState(0);
+
+  function redirectToDashboard(u: User) {
+    const role = u.user_metadata?.role as string | undefined;
+    const target = role ? (DASHBOARD_ROUTE[role] ?? "/dashboard") : "/dashboard";
+    navigate({ to: target as any, replace: true });
+  }
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      const u = data.session?.user ?? null;
+      setUser(u);
+      setAuthChecked(true);
+      if (u) redirectToDashboard(u);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) redirectToDashboard(u);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    (supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true }) as unknown as Promise<{ count: number | null }>)
+      .then(({ count }) => {
+        if (count && count > 100) setProfileCount(count);
+      })
+      .catch(() => {});
+  }, []);
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    toast.success("Déconnecté·e.");
+  }
+
+  if (!authChecked || user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="size-6 text-muted-foreground animate-spin" />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+        <Nav />
+        <Hero profileCount={profileCount} />
+        <WhySpringr />
+        <NeedSection />
+        <FeaturesSection />
+        <NewsletterCTA />
+      </div>
+      <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
+    </>
+  );
+}
 
 function SpringrLanding() {
   const navigate = useNavigate();
@@ -97,7 +164,7 @@ function SpringrLanding() {
   return (
     <>
       <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-        <Nav onFounder={() => setFounderOpen(true)} user={user} onSignOut={handleSignOut} />
+        <NavLegacy onFounder={() => setFounderOpen(true)} user={user} onSignOut={handleSignOut} />
         <Hero profileCount={profileCount} />
         <WhySpringr />
         <NeedSection />
@@ -119,7 +186,7 @@ function Logo({ className = "" }: { className?: string }) {
   );
 }
 
-function Nav({
+function NavLegacy({
   onFounder,
   user,
   onSignOut,
