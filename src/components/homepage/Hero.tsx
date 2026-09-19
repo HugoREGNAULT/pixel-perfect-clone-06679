@@ -71,7 +71,7 @@ export function Hero() {
                   fontFamily: "var(--font-inter)",
                 }}
               >
-                La plateforme #1 pour les 15-29 ans
+                La plateforme des 15-29 ans
               </div>
             </div>
           </div>
