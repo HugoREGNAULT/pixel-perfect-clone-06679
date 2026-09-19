@@ -122,7 +122,7 @@ function OpportunitesPage() {
           supabase.from("ecoles").select("id", { count: "exact", head: true }),
           supabase.from("jpos").select("id").gte("date", today).then(({ data, error: e1 }) => {
             if (e1) return { data: [], error: e1 };
-            return supabase.from("jpo_submissions").select("id").eq("status", "approved").gte("created_at", today).then(({ data: jpoData }) => ({
+            return supabase.from("jpo_submissions").select("id").eq("status", "approved").gte("date_jpo", today).then(({ data: jpoData }) => ({
               data: (data || []).concat(jpoData || []),
             }));
           }),
