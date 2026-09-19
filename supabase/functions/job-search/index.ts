@@ -286,6 +286,55 @@ async function fetchBonneAlternance(p: {
   return filtered;
 }
 
+function cleanDescription(text: string): string {
+  if (!text) return "";
+  // Remove markdown: headers (#, ##), bold (**), italic (*, _), code (`)
+  let cleaned = text
+    .replace(/^#+\s+/gm, "")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/_(.+?)_/g, "$1")
+    .replace(/`(.+?)`/g, "$1")
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1"); // [text](url) → text
+  // Remove multiple blank lines
+  cleaned = cleaned.replace(/\n\n+/g, "\n");
+  // Remove leading "Entreprise" word if isolated at start
+  cleaned = cleaned.replace(/^Entreprise\s+/i, "");
+  return cleaned.trim();
+}
+
+function extractCity(address: string): string {
+  if (!address) return "France";
+  address = address.trim();
+
+  // Patterns for French addresses: "CODE POSTAL COMMUNE" or "STREET CODE POSTAL COMMUNE"
+  // Extract postal code (5 digits) and commune
+  const match = address.match(/(\d{5})\s+(.+)$/);
+  if (match) {
+    const [, code, commune] = match;
+    const commoneName = commune.split("\n")[0]?.trim();
+
+    // Handle arrondissements (75001 Paris → Paris, 75020 Paris 20e Arrondissement → Paris 20e)
+    if (code.startsWith("75")) {
+      const arrondissement = commoneName.match(/(\d+)(?:e|er|ème)?\s+Arrondissement/);
+      if (arrondissement) {
+        return `Paris ${arrondissement[1]}e`;
+      }
+      return "Paris";
+    }
+    return commoneName;
+  }
+
+  // Fallback: just return the last part (common for "75001 Paris" format)
+  const parts = address.split(/[\s,]+/).filter(p => p);
+  if (parts.length > 0) {
+    const lastPart = parts[parts.length - 1];
+    if (!/^\d+$/.test(lastPart)) return lastPart;
+  }
+
+  return "France";
+}
+
 function mapApprentissageOffer(r: Record<string, any>): JobOffer {
   const offer = r.offer ?? {};
   const workplace = r.workplace ?? {};
@@ -294,24 +343,29 @@ function mapApprentissageOffer(r: Record<string, any>): JobOffer {
   const apply = r.apply ?? {};
   const identifier = r.identifier ?? {};
 
-  const city = location.address ?? "France";
+  // Cascade for company: legal_name → name → brand → fallback
+  const company = workplace.legal_name || workplace.name || workplace.brand || "Entreprise confidentielle";
+
+  const targetDiploma = offer.target_diploma;
+  const education = typeof targetDiploma === "string" ? targetDiploma : (targetDiploma?.label ?? "");
+
   const romeCodes = offer.rome_codes ?? [];
 
   return {
     id:          `apprentissage-${identifier.id ?? crypto.randomUUID()}`,
     source:      "bonne_alternance",
-    title:       offer.title ?? "Alternance",
-    company:     workplace.name ?? "Entreprise",
-    city:        city,
+    title:       String(offer.title ?? "Alternance"),
+    company:     String(company),
+    city:        extractCity(location.address ?? ""),
     type:        "alternance",
-    sector:      romeCodes[0] ?? "Alternance",
-    description: offer.description ?? "",
+    sector:      String(romeCodes[0] ?? ""),
+    description: cleanDescription(offer.description ?? ""),
     publishedAt: offer.publication?.creation ?? new Date().toISOString(),
     applyUrl:    apply.url ?? "https://api.apprentissage.beta.gouv.fr",
     remote:      contract.remote === true,
-    tags:        ["Alternance", ...(contract.type ?? [])].filter(Boolean).slice(0, 3),
+    tags:        (contract.type ?? []).filter((tag: any) => typeof tag === "string").slice(0, 2),
     experience:  "",
-    education:   offer.target_diploma ?? "",
+    education:   String(education),
     salary:      "",
   };
 }

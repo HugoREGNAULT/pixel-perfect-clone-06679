@@ -60,10 +60,18 @@ function companyGradient(name: string) {
 }
 
 function daysAgo(date: string) {
-  return Math.floor((Date.now() - new Date(date).getTime()) / 86_400_000);
+  const now = new Date();
+  const offerDate = new Date(date);
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const offer = new Date(offerDate.getFullYear(), offerDate.getMonth(), offerDate.getDate());
+  return Math.floor((today.getTime() - offer.getTime()) / 86_400_000);
 }
 
-function formatDate(date: string) {
+function formatDateRelative(date: string) {
+  const days = daysAgo(date);
+  if (days === 0) return "Aujourd'hui";
+  if (days === 1) return "Hier";
+  if (days < 30) return `Il y a ${days} j`;
   return new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short" }).format(new Date(date));
 }
 
@@ -311,7 +319,7 @@ function OpportunitesPage() {
 
 function OfferCard({ offer, applied, onApply }: { offer: JobOffer; applied: boolean; onApply: () => void }) {
   const age   = daysAgo(offer.publishedAt);
-  const isNew = age <= 3;
+  const isNew = age < 3;
   const typeMeta   = TYPE_META[offer.type]   ?? TYPE_META.job;
   const sourceMeta = SOURCE_META[offer.source] ?? SOURCE_META.local;
   const isExternal = offer.source !== "local";
@@ -371,7 +379,7 @@ function OfferCard({ offer, applied, onApply }: { offer: JobOffer; applied: bool
         </span>
         <span className="flex items-center gap-1 shrink-0">
           <Calendar className="size-3" />
-          {age === 0 ? "Auj." : age === 1 ? "Hier" : formatDate(offer.publishedAt)}
+          {formatDateRelative(offer.publishedAt)}
         </span>
       </div>
 
