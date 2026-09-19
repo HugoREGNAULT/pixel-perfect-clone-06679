@@ -16,7 +16,7 @@ const CORS = {
 
 const FT_TOKEN_URL = "https://entreprise.francetravail.fr/connexion/oauth2/access_token?realm=%2Fpartenaire";
 const FT_SEARCH_URL = "https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search";
-const APPRENTISSAGE_SEARCH_URL = "https://api.apprentissage.beta.gouv.fr/v1/offres";
+const APPRENTISSAGE_SEARCH_URL = "https://api.apprentissage.beta.gouv.fr/api/job/v1/search";
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
 
 // Module-level token cache (warm within a Deno isolate)
@@ -251,11 +251,14 @@ async function fetchBonneAlternance(p: {
   const lbaToken = Deno.env.get("LBA_API_TOKEN");
   if (!lbaToken) throw new Error("LBA_API_TOKEN not configured");
 
+  const cityKey = p.city.toLowerCase().trim();
+  const coords  = CITY_COORDS[cityKey] ?? CITY_COORDS["paris"];
+
   const qs = new URLSearchParams({
-    keywords: p.keywords || "",
-    ville: p.city || "",
-    page: String(p.page),
-    limit: String(p.perPage),
+    latitude: String(coords[0]),
+    longitude: String(coords[1]),
+    radius: "30",
+    romes: DEFAULT_ROMES,
   });
 
   const res = await fetch(`${APPRENTISSAGE_SEARCH_URL}?${qs}`, {
@@ -267,27 +270,49 @@ async function fetchBonneAlternance(p: {
   if (!res.ok) throw new Error(`Apprentissage API error: ${res.status}`);
 
   const json = await res.json();
-  const items = json.results ?? json.data ?? json.offres ?? [];
-  return (items as Record<string, any>[]).map(mapApprentissageOffer);
+  const items = json.jobs ?? [];
+
+  // Filter by keywords (client-side) and only keep relevant job categories
+  const filtered = (items as Record<string, any>[])
+    .filter(job => {
+      if (p.keywords) {
+        const searchText = `${job.offer?.title ?? ""} ${job.offer?.description ?? ""}`.toLowerCase();
+        return searchText.includes(p.keywords.toLowerCase());
+      }
+      return true;
+    })
+    .map(mapApprentissageOffer);
+
+  return filtered;
 }
 
 function mapApprentissageOffer(r: Record<string, any>): JobOffer {
+  const offer = r.offer ?? {};
+  const workplace = r.workplace ?? {};
+  const location = workplace.location ?? {};
+  const contract = r.contract ?? {};
+  const apply = r.apply ?? {};
+  const identifier = r.identifier ?? {};
+
+  const city = location.address ?? "France";
+  const romeCodes = offer.rome_codes ?? [];
+
   return {
-    id:          `apprentissage-${r.id ?? crypto.randomUUID()}`,
+    id:          `apprentissage-${identifier.id ?? crypto.randomUUID()}`,
     source:      "bonne_alternance",
-    title:       r.intitule ?? r.titre ?? "Alternance",
-    company:     r.nom_entreprise ?? r.entreprise ?? "Entreprise",
-    city:        r.ville ?? r.localite ?? "France",
+    title:       offer.title ?? "Alternance",
+    company:     workplace.name ?? "Entreprise",
+    city:        city,
     type:        "alternance",
-    sector:      r.code_rome ?? r.secteur ?? "Alternance",
-    description: r.description ?? "",
-    publishedAt: r.date_creation ?? r.createdAt ?? new Date().toISOString(),
-    applyUrl:    r.url ?? `https://api.apprentissage.beta.gouv.fr/offres/${r.id}`,
-    remote:      r.teletravail ?? false,
-    tags:        ["Alternance", r.type_contrat ?? "Apprentissage"].filter(Boolean),
-    experience:  r.experience ?? "",
-    education:   r.niveau_etude ?? "",
-    salary:      r.salaire ?? "",
+    sector:      romeCodes[0] ?? "Alternance",
+    description: offer.description ?? "",
+    publishedAt: offer.publication?.creation ?? new Date().toISOString(),
+    applyUrl:    apply.url ?? "https://api.apprentissage.beta.gouv.fr",
+    remote:      contract.remote === true,
+    tags:        ["Alternance", ...(contract.type ?? [])].filter(Boolean).slice(0, 3),
+    experience:  "",
+    education:   offer.target_diploma ?? "",
+    salary:      "",
   };
 }
 
