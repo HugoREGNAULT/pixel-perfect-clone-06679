@@ -20,18 +20,6 @@ const CACHE_TTL_MS = 1 * 60 * 60 * 1000; // 1 hour
 let ftToken: string | null = null;
 let ftTokenExpiry = 0;
 
-// ── All ROME codes for major domains (100+ codes) ────────────────────────
-const ALL_ROME_CODES = "M1101,M1102,M1201,M1202,M1203,M1301,M1302,M1303,M1401,M1402,M1403,M1404,M1405,M1501,M1502,M1503,M1601,M1602,M1603,M1604,M1701,M1702,M1703,M1704,M1801,M1802,M1803,M1804,M1805,M1806,M2101,M2102,M2103,M2104,M2105,M2161,M2162,M2171,M2172,M2173,M2181,M2182,M2201,M2202,M2203,M2204,M2205,M2301,M2302,M2303,M2304,M2305,M3101,M3102,M3103,M3104,M3105,M3201,M3202,M3203,M3204,M3205,M3301,M3302,M3303,M3304,M3305,M3401,M3402,M3403,M3404,M3405,M3501,M3502,M3503,M3504,M3505,M3601,M3602,M3603,M3604,M3605,M3701,M3702,M3703,M3704,M3705,M3801,M3802,M3803,M3804,M3805,M3901,M3902,M3903,M4101,M4102";
-
-// Split into batches of max 20 codes per request
-function getRomeBatches(): string[] {
-  const codes = ALL_ROME_CODES.split(",");
-  const batches: string[] = [];
-  for (let i = 0; i < codes.length; i += 20) {
-    batches.push(codes.slice(i, i + 20).join(","));
-  }
-  return batches;
-}
 
 // Decode HTML entities
 function decodeHtml(text: string): string {
@@ -145,11 +133,11 @@ async function fetchAll(p: {
     perPage: p.perPage,
     sources: {
       france_travail: ftOffers.length,
-      apprentissage: lbaOffers.length,
+      bonne_alternance: lbaOffers.length,
     },
     errors: {
       france_travail: ftResult.status === "rejected" ? (ftResult.reason as Error).message : null,
-      apprentissage: lbaResult.status === "rejected" ? (lbaResult.reason as Error).message : null,
+      bonne_alternance: lbaResult.status === "rejected" ? (lbaResult.reason as Error).message : null,
     },
   };
 }
@@ -206,7 +194,7 @@ async function fetchFranceTravail(p: {
   return (items as Record<string, any>[]).map(mapFTOffer);
 }
 
-// ── Apprentissage API – Parallel batches ─────────────────────────────────────
+// ── Apprentissage API – Single request (all results, no batching) ──────────────
 async function fetchApprentissageParallel(p: {
   keywords: string; city: string; page: number; perPage: number;
 }): Promise<JobOffer[]> {
@@ -219,6 +207,13 @@ async function fetchApprentissageParallel(p: {
     nantes: [47.2184, -1.5536],
     strasbourg: [48.5734, 7.7521],
     lille: [50.6292, 3.0573],
+    nice: [43.7102, 7.262],
+    rennes: [48.1173, -1.6778],
+    montpellier: [43.6108, 3.8767],
+    grenoble: [45.1885, 5.7245],
+    tours: [47.3941, 0.6848],
+    metz: [49.1193, 6.1757],
+    nancy: [48.6921, 6.1844],
   };
 
   const cityKey = p.city.toLowerCase().trim();
@@ -227,28 +222,24 @@ async function fetchApprentissageParallel(p: {
   const lbaToken = Deno.env.get("LBA_API_TOKEN");
   if (!lbaToken) throw new Error("LBA_API_TOKEN not configured");
 
-  // Fetch all ROME batches in parallel
-  const batches = getRomeBatches();
-  const allOffers: JobOffer[] = [];
-  const results = await Promise.allSettled(
-    batches.map((romesBatch) =>
-      fetchApprentissageBatch({
-        lat: coords[0],
-        lon: coords[1],
-        romes: romesBatch,
-        token: lbaToken,
-        keywords: p.keywords,
-      })
-    )
-  );
+  const qs = new URLSearchParams({
+    latitude: String(coords[0]),
+    longitude: String(coords[1]),
+    radius: "30",
+  });
 
-  for (const result of results) {
-    if (result.status === "fulfilled") {
-      allOffers.push(...result.value);
-    } else {
-      console.error("[apprentissage-batch]", result.reason);
-    }
-  }
+  const res = await fetch(`${APPRENTISSAGE_SEARCH_URL}?${qs}`, {
+    headers: {
+      Authorization: `Bearer ${lbaToken}`,
+      Accept: "application/json",
+    },
+  });
+
+  if (!res.ok) throw new Error(`Apprentissage error: ${res.status}`);
+
+  const json = (await res.json()) as { jobs?: Record<string, any>[] };
+  const items = json.jobs ?? [];
+  const allOffers = (items as Record<string, any>[]).map(mapApprentissageOffer);
 
   // Apply client-side keyword filtering
   const filtered = p.keywords
@@ -258,38 +249,7 @@ async function fetchApprentissageParallel(p: {
       })
     : allOffers;
 
-  // Paginate
-  const start = (p.page - 1) * p.perPage;
-  return filtered.slice(start, start + p.perPage);
-}
-
-async function fetchApprentissageBatch(p: {
-  lat: number;
-  lon: number;
-  romes: string;
-  token: string;
-  keywords: string;
-}): Promise<JobOffer[]> {
-  const qs = new URLSearchParams({
-    latitude: String(p.lat),
-    longitude: String(p.lon),
-    radius: "30",
-    romes: p.romes,
-  });
-
-  const res = await fetch(`${APPRENTISSAGE_SEARCH_URL}?${qs}`, {
-    headers: {
-      Authorization: `Bearer ${p.token}`,
-      Accept: "application/json",
-    },
-  });
-
-  if (!res.ok) throw new Error(`Apprentissage error: ${res.status}`);
-
-  const json = (await res.json()) as { jobs?: Record<string, any>[] };
-  const items = json.jobs ?? [];
-
-  return (items as Record<string, any>[]).map(mapApprentissageOffer);
+  return filtered;
 }
 
 // ── Mappers ────────────────────────────────────────────────────────────────────
@@ -325,7 +285,7 @@ function mapApprentissageOffer(r: Record<string, any>): JobOffer {
 
   return {
     id: `apprentissage-${identifier.id}`,
-    source: "apprentissage",
+    source: "bonne_alternance",
     title: decodeHtml(offer.title ?? "Alternance"),
     company: decodeHtml(workplace.legal_name ?? workplace.name ?? ""),
     city: workplace.location?.address ?? "France",
@@ -345,7 +305,7 @@ function mapApprentissageOffer(r: Record<string, any>): JobOffer {
 // ── Types ──────────────────────────────────────────────────────────────────────
 interface JobOffer {
   id: string;
-  source: "france_travail" | "apprentissage";
+  source: "france_travail" | "bonne_alternance";
   title: string;
   company: string;
   city: string;
