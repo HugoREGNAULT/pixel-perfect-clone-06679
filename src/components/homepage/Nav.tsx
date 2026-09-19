@@ -78,6 +78,26 @@ export function Nav() {
         </li>
       </ul>
 
+      {/* Search Bar - Desktop Only */}
+      <div className="hidden md:flex items-center border-2 rounded-3xl px-4 py-2 gap-2"
+        style={{ borderColor: "var(--color-border-light, #e5e7eb)" }}>
+        <input
+          type="text"
+          placeholder="Rechercher un job"
+          className="bg-transparent text-sm outline-none flex-1"
+          style={{
+            color: "var(--color-text-dark)",
+            fontFamily: "var(--font-inter)",
+          }}
+        />
+        <button
+          className="text-lg transition-opacity hover:opacity-70 flex-shrink-0"
+          style={{ color: "var(--color-primary)" }}
+        >
+          🔍
+        </button>
+      </div>
+
       {/* Right Section: Connexion + S'inscrire */}
       <div className="flex items-center gap-4">
         {/* Connexion Link */}
