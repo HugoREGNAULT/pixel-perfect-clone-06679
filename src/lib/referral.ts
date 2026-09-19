@@ -47,9 +47,10 @@ export async function getOrCreateCode(userId: string, firstName: string): Promis
 }
 
 export async function lookupCode(code: string): Promise<{ user_id: string; first_name: string } | null> {
-  const { data, error } = await supabase.rpc("get_referrer_by_code", { p_code: code.toUpperCase() });
-  if (error || !data) return null;
-  return (data[0] as { user_id: string; first_name: string } | null) ?? null;
+  const { data, error } = await (supabase as any).rpc("get_referrer_by_code", { p_code: code.toUpperCase() });
+  if (error || !data || !Array.isArray(data)) return null;
+  const result = data[0] as { user_id: string; first_name: string } | undefined;
+  return result ?? null;
 }
 
 export async function countReferrals(referrerId: string): Promise<number> {
