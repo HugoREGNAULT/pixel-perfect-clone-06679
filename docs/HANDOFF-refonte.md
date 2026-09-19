@@ -1,6 +1,6 @@
 # Handoff — Refonte Design Springr
 
-**Status** : Phases 1–2 + ÉTAPE B complétées. Budget token atteint. Pages Figma (1–10) restantes.
+**Status** : Phases 1–2 + ÉTAPE B + Pages 1–2 complétées. Checkpoint après page 2. Pages 3–10 restantes.
 
 ## Étapes terminées
 
@@ -40,10 +40,27 @@ src/components/ui/*                     — Composants vérifiés light-theme
 src/routes/opportunites.tsx             — Layout colonnes + détail
 ```
 
-## Reste à faire (Pages Figma 1–10)
+## Pages complétées (Session 2)
 
-1. **Homepage** (node 3:2) — Hero, sections, CTA
-2. **/opportunites** — DONE ✓ (contient déjà layout du brief)
+### ÉTAPE C — Pages 1–2 (Checkpoint 1)
+
+1. **Homepage** (node 3:2) — ✅ DONE (`5a01bcf`)
+   - Hero: "Vivez votre avenir dès maintenant"
+   - Why Springr: 3 cartes (profils vivants, mentors, opportunités)
+   - Need section: 2 colonnes + mockup dashboard
+   - Newsletter CTA
+   - Suppression: Marquee, Bento, Comparison, FounderBlock, Roadmap
+
+2. **/opportunites** (node 5:1218) — ✅ DONE (`ba5ff39`)
+   - Hero: "Trouvez votre opportunité parfaite"
+   - Stats: offres actives (API), 850+ entreprises, 96% matching, 48h
+   - Explorez par domaine: 8 catégories cliquables
+   - Layout liste + détail: GARDÉ
+
+## Reste à faire (Pages Figma 3–10)
+
+1. **Homepage** — DONE ✓
+2. **/opportunites** — DONE ✓
 3. **/login, /signup** (node 12:5553) — Auth pages
 4. **/onboarding** (node 19:12551) — Profil onboarding
 5. **/tarifs** (node 10:1678) — Grille tarif + toggle
