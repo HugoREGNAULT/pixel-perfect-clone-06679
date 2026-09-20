@@ -33,3 +33,6 @@ dist-ssr
 .env
 .env.local
 .claude/
+
+# Screenshots
+screenshots/

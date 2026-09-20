@@ -71,8 +71,7 @@ export function NewsletterCTA() {
             fontFamily: "var(--font-inter)",
           }}
         >
-          Rejoignez la liste d'attente pour la version bêta et obtenez 3 mois de
-          Premium offerts au lancement.
+          Prêt à lancer votre carrière ? [À CONFIRMER : avantage au lancement]
         </p>
 
         {/* Success message */}
@@ -129,7 +128,7 @@ export function NewsletterCTA() {
             fontFamily: "var(--font-inter)",
           }}
         >
-          Lancement officiel T4 2025. Pas de spam, promis.
+          Pas de spam, promis.
         </p>
       </div>
     </section>

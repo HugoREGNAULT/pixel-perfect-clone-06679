@@ -18,17 +18,20 @@ export function HomepageFooter() {
             </p>
             {/* Social icons */}
             <div className="flex items-center gap-3">
-              <SocialLink href="https://twitter.com/springr_app" label="Twitter">
+              {/* TODO: Créer compte Twitter/X Springr */}
+              <SocialLink href="#" label="Twitter">
                 <span className="text-xs font-bold leading-none">𝕏</span>
               </SocialLink>
-              <SocialLink href="https://instagram.com/springr.app" label="Instagram">
+              {/* TODO: Créer compte Instagram Springr */}
+              <SocialLink href="#" label="Instagram">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="size-3.5">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                   <circle cx="12" cy="12" r="4"/>
                   <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
                 </svg>
               </SocialLink>
-              <SocialLink href="https://linkedin.com/company/springr-app" label="LinkedIn">
+              {/* TODO: Créer compte LinkedIn Springr */}
+              <SocialLink href="#" label="LinkedIn">
                 <span className="text-[11px] font-bold leading-none">in</span>
               </SocialLink>
               <SocialLink href="https://discord.gg/springr" label="Discord">
