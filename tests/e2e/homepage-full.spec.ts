@@ -8,7 +8,7 @@ test('Homepage full page 1440px', async ({ page }) => {
 
   // Take full page screenshot
   const screenshot = await page.screenshot({
-    path: 'screenshots/homepage-final-1440.png',
+    path: 'screenshots/homepage-complete-1440.png',
     fullPage: true
   });
   expect(screenshot).toBeTruthy();
@@ -22,7 +22,7 @@ test('Homepage full page 375px mobile', async ({ page }) => {
 
   // Take full page screenshot
   const screenshot = await page.screenshot({
-    path: 'screenshots/homepage-final-375.png',
+    path: 'screenshots/homepage-complete-375.png',
     fullPage: true
   });
   expect(screenshot).toBeTruthy();
