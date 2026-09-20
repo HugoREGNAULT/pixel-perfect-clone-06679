@@ -22,6 +22,7 @@ import { LatestOpportunities } from "@/components/homepage/LatestOpportunities";
 import { Mentorship } from "@/components/homepage/Mentorship";
 import { Pricing } from "@/components/homepage/Pricing";
 import { NewsletterCTA } from "@/components/homepage/NewsletterCTA";
+import { HomepageFooter } from "@/components/homepage/HomepageFooter";
 
 const NAV_LINKS = [
   { to: "/opportunites", label: "Opportunités" },
@@ -100,7 +101,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <div className="min-h-screen bg-background text-foreground overflow-x-hidden flex flex-col">
         <Nav />
         <Hero />
         <WhySpringr />
@@ -109,6 +110,7 @@ function HomePage() {
         <Mentorship />
         <Pricing />
         <NewsletterCTA />
+        <HomepageFooter />
       </div>
       <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
     </>
