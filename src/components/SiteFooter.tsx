@@ -1,5 +1,4 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Mail, ExternalLink } from "lucide-react";
 
 // Excluded routes where the footer should NOT appear
 const EXCLUDED = ["/messages", "/admin"];
@@ -9,31 +8,35 @@ export function SiteFooter() {
   if (EXCLUDED.some(p => location.pathname.startsWith(p))) return null;
 
   return (
-    <footer className="border-t border-border bg-background mt-auto">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8 py-14">
-        {/* Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-10 mb-12">
+    <footer className="border-t border-border bg-background">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8 py-20">
+        {/* Main sections grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
 
-          {/* Brand — spans 2 cols on large */}
-          <div className="col-span-2 sm:col-span-3 lg:col-span-2">
-            <FooterLogo />
-            <p className="text-muted-foreground text-sm leading-relaxed mt-4 max-w-xs">
-              Le réseau pro pensé par et pour la nouvelle génération.
-              Construis ton réseau avant ton premier CDI.
+          {/* Brand section - spans full width on mobile */}
+          <div className="sm:col-span-2 lg:col-span-1 lg:pr-8">
+            <div className="inline-block font-display font-bold tracking-tight text-xl text-foreground mb-4">
+              springr.
+            </div>
+            <p className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-sm">
+              La plateforme pour les 15-29 ans. Opportunités, mentorat, communauté.
             </p>
             {/* Social icons */}
-            <div className="flex items-center gap-3 mt-6">
-              <SocialLink href="https://twitter.com/springr_app" label="Twitter / X">
+            <div className="flex items-center gap-3">
+              {/* TODO: Créer compte Twitter/X Springr */}
+              <SocialLink href="#" label="Twitter">
                 <span className="text-xs font-bold leading-none">𝕏</span>
               </SocialLink>
-              <SocialLink href="https://instagram.com/springr.app" label="Instagram">
+              {/* TODO: Créer compte Instagram Springr */}
+              <SocialLink href="#" label="Instagram">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="size-3.5">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                   <circle cx="12" cy="12" r="4"/>
                   <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
                 </svg>
               </SocialLink>
-              <SocialLink href="https://linkedin.com/company/springr-app" label="LinkedIn">
+              {/* TODO: Créer compte LinkedIn Springr */}
+              <SocialLink href="#" label="LinkedIn">
                 <span className="text-[11px] font-bold leading-none">in</span>
               </SocialLink>
               <SocialLink href="https://discord.gg/springr" label="Discord">
@@ -46,62 +49,38 @@ export function SiteFooter() {
 
           {/* Plateforme */}
           <FooterCol title="Plateforme" links={[
-            { to: "/opportunites", label: "Opportunités"   },
-            { to: "/mentors",      label: "Mentors"        },
-            { to: "/evenements",   label: "JPO & Événements" },
-            { to: "/bons-plans",   label: "Bons Plans"     },
-            { to: "/ecoles",       label: "Écoles"         },
-            { to: "/parrainage",   label: "Parrainage"     },
+            { to: "/opportunites", label: "Offres d'emploi" },
+            { to: "/mentors",      label: "Mentorat"       },
+            { to: "/bons-plans",   label: "Bons plans"     },
+            { to: "/evenements",   label: "Événements"     },
             { to: "/tarifs",       label: "Tarifs"         },
           ]} />
 
-          {/* Contact */}
-          <div>
-            <p className="text-xs font-medium text-muted-foreground mb-4">Contact</p>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <a href="mailto:hello@springr.app" className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
-                  <Mail className="size-3 shrink-0 opacity-60"/>
-                  hello@springr.app
-                </a>
-              </li>
-              <li>
-                <a href="mailto:presse@springr.app" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Presse
-                </a>
-              </li>
-              <li>
-                <a href="mailto:partenariats@springr.app" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Partenariats
-                </a>
-              </li>
-              <li>
-                <a href="https://discord.gg/springr" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-                  Discord <ExternalLink className="size-3 opacity-50"/>
-                </a>
-              </li>
-            </ul>
-          </div>
+          {/* Entreprise */}
+          <FooterCol title="Entreprise" links={[
+            { to: "/about",        label: "À propos"               },
+            { to: "/recruteurs",   label: "Recruteurs"             },
+            { to: "/partenariats", label: "Partenariats Écoles"    },
+            { to: "/blog",         label: "Blog"                   },
+            { to: "/contact",      label: "Contact"                },
+          ]} />
 
           {/* Légal */}
           <FooterCol title="Légal" links={[
             { to: "/mentions-legales", label: "Mentions légales" },
-            { to: "/cgu",              label: "CGU"              },
+            { to: "/cgu",              label: "CGU / CGV"        },
             { to: "/confidentialite",  label: "Confidentialité"  },
             { to: "/cookies",          label: "Cookies"          },
           ]} />
-
-          {/* Marque */}
-          <FooterCol title="Marque" links={[
-            { to: "/brand",        label: "Brand Guidelines" },
-            { to: "/brand/assets", label: "Logo & Assets"    },
-          ]} />
         </div>
 
+        {/* Divider */}
+        <div className="border-t border-border my-8"></div>
+
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© 2026 Springr SAS — Tous droits réservés</p>
-          <p>v0 · pré-lancement · Paris, France 🇫🇷</p>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+          <p>© 2026 Springr. Tous droits réservés.</p>
+          <p>Fait avec ❤️ à Paris</p>
         </div>
       </div>
     </footer>
@@ -110,22 +89,14 @@ export function SiteFooter() {
 
 /* ─── sub-components ─── */
 
-function FooterLogo() {
-  return (
-    <Link to="/" className="inline-block font-display font-bold tracking-tight text-xl text-foreground">
-      springr.
-    </Link>
-  );
-}
-
 function FooterCol({ title, links }: { title: string; links: { to: string; label: string }[] }) {
   return (
     <div>
-      <p className="text-xs font-medium text-muted-foreground mb-4">{title}</p>
+      <p className="text-sm font-semibold text-foreground mb-4">{title}</p>
       <ul className="space-y-3 text-sm">
         {links.map(({ to, label }) => (
           <li key={to}>
-            <Link to={to as any} className="text-muted-foreground hover:text-primary transition-colors">
+            <Link to={to as any} className="text-muted-foreground hover:text-foreground transition-colors">
               {label}
             </Link>
           </li>
