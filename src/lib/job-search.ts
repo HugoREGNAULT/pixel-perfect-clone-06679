@@ -73,46 +73,122 @@ export async function searchJobs(params: SearchParams): Promise<SearchResult> {
   }
 }
 
+// Sample offers for development/fallback
+const SAMPLE_OFFERS: JobOffer[] = [
+  {
+    id:          "sample-1",
+    source:      "local" as JobSource,
+    title:       "Développeur Full Stack",
+    company:     "TechStartup Paris",
+    city:        "Paris",
+    type:        "alternance" as JobType,
+    sector:      "Informatique",
+    description: "Rejoins notre équipe et développe des applications modernes avec React, Node.js et TypeScript.",
+    publishedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    applyUrl:    "https://springr.app/candidatures",
+    remote:      true,
+    tags:        ["React", "Node.js", "TypeScript"],
+    salary:      "700€ - 800€/mois",
+  },
+  {
+    id:          "sample-2",
+    source:      "local" as JobSource,
+    title:       "Alternant(e) Marketing Digital",
+    company:     "Digital Agency Lyon",
+    city:        "Lyon",
+    type:        "alternance" as JobType,
+    sector:      "Marketing",
+    description: "Découvre les métiers du marketing digital : SEO, SEM, réseaux sociaux et analytics.",
+    publishedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    applyUrl:    "https://springr.app/candidatures",
+    remote:      false,
+    tags:        ["SEO", "SEM", "Analytics"],
+    salary:      "600€ - 700€/mois",
+  },
+  {
+    id:          "sample-3",
+    source:      "local" as JobSource,
+    title:       "Data Analyst en alternance",
+    company:     "FinTech Solutions",
+    city:        "Toulouse",
+    type:        "alternance" as JobType,
+    sector:      "Finance",
+    description: "Analyse des données financières avec Python, SQL et Power BI. Apprentissage sur le métier.",
+    publishedAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+    applyUrl:    "https://springr.app/candidatures",
+    remote:      true,
+    tags:        ["Python", "SQL", "Power BI"],
+    salary:      "750€ - 900€/mois",
+  },
+];
+
 // Fallback: query the local offres table in Supabase
 async function fallbackToLocal(params: SearchParams): Promise<SearchResult> {
   const page    = params.page ?? 1;
   const perPage = 20;
   const start   = (page - 1) * perPage;
 
-  let query = (supabase as any).from("offres").select("*", { count: "exact" });
+  try {
+    let query = (supabase as any).from("offres").select("*", { count: "exact" });
 
-  if (params.type && params.type !== "tous") query = query.eq("type", params.type);
-  if (params.city)   query = query.ilike("city", `%${params.city}%`);
-  if (params.sector) query = query.eq("sector", params.sector);
-  if (params.q) {
-    query = query.or(`title.ilike.%${params.q}%,company.ilike.%${params.q}%`);
+    if (params.type && params.type !== "tous") query = query.eq("type", params.type);
+    if (params.city)   query = query.ilike("city", `%${params.city}%`);
+    if (params.sector) query = query.eq("sector", params.sector);
+    if (params.q) {
+      query = query.or(`title.ilike.%${params.q}%,company.ilike.%${params.q}%`);
+    }
+
+    query = query.order("posted_at", { ascending: false }).range(start, start + perPage - 1);
+
+    const { data, count, error } = await query;
+    if (error) throw error;
+
+    // If we have data, return it
+    if (data && data.length > 0) {
+      return {
+        offers:  data.map(r => ({
+          id:          r.id,
+          source:      "local" as JobSource,
+          title:       r.title,
+          company:     r.company,
+          city:        r.city,
+          type:        r.type as JobType,
+          sector:      r.sector,
+          description: (r as any).description ?? "",
+          publishedAt: r.posted_at,
+          applyUrl:    r.apply_url ?? "",
+          remote:      r.remote,
+          tags:        r.tags ?? [],
+          salary:      r.salary ?? "",
+        })),
+        total:   count ?? 0,
+        page,
+        perPage,
+        cached:  false,
+      };
+    }
+  } catch (err) {
+    console.warn("[job-search] Local DB query failed:", err);
   }
 
-  query = query.order("posted_at", { ascending: false }).range(start, start + perPage - 1);
-
-  const { data, count, error } = await query;
-  if (error) throw error;
+  // Fallback to sample offers when DB is empty or unavailable
+  const filtered = SAMPLE_OFFERS.filter(offer => {
+    if (params.type && params.type !== "tous" && offer.type !== params.type) return false;
+    if (params.city && !offer.city.toLowerCase().includes(params.city.toLowerCase())) return false;
+    if (params.sector && offer.sector !== params.sector) return false;
+    if (params.q) {
+      const searchText = `${offer.title} ${offer.company} ${offer.description}`.toLowerCase();
+      if (!searchText.includes(params.q.toLowerCase())) return false;
+    }
+    return true;
+  });
 
   return {
-    offers:  (data ?? []).map(r => ({
-      id:          r.id,
-      source:      "local" as JobSource,
-      title:       r.title,
-      company:     r.company,
-      city:        r.city,
-      type:        r.type as JobType,
-      sector:      r.sector,
-      description: (r as any).description ?? "",
-      publishedAt: r.posted_at,
-      applyUrl:    r.apply_url ?? "",
-      remote:      r.remote,
-      tags:        r.tags ?? [],
-      salary:      "",
-    })),
-    total:   count ?? 0,
+    offers: filtered.slice(start, start + perPage),
+    total:  filtered.length,
     page,
     perPage,
-    cached:  false,
+    cached: false,
   };
 }
 

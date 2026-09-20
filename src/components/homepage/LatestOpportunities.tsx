@@ -6,10 +6,10 @@ import { Link } from "@tanstack/react-router";
 export function LatestOpportunities() {
   const { data: searchResult, isLoading, isError } = useQuery({
     queryKey: ["latest-jobs"],
-    queryFn: () => searchJobs({ page: 1 }),
+    queryFn: () => searchJobs({ type: "alternance", page: 1 }),
   });
 
-  const jobs = searchResult?.offers.slice(0, 3) ?? [];
+  const jobs = searchResult?.offers?.slice(0, 3) ?? [];
 
   return (
     <section
