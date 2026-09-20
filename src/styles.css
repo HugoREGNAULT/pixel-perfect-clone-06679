@@ -107,6 +107,16 @@
   --color-success-alpha-20: rgba(0, 208, 132, 0.2);
   --color-white-alpha-20: rgba(255, 255, 255, 0.2);
 
+  /* Badge colors */
+  --color-badge-blue-bg: #eff6ff;
+  --color-badge-blue-text: #1d4ed8;
+  --color-badge-yellow-bg: #fefce8;
+  --color-badge-yellow-text: #a16207;
+  --color-badge-green-bg: #f0fdf4;
+  --color-badge-green-text: #15803d;
+  --color-badge-gray-bg: #f3f4f6;
+  --color-badge-gray-text: #4b5563;
+
   /* Ombres */
   --shadow-hard-3px: 3px 3px 0px rgba(0, 0, 0, 1);
   --shadow-hard-4px: 4px 4px 0px rgba(0, 0, 0, 1);

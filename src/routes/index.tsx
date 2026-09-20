@@ -18,6 +18,7 @@ import { Nav } from "@/components/homepage/Nav";
 import { Hero } from "@/components/homepage/Hero";
 import { WhySpringr } from "@/components/homepage/WhySpringr";
 import { FeaturesTab } from "@/components/homepage/FeaturesTab";
+import { LatestOpportunities } from "@/components/homepage/LatestOpportunities";
 
 const NAV_LINKS = [
   { to: "/opportunites", label: "Opportunités" },
@@ -101,6 +102,7 @@ function HomePage() {
         <Hero />
         <WhySpringr />
         <FeaturesTab />
+        <LatestOpportunities />
         <NewsletterCTA />
       </div>
       <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
