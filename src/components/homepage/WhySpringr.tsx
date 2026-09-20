@@ -6,19 +6,19 @@ export function WhySpringr() {
       title: "Fragmentation",
       description: "Trop de plateformes disparates pour opportunités.",
       icon: GitCompare,
-      iconBgColor: "#E8D5FF",
+      iconBgColor: "var(--color-card-pink-bg)",
     },
     {
       title: "Isolement",
       description: "Difficile de trouver mentorat et communauté.",
       icon: Users,
-      iconBgColor: "#D0E8FF",
+      iconBgColor: "var(--color-card-blue-bg)",
     },
     {
       title: "Bons plans introuvables",
       description: "Les vraies opportunités ne sont pas visibles.",
       icon: Search,
-      iconBgColor: "#D0F0E8",
+      iconBgColor: "var(--color-card-green-bg)",
     },
   ];
 
@@ -63,7 +63,7 @@ export function WhySpringr() {
               className="w-12 h-12 rounded-[8px] flex items-center justify-center mb-4"
               style={{ backgroundColor: card.iconBgColor }}
             >
-              <card.icon className="w-6 h-6 text-[#111827]" />
+              <card.icon className="w-6 h-6" style={{ color: "var(--color-text-dark)" }} />
             </div>
             <h3
               className="font-bold mb-3 text-lg"
