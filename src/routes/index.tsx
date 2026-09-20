@@ -100,7 +100,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="min-h-screen bg-background text-foreground overflow-x-hidden flex flex-col">
+      <div className="min-h-screen bg-background text-foreground overflow-x-hidden flex flex-col pb-[140px] lg:pb-0">
         <Nav />
         <Hero />
         <WhySpringr />
