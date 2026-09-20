@@ -1,19 +1,24 @@
+import { GitCompare, Users, Search } from "lucide-react";
+
 export function WhySpringr() {
   const cards = [
     {
       title: "Fragmentation",
       description: "Trop de plateformes disparates pour opportunités.",
-      icon: "🔀",
+      icon: GitCompare,
+      iconBgColor: "#E8D5FF",
     },
     {
       title: "Isolement",
       description: "Difficile de trouver mentorat et communauté.",
-      icon: "🏝️",
+      icon: Users,
+      iconBgColor: "#D0E8FF",
     },
     {
       title: "Bons plans introuvables",
       description: "Les vraies opportunités ne sont pas visibles.",
-      icon: "🔍",
+      icon: Search,
+      iconBgColor: "#D0F0E8",
     },
   ];
 
@@ -54,7 +59,12 @@ export function WhySpringr() {
               boxShadow: "var(--shadow-hard-4px)",
             }}
           >
-            <div className="text-4xl mb-4">{card.icon}</div>
+            <div
+              className="w-12 h-12 rounded-[8px] flex items-center justify-center mb-4"
+              style={{ backgroundColor: card.iconBgColor }}
+            >
+              <card.icon className="w-6 h-6 text-[#111827]" />
+            </div>
             <h3
               className="font-bold mb-3 text-lg"
               style={{
