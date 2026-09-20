@@ -133,7 +133,7 @@ export function Hero() {
               style={{
                 backgroundColor: "var(--color-primary)",
                 color: "white",
-                boxShadow: "3px 3px 0 rgba(0, 0, 0, 1)",
+                boxShadow: "var(--shadow-hard-3px)",
                 fontFamily: "var(--font-inter)",
                 fontWeight: "700",
                 fontSize: "18px",
@@ -286,7 +286,7 @@ function HeroProductComposition() {
           <div
             className="border inline-flex flex-col items-start px-3 py-1.5 relative rounded-full shrink-0"
             style={{
-              backgroundColor: "rgba(0, 208, 132, 0.2)",
+              backgroundColor: "var(--color-success-alpha-20)",
               borderColor: "var(--color-success)",
             }}
           >
@@ -310,7 +310,7 @@ function HeroProductComposition() {
             className="border flex flex-col rounded-3xl p-4"
             style={{
               backgroundColor: "var(--color-bg-light-blue)",
-              borderColor: "#dbeafe",
+              borderColor: "var(--color-stat-blue-border)",
             }}
           >
             <div className="mb-2">
@@ -343,7 +343,7 @@ function HeroProductComposition() {
             className="border flex flex-col rounded-3xl p-4"
             style={{
               backgroundColor: "var(--color-bg-light-yellow)",
-              borderColor: "#fef9c3",
+              borderColor: "var(--color-stat-yellow-border)",
             }}
           >
             <div className="mb-2">
@@ -383,7 +383,7 @@ function HeroProductComposition() {
             <div
               className="w-8 h-8 flex items-center justify-center rounded opacity-50"
               style={{
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                backgroundColor: "var(--color-white-alpha-20)",
               }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -458,7 +458,7 @@ function HeroProductComposition() {
           <div
             className="flex items-center justify-center rounded-full shrink-0"
             style={{
-              backgroundColor: "#dcfce7",
+              backgroundColor: "var(--color-notification-bg)",
               width: "40px",
               height: "40px",
             }}
@@ -542,7 +542,7 @@ function HeroProductComposition() {
                   fontSize: "10px",
                   fontFamily: "var(--font-inter)",
                   fontWeight: "400",
-                  color: "#1f2937",
+                  color: "var(--color-text-secondary)",
                 }}
               >
                 Senior Dev @Spotify

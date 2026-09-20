@@ -80,7 +80,7 @@ export function Nav() {
 
       {/* Search Bar - Desktop Only */}
       <div className="hidden md:flex items-center border-2 rounded-3xl px-4 py-2 gap-2"
-        style={{ borderColor: "var(--color-border-light, #e5e7eb)" }}>
+        style={{ borderColor: "var(--color-border-light)" }}>
         <input
           type="text"
           placeholder="Rechercher un job"
