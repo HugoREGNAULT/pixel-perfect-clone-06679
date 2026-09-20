@@ -64,7 +64,7 @@ export function LatestOpportunities() {
         )}
 
         {/* Error state */}
-        {isError && (
+        {(isError || searchResult?.error) && (
           <div
             className="text-center py-8 px-4 rounded-[12px]"
             style={{
@@ -72,12 +72,12 @@ export function LatestOpportunities() {
               color: "var(--color-text-gray-1)",
             }}
           >
-            <p>Erreur lors du chargement des offres. Veuillez réessayer.</p>
+            <p>Offres momentanément indisponibles, réessaie dans un instant</p>
           </div>
         )}
 
         {/* Jobs grid */}
-        {!isLoading && !isError && (
+        {!isLoading && !isError && !searchResult?.error && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {jobs.map((job) => (
               <JobCard key={job.id} job={job} />
@@ -86,7 +86,7 @@ export function LatestOpportunities() {
         )}
 
         {/* Empty state */}
-        {!isLoading && !isError && jobs.length === 0 && (
+        {!isLoading && !isError && !searchResult?.error && jobs.length === 0 && (
           <div
             className="text-center py-8 px-4 rounded-[12px]"
             style={{

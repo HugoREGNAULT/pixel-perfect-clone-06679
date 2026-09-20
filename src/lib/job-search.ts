@@ -43,6 +43,7 @@ export interface SearchResult {
   cached:  boolean;
   sources?: { france_travail: number; bonne_alternance: number };
   errors?:  { france_travail: string | null; bonne_alternance: string | null };
+  error?: string | null;
 }
 
 const EDGE_FN_URL = `https://ujjpfcdcyvdliofvadul.supabase.co/functions/v1/job-search`;
@@ -58,10 +59,15 @@ export async function searchJobs(params: SearchParams): Promise<SearchResult> {
 
   try {
     const { data: { session } } = await supabase.auth.getSession();
+
+    // Always send Authorization header: use session token if available, otherwise use anon key
+    const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    const authToken = session?.access_token ?? anonKey;
+
     const res = await fetch(`${EDGE_FN_URL}?${qs}`, {
       headers: {
-        ...(session ? { Authorization: `Bearer ${session.access_token}` } : {}),
-        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqanBmY2RjeXZkbGlvZnZhZHVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1MTQ1MjQsImV4cCI6MjA5NzA5MDUyNH0.U44NEYkYgX7WJiMTo8GgkQbRfqzi074TcJozk3Zc5Mw",
+        Authorization: `Bearer ${authToken}`,
+        "apikey": anonKey,
       },
     });
 
@@ -73,54 +79,6 @@ export async function searchJobs(params: SearchParams): Promise<SearchResult> {
   }
 }
 
-// Sample offers for development/fallback
-const SAMPLE_OFFERS: JobOffer[] = [
-  {
-    id:          "sample-1",
-    source:      "local" as JobSource,
-    title:       "Développeur Full Stack",
-    company:     "TechStartup Paris",
-    city:        "Paris",
-    type:        "alternance" as JobType,
-    sector:      "Informatique",
-    description: "Rejoins notre équipe et développe des applications modernes avec React, Node.js et TypeScript.",
-    publishedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    applyUrl:    "https://springr.app/candidatures",
-    remote:      true,
-    tags:        ["React", "Node.js", "TypeScript"],
-    salary:      "700€ - 800€/mois",
-  },
-  {
-    id:          "sample-2",
-    source:      "local" as JobSource,
-    title:       "Alternant(e) Marketing Digital",
-    company:     "Digital Agency Lyon",
-    city:        "Lyon",
-    type:        "alternance" as JobType,
-    sector:      "Marketing",
-    description: "Découvre les métiers du marketing digital : SEO, SEM, réseaux sociaux et analytics.",
-    publishedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-    applyUrl:    "https://springr.app/candidatures",
-    remote:      false,
-    tags:        ["SEO", "SEM", "Analytics"],
-    salary:      "600€ - 700€/mois",
-  },
-  {
-    id:          "sample-3",
-    source:      "local" as JobSource,
-    title:       "Data Analyst en alternance",
-    company:     "FinTech Solutions",
-    city:        "Toulouse",
-    type:        "alternance" as JobType,
-    sector:      "Finance",
-    description: "Analyse des données financières avec Python, SQL et Power BI. Apprentissage sur le métier.",
-    publishedAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-    applyUrl:    "https://springr.app/candidatures",
-    remote:      true,
-    tags:        ["Python", "SQL", "Power BI"],
-    salary:      "750€ - 900€/mois",
-  },
-];
 
 // Fallback: query the local offres table in Supabase
 async function fallbackToLocal(params: SearchParams): Promise<SearchResult> {
@@ -171,24 +129,14 @@ async function fallbackToLocal(params: SearchParams): Promise<SearchResult> {
     console.warn("[job-search] Local DB query failed:", err);
   }
 
-  // Fallback to sample offers when DB is empty or unavailable
-  const filtered = SAMPLE_OFFERS.filter(offer => {
-    if (params.type && params.type !== "tous" && offer.type !== params.type) return false;
-    if (params.city && !offer.city.toLowerCase().includes(params.city.toLowerCase())) return false;
-    if (params.sector && offer.sector !== params.sector) return false;
-    if (params.q) {
-      const searchText = `${offer.title} ${offer.company} ${offer.description}`.toLowerCase();
-      if (!searchText.includes(params.q.toLowerCase())) return false;
-    }
-    return true;
-  });
-
+  // Return empty offers with error when API and DB are unavailable
   return {
-    offers: filtered.slice(start, start + perPage),
-    total:  filtered.length,
+    offers: [],
+    total:  0,
     page,
     perPage,
     cached: false,
+    error: "offres_indisponibles",
   };
 }
 
