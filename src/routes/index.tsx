@@ -20,6 +20,7 @@ import { WhySpringr } from "@/components/homepage/WhySpringr";
 import { FeaturesTab } from "@/components/homepage/FeaturesTab";
 import { LatestOpportunities } from "@/components/homepage/LatestOpportunities";
 import { Mentorship } from "@/components/homepage/Mentorship";
+import { Pricing } from "@/components/homepage/Pricing";
 
 const NAV_LINKS = [
   { to: "/opportunites", label: "Opportunités" },
@@ -105,6 +106,7 @@ function HomePage() {
         <FeaturesTab />
         <LatestOpportunities />
         <Mentorship />
+        <Pricing />
         <NewsletterCTA />
       </div>
       <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
