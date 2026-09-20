@@ -170,9 +170,11 @@ export function Hero() {
 
         </div>
 
-        {/* Right: Product Composition - Hidden on mobile */}
-        <div className="hidden lg:flex flex-1 min-w-0">
-          <HeroProductComposition />
+        {/* Right: Product Composition - Visible on mobile (scaled), full size on desktop */}
+        <div className="flex flex-col lg:flex-row flex-1 min-w-0 mt-8 lg:mt-0 justify-center lg:justify-start w-full lg:w-auto">
+          <div className="scale-[0.65] lg:scale-100 origin-center lg:origin-start w-full lg:w-auto">
+            <HeroProductComposition />
+          </div>
         </div>
       </div>
 
