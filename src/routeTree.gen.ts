@@ -17,7 +17,6 @@ import { Route as RecruteursRouteImport } from './routes/recruteurs'
 import { Route as RechercheRouteImport } from './routes/recherche'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as ParrainageRouteImport } from './routes/parrainage'
-import { Route as OpportunitesRouteImport } from './routes/opportunites'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
 import { Route as MentorsRouteImport } from './routes/mentors'
@@ -33,10 +32,12 @@ import { Route as BonsPlansRouteImport } from './routes/bons-plans'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OpportunitesIndexRouteImport } from './routes/opportunites/index'
 import { Route as EcolesIndexRouteImport } from './routes/ecoles/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as BrandIndexRouteImport } from './routes/brand/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as OpportunitesSearchRouteImport } from './routes/opportunites/search'
 import { Route as InviteCodeRouteImport } from './routes/invite/$code'
 import { Route as FounderSuccessRouteImport } from './routes/founder.success'
 import { Route as EcolesSlugRouteImport } from './routes/ecoles/$slug'
@@ -96,11 +97,6 @@ const ProfilRoute = ProfilRouteImport.update({
 const ParrainageRoute = ParrainageRouteImport.update({
   id: '/parrainage',
   path: '/parrainage',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpportunitesRoute = OpportunitesRouteImport.update({
-  id: '/opportunites',
-  path: '/opportunites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MessagesRoute = MessagesRouteImport.update({
@@ -178,6 +174,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpportunitesIndexRoute = OpportunitesIndexRouteImport.update({
+  id: '/opportunites/',
+  path: '/opportunites/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EcolesIndexRoute = EcolesIndexRouteImport.update({
   id: '/ecoles/',
   path: '/ecoles/',
@@ -197,6 +198,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const OpportunitesSearchRoute = OpportunitesSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => OpportunitesRoute,
 } as any)
 const InviteCodeRoute = InviteCodeRouteImport.update({
   id: '/invite/$code',
@@ -317,7 +323,6 @@ export interface FileRoutesByFullPath {
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
-  '/opportunites': typeof OpportunitesRoute
   '/parrainage': typeof ParrainageRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
@@ -344,10 +349,12 @@ export interface FileRoutesByFullPath {
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
   '/invite/$code': typeof InviteCodeRoute
+  '/opportunites/search': typeof OpportunitesSearchRoute
   '/admin/': typeof AdminIndexRoute
   '/brand/': typeof BrandIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/ecoles/': typeof EcolesIndexRoute
+  '/opportunites/': typeof OpportunitesIndexRoute
   '/api/public/payments/stripe-webhook': typeof ApiPublicPaymentsStripeWebhookRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -366,7 +373,6 @@ export interface FileRoutesByTo {
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
-  '/opportunites': typeof OpportunitesRoute
   '/parrainage': typeof ParrainageRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
@@ -393,10 +399,12 @@ export interface FileRoutesByTo {
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
   '/invite/$code': typeof InviteCodeRoute
+  '/opportunites/search': typeof OpportunitesSearchRoute
   '/admin': typeof AdminIndexRoute
   '/brand': typeof BrandIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/ecoles': typeof EcolesIndexRoute
+  '/opportunites': typeof OpportunitesIndexRoute
   '/api/public/payments/stripe-webhook': typeof ApiPublicPaymentsStripeWebhookRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -417,7 +425,6 @@ export interface FileRoutesById {
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
-  '/opportunites': typeof OpportunitesRoute
   '/parrainage': typeof ParrainageRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
@@ -444,10 +451,12 @@ export interface FileRoutesById {
   '/ecoles/$slug': typeof EcolesSlugRoute
   '/founder/success': typeof FounderSuccessRoute
   '/invite/$code': typeof InviteCodeRoute
+  '/opportunites/search': typeof OpportunitesSearchRoute
   '/admin/': typeof AdminIndexRoute
   '/brand/': typeof BrandIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/ecoles/': typeof EcolesIndexRoute
+  '/opportunites/': typeof OpportunitesIndexRoute
   '/api/public/payments/stripe-webhook': typeof ApiPublicPaymentsStripeWebhookRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -469,7 +478,6 @@ export interface FileRouteTypes {
     | '/mentors'
     | '/mes-candidatures'
     | '/messages'
-    | '/opportunites'
     | '/parrainage'
     | '/profil'
     | '/recherche'
@@ -496,10 +504,12 @@ export interface FileRouteTypes {
     | '/ecoles/$slug'
     | '/founder/success'
     | '/invite/$code'
+    | '/opportunites/search'
     | '/admin/'
     | '/brand/'
     | '/dashboard/'
     | '/ecoles/'
+    | '/opportunites/'
     | '/api/public/payments/stripe-webhook'
     | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
@@ -518,7 +528,6 @@ export interface FileRouteTypes {
     | '/mentors'
     | '/mes-candidatures'
     | '/messages'
-    | '/opportunites'
     | '/parrainage'
     | '/profil'
     | '/recherche'
@@ -545,10 +554,12 @@ export interface FileRouteTypes {
     | '/ecoles/$slug'
     | '/founder/success'
     | '/invite/$code'
+    | '/opportunites/search'
     | '/admin'
     | '/brand'
     | '/dashboard'
     | '/ecoles'
+    | '/opportunites'
     | '/api/public/payments/stripe-webhook'
     | '/api/public/payments/webhook'
   id:
@@ -568,7 +579,6 @@ export interface FileRouteTypes {
     | '/mentors'
     | '/mes-candidatures'
     | '/messages'
-    | '/opportunites'
     | '/parrainage'
     | '/profil'
     | '/recherche'
@@ -595,10 +605,12 @@ export interface FileRouteTypes {
     | '/ecoles/$slug'
     | '/founder/success'
     | '/invite/$code'
+    | '/opportunites/search'
     | '/admin/'
     | '/brand/'
     | '/dashboard/'
     | '/ecoles/'
+    | '/opportunites/'
     | '/api/public/payments/stripe-webhook'
     | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
@@ -619,7 +631,6 @@ export interface RootRouteChildren {
   MentorsRoute: typeof MentorsRoute
   MesCandidaturesRoute: typeof MesCandidaturesRoute
   MessagesRoute: typeof MessagesRoute
-  OpportunitesRoute: typeof OpportunitesRoute
   ParrainageRoute: typeof ParrainageRoute
   ProfilRoute: typeof ProfilRoute
   RechercheRoute: typeof RechercheRoute
@@ -641,6 +652,7 @@ export interface RootRouteChildren {
   BrandIndexRoute: typeof BrandIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   EcolesIndexRoute: typeof EcolesIndexRoute
+  OpportunitesIndexRoute: typeof OpportunitesIndexRoute
   ApiPublicPaymentsStripeWebhookRoute: typeof ApiPublicPaymentsStripeWebhookRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
@@ -701,13 +713,6 @@ declare module '@tanstack/react-router' {
       path: '/parrainage'
       fullPath: '/parrainage'
       preLoaderRoute: typeof ParrainageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/opportunites': {
-      id: '/opportunites'
-      path: '/opportunites'
-      fullPath: '/opportunites'
-      preLoaderRoute: typeof OpportunitesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/messages': {
@@ -815,6 +820,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/opportunites/': {
+      id: '/opportunites/'
+      path: '/opportunites'
+      fullPath: '/opportunites/'
+      preLoaderRoute: typeof OpportunitesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ecoles/': {
       id: '/ecoles/'
       path: '/ecoles'
@@ -842,6 +854,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/opportunites/search': {
+      id: '/opportunites/search'
+      path: '/search'
+      fullPath: '/opportunites/search'
+      preLoaderRoute: typeof OpportunitesSearchRouteImport
+      parentRoute: typeof OpportunitesRoute
     }
     '/invite/$code': {
       id: '/invite/$code'
@@ -1028,7 +1047,6 @@ const rootRouteChildren: RootRouteChildren = {
   MentorsRoute: MentorsRoute,
   MesCandidaturesRoute: MesCandidaturesRoute,
   MessagesRoute: MessagesRoute,
-  OpportunitesRoute: OpportunitesRoute,
   ParrainageRoute: ParrainageRoute,
   ProfilRoute: ProfilRoute,
   RechercheRoute: RechercheRoute,
@@ -1050,6 +1068,7 @@ const rootRouteChildren: RootRouteChildren = {
   BrandIndexRoute: BrandIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   EcolesIndexRoute: EcolesIndexRoute,
+  OpportunitesIndexRoute: OpportunitesIndexRoute,
   ApiPublicPaymentsStripeWebhookRoute: ApiPublicPaymentsStripeWebhookRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }

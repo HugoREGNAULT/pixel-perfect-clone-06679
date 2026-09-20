@@ -3,21 +3,21 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { toast } from "sonner";
 import {
-  MapPin, Calendar, Search, X, ArrowUpRight, Briefcase, Check, Loader2, ExternalLink, Building2,
-  ChevronLeft, ChevronRight, RefreshCw, AlertTriangle, Radio, BookOpen, Heart,
+  MapPin, Search, X, ArrowUpRight, Briefcase, Check, Loader2, AlertTriangle, Radio, Heart,
+  ChevronLeft, ChevronRight,
 } from "lucide-react";
 import { AppNav } from "@/components/AppNav";
 import { supabase } from "@/integrations/supabase/client";
 import { searchJobs, type JobOffer, type SearchParams, type SearchResult } from "@/lib/job-search";
 
-export const Route = createFileRoute("/opportunites")({
+export const Route = createFileRoute("/opportunites/search")({
   head: () => ({
     meta: [
-      { title: "Opportunités — Springr" },
+      { title: "Recherche d'Opportunités — Springr" },
       { name: "description", content: "Stages, alternances et emplois en direct depuis France Travail et La Bonne Alternance." },
     ],
   }),
-  component: OpportunitesPage,
+  component: OpportunitesSearchPage,
 });
 
 const PER_PAGE = 20;
@@ -65,13 +65,12 @@ function getInitials(company: string): string {
   return company.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase().slice(0, 2);
 }
 
-function OpportunitesPage() {
+function OpportunitesSearchPage() {
   const [result, setResult] = useState<SearchResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [applied, setApplied] = useState<Set<string>>(new Set());
   const [selectedOffer, setSelectedOffer] = useState<JobOffer | null>(null);
-  const [stats, setStats] = useState<{ schools: number; upcomingJpos: number } | null>(null);
 
   const [q, setQ] = useState("");
   const [type, setType] = useState("tous");
@@ -114,30 +113,6 @@ function OpportunitesPage() {
     });
   }, []);
 
-  useEffect(() => {
-    async function loadStats() {
-      try {
-        const today = new Date().toISOString().split('T')[0];
-        const [schoolsRes, jposRes] = await Promise.all([
-          supabase.from("ecoles").select("id", { count: "exact", head: true }),
-          supabase.from("jpos").select("id").gte("date", today).then(({ data, error: e1 }) => {
-            if (e1) return { data: [], error: e1 };
-            return supabase.from("jpo_submissions").select("id").eq("status", "approved").gte("date_jpo", today).then(({ data: jpoData }) => ({
-              data: (data || []).concat(jpoData || []),
-            }));
-          }),
-        ]);
-        setStats({
-          schools: schoolsRes.count || 0,
-          upcomingJpos: jposRes.data?.length || 0,
-        });
-      } catch (e) {
-        setStats({ schools: 0, upcomingJpos: 0 });
-      }
-    }
-    loadStats();
-  }, []);
-
   function resetFilters() {
     setQ(""); setType("tous"); setCity(""); setSector(""); setEdu(""); setPage(1);
   }
@@ -173,30 +148,6 @@ function OpportunitesPage() {
             Stages, alternances, premiers emplois et bien plus. Toutes les offres réunies au même endroit.
           </p>
         </div>
-
-        {/* Stats */}
-        {result && stats && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 p-8 bg-foreground text-background rounded-lg">
-            <div>
-              <div className="font-display text-2xl md:text-3xl font-bold">
-                {(result.total || 0).toLocaleString("fr-FR")}+
-              </div>
-              <p className="text-sm text-background/70 mt-1">offres actives</p>
-            </div>
-            {stats.schools > 0 && (
-              <div>
-                <div className="font-display text-2xl md:text-3xl font-bold">{stats.schools}</div>
-                <p className="text-sm text-background/70 mt-1">écoles référencées</p>
-              </div>
-            )}
-            {stats.upcomingJpos > 0 && (
-              <div>
-                <div className="font-display text-2xl md:text-3xl font-bold">{stats.upcomingJpos}</div>
-                <p className="text-sm text-background/70 mt-1">JPO à venir</p>
-              </div>
-            )}
-          </div>
-        )}
 
         {/* Search Card */}
         <div className="bg-card border border-border rounded-xl p-5 mb-10 shadow-sm">
