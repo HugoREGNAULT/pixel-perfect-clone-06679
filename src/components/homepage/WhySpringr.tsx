@@ -20,11 +20,11 @@ export function WhySpringr() {
   return (
     <section
       className="py-20 px-5 lg:px-8"
-      style={{ backgroundColor: "var(--color-bg-light-gray)" }}
+      style={{ backgroundColor: "var(--color-highlight)" }}
       data-node-id="3:128"
     >
       <h2
-        className="text-center mb-16 text-4xl font-bold"
+        className="text-center mb-4 text-4xl font-bold"
         style={{
           color: "var(--color-text-dark)",
           fontFamily: "var(--font-poppins)",
@@ -32,6 +32,17 @@ export function WhySpringr() {
       >
         Pourquoi Springr?
       </h2>
+      <p
+        className="text-center mb-16 max-w-2xl mx-auto"
+        style={{
+          fontSize: "16px",
+          color: "var(--color-text-gray-1)",
+          fontFamily: "var(--font-inter)",
+          fontWeight: 400,
+        }}
+      >
+        La vie étudiante est déjà assez compliquée. Trouver un job ou un mentor ne devrait pas l'être.
+      </p>
 
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {cards.map((card, i) => (
