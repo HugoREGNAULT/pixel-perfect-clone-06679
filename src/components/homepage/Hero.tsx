@@ -20,7 +20,7 @@ export function Hero() {
 
   return (
     <section
-      className="bg-white flex flex-col gap-20 isolate items-center pb-28 pt-40 relative w-full overflow-hidden px-5 lg:px-8"
+      className="bg-white flex flex-col gap-[40px] lg:gap-[80px] isolate items-center pb-[56px] pt-[80px] lg:pb-[112px] lg:pt-[160px] relative w-full overflow-hidden px-5 lg:px-[197.5px]"
       data-node-id="3:3"
       data-name="Hero Section"
     >
@@ -46,7 +46,7 @@ export function Hero() {
         }}
       />
 
-      <div className="flex gap-16 items-start justify-center relative shrink-0 max-w-7xl w-full z-[5]">
+      <div className="flex flex-col lg:flex-row gap-[40px] lg:gap-[64px] items-start justify-center relative shrink-0 w-full lg:max-w-7xl z-[5]">
         {/* Left: Text Content */}
         <div className="flex-1 min-w-0">
           {/* Badge */}
@@ -76,13 +76,11 @@ export function Hero() {
           {/* H1 avec "avenir" surligné */}
           <h1 className="mb-6">
             <div
-              className="flex flex-wrap gap-2"
+              className="flex flex-wrap gap-2 text-[40px] lg:text-[72px] leading-[56px] lg:leading-[72px]"
               style={{
-                fontSize: "72px",
                 fontFamily: "var(--font-poppins)",
                 fontWeight: "800",
                 color: "var(--color-text-dark)",
-                lineHeight: "1.2",
               }}
             >
               <span>Boostez votre</span>
@@ -97,12 +95,11 @@ export function Hero() {
               <span>dès</span>
             </div>
             <div
+              className="text-[40px] lg:text-[72px] leading-[56px] lg:leading-[72px]"
               style={{
-                fontSize: "72px",
                 fontFamily: "var(--font-poppins)",
                 fontWeight: "800",
                 color: "var(--color-text-dark)",
-                lineHeight: "1.2",
               }}
             >
               maintenant.
@@ -111,13 +108,11 @@ export function Hero() {
 
           {/* Description */}
           <p
-            className="mb-12 max-w-2xl"
+            className="mb-12 max-w-2xl text-[16px] lg:text-[20px] leading-[26px] lg:leading-[32.5px]"
             style={{
-              fontSize: "20px",
               fontFamily: "var(--font-inter)",
               fontWeight: "400",
               color: "var(--color-text-gray-1)",
-              lineHeight: "1.5",
             }}
           >
             Centralisez stages, alternances, mentorat et bons plans dans une seule app. Rejoignez la communauté qui connecte étudiants, écoles et entreprises.
