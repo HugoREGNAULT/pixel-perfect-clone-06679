@@ -1,53 +1,120 @@
 import { useState } from "react";
 import { Check } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 
 export function Pricing() {
-  const [isAnnual, setIsAnnual] = useState(false);
+  const navigate = useNavigate();
+  const [isEnterprise, setIsEnterprise] = useState(false);
 
-  const plans = [
+  const studentPlans = [
     {
-      name: "Démarrage",
-      description: "Pour les jeunes qui commencent",
-      priceMonthly: 0,
-      priceAnnually: 0,
+      id: "gratuit",
+      name: "Gratuit",
+      sub: "Pour commencer",
+      price: "0€",
+      period: "",
       features: [
-        "Accès aux offres d'emploi",
-        "Accès aux forums",
-        "1 session mentorat / mois",
-        "Bons plans limités",
+        "Profil étudiant complet",
+        "Accès aux offres de stage/alternance",
+        "1 candidature par jour",
+        "Accès aux JPO",
+        "Annuaire des écoles",
       ],
-      cta: "S'inscrire gratuitement",
+      cta: "Commencer gratuitement",
       highlighted: false,
     },
     {
-      name: "Pro",
-      description: "Pour les acteurs sérieux",
-      priceMonthly: 4.99,
-      priceAnnually: 49.9,
+      id: "premium",
+      name: "Premium",
+      sub: "Recommandé",
+      price: "4,99€",
+      period: "/mois",
       features: [
-        "Profil prioritaire (Top list)",
-        "Matching IA avancé",
-        "Mentorat illimité",
-        "Tous les bons plans & stats",
+        "Tout du plan Gratuit",
+        "Candidatures illimitées",
+        "Badge Premium sur ton profil",
+        "Alertes offres en temps réel",
+        "Accès aux mentors en DM",
+        "Support prioritaire",
       ],
       cta: "Devenir Premium",
       highlighted: true,
     },
     {
-      name: "Enterprise",
-      description: "Pour les universités et écoles",
-      priceMonthly: null,
-      priceAnnually: null,
+      id: "premium_plus",
+      name: "Premium+",
+      sub: "Tout débloqué",
+      price: "9,99€",
+      period: "/mois",
       features: [
-        "Tous les plans Pro",
-        "Support dédié",
-        "Analytics avancées",
-        "Intégrations API",
+        "Tout du plan Premium",
+        "Badge Premium+ exclusif visible",
+        "Coaching CV & lettre de motivation",
+        "Accès anticipé aux nouvelles features",
+        "Canal Discord privé avec l'équipe",
+        "Ton avis dans la roadmap",
       ],
-      cta: "Contacter les ventes",
+      cta: "Choisir Premium+",
       highlighted: false,
     },
   ];
+
+  const enterprisePlans = [
+    {
+      id: "gratuit",
+      name: "Gratuit",
+      sub: "Pour commencer",
+      price: "0€",
+      period: "",
+      features: [
+        "Jusqu'à 3 offres par mois",
+        "Profil entreprise basique",
+        "Accès aux candidatures",
+        "Listing standard dans les résultats",
+        "Support par email",
+      ],
+      cta: "Commencer gratuitement",
+      highlighted: false,
+    },
+    {
+      id: "company_starter",
+      name: "Starter",
+      sub: "Le plus populaire",
+      price: "29,99€",
+      period: "/offre",
+      features: [
+        "1 annonce mise en avant",
+        "Badge « Sponsorisée » visible",
+        "Boost visibilité ×10",
+        "Analytics de l'annonce (vues, clics)",
+        "Position prioritaire dans les résultats",
+        "Support prioritaire sous 24h",
+      ],
+      cta: "Publier une offre",
+      highlighted: true,
+    },
+    {
+      id: "company_pro",
+      name: "Pro Illimité",
+      sub: "Pour les équipes RH",
+      price: "199€",
+      period: "/mois HT",
+      features: [
+        "Offres illimitées chaque mois",
+        "Tableau de bord recruteur complet",
+        "Stats avancées (vues, candidatures, taux)",
+        "Accès aux profils étudiants open-to-work",
+        "Sourcing proactif par domaine",
+        "Export CSV des candidatures",
+        "Account manager dédié",
+        "Intégration ATS disponible",
+      ],
+      cta: "Passer Pro",
+      highlighted: false,
+    },
+  ];
+
+  const plans = isEnterprise ? enterprisePlans : studentPlans;
 
   return (
     <section
@@ -76,50 +143,52 @@ export function Pricing() {
             fontFamily: "var(--font-inter)",
           }}
         >
-          Des tarifs adaptés aux étudiants. Gratuit pour commencer.
+          {isEnterprise
+            ? "Des tarifs simples et transparents pour les recruteurs."
+            : "Des tarifs adaptés aux étudiants. Gratuit pour commencer."}
         </p>
 
-        {/* Toggle Mensuel/Annuel */}
+        {/* Toggle Étudiants/Entreprises */}
         <div className="flex justify-center gap-4 mb-16">
           <button
-            onClick={() => setIsAnnual(false)}
+            onClick={() => setIsEnterprise(false)}
             className="px-6 py-2 rounded-[12px] font-bold text-sm transition-all border-2"
             style={{
-              borderColor: !isAnnual
+              borderColor: !isEnterprise
                 ? "var(--color-primary)"
                 : "var(--color-border-light)",
-              backgroundColor: !isAnnual
+              backgroundColor: !isEnterprise
                 ? "var(--color-primary)"
                 : "var(--color-bg-white)",
-              color: !isAnnual ? "white" : "var(--color-text-dark)",
+              color: !isEnterprise ? "white" : "var(--color-text-dark)",
               fontFamily: "var(--font-inter)",
             }}
           >
-            Mensuel
+            Étudiants
           </button>
           <button
-            onClick={() => setIsAnnual(true)}
+            onClick={() => setIsEnterprise(true)}
             className="px-6 py-2 rounded-[12px] font-bold text-sm transition-all border-2"
             style={{
-              borderColor: isAnnual
+              borderColor: isEnterprise
                 ? "var(--color-primary)"
                 : "var(--color-border-light)",
-              backgroundColor: isAnnual
+              backgroundColor: isEnterprise
                 ? "var(--color-primary)"
                 : "var(--color-bg-white)",
-              color: isAnnual ? "white" : "var(--color-text-dark)",
+              color: isEnterprise ? "white" : "var(--color-text-dark)",
               fontFamily: "var(--font-inter)",
             }}
           >
-            Annuel
+            Entreprises
           </button>
         </div>
 
         {/* Pricing Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {plans.map((plan, i) => (
+          {plans.map((plan) => (
             <div
-              key={i}
+              key={plan.id}
               className="rounded-[24px] border-2 p-8 flex flex-col relative"
               style={{
                 borderColor: plan.highlighted
@@ -158,58 +227,46 @@ export function Pricing() {
                 {plan.name}
               </h3>
 
-              {/* Description */}
+              {/* Sub (Recommandé, Le plus populaire, etc.) */}
               <p
-                className="text-sm mb-6"
+                className="text-xs font-mono uppercase tracking-wider mb-6"
                 style={{
                   color: "var(--color-text-gray-1)",
                   fontFamily: "var(--font-inter)",
                 }}
               >
-                {plan.description}
+                {plan.sub}
               </p>
 
               {/* Price */}
               <div className="mb-8">
-                {plan.priceMonthly !== null ? (
-                  <>
-                    <span
-                      className="text-[36px] font-bold"
-                      style={{
-                        color: "var(--color-primary)",
-                        fontFamily: "var(--font-inter)",
-                      }}
-                    >
-                      {isAnnual ? plan.priceAnnually : plan.priceMonthly}€
-                    </span>
-                    <span
-                      className="text-sm ml-2"
-                      style={{
-                        color: "var(--color-text-gray-2)",
-                        fontFamily: "var(--font-inter)",
-                      }}
-                    >
-                      {isAnnual ? "/an" : "/mois"}
-                    </span>
-                  </>
-                ) : (
+                <span
+                  className="text-[36px] font-bold"
+                  style={{
+                    color: "var(--color-primary)",
+                    fontFamily: "var(--font-inter)",
+                  }}
+                >
+                  {plan.price}
+                </span>
+                {plan.period && (
                   <span
-                    className="text-[36px] font-bold"
+                    className="text-sm ml-2"
                     style={{
-                      color: "var(--color-primary)",
+                      color: "var(--color-text-gray-2)",
                       fontFamily: "var(--font-inter)",
                     }}
                   >
-                    Sur mesure
+                    {plan.period}
                   </span>
                 )}
               </div>
 
               {/* Features List */}
               <ul className="mb-8 space-y-3 flex-grow">
-                {plan.features.map((feature, j) => (
+                {plan.features.map((feature) => (
                   <li
-                    key={j}
+                    key={feature}
                     className="flex items-start gap-3 text-sm"
                     style={{
                       color: "var(--color-text-gray-1)",
@@ -227,6 +284,13 @@ export function Pricing() {
 
               {/* CTA Button */}
               <button
+                onClick={() => {
+                  if (isEnterprise) {
+                    navigate({ to: "/recruteurs", hash: "tarifs" });
+                  } else {
+                    navigate({ to: "/tarifs" });
+                  }
+                }}
                 className="w-full py-3 rounded-[12px] font-bold border-2 transition-all"
                 style={{
                   borderColor: "var(--color-text-dark)",
