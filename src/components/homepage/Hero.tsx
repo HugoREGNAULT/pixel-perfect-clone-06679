@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { searchJobs } from "@/lib/job-search";
 
-const imgUser = "http://localhost:3845/assets/bb4a5b79fae40c0a468fa967443678ee9eb31bee.png";
-const imgUser1 = "http://localhost:3845/assets/15546d74033e37b4f05979285cbde9b0d8a08256.png";
-const imgUser2 = "http://localhost:3845/assets/c08326dd4541f98026723b0901e8ecaa33f73c17.png";
-const imgMentor = "http://localhost:3845/assets/551b26cb03ae5fecc052b0a12ef10fd9ca8297e4.png";
-const imgSvg2 = "http://localhost:3845/assets/3f5a65fae5a4f540b9f41c5ec16821e13d3245b8.svg";
-const imgSvg3 = "http://localhost:3845/assets/664cc87edb582e1c548ee330e1078560f6de50ae.svg";
-const imgSvg5 = "http://localhost:3845/assets/ed77ccd381102c558c2158c342903c9d6a64096d.svg";
+const imgUser = "/images/homepage/user-avatar-1.png";
+const imgUser1 = "/images/homepage/user-avatar-2.png";
+const imgUser2 = "/images/homepage/user-avatar-3.png";
+const imgMentor = "/images/homepage/mentor-avatar.png";
+const imgSvg2 = "/images/homepage/feature-svg-1.svg";
+const imgSvg3 = "/images/homepage/feature-svg-2.svg";
+const imgSvg5 = "/images/homepage/feature-svg-3.svg";
 
 export function Hero() {
   const [jobsCount, setJobsCount] = useState(0);
