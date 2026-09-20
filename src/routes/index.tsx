@@ -21,6 +21,7 @@ import { FeaturesTab } from "@/components/homepage/FeaturesTab";
 import { LatestOpportunities } from "@/components/homepage/LatestOpportunities";
 import { Mentorship } from "@/components/homepage/Mentorship";
 import { Pricing } from "@/components/homepage/Pricing";
+import { NewsletterCTA } from "@/components/homepage/NewsletterCTA";
 
 const NAV_LINKS = [
   { to: "/opportunites", label: "Opportunités" },
@@ -284,61 +285,4 @@ function NavLegacy({
   );
 }
 
-
-/* --------------------------------------------------------- NEWSLETTER CTA */
-
-function NewsletterCTA() {
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    const parsed = emailSchema.safeParse(email);
-    if (!parsed.success) {
-      toast.error(parsed.error.issues[0].message);
-      return;
-    }
-    setLoading(true);
-    try {
-      const res = await subscribeNewsletter({ data: { email: parsed.data } });
-      if ("error" in res) throw new Error(res.error);
-      toast.success("Inscrit·e. À très vite ✨");
-      setEmail("");
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Erreur");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  return (
-    <section id="newsletter" className="border-t border-border py-16 lg:py-24">
-      <div className="mx-auto max-w-3xl px-5 lg:px-8 text-center">
-        <h2 className="font-display text-4xl font-bold mb-4">
-          Reste informé·e.
-        </h2>
-        <p className="text-muted-foreground text-lg mb-8">
-          Avancées du produit, opportunités et nouvelle communauté.
-        </p>
-        <form onSubmit={submit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="ton@email.com"
-            className="flex-1 rounded-lg bg-card border border-border px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:bg-card"
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-hover transition-colors disabled:opacity-60"
-          >
-            {loading ? <Loader2 className="size-4 animate-spin" /> : <>S'inscrire <ArrowUpRight className="size-4" /></>}
-          </button>
-        </form>
-      </div>
-    </section>
-  );
-}
 
