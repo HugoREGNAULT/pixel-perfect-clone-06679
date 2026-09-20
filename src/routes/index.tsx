@@ -5,10 +5,6 @@ import { DASHBOARD_ROUTE } from "@/lib/dashboard";
 import {
   Loader2,
   ArrowUpRight,
-  Sparkles,
-  Users,
-  Target,
-  Check,
   LogOut,
   Menu,
   X,
@@ -21,6 +17,7 @@ import type { User } from "@supabase/supabase-js";
 import { Nav } from "@/components/homepage/Nav";
 import { Hero } from "@/components/homepage/Hero";
 import { WhySpringr } from "@/components/homepage/WhySpringr";
+import { FeaturesTab } from "@/components/homepage/FeaturesTab";
 
 const NAV_LINKS = [
   { to: "/opportunites", label: "Opportunités" },
@@ -103,8 +100,7 @@ function HomePage() {
         <Nav />
         <Hero />
         <WhySpringr />
-        <NeedSection />
-        <FeaturesSection />
+        <FeaturesTab />
         <NewsletterCTA />
       </div>
       <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
@@ -169,14 +165,17 @@ function SpringrLanding() {
         <NavLegacy onFounder={() => setFounderOpen(true)} user={user} onSignOut={handleSignOut} />
         <Hero />
         <WhySpringr />
-        <NeedSection />
-        <FeaturesSection />
+        <FeaturesTab />
         <NewsletterCTA />
       </div>
       <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
     </>
   );
 }
+
+/* -------------------------------------------- LEGACY: NeedSection, FeaturesSection */
+
+// Removed - replaced with FeaturesTab component
 
 /* -------------------------------------------------------------- LOGO / NAV */
 
@@ -279,105 +278,6 @@ function NavLegacy({
   );
 }
 
-
-/* ----------------------------------------------------------- NEED SECTION */
-
-function NeedSection() {
-  return (
-    <section className="mx-auto max-w-7xl px-5 lg:px-8 py-16 lg:py-24 border-t border-border">
-      <div className="grid lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 className="font-display text-4xl font-bold mb-6">
-            Tout ce dont vous avez besoin pour réussir.
-          </h2>
-          <ul className="space-y-4">
-            {[
-              "Un profil qui reflète vraiment qui tu es",
-              "Accès à une communauté d'étudiants comme toi",
-              "Des mentors prêts à te guider",
-              "Des opportunités adaptées à ton projet",
-            ].map((item, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <Check className="size-5 text-primary mt-0.5 flex-shrink-0" />
-                <span className="text-foreground">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="bg-muted rounded-lg p-8 h-80 flex items-center justify-center">
-          <p className="text-muted-foreground text-center">Écran d'aperçu du dashboard</p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------ FONCTIONNALITÉS */
-
-function FeaturesSection() {
-  const [activeTab, setActiveTab] = useState("offres");
-
-  const categories = [
-    {
-      id: "offres",
-      label: "Offres & Stages",
-      description: "Matching intelligent avec les meilleures entreprises",
-      icon: "🎯",
-    },
-    {
-      id: "mentorat",
-      label: "Mentorat",
-      description: "Connectez-vous avec des pros expérimentés",
-      icon: "👥",
-    },
-    {
-      id: "bonsplans",
-      label: "Bons Plans",
-      description: "Logement, réductions, outils et plus",
-      icon: "💰",
-    },
-    {
-      id: "communaute",
-      label: "Communauté",
-      description: "Forums, salons vocaux et événements",
-      icon: "🤝",
-    },
-  ];
-
-  return (
-    <section id="fonctionnalites" className="mx-auto max-w-7xl px-5 lg:px-8 py-16 lg:py-24 border-t border-border">
-      <div className="grid lg:grid-cols-2 gap-12">
-        <div>
-          <h2 className="font-display text-4xl font-bold mb-4">Tout ce dont vous avez besoin pour réussir.</h2>
-          <p className="text-muted-foreground mb-8">Une suite complète d'outils pour gérer votre carrière étudiante et professionnelle.</p>
-
-          <div className="space-y-3">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveTab(cat.id)}
-                className={`w-full text-left p-4 rounded-lg border-2 transition-colors ${
-                  activeTab === cat.id
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border bg-card hover:border-primary"
-                }`}
-              >
-                <div className="font-display font-bold">{cat.label}</div>
-                <p className="text-sm">{cat.description}</p>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="card-base p-8">
-          <p className="text-center text-muted-foreground">
-            Contenu de la section "{categories.find((c) => c.id === activeTab)?.label}" à intégrer
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* --------------------------------------------------------- NEWSLETTER CTA */
 
