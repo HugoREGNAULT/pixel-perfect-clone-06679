@@ -167,7 +167,7 @@ function SpringrLanding() {
     <>
       <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
         <NavLegacy onFounder={() => setFounderOpen(true)} user={user} onSignOut={handleSignOut} />
-        <Hero profileCount={profileCount} />
+        <Hero />
         <WhySpringr />
         <NeedSection />
         <FeaturesSection />

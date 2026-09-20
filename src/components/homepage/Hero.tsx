@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { searchJobs } from "@/lib/job-search";
 
-const imgUser = "/images/homepage/user-avatar-1.png";
-const imgUser1 = "/images/homepage/user-avatar-2.png";
-const imgUser2 = "/images/homepage/user-avatar-3.png";
 const imgMentor = "/images/homepage/mentor-avatar.png";
 const imgSvg2 = "/images/homepage/feature-svg-1.svg";
 const imgSvg3 = "/images/homepage/feature-svg-2.svg";
@@ -176,49 +173,6 @@ export function Hero() {
             </button>
           </div>
 
-          {/* Compteur profiles avec avatars */}
-          <div className="flex gap-6 items-center">
-            <div className="flex items-center">
-              <img
-                alt=""
-                className="w-10 h-10 rounded-full border-2 border-white -mr-4 z-30"
-                src={imgUser}
-              />
-              <img
-                alt=""
-                className="w-10 h-10 rounded-full border-2 border-white -mr-4 z-20"
-                src={imgUser1}
-              />
-              <img
-                alt=""
-                className="w-10 h-10 rounded-full border-2 border-white -mr-4 z-10"
-                src={imgUser2}
-              />
-              <div
-                className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-white shrink-0"
-                style={{
-                  backgroundColor: "var(--color-bg-light-gray)",
-                  fontSize: "12px",
-                  fontFamily: "var(--font-inter)",
-                  fontWeight: "700",
-                  color: "var(--color-text-gray-1)",
-                }}
-              >
-                +2k
-              </div>
-            </div>
-
-            <div
-              style={{
-                fontFamily: "var(--font-inter)",
-                fontWeight: "500",
-                fontSize: "14px",
-                color: "var(--color-text-gray-2)",
-              }}
-            >
-              Rejoint par +1500 étudiants cette semaine
-            </div>
-          </div>
         </div>
 
         {/* Right: Product Composition - Hidden on mobile */}
@@ -227,22 +181,6 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Logos Section */}
-      <div className="border-t border-gray-200 flex flex-col items-center pt-10 relative w-full z-[1]">
-        <div
-          style={{
-            fontFamily: "var(--font-inter)",
-            fontWeight: "600",
-            fontSize: "14px",
-            color: "var(--color-text-gray-2)",
-            textAlign: "center",
-            letterSpacing: "0.7px",
-            textTransform: "uppercase",
-          }}
-        >
-          Ils nous font confiance
-        </div>
-      </div>
     </section>
   );
 }
@@ -486,7 +424,7 @@ function HeroProductComposition() {
                 color: "var(--color-text-gray-2)",
               }}
             >
-              LVMH vous attend
+              Studio Nova vous attend
             </div>
           </div>
         </div>
@@ -545,7 +483,7 @@ function HeroProductComposition() {
                   color: "var(--color-text-secondary)",
                 }}
               >
-                Senior Dev @Spotify
+                Senior Dev @Studio Nova
               </div>
             </div>
           </div>
