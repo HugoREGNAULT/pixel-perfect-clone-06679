@@ -42,7 +42,7 @@ export function FeaturesTab() {
     >
       <div className="max-w-6xl mx-auto">
         <h2
-          className="text-center mb-16 text-[40px] font-bold leading-tight"
+          className="text-center mb-8 md:mb-16 text-2xl md:text-4xl font-bold leading-tight"
           style={{
             color: "var(--color-text-dark)",
             fontFamily: "var(--font-poppins)",
@@ -97,24 +97,24 @@ export function FeaturesTab() {
 
         {/* Content Card */}
         <div
-          className="rounded-[16px] border-2 p-12 min-h-[300px] flex flex-col justify-center"
+          className="rounded-[16px] border-2 p-6 md:p-12 min-h-[200px] md:min-h-[300px] flex flex-col justify-center"
           style={{
             borderColor: "var(--color-text-dark)",
             backgroundColor: "var(--color-bg-white)",
           }}
         >
-          <div className="flex items-start gap-6 mb-6">
+          <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6 mb-4 md:mb-6">
             <div
-              className="w-16 h-16 rounded-[12px] flex items-center justify-center flex-shrink-0"
+              className="w-12 md:w-16 h-12 md:h-16 rounded-[12px] flex items-center justify-center flex-shrink-0"
               style={{
                 backgroundColor: "var(--color-primary)",
               }}
             >
-              <IconComponent className="w-8 h-8 text-white" />
+              <IconComponent className="w-6 md:w-8 h-6 md:h-8 text-white" />
             </div>
             <div>
               <h3
-                className="text-2xl font-bold mb-2"
+                className="text-xl md:text-2xl font-bold mb-2"
                 style={{
                   color: "var(--color-text-dark)",
                   fontFamily: "var(--font-poppins)",
@@ -126,7 +126,7 @@ export function FeaturesTab() {
           </div>
 
           <p
-            className="text-base leading-relaxed max-w-2xl"
+            className="text-sm md:text-base leading-relaxed max-w-2xl"
             style={{
               color: "var(--color-text-gray-1)",
               fontFamily: "var(--font-inter)",

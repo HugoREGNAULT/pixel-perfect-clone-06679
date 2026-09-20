@@ -126,7 +126,7 @@ export function Pricing() {
       <div className="max-w-6xl mx-auto">
         {/* Title */}
         <h2
-          className="text-center mb-4 text-[40px] font-bold leading-tight"
+          className="text-center mb-3 md:mb-4 text-2xl md:text-4xl font-bold leading-tight"
           style={{
             color: "var(--color-text-dark)",
             fontFamily: "var(--font-poppins)",
@@ -137,7 +137,7 @@ export function Pricing() {
 
         {/* Subtitle */}
         <p
-          className="text-center mb-12 text-[18px]"
+          className="text-center mb-8 md:mb-12 text-sm md:text-lg"
           style={{
             color: "var(--color-text-gray-1)",
             fontFamily: "var(--font-inter)",
@@ -149,10 +149,10 @@ export function Pricing() {
         </p>
 
         {/* Toggle Étudiants/Entreprises */}
-        <div className="flex justify-center gap-4 mb-16">
+        <div className="flex justify-center gap-2 md:gap-4 mb-8 md:mb-16">
           <button
             onClick={() => setIsEnterprise(false)}
-            className="px-6 py-2 rounded-[12px] font-bold text-sm transition-all border-2"
+            className="px-4 md:px-6 py-2 rounded-[12px] font-bold text-xs md:text-sm transition-all border-2"
             style={{
               borderColor: !isEnterprise
                 ? "var(--color-primary)"
@@ -168,7 +168,7 @@ export function Pricing() {
           </button>
           <button
             onClick={() => setIsEnterprise(true)}
-            className="px-6 py-2 rounded-[12px] font-bold text-sm transition-all border-2"
+            className="px-4 md:px-6 py-2 rounded-[12px] font-bold text-xs md:text-sm transition-all border-2"
             style={{
               borderColor: isEnterprise
                 ? "var(--color-primary)"
@@ -185,11 +185,11 @@ export function Pricing() {
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className="rounded-[24px] border-2 p-8 flex flex-col relative"
+              className="rounded-[24px] border-2 p-5 md:p-8 flex flex-col relative"
               style={{
                 borderColor: plan.highlighted
                   ? "var(--color-primary)"
@@ -205,7 +205,7 @@ export function Pricing() {
               {/* Popular Badge */}
               {plan.highlighted && (
                 <div
-                  className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold"
+                  className="absolute -top-3 md:-top-4 left-1/2 transform -translate-x-1/2 px-2 md:px-3 py-1 rounded-full text-xs font-bold"
                   style={{
                     backgroundColor: "var(--color-text-dark)",
                     color: "white",
@@ -218,7 +218,7 @@ export function Pricing() {
 
               {/* Plan Name */}
               <h3
-                className="text-[24px] font-bold mb-2"
+                className="text-lg md:text-2xl font-bold mb-1 md:mb-2"
                 style={{
                   color: "var(--color-text-dark)",
                   fontFamily: "var(--font-poppins)",
@@ -229,7 +229,7 @@ export function Pricing() {
 
               {/* Sub (Recommandé, Le plus populaire, etc.) */}
               <p
-                className="text-xs font-mono uppercase tracking-wider mb-6"
+                className="text-xs font-mono uppercase tracking-wider mb-4 md:mb-6"
                 style={{
                   color: "var(--color-text-gray-1)",
                   fontFamily: "var(--font-inter)",
@@ -239,9 +239,9 @@ export function Pricing() {
               </p>
 
               {/* Price */}
-              <div className="mb-8">
+              <div className="mb-6 md:mb-8">
                 <span
-                  className="text-[36px] font-bold"
+                  className="text-2xl md:text-4xl font-bold"
                   style={{
                     color: "var(--color-primary)",
                     fontFamily: "var(--font-inter)",
@@ -251,7 +251,7 @@ export function Pricing() {
                 </span>
                 {plan.period && (
                   <span
-                    className="text-sm ml-2"
+                    className="text-xs md:text-sm ml-2"
                     style={{
                       color: "var(--color-text-gray-2)",
                       fontFamily: "var(--font-inter)",
@@ -263,18 +263,18 @@ export function Pricing() {
               </div>
 
               {/* Features List */}
-              <ul className="mb-8 space-y-3 flex-grow">
+              <ul className="mb-6 md:mb-8 space-y-2 md:space-y-3 flex-grow">
                 {plan.features.map((feature) => (
                   <li
                     key={feature}
-                    className="flex items-start gap-3 text-sm"
+                    className="flex items-start gap-2 md:gap-3 text-xs md:text-sm"
                     style={{
                       color: "var(--color-text-gray-1)",
                       fontFamily: "var(--font-inter)",
                     }}
                   >
                     <Check
-                      className="w-5 h-5 flex-shrink-0 mt-0.5"
+                      className="w-4 md:w-5 h-4 md:h-5 flex-shrink-0 mt-0.5"
                       style={{ color: "var(--color-success)" }}
                     />
                     <span>{feature}</span>
@@ -291,7 +291,7 @@ export function Pricing() {
                     navigate({ to: "/tarifs" });
                   }
                 }}
-                className="w-full py-3 rounded-[12px] font-bold border-2 transition-all"
+                className="w-full py-2 md:py-3 rounded-[12px] font-bold border-2 transition-all text-sm md:text-base"
                 style={{
                   borderColor: "var(--color-text-dark)",
                   backgroundColor: plan.highlighted
@@ -301,7 +301,6 @@ export function Pricing() {
                     ? "white"
                     : "var(--color-text-dark)",
                   fontFamily: "var(--font-inter)",
-                  fontSize: "16px",
                 }}
               >
                 {plan.cta}

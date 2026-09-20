@@ -9,20 +9,20 @@ export function SiteFooter() {
 
   return (
     <footer className="border-t border-border bg-background">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8 py-20">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8 py-12 md:py-20">
         {/* Main sections grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">
 
           {/* Brand section - spans full width on mobile */}
           <div className="sm:col-span-2 lg:col-span-1 lg:pr-8">
-            <div className="inline-block font-display font-bold tracking-tight text-xl text-foreground mb-4">
+            <div className="inline-block font-display font-bold tracking-tight text-lg md:text-xl text-foreground mb-3 md:mb-4">
               springr.
             </div>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-sm">
+            <p className="text-muted-foreground text-xs md:text-sm leading-relaxed mb-4 md:mb-6 max-w-sm">
               La plateforme pour les 15-29 ans. Opportunités, mentorat, communauté.
             </p>
             {/* Social icons */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
               {/* TODO: Créer compte Twitter/X Springr */}
               <SocialLink href="#" label="Twitter">
                 <span className="text-xs font-bold leading-none">𝕏</span>
@@ -75,10 +75,10 @@ export function SiteFooter() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-border my-8"></div>
+        <div className="border-t border-border my-6 md:my-8"></div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 md:gap-4 text-xs text-muted-foreground">
           <p>© 2026 Springr. Tous droits réservés.</p>
           <p>Fait avec ❤️ à Paris</p>
         </div>
@@ -92,8 +92,8 @@ export function SiteFooter() {
 function FooterCol({ title, links }: { title: string; links: { to: string; label: string }[] }) {
   return (
     <div>
-      <p className="text-sm font-semibold text-foreground mb-4">{title}</p>
-      <ul className="space-y-3 text-sm">
+      <p className="text-xs md:text-sm font-semibold text-foreground mb-3 md:mb-4">{title}</p>
+      <ul className="space-y-2 md:space-y-3 text-xs md:text-sm">
         {links.map(({ to, label }) => (
           <li key={to}>
             <Link to={to as any} className="text-muted-foreground hover:text-foreground transition-colors">

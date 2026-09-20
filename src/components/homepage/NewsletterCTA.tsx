@@ -54,7 +54,7 @@ export function NewsletterCTA() {
       <div className="max-w-3xl mx-auto text-center relative z-10">
         {/* Title */}
         <h2
-          className="text-[36px] font-bold mb-6 leading-tight"
+          className="text-2xl md:text-4xl font-bold mb-4 md:mb-6 leading-tight"
           style={{
             color: "white",
             fontFamily: "var(--font-poppins)",
@@ -65,7 +65,7 @@ export function NewsletterCTA() {
 
         {/* Subtitle */}
         <p
-          className="text-[18px] mb-12 max-w-2xl mx-auto leading-relaxed"
+          className="text-sm md:text-lg mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed"
           style={{
             color: "var(--color-text-gray-3)",
             fontFamily: "var(--font-inter)",
@@ -77,7 +77,7 @@ export function NewsletterCTA() {
         {/* Success message */}
         {submitted && (
           <div
-            className="mb-6 p-4 rounded-[12px] text-white font-semibold"
+            className="mb-4 md:mb-6 p-3 md:p-4 rounded-[12px] text-white font-semibold text-sm md:text-base"
             style={{
               backgroundColor: "var(--color-success)",
               fontFamily: "var(--font-inter)",
@@ -88,7 +88,7 @@ export function NewsletterCTA() {
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto mb-8">
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-xl mx-auto mb-6 md:mb-8">
           <input
             type="email"
             placeholder="Votre email étudiant"
@@ -96,23 +96,21 @@ export function NewsletterCTA() {
             onChange={(e) => setEmail(e.target.value)}
             required
             disabled={loading}
-            className="flex-1 px-6 py-4 rounded-[12px] border-2 focus:outline-none transition-colors"
+            className="flex-1 px-4 md:px-6 py-3 md:py-4 rounded-[12px] border-2 focus:outline-none transition-colors text-sm md:text-base"
             style={{
               borderColor: "var(--color-border-light)",
               backgroundColor: "white",
               color: "var(--color-text-dark)",
               fontFamily: "var(--font-inter)",
-              fontSize: "16px",
             }}
           />
           <button
             type="submit"
             disabled={loading}
-            className="px-8 py-4 rounded-[12px] font-bold text-white transition-opacity"
+            className="px-6 md:px-8 py-3 md:py-4 rounded-[12px] font-bold text-white transition-opacity text-sm md:text-base"
             style={{
               backgroundColor: "var(--color-primary)",
               fontFamily: "var(--font-inter)",
-              fontSize: "16px",
               opacity: loading ? 0.7 : 1,
             }}
           >
@@ -122,7 +120,7 @@ export function NewsletterCTA() {
 
         {/* Footer text */}
         <p
-          className="text-[12px]"
+          className="text-xs md:text-sm"
           style={{
             color: "var(--color-text-gray-2)",
             fontFamily: "var(--font-inter)",

@@ -9,7 +9,7 @@ export function Mentorship() {
       <div className="max-w-6xl mx-auto">
         {/* Title */}
         <h2
-          className="text-[40px] font-bold leading-tight text-center mb-12"
+          className="text-2xl md:text-4xl font-bold leading-tight text-center mb-8 md:mb-12"
           style={{
             color: "var(--color-text-dark)",
             fontFamily: "var(--font-poppins)",
@@ -21,7 +21,7 @@ export function Mentorship() {
         {/* Coming soon message */}
         <div className="text-center">
           <p
-            className="text-[18px] font-bold mb-4"
+            className="text-lg md:text-xl font-bold mb-2 md:mb-4"
             style={{
               color: "var(--color-text-gray-2)",
               fontFamily: "var(--font-inter)",
@@ -30,7 +30,7 @@ export function Mentorship() {
             Bientôt disponible
           </p>
           <p
-            className="text-sm"
+            className="text-xs md:text-sm"
             style={{
               color: "var(--color-text-gray-1)",
               fontFamily: "var(--font-inter)",
@@ -41,7 +41,7 @@ export function Mentorship() {
         </div>
 
         {/* Placeholder cards (grayed out) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12 opacity-40">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto mt-8 md:mt-12 opacity-40">
           {[1, 2, 3].map((i) => (
             <div
               key={i}
