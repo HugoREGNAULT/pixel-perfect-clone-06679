@@ -3,7 +3,7 @@
 // Calls the Supabase Edge Function which handles France Travail + La Bonne Alternance
 // Falls back to local Supabase offres table if the Edge Function is unavailable
 
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, getSupabaseAnonKey } from "@/integrations/supabase/client";
 
 export type JobSource = "france_travail" | "bonne_alternance" | "local";
 export type JobType   = "stage" | "alternance" | "cdi" | "cdd" | "job";
@@ -61,7 +61,7 @@ export async function searchJobs(params: SearchParams): Promise<SearchResult> {
     const { data: { session } } = await supabase.auth.getSession();
 
     // Always send Authorization header: use session token if available, otherwise use anon key
-    const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    const anonKey = getSupabaseAnonKey();
     const authToken = session?.access_token ?? anonKey;
 
     const res = await fetch(`${EDGE_FN_URL}?${qs}`, {

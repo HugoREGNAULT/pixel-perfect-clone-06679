@@ -52,3 +52,14 @@ export const supabase = new Proxy({} as ReturnType<typeof createSupabaseClient>,
   },
 });
 
+// Export the anon key resolver with fallback logic
+export function getSupabaseAnonKey(): string {
+  return (
+    import.meta.env.VITE_SUPABASE_ANON_KEY ||
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_PUBLISHABLE_KEY ||
+    _FALLBACK_KEY
+  );
+}
+
