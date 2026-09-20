@@ -178,7 +178,74 @@ src/routes/opportunites.tsx             — Layout colonnes + détail
 
 ---
 
+## Session 2026-09-20: Homepage Refonte Complète ✅
+
+### Sections complétées (Task 9 - Vérification finale + build)
+
+Tous les composants homepage ont été développés et vérifiés:
+- ✅ **Nav** (node 3:721) — Logo Springr, barre recherche, avatar
+- ✅ **Hero** (node 3:3) — H1 surligné jaune, CTA primaire/secondaire, compteur API, composition produit
+- ✅ **Pourquoi Springr?** (node 3:128) — 3 cartes icônes carrés, fond jaune highlight, subtitle
+- ✅ **Fonctionnalités** (node 3:166) — 4 onglets (Offres, Mentorat, Bons Plans, Communauté)
+- ✅ **Dernières opportunités** (node 3:395) — 3 vraies offres via API searchJobs
+- ✅ **Mentorat** (node 3:556) — Section grisée « Bientôt disponible »
+- ✅ **Tarifs** (node 3:622) — 3 plans tarifaires, toggle Mensuel/Annuel
+- ✅ **Newsletter CTA** (node 3:704) — Formulaire email + CTA primaire
+- ✅ **Footer** (node 3:480) — SiteFooter composant existant
+
+### Corrections appliquées
+
+- ✅ **Assets localisés** : localhost:3845 → public/images/homepage/ (références publiques)
+- ✅ **Tokens Figma** : Palette implémentée dans styles.css (--primary, --highlight, --text-dark, --text-gray-1, etc.)
+- ✅ **Contenu nettoyé** : Suppression stats fictives (+1500, +2k), marques, bandeaux publicitaires
+- ✅ **Icônes** : Remplacement emojis par lucide-react icônes carrés colorés (Pourquoi Springr)
+
+### Vérifications finales exécutées
+
+1. **Git pull** — Branch à jour ✅
+2. **Vérification localhost:3845** — Zéro occurrence ✅
+3. **Vérification hex en dur** — Zéro dans src/components/homepage/ (notes: couleurs accents WhySpringr acceptées) ✅
+4. **Build** — `npm run build` réussi en 1.36s ✅
+5. **TypeScript** — `tsc --noEmit` zéro erreurs ✅
+6. **Captures Playwright** — Full-page screenshots générées ✅
+
+### Captures finales sauvegardées
+
+- **1440px desktop** : `/Users/hugo/Springr/screenshots/homepage-final-1440.png` (601 KB)
+- **375px mobile** : `/Users/hugo/Springr/screenshots/homepage-final-375.png` (530 KB)
+
+Tests inclus dans `/tests/e2e/homepage-full.spec.ts` (fullPage screenshots).
+
+### Commits terminés (derniers 10)
+
+```
+a06cee9 feat: section CTA Newsletter (node 3:704)
+304e270 feat: section Tarifs (node 3:622) — grille tarifaire + toggle fréquence
+25f4d85 test: capture Playwright screenshots pour section Mentorat (1440px et 375px)
+91c5881 feat: section Mentorat (node 3:556) — grisée « Bientôt disponible »
+157a325 feat: section Dernières opportunités (node 3:395) — 3 offres API
+2bbd0dc feat: section Fonctionnalités à onglets (node 3:166)
+37380ca feat: remplacer emojis par icônes carrés Figma (Pourquoi Springr)
+21921bc fix: nettoyer contenu Hero — supprimer stats, marques, bandeau
+5613cc2 feat: ajouter tokens palette Figma dans styles.css
+8f99100 feat: télécharger assets localhost:3845 → public/images/homepage/
+```
+
+### Prochaines étapes
+
+La refonte homepage est **COMPLÈTE**. Les pages restantes (3–10) seront traitées dans une nouvelle session avec budget frais:
+1. Login, Signup
+2. Onboarding
+3. Tarifs (page complète)
+4. Fonctionnalités
+5. Communauté
+6. Mentors
+7. Admin
+
+---
+
 **Commit hash initial** : `0fd6995` (Phase 1)  
-**Dernier commit** : `5ac99e6` (ÉTAPE B)  
-**Date** : 2026-09-19  
+**Dernière session** : `a06cee9` (Newsletter CTA - 2026-09-20)  
+**Task 9** : Vérification finale + build — ✅ COMPLÉTÉ  
+**Date** : 2026-09-20  
 **Branch** : design/refonte-da
