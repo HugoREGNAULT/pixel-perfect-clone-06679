@@ -244,8 +244,56 @@ La refonte homepage est **COMPLÈTE**. Les pages restantes (3–10) seront trait
 
 ---
 
+## Session 2026-09-20 (Continuation): Homepage Final - Tasks 2-4
+
+### Status ACTUEL
+
+Homepage **N'EST PAS prête à merger** — pixel-perfect incomplet. Les autres pages ont encore des classes sombres en dur qui casseraient avec les nouveaux tokens.
+
+### Tâche complétée
+
+✅ **Task 1: Double Footer** — Suppression du double footer
+- HomepageFooter (node 3:480) renommé → SiteFooter (footer unique du site)
+- Ancien SiteFooter.tsx supprimé
+- Commit: `3e965fb`
+- grep HomepageFooter = ZÉRO ✅
+
+### Tâches restantes (à faire avant Pages 2-10)
+
+#### **Task 2: Icônes/Images cassées — Télécharger assets**
+- Cercles vides (stats hero, "Offre acceptée!", avatar "Mentor", avatars profils) = assets manquants
+- Pour chaque: get_design_context → télécharger en public/images/homepage/ → vérifier affichage
+- Icônes simples: lucide-react (même taille, couleur, trait)
+- Commit: `refactor: homepage assets`
+
+#### **Task 3: Pixel-Perfect Mesuré — pixelmatch < 3%**
+- Installer: `pixelmatch`, `pngjs`
+- Par section: get_screenshot Figma vs Playwright 1440px
+- Générer diff images → calculer % pixels différents
+- Relever VALEURS EXACTES de get_design_context (px, line-height, spacing, radius, shadow)
+- Corriger jusqu'à < 3% (ex: `text-[64px]`, `leading-[72px]`, `mt-[32px]`)
+- **Liverable:** Tableau section → % diff avant/après
+- Commit: `refactor: homepage pixel-perfect`
+
+#### **Task 4: Bug Dernières opportunités — API affichage**
+- Section affiche « Aucune offre disponible »
+- Diagnostic: DevTools Console, Network XHR/Fetch, searchJobs response
+- Vérifier: type par défaut, edge function 500, CORS, timeout
+- Corriger pour afficher 3 VRAIES offres (priorité: Alternance)
+- État d'erreur clair si API échoue (pas de demo data jamais)
+- Commit: `fix: section Dernières opportunités — API`
+
+### Après Tasks 2-4
+- Build + tsc OK ✅
+- Captures Playwright 1440px + 375px page entière
+- Push vers `design/refonte-da`
+- **PUIS:** Merger homepage → main (si < 3% diff)
+- Pages 2-10 en mode fidélité Figma
+
+---
+
 **Commit hash initial** : `0fd6995` (Phase 1)  
-**Dernière session** : `a06cee9` (Newsletter CTA - 2026-09-20)  
-**Task 9** : Vérification finale + build — ✅ COMPLÉTÉ  
+**Task 1 complétée** : `3e965fb` (Double Footer)  
+**Tasks 2-4** : EN ATTENTE  
 **Date** : 2026-09-20  
 **Branch** : design/refonte-da
