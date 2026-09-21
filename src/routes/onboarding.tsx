@@ -13,10 +13,10 @@ export const Route = createFileRoute("/onboarding")({
 function Logo() {
   return (
     <div className="inline-flex items-center gap-2">
-      <div className="w-10 h-10 bg-[#0066ff] border-2 border-black rounded-2xl flex items-center justify-center text-white font-bold text-lg drop-shadow-[2px_2px_0px_black]">
+      <div className="w-10 h-10 bg-primary border-2 border-black rounded-2xl flex items-center justify-center text-white font-bold text-lg drop-shadow-[2px_2px_0px_black]">
         S
       </div>
-      <span className="font-bold text-xl text-[#111827]">Springr</span>
+      <span className="font-bold text-xl text-foreground">Springr</span>
     </div>
   );
 }
@@ -148,23 +148,23 @@ function OnboardingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f9fafb]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#0066ff]" />
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f9fafb] via-white to-[#f9fafb] overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 overflow-x-hidden">
       {/* Background blurs */}
-      <div className="absolute top-20 right-10 w-64 h-64 bg-[#fdcb58] blur-3xl opacity-30 rounded-full pointer-events-none" />
-      <div className="absolute bottom-20 left-10 w-64 h-64 bg-[#0066ff] blur-3xl opacity-30 rounded-full pointer-events-none" />
+      <div className="absolute top-20 right-10 w-64 h-64 bg-highlight blur-3xl opacity-30 rounded-full pointer-events-none" />
+      <div className="absolute bottom-20 left-10 w-64 h-64 bg-primary blur-3xl opacity-30 rounded-full pointer-events-none" />
 
       {/* Navigation */}
       <nav className="relative z-10 border-b-2 border-black bg-white sticky top-0">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 h-20 flex items-center justify-between">
           <Logo />
-          <div className="text-[#111827] font-medium text-sm">
+          <div className="text-foreground font-medium text-sm">
             Mode Fidélité
           </div>
         </div>
@@ -176,8 +176,8 @@ function OnboardingPage() {
           {/* Step indicator badge */}
           <div className="flex justify-center mb-8">
             <div className="bg-white border-2 border-black rounded-full px-4 py-2 drop-shadow-[4px_4px_0px_black] flex items-center gap-2">
-              <div className="w-4 h-4 bg-[#00d084] rounded-full border-2 border-black" />
-              <span className="font-bold text-sm text-[#111827]">
+              <div className="w-4 h-4 bg-success rounded-full border-2 border-black" />
+              <span className="font-bold text-sm text-foreground">
                 Dernière étape
               </span>
             </div>
@@ -185,10 +185,10 @@ function OnboardingPage() {
 
           {/* Heading */}
           <div className="mb-12 text-center">
-            <h1 className="text-4xl lg:text-5xl font-extrabold text-[#111827] mb-4">
+            <h1 className="text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
               Personnalisez votre expérience
             </h1>
-            <p className="text-[#4b5563] text-lg">
+            <p className="text-gray-600 text-lg">
               Aidez-nous à vous proposer le meilleur contenu adapté à votre
               profil
             </p>
@@ -197,7 +197,7 @@ function OnboardingPage() {
           {/* Step indicators */}
           <div className="flex justify-center gap-4 mb-12">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-[#00d084] border-2 border-black rounded-full flex items-center justify-center drop-shadow-[3px_3px_0px_black]">
+              <div className="w-10 h-10 bg-success border-2 border-black rounded-full flex items-center justify-center drop-shadow-[3px_3px_0px_black]">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -212,18 +212,18 @@ function OnboardingPage() {
                   />
                 </svg>
               </div>
-              <span className="font-medium text-sm text-[#111827]">
+              <span className="font-medium text-sm text-foreground">
                 Email
               </span>
             </div>
 
-            <div className="w-12 h-0.5 bg-[#d1d5db] self-center" />
+            <div className="w-12 h-0.5 bg-gray-200 self-center" />
 
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-[#0066ff] border-2 border-black rounded-full flex items-center justify-center drop-shadow-[3px_3px_0px_black]">
+              <div className="w-10 h-10 bg-primary border-2 border-black rounded-full flex items-center justify-center drop-shadow-[3px_3px_0px_black]">
                 <span className="text-white font-bold text-sm">2</span>
               </div>
-              <span className="font-medium text-sm text-[#111827]">
+              <span className="font-medium text-sm text-foreground">
                 Profil
               </span>
             </div>
@@ -237,7 +237,7 @@ function OnboardingPage() {
                 <div>
                   <label
                     htmlFor="firstName"
-                    className="block font-bold text-[#111827] text-sm mb-3 flex items-center gap-2"
+                    className="block font-bold text-foreground text-sm mb-3 flex items-center gap-2"
                   >
                     <svg
                       className="w-4 h-4"
@@ -255,13 +255,13 @@ function OnboardingPage() {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     placeholder="Votre prénom"
-                    className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-[#111827] placeholder:text-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#0066ff] transition-all shadow-[2px_2px_0px_black]"
+                    className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-foreground placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary transition-all shadow-[2px_2px_0px_black]"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="lastName"
-                    className="block font-bold text-[#111827] text-sm mb-3 flex items-center gap-2"
+                    className="block font-bold text-foreground text-sm mb-3 flex items-center gap-2"
                   >
                     <svg
                       className="w-4 h-4"
@@ -279,7 +279,7 @@ function OnboardingPage() {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     placeholder="Votre nom"
-                    className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-[#111827] placeholder:text-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#0066ff] transition-all shadow-[2px_2px_0px_black]"
+                    className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-foreground placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary transition-all shadow-[2px_2px_0px_black]"
                   />
                 </div>
               </div>
@@ -288,7 +288,7 @@ function OnboardingPage() {
               <div>
                 <label
                   htmlFor="birthDate"
-                  className="block font-bold text-[#111827] text-sm mb-3 flex items-center gap-2"
+                  className="block font-bold text-foreground text-sm mb-3 flex items-center gap-2"
                 >
                   <svg
                     className="w-4 h-4"
@@ -305,16 +305,16 @@ function OnboardingPage() {
                   required
                   value={birthDate}
                   onChange={(e) => setBirthDate(e.target.value)}
-                  className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#0066ff] transition-all shadow-[2px_2px_0px_black]"
+                  className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all shadow-[2px_2px_0px_black]"
                 />
-                <p className="text-xs text-[#6b7280] mt-2">
+                <p className="text-xs text-gray-500 mt-2">
                   Vous devez avoir au moins 15 ans pour vous inscrire
                 </p>
               </div>
 
               {/* Professional status field */}
               <div>
-                <label className="block font-bold text-[#111827] text-sm mb-3 flex items-center gap-2">
+                <label className="block font-bold text-foreground text-sm mb-3 flex items-center gap-2">
                   <svg
                     className="w-4 h-4"
                     fill="currentColor"
@@ -332,8 +332,8 @@ function OnboardingPage() {
                       onClick={() => setProfessionalStatus(status)}
                       className={`py-3 px-4 rounded-2xl border-2 font-medium text-sm transition-all ${
                         professionalStatus === status
-                          ? "bg-[#0066ff] border-[#0066ff] text-white shadow-[3px_3px_0px_black]"
-                          : "bg-white border-black text-[#111827] hover:bg-[#f3f4f6]"
+                          ? "bg-primary border-primary text-white shadow-[3px_3px_0px_black]"
+                          : "bg-white border-black text-foreground hover:bg-gray-100"
                       }`}
                     >
                       {status}
@@ -346,7 +346,7 @@ function OnboardingPage() {
               <div>
                 <label
                   htmlFor="diploma"
-                  className="block font-bold text-[#111827] text-sm mb-3 flex items-center gap-2"
+                  className="block font-bold text-foreground text-sm mb-3 flex items-center gap-2"
                 >
                   <svg
                     className="w-4 h-4"
@@ -362,7 +362,7 @@ function OnboardingPage() {
                   required
                   value={diploma}
                   onChange={(e) => setDiploma(e.target.value)}
-                  className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#0066ff] transition-all shadow-[2px_2px_0px_black]"
+                  className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all shadow-[2px_2px_0px_black]"
                 >
                   <option value="">Sélectionnez votre diplôme</option>
                   {diplomaOptions.map((opt) => (
@@ -377,7 +377,7 @@ function OnboardingPage() {
               <div>
                 <label
                   htmlFor="region"
-                  className="block font-bold text-[#111827] text-sm mb-3 flex items-center gap-2"
+                  className="block font-bold text-foreground text-sm mb-3 flex items-center gap-2"
                 >
                   <svg
                     className="w-4 h-4"
@@ -393,7 +393,7 @@ function OnboardingPage() {
                   required
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
-                  className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#0066ff] transition-all shadow-[2px_2px_0px_black]"
+                  className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all shadow-[2px_2px_0px_black]"
                 >
                   <option value="">Sélectionnez votre région</option>
                   {regionOptions.map((opt) => (
@@ -405,19 +405,19 @@ function OnboardingPage() {
               </div>
 
               {/* Info box */}
-              <div className="bg-[#eff6ff] border border-[#bfdbfe] rounded-2xl p-4 flex gap-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex gap-4">
                 <svg
-                  className="w-5 h-5 text-[#0066ff] flex-shrink-0 mt-0.5"
+                  className="w-5 h-5 text-primary flex-shrink-0 mt-0.5"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
                 </svg>
                 <div>
-                  <p className="font-semibold text-sm text-[#374151] mb-1">
+                  <p className="font-semibold text-sm text-gray-700 mb-1">
                     Vos données sont protégées
                   </p>
-                  <p className="text-xs text-[#374151]">
+                  <p className="text-xs text-gray-700">
                     Ces informations nous permettent de personnaliser votre
                     expérience et de vous proposer des opportunités adaptées à
                     votre profil.
@@ -429,7 +429,7 @@ function OnboardingPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full bg-[#0066ff] border-2 border-black text-white font-bold text-lg py-4 rounded-2xl drop-shadow-[4px_4px_0px_black] hover:translate-y-[-2px] transition-transform disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-primary border-2 border-black text-white font-bold text-lg py-4 rounded-2xl drop-shadow-[4px_4px_0px_black] hover:translate-y-[-2px] transition-transform disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <>
@@ -457,13 +457,13 @@ function OnboardingPage() {
               </button>
 
               {/* Terms text */}
-              <div className="text-center text-xs text-[#6b7280]">
+              <div className="text-center text-xs text-gray-500">
                 En continuant, vous acceptez nos{" "}
-                <a href="/conditions-utilisation" className="text-[#0066ff] font-bold hover:underline">
+                <a href="/conditions-utilisation" className="text-primary font-bold hover:underline">
                   conditions d'utilisation
                 </a>{" "}
                 et notre{" "}
-                <a href="/confidentialite" className="text-[#0066ff] font-bold hover:underline">
+                <a href="/confidentialite" className="text-primary font-bold hover:underline">
                   politique de confidentialité
                 </a>
               </div>
@@ -474,37 +474,37 @@ function OnboardingPage() {
           <div className="bg-white border-2 border-black rounded-3xl p-8 drop-shadow-[6px_6px_0px_black] flex flex-col md:flex-row gap-8 items-center justify-center">
             <div className="flex items-center gap-3">
               <svg
-                className="w-5 h-5 text-[#00d084]"
+                className="w-5 h-5 text-success"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
               </svg>
-              <span className="font-bold text-sm text-[#111827]">
+              <span className="font-bold text-sm text-foreground">
                 1,523 inscrits
               </span>
             </div>
             <div className="flex items-center gap-3">
               <svg
-                className="w-5 h-5 text-[#fdcb58]"
+                className="w-5 h-5 text-highlight"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path d="M11.99 5V1h-2v4c0 .55.45 1 1 1s1-.45 1-1zm6.93 2.05l2.83-2.83-1.41-1.41-2.83 2.83c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0zM18 11.5h4v2h-4c-.55 0-1 .45-1 1s.45 1 1 1h4v2h-4c-.55 0-1 .45-1 1s.45 1 1 1h3v2h-4c-1.66 0-3-1.34-3-3s1.34-3 3-3zm.5-6.5c0-.83-.67-1.5-1.5-1.5S15.5 3.67 15.5 4.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5z" />
               </svg>
-              <span className="font-bold text-sm text-[#111827]">
+              <span className="font-bold text-sm text-foreground">
                 30 secondes
               </span>
             </div>
             <div className="flex items-center gap-3">
               <svg
-                className="w-5 h-5 text-[#fdcb58]"
+                className="w-5 h-5 text-highlight"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z" />
               </svg>
-              <span className="font-bold text-sm text-[#111827]">
+              <span className="font-bold text-sm text-foreground">
                 3 mois Premium offerts
               </span>
             </div>
@@ -516,12 +516,12 @@ function OnboardingPage() {
       <footer className="relative z-10 border-t-2 border-black bg-white mt-20">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 py-8 flex items-center justify-between">
           <div className="inline-flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#0066ff] border-2 border-black rounded-2xl flex items-center justify-center text-white font-bold text-sm drop-shadow-[2px_2px_0px_black]">
+            <div className="w-8 h-8 bg-primary border-2 border-black rounded-2xl flex items-center justify-center text-white font-bold text-sm drop-shadow-[2px_2px_0px_black]">
               S
             </div>
-            <span className="font-bold text-lg text-[#111827]">Springr</span>
+            <span className="font-bold text-lg text-foreground">Springr</span>
           </div>
-          <span className="text-[#6b7280] text-sm">
+          <span className="text-gray-500 text-sm">
             © 2025 Springr. Tous droits réservés.
           </span>
         </div>
