@@ -3,6 +3,7 @@ import { z } from "zod";
 
 const schema = z.object({
   email: z.string().trim().email("Email invalide").max(255),
+  source: z.string().default("homepage"),
 });
 
 type Result = { ok: true } | { error: string };
@@ -13,7 +14,7 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
       .from("newsletter_signups")
-      .insert({ email: data.email });
+      .insert({ email: data.email, source: data.source } as any);
     if (error) {
       if (error.code === "23505") return { ok: true }; // already subscribed
       return { error: "Inscription impossible, réessaie." };
