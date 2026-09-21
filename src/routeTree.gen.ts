@@ -17,12 +17,14 @@ import { Route as RecruteursRouteImport } from './routes/recruteurs'
 import { Route as RechercheRouteImport } from './routes/recherche'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as ParrainageRouteImport } from './routes/parrainage'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
 import { Route as MentorsRouteImport } from './routes/mentors'
 import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as FonctionnalitesRouteImport } from './routes/fonctionnalites'
 import { Route as EvenementsRouteImport } from './routes/evenements'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
@@ -99,6 +101,11 @@ const ParrainageRoute = ParrainageRouteImport.update({
   path: '/parrainage',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MessagesRoute = MessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
@@ -127,6 +134,11 @@ const LoginRoute = LoginRouteImport.update({
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FonctionnalitesRoute = FonctionnalitesRouteImport.update({
+  id: '/fonctionnalites',
+  path: '/fonctionnalites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EvenementsRoute = EvenementsRouteImport.update({
@@ -200,9 +212,9 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 const OpportunitesSearchRoute = OpportunitesSearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => OpportunitesRoute,
+  id: '/opportunites/search',
+  path: '/opportunites/search',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const InviteCodeRoute = InviteCodeRouteImport.update({
   id: '/invite/$code',
@@ -317,12 +329,14 @@ export interface FileRoutesByFullPath {
   '/confidentialite': typeof ConfidentialiteRoute
   '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
+  '/fonctionnalites': typeof FonctionnalitesRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
+  '/onboarding': typeof OnboardingRoute
   '/parrainage': typeof ParrainageRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
@@ -367,12 +381,14 @@ export interface FileRoutesByTo {
   '/confidentialite': typeof ConfidentialiteRoute
   '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
+  '/fonctionnalites': typeof FonctionnalitesRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
+  '/onboarding': typeof OnboardingRoute
   '/parrainage': typeof ParrainageRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
@@ -419,12 +435,14 @@ export interface FileRoutesById {
   '/confidentialite': typeof ConfidentialiteRoute
   '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
+  '/fonctionnalites': typeof FonctionnalitesRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/mentors': typeof MentorsRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
+  '/onboarding': typeof OnboardingRoute
   '/parrainage': typeof ParrainageRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
@@ -472,12 +490,14 @@ export interface FileRouteTypes {
     | '/confidentialite'
     | '/cookies'
     | '/evenements'
+    | '/fonctionnalites'
     | '/forgot-password'
     | '/login'
     | '/mentions-legales'
     | '/mentors'
     | '/mes-candidatures'
     | '/messages'
+    | '/onboarding'
     | '/parrainage'
     | '/profil'
     | '/recherche'
@@ -522,12 +542,14 @@ export interface FileRouteTypes {
     | '/confidentialite'
     | '/cookies'
     | '/evenements'
+    | '/fonctionnalites'
     | '/forgot-password'
     | '/login'
     | '/mentions-legales'
     | '/mentors'
     | '/mes-candidatures'
     | '/messages'
+    | '/onboarding'
     | '/parrainage'
     | '/profil'
     | '/recherche'
@@ -573,12 +595,14 @@ export interface FileRouteTypes {
     | '/confidentialite'
     | '/cookies'
     | '/evenements'
+    | '/fonctionnalites'
     | '/forgot-password'
     | '/login'
     | '/mentions-legales'
     | '/mentors'
     | '/mes-candidatures'
     | '/messages'
+    | '/onboarding'
     | '/parrainage'
     | '/profil'
     | '/recherche'
@@ -625,12 +649,14 @@ export interface RootRouteChildren {
   ConfidentialiteRoute: typeof ConfidentialiteRoute
   CookiesRoute: typeof CookiesRoute
   EvenementsRoute: typeof EvenementsRoute
+  FonctionnalitesRoute: typeof FonctionnalitesRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   MentionsLegalesRoute: typeof MentionsLegalesRoute
   MentorsRoute: typeof MentorsRoute
   MesCandidaturesRoute: typeof MesCandidaturesRoute
   MessagesRoute: typeof MessagesRoute
+  OnboardingRoute: typeof OnboardingRoute
   ParrainageRoute: typeof ParrainageRoute
   ProfilRoute: typeof ProfilRoute
   RechercheRoute: typeof RechercheRoute
@@ -649,6 +675,7 @@ export interface RootRouteChildren {
   EcolesSlugRoute: typeof EcolesSlugRoute
   FounderSuccessRoute: typeof FounderSuccessRoute
   InviteCodeRoute: typeof InviteCodeRoute
+  OpportunitesSearchRoute: typeof OpportunitesSearchRoute
   BrandIndexRoute: typeof BrandIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   EcolesIndexRoute: typeof EcolesIndexRoute
@@ -715,6 +742,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParrainageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/messages': {
       id: '/messages'
       path: '/messages'
@@ -755,6 +789,13 @@ declare module '@tanstack/react-router' {
       path: '/forgot-password'
       fullPath: '/forgot-password'
       preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fonctionnalites': {
+      id: '/fonctionnalites'
+      path: '/fonctionnalites'
+      fullPath: '/fonctionnalites'
+      preLoaderRoute: typeof FonctionnalitesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/evenements': {
@@ -857,10 +898,10 @@ declare module '@tanstack/react-router' {
     }
     '/opportunites/search': {
       id: '/opportunites/search'
-      path: '/search'
+      path: '/opportunites/search'
       fullPath: '/opportunites/search'
       preLoaderRoute: typeof OpportunitesSearchRouteImport
-      parentRoute: typeof OpportunitesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/invite/$code': {
       id: '/invite/$code'
@@ -1041,12 +1082,14 @@ const rootRouteChildren: RootRouteChildren = {
   ConfidentialiteRoute: ConfidentialiteRoute,
   CookiesRoute: CookiesRoute,
   EvenementsRoute: EvenementsRoute,
+  FonctionnalitesRoute: FonctionnalitesRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   MentionsLegalesRoute: MentionsLegalesRoute,
   MentorsRoute: MentorsRoute,
   MesCandidaturesRoute: MesCandidaturesRoute,
   MessagesRoute: MessagesRoute,
+  OnboardingRoute: OnboardingRoute,
   ParrainageRoute: ParrainageRoute,
   ProfilRoute: ProfilRoute,
   RechercheRoute: RechercheRoute,
@@ -1065,6 +1108,7 @@ const rootRouteChildren: RootRouteChildren = {
   EcolesSlugRoute: EcolesSlugRoute,
   FounderSuccessRoute: FounderSuccessRoute,
   InviteCodeRoute: InviteCodeRoute,
+  OpportunitesSearchRoute: OpportunitesSearchRoute,
   BrandIndexRoute: BrandIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   EcolesIndexRoute: EcolesIndexRoute,
