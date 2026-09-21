@@ -36,7 +36,7 @@ function decodeHtml(text: string): string {
 
 // France Travail contract type mapping
 const SPRINGR_TO_FT: Record<string, string> = {
-  stage: "E2",
+  stage: "STAGE",
   cdi: "CDI",
   cdd: "CDD",
   job: "CDD",
@@ -186,7 +186,11 @@ async function fetchFranceTravail(p: {
     headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
   });
 
-  if (!res.ok) throw new Error(`FT error: ${res.status}`);
+  if (!res.ok) {
+    const errText = await res.text();
+    console.error(`[job-search] FT ${res.status}:`, errText);
+    throw new Error(`FT error: ${res.status}`);
+  }
 
   const json = (await res.json()) as { resultats?: Record<string, any>[] };
   const items = json.resultats ?? [];
