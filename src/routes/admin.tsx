@@ -29,7 +29,7 @@ export const Route = createFileRoute("/admin")({
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) throw redirect({ to: "/login" as any });
+    if (!user) throw redirect({ to: "/admin/login" as any });
 
     const db = supabase as any;
     const { data: profile } = await db
