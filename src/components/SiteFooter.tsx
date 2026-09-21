@@ -8,7 +8,7 @@ export function SiteFooter() {
   if (EXCLUDED.some(p => location.pathname.startsWith(p))) return null;
 
   return (
-    <footer className="border-t border-border bg-background">
+    <footer className="border-t border-divider bg-card">
       <div className="mx-auto max-w-7xl px-5 lg:px-8 py-12 md:py-20">
         {/* Main sections grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">
@@ -75,7 +75,7 @@ export function SiteFooter() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-border my-6 md:my-8"></div>
+        <div className="my-6 border-t border-divider md:my-8"></div>
 
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 md:gap-4 text-xs text-muted-foreground">
@@ -113,7 +113,7 @@ function SocialLink({ href, label, children }: { href: string; label: string; ch
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="size-8 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+      className="flex size-8 items-center justify-center rounded-[10px] border border-border text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
     >
       {children}
     </a>

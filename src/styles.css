@@ -3,10 +3,11 @@
 @import "tw-animate-css";
 
 @theme inline {
-  --font-display: "Poppins", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-poppins: "Poppins", system-ui, sans-serif;
-  --font-inter: "Inter", system-ui, sans-serif;
+  --font-display: "Geist", system-ui, sans-serif;
+  --font-sans: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-poppins: "Geist", system-ui, sans-serif;
+  --font-inter: "Geist", system-ui, sans-serif;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -17,6 +18,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-foreground-2: var(--foreground-2);
+  --color-faint: var(--faint);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -36,117 +38,123 @@
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
+  --color-divider: var(--divider);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-highlight: var(--highlight);
   --color-highlight-foreground: var(--highlight-foreground);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+  --shadow-elevated: var(--elevated-shadow);
 }
 
 :root {
   --radius: 0.75rem;
+  --radius-button: 10px;
+  --radius-input: 12px;
+  --radius-card: 16px;
+  --radius-card-lg: 20px;
+  --radius-pill: 999px;
 
-  --background: #FAFAF7;
+  --background: #FAFAFA;
   --card: #FFFFFF;
-  --card-foreground: #16151D;
+  --card-foreground: #111111;
   --popover: #FFFFFF;
-  --foreground: #16151D;
-  --foreground-2: #3A3848;
+  --foreground: #111111;
+  --foreground-2: #555555;
+  --faint: #8A8A8A;
 
-  --muted: #F2F1F5;
-  --muted-foreground: #55536A;
-  --placeholder: #76748A;
+  --muted: #F4F4F5;
+  --muted-foreground: #6B6B6B;
+  --placeholder: #8A8A8A;
 
-  --border: #E6E4EC;
-  --border-strong: #D9D6E3;
-  --input: #D9D6E3;
+  --border: #E5E5E5;
+  --border-strong: #D4D4D4;
+  --divider: #F2F2F2;
+  --input: #E5E5E5;
 
-  --primary: #6E56CF;
-  --primary-hover: #5A45B0;
+  --primary: #111111;
+  --primary-hover: #2B2B2B;
   --primary-foreground: #FFFFFF;
-  --primary-soft: #F1EEFC;
-  --primary-soft-foreground: #4B3A9E;
+  --primary-soft: #F4F4F5;
+  --primary-soft-foreground: #111111;
 
   --secondary: #FFFFFF;
-  --secondary-foreground: #16151D;
+  --secondary-foreground: #111111;
 
-  --accent: #6E56CF;
+  --accent: #4F46E5;
+  --accent-soft: #EEF0FF;
   --accent-foreground: #FFFFFF;
 
   --destructive: #C8372D;
   --destructive-foreground: #FFFFFF;
 
   --border-radius: 12px;
-  --ring: #6E56CF;
+  --ring: #4F46E5;
 
-  --highlight: #FFF0EC;
-  --highlight-foreground: #B23A22;
+  --highlight: #EEF0FF;
+  --highlight-foreground: #4F46E5;
 
   --success: #E8F5EE;
   --success-foreground: #1F7A4D;
 
-  /* Figma Homepage Tokens */
-  --color-primary: #0066ff;
-  --color-highlight: #fdcb58;
-  --color-text-dark: #111827;
-  --color-text-gray-1: #4b5563;
-  --color-text-gray-2: #6b7280;
-  --color-text-gray-3: #9ca3af;
-  --color-text-secondary: #1f2937;
+  /* Legacy aliases kept semantic for existing screens */
+  --color-primary: var(--accent);
+  --color-highlight: var(--accent-soft);
+  --color-text-dark: var(--foreground);
+  --color-text-gray-1: var(--foreground-2);
+  --color-text-gray-2: var(--muted-foreground);
+  --color-text-gray-3: var(--faint);
+  --color-text-secondary: var(--foreground-2);
   --color-bg-white: #ffffff;
-  --color-bg-light-blue: #eff6ff;
-  --color-bg-light-yellow: #fefce8;
-  --color-bg-light-gray: #f3f4f6;
-  --color-success: #00d084;
-  --color-dark-navy: #111827;
-  --color-border-light: #e5e7eb;
-  --color-stat-blue-border: #dbeafe;
-  --color-stat-yellow-border: #fef9c3;
-  --color-notification-bg: #dcfce7;
-  --color-success-alpha-20: rgba(0, 208, 132, 0.2);
-  --color-white-alpha-20: rgba(255, 255, 255, 0.2);
+  --color-bg-light-blue: var(--accent-soft);
+  --color-bg-light-yellow: var(--muted);
+  --color-bg-light-gray: var(--muted);
+  --color-success: var(--success-foreground);
+  --color-dark-navy: var(--foreground);
+  --color-border-light: var(--border);
+  --color-stat-blue-border: var(--border);
+  --color-stat-yellow-border: var(--border);
+  --color-notification-bg: var(--success);
+  --color-success-alpha-20: color-mix(in oklab, var(--success-foreground) 20%, transparent);
+  --color-white-alpha-20: color-mix(in oklab, var(--card) 20%, transparent);
 
   /* Badge colors */
-  --color-badge-blue-bg: #eff6ff;
-  --color-badge-blue-text: #1d4ed8;
-  --color-badge-yellow-bg: #fefce8;
-  --color-badge-yellow-text: #a16207;
-  --color-badge-green-bg: #f0fdf4;
-  --color-badge-green-text: #15803d;
-  --color-badge-gray-bg: #f3f4f6;
-  --color-badge-gray-text: #4b5563;
+  --color-badge-blue-bg: var(--accent-soft);
+  --color-badge-blue-text: var(--accent);
+  --color-badge-yellow-bg: var(--muted);
+  --color-badge-yellow-text: var(--foreground-2);
+  --color-badge-green-bg: var(--success);
+  --color-badge-green-text: var(--success-foreground);
+  --color-badge-gray-bg: var(--muted);
+  --color-badge-gray-text: var(--foreground-2);
 
   /* Card background colors (WhySpringr) */
-  --color-card-pink-bg: #E8D5FF;
-  --color-card-blue-bg: #D0E8FF;
-  --color-card-green-bg: #D0F0E8;
+  --color-card-pink-bg: var(--muted);
+  --color-card-blue-bg: var(--accent-soft);
+  --color-card-green-bg: var(--success);
 
   /* Admin Panel Tokens */
-  --color-admin-primary: #0066ff;
-  --color-admin-primary-hover: #0056cc;
-  --color-admin-bg-light: #f9fafb;
-  --color-admin-bg-light-red: #fee2e2;
-  --color-admin-bg-light-yellow: #fefce8;
-  --color-admin-red-dark: #991b1b;
-  --color-admin-red: #ff4d4d;
-  --color-admin-yellow-bright: #fde047;
-  --color-admin-yellow-text: #854d0e;
-  --color-admin-green-bright: #22c55e;
-  --color-admin-dark-1: #07070F;
-  --color-admin-dark-2: #0A0A12;
-  --color-admin-success: #00d084;
-  --color-admin-highlight: #fdcb58;
+  --color-admin-primary: var(--accent);
+  --color-admin-primary-hover: var(--foreground);
+  --color-admin-bg-light: var(--background);
+  --color-admin-bg-light-red: color-mix(in oklab, var(--destructive) 10%, var(--card));
+  --color-admin-bg-light-yellow: var(--muted);
+  --color-admin-red-dark: var(--destructive);
+  --color-admin-red: var(--destructive);
+  --color-admin-yellow-bright: var(--muted);
+  --color-admin-yellow-text: var(--foreground-2);
+  --color-admin-green-bright: var(--success-foreground);
+  --color-admin-dark-1: var(--foreground);
+  --color-admin-dark-2: var(--foreground);
+  --color-admin-success: var(--success-foreground);
+  --color-admin-highlight: var(--accent-soft);
 
-  /* Ombres */
-  --shadow-hard-3px: 3px 3px 0px rgba(0, 0, 0, 1);
-  --shadow-hard-4px: 4px 4px 0px rgba(0, 0, 0, 1);
-  --shadow-hard-8px: 8px 8px 0px rgba(0, 0, 0, 1);
-  --shadow-soft: 0 1px 2px rgba(22, 21, 29, 0.04);
-
-  /* Radius */
-  --radius-card: 12px;
-  --radius-button: 12px;
+  --elevated-shadow: 0 24px 48px -24px rgba(17, 17, 17, 0.18);
+  --shadow-hard-3px: none;
+  --shadow-hard-4px: none;
+  --shadow-hard-8px: none;
+  --shadow-soft: none;
 }
 
 @layer base {
@@ -158,11 +166,17 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
+  :where(a, button, input, select, textarea, [role="button"]):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
   h1, h2, h3, h4, h5, h6, .font-display {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
     font-weight: 600;
   }
+  h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.02; }
+  h2 { font-size: clamp(1.875rem, 3.5vw, 3rem); line-height: 1.08; }
   ::selection { background: var(--primary); color: var(--primary-foreground); }
 }
 
@@ -177,15 +191,14 @@
 
 @utility card-base {
   position: relative;
-  border-radius: 0.875rem;
+  border-radius: var(--radius-card);
   border: 1px solid var(--border);
   background: var(--card);
-  box-shadow: 0 1px 2px rgba(22, 21, 29, 0.04);
   transition: border-color 0.25s ease;
 }
 @utility card-hover {
   &:hover {
-    border-color: #CFC8EE;
+    border-color: var(--border-strong);
   }
 }
 
@@ -200,3 +213,12 @@
   to { transform: translateX(-50%); }
 }
 .marquee-track { animation: marquee 28s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
