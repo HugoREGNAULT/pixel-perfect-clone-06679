@@ -27,11 +27,11 @@ const PLANS = [
     monthly: "0€",
     yearly: "0€",
     sub: "Commencer",
-    color: "border-[#e5e7eb]",
-    accent: "text-[#6b7280]",
+    color: "border-slate-200",
+    accent: "text-gray-500",
     featured: false,
     cta: "Commencer gratuitement",
-    ctaStyle: "border border-[#e5e7eb] text-[#111827] hover:bg-[#f3f4f6]",
+    ctaStyle: "border border-slate-200 text-foreground hover:bg-slate-100",
     features: [
       "Accès aux offres",
       "Profil étudiant",
@@ -47,11 +47,11 @@ const PLANS = [
     yearly: "49,99€",
     yearlyMonth: "4,17€",
     sub: "Recommandé",
-    color: "border-[#0066ff]",
-    accent: "text-[#0066ff]",
+    color: "border-primary",
+    accent: "text-primary",
     featured: true,
     cta: "Devenir Premium",
-    ctaStyle: "bg-[#0066ff] text-white hover:bg-[#0052cc]",
+    ctaStyle: "bg-primary text-white hover:bg-blue-600",
     features: [
       "Tout du plan Startup",
       "Candidatures illimitées",
@@ -68,11 +68,11 @@ const PLANS = [
     monthly: "189€",
     yearly: "1890€",
     sub: "Plan personnalisé",
-    color: "border-[#fdcb58]",
-    accent: "text-[#fdcb58]",
+    color: "border-highlight",
+    accent: "text-highlight",
     featured: false,
     cta: "Nous contacter",
-    ctaStyle: "bg-[#fdcb58] text-[#111827] hover:bg-[#fdc73c]",
+    ctaStyle: "bg-highlight text-foreground hover:bg-yellow-400",
     features: [
       "Offres illimitées",
       "Support 24/7",
@@ -208,32 +208,32 @@ function TarifsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f9fafb]">
+    <div className="min-h-screen bg-slate-50">
       <AppNav />
 
       <main className="flex flex-col min-h-screen">
         {/* Hero Section */}
         <div className="relative bg-white overflow-hidden py-20 lg:py-32 px-4 lg:px-0">
           {/* Decorative blurs */}
-          <div className="absolute top-20 right-0 w-64 h-64 bg-[#fdcb58] rounded-full blur-3xl opacity-30 mix-blend-multiply" />
-          <div className="absolute bottom-20 left-0 w-64 h-64 bg-[#00d084] rounded-full blur-3xl opacity-30 mix-blend-multiply" />
+          <div className="absolute top-20 right-0 w-64 h-64 bg-highlight rounded-full blur-3xl opacity-30 mix-blend-multiply" />
+          <div className="absolute bottom-20 left-0 w-64 h-64 bg-success rounded-full blur-3xl opacity-30 mix-blend-multiply" />
 
           <div className="relative z-10 max-w-4xl mx-auto text-center">
-            <h1 className="font-display text-4xl lg:text-5xl font-bold text-[#111827] mb-4 leading-tight">
+            <h1 className="font-display text-4xl lg:text-5xl font-bold text-foreground mb-4 leading-tight">
               Des tarifs transparents pour tous
             </h1>
-            <p className="text-[#6b7280] text-lg max-w-2xl mx-auto mb-8">
+            <p className="text-gray-500 text-lg max-w-2xl mx-auto mb-8">
               Découvrez l'offre qui correspond à votre projet. Débuter est gratuit, sans engagement.
             </p>
 
             {/* Billing toggle */}
-            <div className="inline-flex rounded-full border border-[#e5e7eb] bg-[#f3f4f6] p-1 gap-1">
+            <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 p-1 gap-1">
               <button
                 onClick={() => setBilling("monthly")}
                 className={`rounded-full px-6 py-2 text-sm font-medium transition-all ${
                   billing === "monthly"
-                    ? "bg-white text-[#111827] shadow-sm border border-[#e5e7eb]"
-                    : "text-[#6b7280] hover:text-[#111827]"
+                    ? "bg-white text-foreground shadow-sm border border-slate-200"
+                    : "text-gray-500 hover:text-foreground"
                 }`}
               >
                 Mensuel
@@ -242,12 +242,12 @@ function TarifsPage() {
                 onClick={() => setBilling("yearly")}
                 className={`relative rounded-full px-6 py-2 text-sm font-medium transition-all ${
                   billing === "yearly"
-                    ? "bg-white text-[#111827] shadow-sm border border-[#e5e7eb]"
-                    : "text-[#6b7280] hover:text-[#111827]"
+                    ? "bg-white text-foreground shadow-sm border border-slate-200"
+                    : "text-gray-500 hover:text-foreground"
                 }`}
               >
                 Annuel
-                <span className="absolute -top-2 -right-2 rounded-full bg-[#fdcb58] text-[#111827] text-xs font-bold px-2 py-0.5 leading-none">
+                <span className="absolute -top-2 -right-2 rounded-full bg-highlight text-foreground text-xs font-bold px-2 py-0.5 leading-none">
                   -17%
                 </span>
               </button>
@@ -274,13 +274,13 @@ function TarifsPage() {
                   key={plan.id}
                   className={`relative flex flex-col rounded-2xl border p-8 ${
                     plan.featured
-                      ? `${plan.color} bg-gradient-to-br from-[#0066ff]/5 to-transparent shadow-lg scale-105 md:scale-100`
+                      ? `${plan.color} bg-gradient-to-br from-primary/5 to-transparent shadow-lg scale-105 md:scale-100`
                       : `${plan.color} bg-white`
                   }`}
                 >
                   {plan.featured && (
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-[#0066ff] px-4 py-1.5 text-xs font-semibold text-white">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-white">
                         <Sparkles className="size-4" /> Recommandé
                       </span>
                     </div>
@@ -290,20 +290,20 @@ function TarifsPage() {
                     <div className={`text-xs font-semibold uppercase tracking-wider mb-3 ${plan.accent}`}>
                       {plan.sub}
                     </div>
-                    <h2 className="font-display font-bold text-2xl text-[#111827] mb-4">{plan.name}</h2>
+                    <h2 className="font-display font-bold text-2xl text-foreground mb-4">{plan.name}</h2>
                     <div className="flex items-baseline gap-2">
-                      <span className="font-display font-bold text-4xl text-[#111827]">{price}</span>
-                      {plan.id !== "startup" && <span className="text-[#6b7280] text-sm">{period}</span>}
+                      <span className="font-display font-bold text-4xl text-foreground">{price}</span>
+                      {plan.id !== "startup" && <span className="text-gray-500 text-sm">{period}</span>}
                     </div>
                     {monthlyEquiv && (
-                      <p className="text-xs text-[#6b7280] mt-2">soit {monthlyEquiv}/mois en moyenne</p>
+                      <p className="text-xs text-gray-500 mt-2">soit {monthlyEquiv}/mois en moyenne</p>
                     )}
                   </div>
 
                   <ul className="space-y-3 mb-8 flex-1">
                     {plan.features.map((f) => (
-                      <li key={f} className="flex items-start gap-3 text-sm text-[#111827]">
-                        <Check className="size-5 text-[#00d084] shrink-0 flex-none mt-0.5" />
+                      <li key={f} className="flex items-start gap-3 text-sm text-foreground">
+                        <Check className="size-5 text-success shrink-0 flex-none mt-0.5" />
                         <span>{f}</span>
                       </li>
                     ))}
@@ -328,7 +328,7 @@ function TarifsPage() {
             })}
           </div>
 
-          <p className="text-center text-xs text-[#6b7280] mt-8">
+          <p className="text-center text-xs text-gray-500 mt-8">
             Paiement sécurisé par Stripe · Annulation à tout moment · Sans engagement
           </p>
         </div>
@@ -336,30 +336,30 @@ function TarifsPage() {
         {/* Comparison Table */}
         <div className="bg-white py-16 px-4 lg:px-0">
           <div className="max-w-6xl mx-auto">
-            <h2 className="font-display text-3xl font-bold text-[#111827] text-center mb-12">
+            <h2 className="font-display text-3xl font-bold text-foreground text-center mb-12">
               Comparaison détaillée
             </h2>
 
-            <div className="overflow-x-auto border border-[#e5e7eb] rounded-2xl">
+            <div className="overflow-x-auto border border-slate-200 rounded-2xl">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#e5e7eb] bg-[#f9fafb]">
-                    <th className="text-left py-4 px-6 font-semibold text-[#111827]">Fonctionnalité</th>
-                    <th className="text-center py-4 px-6 font-semibold text-[#111827]">Startup</th>
-                    <th className="text-center py-4 px-6 font-semibold text-[#111827]">Premium</th>
-                    <th className="text-center py-4 px-6 font-semibold text-[#111827]">Entreprises</th>
+                  <tr className="border-b border-slate-200 bg-slate-50">
+                    <th className="text-left py-4 px-6 font-semibold text-foreground">Fonctionnalité</th>
+                    <th className="text-center py-4 px-6 font-semibold text-foreground">Startup</th>
+                    <th className="text-center py-4 px-6 font-semibold text-foreground">Premium</th>
+                    <th className="text-center py-4 px-6 font-semibold text-foreground">Entreprises</th>
                   </tr>
                 </thead>
                 <tbody>
                   {COMPARISON_TABLE.map((row, idx) => (
                     <tr
                       key={idx}
-                      className={`border-b border-[#e5e7eb] ${idx % 2 === 0 ? "bg-white" : "bg-[#f9fafb]"}`}
+                      className={`border-b border-slate-200 ${idx % 2 === 0 ? "bg-white" : "bg-slate-50"}`}
                     >
-                      <td className="py-4 px-6 text-[#111827] font-medium">{row.feature}</td>
-                      <td className="text-center py-4 px-6 text-[#6b7280]">{row.startup}</td>
-                      <td className="text-center py-4 px-6 text-[#00d084] font-medium">{row.premium}</td>
-                      <td className="text-center py-4 px-6 text-[#0066ff] font-medium">{row.entreprises}</td>
+                      <td className="py-4 px-6 text-foreground font-medium">{row.feature}</td>
+                      <td className="text-center py-4 px-6 text-gray-500">{row.startup}</td>
+                      <td className="text-center py-4 px-6 text-success font-medium">{row.premium}</td>
+                      <td className="text-center py-4 px-6 text-primary font-medium">{row.entreprises}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -369,9 +369,9 @@ function TarifsPage() {
         </div>
 
         {/* FAQs */}
-        <div className="bg-[#f9fafb] py-16 px-4 lg:px-0">
+        <div className="bg-slate-50 py-16 px-4 lg:px-0">
           <div className="max-w-3xl mx-auto">
-            <h2 className="font-display text-3xl font-bold text-[#111827] text-center mb-12">
+            <h2 className="font-display text-3xl font-bold text-foreground text-center mb-12">
               Questions fréquentes
             </h2>
 
@@ -380,18 +380,18 @@ function TarifsPage() {
                 <button
                   key={idx}
                   onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
-                  className="w-full text-left border border-[#e5e7eb] rounded-xl p-6 bg-white hover:border-[#d1d5db] transition-colors"
+                  className="w-full text-left border border-slate-200 rounded-xl p-6 bg-white hover:border-slate-300 transition-colors"
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <h3 className="font-semibold text-[#111827]">{faq.question}</h3>
+                    <h3 className="font-semibold text-foreground">{faq.question}</h3>
                     <ChevronDown
-                      className={`size-5 text-[#6b7280] flex-none transition-transform ${
+                      className={`size-5 text-gray-500 flex-none transition-transform ${
                         expandedFaq === idx ? "rotate-180" : ""
                       }`}
                     />
                   </div>
                   {expandedFaq === idx && (
-                    <p className="text-[#6b7280] mt-4 text-sm leading-relaxed">{faq.answer}</p>
+                    <p className="text-gray-500 mt-4 text-sm leading-relaxed">{faq.answer}</p>
                   )}
                 </button>
               ))}
@@ -400,16 +400,16 @@ function TarifsPage() {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-[#111827] text-white py-16 px-4 lg:px-0">
+        <div className="bg-foreground text-white py-16 px-4 lg:px-0">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="font-display text-3xl font-bold mb-4">Prêt à booster votre carrière ?</h2>
-            <p className="text-[#d1d5db] mb-8 text-lg">
+            <p className="text-slate-400 mb-8 text-lg">
               Rejoignez des milliers d'étudiants qui ont trouvé leur stage ou alternance grâce à Springr.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => navigate({ to: "/signup" })}
-                className="px-8 py-3 rounded-xl bg-[#fdcb58] text-[#111827] font-semibold hover:bg-[#fdc73c] transition-colors"
+                className="px-8 py-3 rounded-xl bg-highlight text-foreground font-semibold hover:bg-yellow-400 transition-colors"
               >
                 Commencer gratuitement
               </button>

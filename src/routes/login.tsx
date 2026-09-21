@@ -13,10 +13,10 @@ export const Route = createFileRoute("/login")({
 function Logo() {
   return (
     <Link to="/" className="inline-flex items-center gap-2">
-      <div className="w-10 h-10 bg-[#0066ff] border-2 border-black rounded-2xl flex items-center justify-center text-white font-bold text-lg drop-shadow-[2px_2px_0px_black]">
+      <div className="w-10 h-10 bg-primary border-2 border-black rounded-2xl flex items-center justify-center text-white font-bold text-lg drop-shadow-[2px_2px_0px_black]">
         S
       </div>
-      <span className="font-bold text-xl text-[#111827]">Springr</span>
+      <span className="font-bold text-xl text-foreground">Springr</span>
     </Link>
   );
 }
@@ -55,16 +55,16 @@ function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f9fafb] via-white to-[#f9fafb] overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 overflow-x-hidden">
       {/* Background blurs */}
-      <div className="absolute top-20 right-10 w-64 h-64 bg-[#fdcb58] blur-3xl opacity-30 rounded-full pointer-events-none" />
-      <div className="absolute bottom-20 left-10 w-64 h-64 bg-[#0066ff] blur-3xl opacity-30 rounded-full pointer-events-none" />
+      <div className="absolute top-20 right-10 w-64 h-64 bg-highlight blur-3xl opacity-30 rounded-full pointer-events-none" />
+      <div className="absolute bottom-20 left-10 w-64 h-64 bg-primary blur-3xl opacity-30 rounded-full pointer-events-none" />
 
       {/* Navigation */}
       <nav className="relative z-10 border-b-2 border-black bg-white sticky top-0">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 h-20 flex items-center justify-between">
           <Logo />
-          <Link to="/" className="text-[#111827] font-medium text-sm">
+          <Link to="/" className="text-foreground font-medium text-sm">
             Retour à l'accueil
           </Link>
         </div>
@@ -75,10 +75,10 @@ function LoginPage() {
         <div className="max-w-md mx-auto">
           {/* Heading */}
           <div className="mb-12">
-            <h1 className="text-4xl lg:text-5xl font-extrabold text-[#111827] mb-4">
+            <h1 className="text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
               Connexion
             </h1>
-            <p className="text-[#4b5563] text-lg">
+            <p className="text-gray-600 text-lg">
               Bon retour parmi nous !
             </p>
           </div>
@@ -88,7 +88,7 @@ function LoginPage() {
             <form onSubmit={submit} className="space-y-6">
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block font-bold text-[#111827] text-sm mb-2">
+                <label htmlFor="email" className="block font-bold text-foreground text-sm mb-2">
                   Email
                 </label>
                 <input
@@ -99,17 +99,17 @@ function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="votre@email.com"
-                  className="w-full bg-white border-2 border-[#d1d5db] rounded-2xl px-5 py-4 text-[#111827] placeholder:text-[#9ca3af] focus:outline-none focus:border-[#0066ff] transition-colors"
+                  className="w-full bg-white border-2 border-slate-300 rounded-2xl px-5 py-4 text-foreground placeholder:text-slate-400 focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
 
               {/* Password Field */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label htmlFor="password" className="block font-bold text-[#111827] text-sm">
+                  <label htmlFor="password" className="block font-bold text-foreground text-sm">
                     Mot de passe
                   </label>
-                  <Link to="/forgot-password" className="text-[#0066ff] font-bold text-sm">
+                  <Link to="/forgot-password" className="text-primary font-bold text-sm">
                     Mot de passe oublié ?
                   </Link>
                 </div>
@@ -122,12 +122,12 @@ function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full bg-white border-2 border-[#d1d5db] rounded-2xl px-5 py-4 pr-12 text-[#111827] placeholder:text-[#9ca3af] focus:outline-none focus:border-[#0066ff] transition-colors"
+                    className="w-full bg-white border-2 border-slate-300 rounded-2xl px-5 py-4 pr-12 text-foreground placeholder:text-slate-400 focus:outline-none focus:border-primary transition-colors"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b5563] hover:text-[#111827] transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-foreground transition-colors"
                   >
                     {showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -143,9 +143,9 @@ function LoginPage() {
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 border border-[#767676] rounded cursor-pointer"
+                    className="w-4 h-4 border border-slate-600 rounded cursor-pointer"
                   />
-                  <span className="text-sm text-[#4b5563]">Se souvenir de moi</span>
+                  <span className="text-sm text-gray-600">Se souvenir de moi</span>
                 </label>
               </div>
 
@@ -153,7 +153,7 @@ function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#00d084] border-2 border-black text-white font-bold text-lg py-4 rounded-3xl drop-shadow-[4px_4px_0px_black] hover:translate-y-[-2px] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full bg-success border-2 border-black text-white font-bold text-lg py-4 rounded-3xl drop-shadow-[4px_4px_0px_black] hover:translate-y-[-2px] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin mx-auto" />
@@ -184,9 +184,9 @@ function LoginPage() {
               */}
 
               {/* Sign up link */}
-              <div className="text-center text-sm text-[#4b5563]">
+              <div className="text-center text-sm text-gray-600">
                 Pas encore de compte ?{" "}
-                <Link to="/signup" className="text-[#0066ff] font-bold hover:underline">
+                <Link to="/signup" className="text-primary font-bold hover:underline">
                   Créer un compte
                 </Link>
               </div>
@@ -196,16 +196,16 @@ function LoginPage() {
           {/* Trust badges */}
           <div className="mt-12 bg-white border-2 border-black rounded-3xl p-6 drop-shadow-[6px_6px_0px_black] flex flex-wrap gap-6 lg:gap-8 items-center justify-center text-center">
             <div className="flex flex-col items-center gap-2">
-              <svg className="w-6 h-6 text-[#111827]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              <span className="font-bold text-sm text-[#111827]">Données sécurisées</span>
+              <span className="font-bold text-sm text-foreground">Données sécurisées</span>
             </div>
             <div className="flex flex-col items-center gap-2">
-              <svg className="w-6 h-6 text-[#111827]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="font-bold text-sm text-[#111827]">100% gratuit</span>
+              <span className="font-bold text-sm text-foreground">100% gratuit</span>
             </div>
           </div>
         </div>
