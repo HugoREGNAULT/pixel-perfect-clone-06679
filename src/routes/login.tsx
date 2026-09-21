@@ -207,12 +207,6 @@ function LoginPage() {
               </svg>
               <span className="font-bold text-sm text-[#111827]">100% gratuit</span>
             </div>
-            <div className="flex flex-col items-center gap-2">
-              <svg className="w-6 h-6 text-[#111827]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.856-1.487M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span className="font-bold text-sm text-[#111827]">+10k membres</span>
-            </div>
           </div>
         </div>
       </div>

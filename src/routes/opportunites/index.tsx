@@ -32,13 +32,13 @@ const DOMAIN_CATEGORIES = [
   { label: "Autre domaine", icon: Compass, color: "bg-cyan-50 border-cyan-200 text-cyan-700" },
 ];
 
-// Stats displayed in the hero
-const STATS = [
-  { value: "12,500+", label: "offres actives" },
-  { value: "850+", label: "entreprises partenaires" },
-  { value: "96%", label: "taux de matching" },
-  { value: "48h", label: "temps de réponse moyen" },
-];
+// Stats removed - using real data from API instead
+// const STATS = [
+//   { value: "12,500+", label: "offres actives" },
+//   { value: "850+", label: "entreprises partenaires" },
+//   { value: "96%", label: "taux de matching" },
+//   { value: "48h", label: "temps de réponse moyen" },
+// ];
 
 function getInitials(company: string): string {
   return company.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase().slice(0, 2);
@@ -102,13 +102,7 @@ function OffresPage() {
           />
 
           <div className="relative z-10 mx-auto max-w-6xl">
-            {/* Badge */}
-            <div className="mb-6 flex justify-center">
-              <div className="flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2">
-                <span className="size-2 rounded-full bg-primary" />
-                <span className="text-sm font-medium text-primary">10,000 offres à découvrir</span>
-              </div>
-            </div>
+            {/* Badge - removed fake count */}
 
             {/* Heading */}
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-center leading-tight mb-4">
@@ -126,21 +120,7 @@ function OffresPage() {
           </div>
         </section>
 
-        {/* Stats Section */}
-        <section className="bg-foreground text-white px-5 lg:px-8 py-8 lg:py-12">
-          <div className="mx-auto max-w-6xl">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-              {STATS.map((stat, i) => (
-                <div key={i} className="text-center md:text-left">
-                  <div className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-highlight">
-                    {stat.value}
-                  </div>
-                  <p className="text-sm md:text-base text-white/70 mt-1">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Stats Section - removed to avoid displaying fake data */}
 
         {/* Featured Offers Section */}
         <section className="bg-white px-5 lg:px-8 py-16 lg:py-24">
