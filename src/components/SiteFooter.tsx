@@ -49,7 +49,7 @@ export function SiteFooter() {
 
           {/* Plateforme */}
           <FooterCol title="Plateforme" links={[
-            { to: "/opportunites", label: "Offres d'emploi" },
+            { to: "/opportunites/search", label: "Offres d'emploi" },
             { to: "/mentors",      label: "Mentorat"       },
             { to: "/bons-plans",   label: "Bons plans"     },
             { to: "/evenements",   label: "Événements"     },

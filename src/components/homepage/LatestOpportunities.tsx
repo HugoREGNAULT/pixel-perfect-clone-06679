@@ -42,7 +42,7 @@ export function LatestOpportunities() {
             </p>
           </div>
           <Link
-            to="/opportunites"
+            to="/opportunites/search"
             className="flex items-center gap-2 shrink-0 whitespace-nowrap"
             style={{
               color: "var(--color-primary)",

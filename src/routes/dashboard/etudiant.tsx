@@ -155,7 +155,7 @@ function ProfileOffresSection() {
           <p className="text-xs font-mono uppercase tracking-widest text-mute mb-0.5">En direct · France Travail</p>
           <h2 className="font-display font-bold text-lg">Offres pour toi</h2>
         </div>
-        <Link to="/opportunites"
+        <Link to="/opportunites/search"
           className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3.5 py-1.5 text-xs text-mute hover:text-white hover:border-white/25 transition-all">
           Tout voir <ArrowUpRight className="size-3.5" />
         </Link>
@@ -281,7 +281,7 @@ function MatchingSection() {
           ) : (
             <>
               {offres.map((o) => (
-                <Link key={o.id} to="/opportunites"
+                <Link key={o.id} to="/opportunites/search"
                   className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 hover:border-white/20 hover:bg-white/[0.04] transition-all group">
                   <div className={`size-8 rounded-lg bg-gradient-to-br ${companyGradient(o.company)} flex items-center justify-center font-bold text-xs text-white shrink-0`}>
                     {o.company[0]}
@@ -298,7 +298,7 @@ function MatchingSection() {
                   </span>
                 </Link>
               ))}
-              <Link to="/opportunites"
+              <Link to="/opportunites/search"
                 className="flex items-center justify-center gap-1.5 py-2.5 text-xs text-mute hover:text-white transition-colors">
                 Voir toutes les offres <ArrowUpRight className="size-3.5" />
               </Link>

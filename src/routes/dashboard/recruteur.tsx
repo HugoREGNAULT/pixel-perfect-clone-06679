@@ -181,7 +181,7 @@ function OffresSection() {
             const age = daysAgo(o.posted_at);
             const count = candCounts[o.id] ?? 0;
             return (
-              <Link key={o.id} to="/opportunites"
+              <Link key={o.id} to="/opportunites/search"
                 className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 hover:border-white/20 hover:bg-white/[0.04] transition-all group">
                 {/* Type badge */}
                 <div className={`shrink-0 rounded-lg border px-2.5 py-1.5 text-[10px] font-mono uppercase tracking-wider ${
@@ -278,7 +278,7 @@ function PendingCandidaturesSection() {
           </p>
           <h2 className="font-display font-bold text-lg">Candidatures reçues</h2>
         </div>
-        <Link to="/opportunites"
+        <Link to="/opportunites/search"
           className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-4 py-2 text-xs text-mute hover:text-white hover:border-white/30 transition-all">
           Tout voir <ArrowUpRight className="size-3.5" />
         </Link>
@@ -321,7 +321,7 @@ function PendingCandidaturesSection() {
                   <div className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] ${cfg.bg} ${cfg.border} ${cfg.color}`}>
                     <cfg.icon className="size-2.5" />{cfg.label}
                   </div>
-                  <Link to="/opportunites"
+                  <Link to="/opportunites/search"
                     className="inline-flex items-center gap-1 rounded-full border border-white/15 px-2.5 py-1 text-[10px] text-mute hover:text-white hover:border-white/25 transition-colors">
                     Voir
                   </Link>
