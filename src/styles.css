@@ -122,6 +122,22 @@
   --color-card-blue-bg: #D0E8FF;
   --color-card-green-bg: #D0F0E8;
 
+  /* Admin Panel Tokens */
+  --color-admin-primary: #0066ff;
+  --color-admin-primary-hover: #0056cc;
+  --color-admin-bg-light: #f9fafb;
+  --color-admin-bg-light-red: #fee2e2;
+  --color-admin-bg-light-yellow: #fefce8;
+  --color-admin-red-dark: #991b1b;
+  --color-admin-red: #ff4d4d;
+  --color-admin-yellow-bright: #fde047;
+  --color-admin-yellow-text: #854d0e;
+  --color-admin-green-bright: #22c55e;
+  --color-admin-dark-1: #07070F;
+  --color-admin-dark-2: #0A0A12;
+  --color-admin-success: #00d084;
+  --color-admin-highlight: #fdcb58;
+
   /* Ombres */
   --shadow-hard-3px: 3px 3px 0px rgba(0, 0, 0, 1);
   --shadow-hard-4px: 4px 4px 0px rgba(0, 0, 0, 1);

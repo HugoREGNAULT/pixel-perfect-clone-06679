@@ -70,7 +70,7 @@ function AdminLayout() {
   );
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#07070F]">
+    <div className="flex h-screen overflow-hidden" style={{ backgroundColor: 'var(--color-admin-dark-1)' }}>
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -82,11 +82,12 @@ function AdminLayout() {
       {/* ── Sidebar ───────────────────────────────────────── */}
       <aside
         className={[
-          "fixed inset-y-0 left-0 z-30 w-60 flex flex-col border-r border-white/8 bg-[#0A0A12]",
+          "fixed inset-y-0 left-0 z-30 w-60 flex flex-col border-r border-white/8",
           "transition-transform duration-200",
           "lg:static lg:translate-x-0",
           sidebarOpen ? "translate-x-0" : "-translate-x-full",
         ].join(" ")}
+        style={{ backgroundColor: 'var(--color-admin-dark-2)' }}
       >
         {/* Logo */}
         <div className="flex items-center gap-2 px-5 py-4 border-b border-white/8">
@@ -151,7 +152,7 @@ function AdminLayout() {
       {/* ── Main ──────────────────────────────────────────── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Topbar */}
-        <header className="flex items-center gap-4 px-6 py-3.5 border-b border-white/8 bg-[#0A0A12] shrink-0">
+        <header className="flex items-center gap-4 px-6 py-3.5 border-b border-white/8 shrink-0" style={{ backgroundColor: 'var(--color-admin-dark-2)' }}>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="lg:hidden size-8 flex items-center justify-center text-white/60 hover:text-white"

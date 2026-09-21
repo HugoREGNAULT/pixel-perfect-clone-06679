@@ -54,16 +54,16 @@ function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f9fafb] overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden" style={{ backgroundColor: 'var(--color-admin-bg-light)' }}>
       {/* Header */}
       <header className="border-b-2 border-black bg-white sticky top-0">
         <div className="max-w-7xl mx-auto px-7 lg:px-28 h-20 flex items-center justify-between">
           <Link to="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 bg-[#06f] border-2 border-black rounded-2xl flex items-center justify-center text-white font-bold text-lg drop-shadow-[3px_3px_0px_black]">
+            <div className="w-10 h-10 border-2 border-black rounded-2xl flex items-center justify-center text-white font-bold text-lg drop-shadow-[3px_3px_0px_black]" style={{ backgroundColor: 'var(--color-admin-primary)' }}>
               U
             </div>
             <span className="font-bold text-2xl text-black tracking-tight">UpNest</span>
-            <span className="bg-[#fee2e2] text-[#991b1b] text-xs font-bold px-2 py-1 rounded-full">ADMIN</span>
+            <span className="text-xs font-bold px-2 py-1 rounded-full" style={{ backgroundColor: 'var(--color-admin-bg-light-red)', color: 'var(--color-admin-red-dark)' }}>ADMIN</span>
           </Link>
           <Link to="/" className="text-foreground font-medium text-sm flex items-center gap-1">
             <span className="text-lg">←</span> Retour au site
@@ -74,15 +74,15 @@ function AdminLoginPage() {
       {/* Main content */}
       <div className="relative py-12 lg:py-20 flex items-center justify-center min-h-[calc(100vh-80px)]">
         {/* Background blur elements */}
-        <div className="absolute top-1/2 right-0 w-64 h-64 bg-[#fdcb58] blur-3xl opacity-70 rounded-full pointer-events-none" />
-        <div className="absolute bottom-1/4 left-0 w-64 h-64 bg-[#06f] blur-3xl opacity-70 rounded-full pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#ff4d4d] blur-3xl opacity-30 rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 right-0 w-64 h-64 blur-3xl opacity-70 rounded-full pointer-events-none" style={{ backgroundColor: 'var(--color-admin-highlight)' }} />
+        <div className="absolute bottom-1/4 left-0 w-64 h-64 blur-3xl opacity-70 rounded-full pointer-events-none" style={{ backgroundColor: 'var(--color-admin-primary)' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 blur-3xl opacity-30 rounded-full pointer-events-none" style={{ backgroundColor: 'var(--color-admin-red)' }} />
 
         <div className="relative z-10 w-full max-w-md px-5">
           {/* Login Card */}
           <div className="bg-white border-2 border-black rounded-3xl p-8 lg:p-9 drop-shadow-[12px_12px_0px_black] relative mb-8">
             {/* Decorative corner */}
-            <div className="absolute top-0 right-0 w-20 h-20 bg-[#fdcb58] border-b-2 border-l-2 border-black rounded-bl-3xl" />
+            <div className="absolute top-0 right-0 w-20 h-20 border-b-2 border-l-2 border-black rounded-bl-3xl" style={{ backgroundColor: 'var(--color-admin-highlight)' }} />
 
             {/* Lock Icon */}
             <div className="flex justify-center mb-8 relative pt-4">
@@ -113,7 +113,8 @@ function AdminLoginPage() {
                   placeholder="admin@upnest.app"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-4 border-2 border-black rounded-2xl text-base font-medium placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#06f] focus:ring-offset-0"
+                  className="w-full px-4 py-4 border-2 border-black rounded-2xl text-base font-medium placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0"
+                  style={{ '--tw-ring-color': 'var(--color-admin-primary)' } as any}
                 />
               </div>
 
@@ -130,7 +131,8 @@ function AdminLoginPage() {
                     placeholder="••••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-4 border-2 border-black rounded-2xl text-base font-medium placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#06f] focus:ring-offset-0"
+                    className="w-full px-4 py-4 border-2 border-black rounded-2xl text-base font-medium placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0"
+                    style={{ '--tw-ring-color': 'var(--color-admin-primary)' } as any}
                   />
                   <button
                     type="button"
@@ -153,7 +155,7 @@ function AdminLoginPage() {
                   />
                   <span className="text-gray-700 font-medium">Rester connecté</span>
                 </label>
-                <Link to="/forgot-password" className="text-[#06f] font-bold hover:underline">
+                <Link to="/forgot-password" className="font-bold hover:underline" style={{ color: 'var(--color-admin-primary)' }}>
                   Mot de passe oublié ?
                 </Link>
               </div>
@@ -162,7 +164,13 @@ function AdminLoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#06f] border-2 border-black text-white font-bold py-4 px-6 rounded-2xl hover:bg-[#0056cc] disabled:opacity-70 drop-shadow-[4px_4px_0px_black] flex items-center justify-center gap-2 text-base"
+                className="w-full border-2 border-black text-white font-bold py-4 px-6 rounded-2xl disabled:opacity-70 drop-shadow-[4px_4px_0px_black] flex items-center justify-center gap-2 text-base"
+                style={{
+                  backgroundColor: 'var(--color-admin-primary)',
+                  '--hover-bg': 'var(--color-admin-primary-hover)'
+                } as any}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--color-admin-primary-hover)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--color-admin-primary)'}
               >
                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <span>🔐</span>}
                 Se connecter
@@ -170,12 +178,12 @@ function AdminLoginPage() {
             </form>
 
             {/* Security Notice */}
-            <div className="mt-6 p-4 bg-[#fefce8] border-2 border-[#fde047] rounded-2xl">
+            <div className="mt-6 p-4 border-2 rounded-2xl" style={{ backgroundColor: 'var(--color-admin-bg-light-yellow)', borderColor: 'var(--color-admin-yellow-bright)' }}>
               <div className="flex gap-3">
-                <AlertCircle className="w-4 h-4 text-[#854d0e] flex-shrink-0 mt-0.5" />
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-admin-yellow-text)' }} />
                 <div>
-                  <p className="font-bold text-[#854d0e] text-sm">Accès sécurisé</p>
-                  <p className="text-[#a16207] text-xs mt-1">
+                  <p className="font-bold text-sm" style={{ color: 'var(--color-admin-yellow-text)' }}>Accès sécurisé</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--color-badge-yellow-text)' }}>
                     Cet espace est réservé aux administrateurs autorisés.<br/>
                     Toutes les connexions sont enregistrées.
                   </p>
@@ -187,14 +195,14 @@ function AdminLoginPage() {
           {/* Stats Cards */}
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-white border-2 border-black rounded-2xl p-4 drop-shadow-[4px_4px_0px_black]">
-              <div className="w-8 h-8 bg-[#00d084] border border-black rounded-2xl flex items-center justify-center mb-4 mx-auto">
+              <div className="w-8 h-8 border border-black rounded-2xl flex items-center justify-center mb-4 mx-auto" style={{ backgroundColor: 'var(--color-admin-success)' }}>
                 <Users2 className="w-4 h-4 text-white" />
               </div>
               <p className="text-2xl font-bold text-black text-center">1,247</p>
               <p className="text-xs text-gray-600 text-center mt-1">Utilisateurs actifs</p>
             </div>
             <div className="bg-white border-2 border-black rounded-2xl p-4 drop-shadow-[4px_4px_0px_black]">
-              <div className="w-8 h-8 bg-[#ff4d4d] border border-black rounded-2xl flex items-center justify-center mb-4 mx-auto">
+              <div className="w-8 h-8 border border-black rounded-2xl flex items-center justify-center mb-4 mx-auto" style={{ backgroundColor: 'var(--color-admin-red)' }}>
                 <Briefcase className="w-4 h-4 text-white" />
               </div>
               <p className="text-2xl font-bold text-black text-center">89</p>
@@ -213,7 +221,7 @@ function AdminLoginPage() {
               <a href="#" className="hover:text-white transition-colors">Support technique</a>
               <a href="#" className="hover:text-white transition-colors">Documentation API</a>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-[#22c55e] rounded-full"></span>
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: 'var(--color-admin-green-bright)' }}></span>
                 <span>Système opérationnel</span>
               </div>
             </div>
