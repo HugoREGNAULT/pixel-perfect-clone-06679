@@ -1,15 +1,14 @@
--- Update springr_user_type enum to include all 5 roles
--- First, drop the existing type references and recreate
-ALTER TYPE public.springr_user_type ADD VALUE 'lyceen' BEFORE 'etudiant';
-ALTER TYPE public.springr_user_type ADD VALUE 'diplome';
-ALTER TYPE public.springr_user_type ADD VALUE 'recruteur';
-ALTER TYPE public.springr_user_type ADD VALUE 'ecole';
+-- Extend springr_user_type enum to include all business roles
+-- The role column in profiles remains admin-only (user/admin/moderator)
+-- Business role is stored in user_type
+ALTER TYPE public.springr_user_type ADD VALUE IF NOT EXISTS 'etudiant';
+ALTER TYPE public.springr_user_type ADD VALUE IF NOT EXISTS 'lyceen';
+ALTER TYPE public.springr_user_type ADD VALUE IF NOT EXISTS 'diplome';
+ALTER TYPE public.springr_user_type ADD VALUE IF NOT EXISTS 'recruteur';
+ALTER TYPE public.springr_user_type ADD VALUE IF NOT EXISTS 'ecole';
 
--- Add role column to profiles table (stores the user's selected role)
-ALTER TABLE public.profiles
-ADD COLUMN IF NOT EXISTS role TEXT;
-
--- Update the handle_new_user trigger to include role from user_metadata
+-- Update handle_new_user to set user_type from user metadata
+-- NEVER populate the admin 'role' column from user_metadata
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -17,12 +16,15 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 BEGIN
-  INSERT INTO public.profiles (id, email, user_type, role)
+  INSERT INTO public.profiles (id, email, user_type)
   VALUES (
     NEW.id,
     NEW.email,
-    NULLIF(NEW.raw_user_meta_data->>'user_type', '')::public.springr_user_type,
-    NULLIF(NEW.raw_user_meta_data->>'role', '')
+    CASE
+      WHEN NEW.raw_user_meta_data->>'role' IN ('etudiant', 'lyceen', 'diplome', 'recruteur', 'ecole')
+      THEN NEW.raw_user_meta_data->>'role'::public.springr_user_type
+      ELSE NULL
+    END
   )
   ON CONFLICT (id) DO NOTHING;
   RETURN NEW;
