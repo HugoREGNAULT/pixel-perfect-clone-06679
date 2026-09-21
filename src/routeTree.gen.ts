@@ -18,6 +18,7 @@ import { Route as RecruteursRouteImport } from './routes/recruteurs'
 import { Route as RechercheRouteImport } from './routes/recherche'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as ParrainageRouteImport } from './routes/parrainage'
+import { Route as OpportunitesRouteImport } from './routes/opportunites'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
@@ -108,6 +109,11 @@ const ProfilRoute = ProfilRouteImport.update({
 const ParrainageRoute = ParrainageRouteImport.update({
   id: '/parrainage',
   path: '/parrainage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitesRoute = OpportunitesRouteImport.update({
+  id: '/opportunites',
+  path: '/opportunites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -206,9 +212,9 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpportunitesIndexRoute = OpportunitesIndexRouteImport.update({
-  id: '/opportunites/',
-  path: '/opportunites/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => OpportunitesRoute,
 } as any)
 const EcolesIndexRoute = EcolesIndexRouteImport.update({
   id: '/ecoles/',
@@ -231,9 +237,9 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 const OpportunitesSearchRoute = OpportunitesSearchRouteImport.update({
-  id: '/opportunites/search',
-  path: '/opportunites/search',
-  getParentRoute: () => rootRouteImport,
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => OpportunitesRoute,
 } as any)
 const InviteCodeRoute = InviteCodeRouteImport.update({
   id: '/invite/$code',
@@ -363,6 +369,7 @@ export interface FileRoutesByFullPath {
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
   '/onboarding': typeof OnboardingRoute
+  '/opportunites': typeof OpportunitesRouteWithChildren
   '/parrainage': typeof ParrainageRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
@@ -477,6 +484,7 @@ export interface FileRoutesById {
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
   '/onboarding': typeof OnboardingRoute
+  '/opportunites': typeof OpportunitesRouteWithChildren
   '/parrainage': typeof ParrainageRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
@@ -536,6 +544,7 @@ export interface FileRouteTypes {
     | '/mes-candidatures'
     | '/messages'
     | '/onboarding'
+    | '/opportunites'
     | '/parrainage'
     | '/profil'
     | '/recherche'
@@ -649,6 +658,7 @@ export interface FileRouteTypes {
     | '/mes-candidatures'
     | '/messages'
     | '/onboarding'
+    | '/opportunites'
     | '/parrainage'
     | '/profil'
     | '/recherche'
@@ -707,6 +717,7 @@ export interface RootRouteChildren {
   MesCandidaturesRoute: typeof MesCandidaturesRoute
   MessagesRoute: typeof MessagesRoute
   OnboardingRoute: typeof OnboardingRoute
+  OpportunitesRoute: typeof OpportunitesRouteWithChildren
   ParrainageRoute: typeof ParrainageRoute
   ProfilRoute: typeof ProfilRoute
   RechercheRoute: typeof RechercheRoute
@@ -726,11 +737,9 @@ export interface RootRouteChildren {
   EcolesSlugRoute: typeof EcolesSlugRoute
   FounderSuccessRoute: typeof FounderSuccessRoute
   InviteCodeRoute: typeof InviteCodeRoute
-  OpportunitesSearchRoute: typeof OpportunitesSearchRoute
   BrandIndexRoute: typeof BrandIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   EcolesIndexRoute: typeof EcolesIndexRoute
-  OpportunitesIndexRoute: typeof OpportunitesIndexRoute
   ApiPublicPaymentsStripeWebhookRoute: typeof ApiPublicPaymentsStripeWebhookRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
@@ -798,6 +807,13 @@ declare module '@tanstack/react-router' {
       path: '/parrainage'
       fullPath: '/parrainage'
       preLoaderRoute: typeof ParrainageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opportunites': {
+      id: '/opportunites'
+      path: '/opportunites'
+      fullPath: '/opportunites'
+      preLoaderRoute: typeof OpportunitesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -935,10 +951,10 @@ declare module '@tanstack/react-router' {
     }
     '/opportunites/': {
       id: '/opportunites/'
-      path: '/opportunites'
+      path: '/'
       fullPath: '/opportunites/'
       preLoaderRoute: typeof OpportunitesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof OpportunitesRoute
     }
     '/ecoles/': {
       id: '/ecoles/'
@@ -970,10 +986,10 @@ declare module '@tanstack/react-router' {
     }
     '/opportunites/search': {
       id: '/opportunites/search'
-      path: '/opportunites/search'
+      path: '/search'
       fullPath: '/opportunites/search'
       preLoaderRoute: typeof OpportunitesSearchRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof OpportunitesRoute
     }
     '/invite/$code': {
       id: '/invite/$code'
@@ -1153,6 +1169,20 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface OpportunitesRouteChildren {
+  OpportunitesSearchRoute: typeof OpportunitesSearchRoute
+  OpportunitesIndexRoute: typeof OpportunitesIndexRoute
+}
+
+const OpportunitesRouteChildren: OpportunitesRouteChildren = {
+  OpportunitesSearchRoute: OpportunitesSearchRoute,
+  OpportunitesIndexRoute: OpportunitesIndexRoute,
+}
+
+const OpportunitesRouteWithChildren = OpportunitesRoute._addFileChildren(
+  OpportunitesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
@@ -1173,6 +1203,7 @@ const rootRouteChildren: RootRouteChildren = {
   MesCandidaturesRoute: MesCandidaturesRoute,
   MessagesRoute: MessagesRoute,
   OnboardingRoute: OnboardingRoute,
+  OpportunitesRoute: OpportunitesRouteWithChildren,
   ParrainageRoute: ParrainageRoute,
   ProfilRoute: ProfilRoute,
   RechercheRoute: RechercheRoute,
@@ -1192,11 +1223,9 @@ const rootRouteChildren: RootRouteChildren = {
   EcolesSlugRoute: EcolesSlugRoute,
   FounderSuccessRoute: FounderSuccessRoute,
   InviteCodeRoute: InviteCodeRoute,
-  OpportunitesSearchRoute: OpportunitesSearchRoute,
   BrandIndexRoute: BrandIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   EcolesIndexRoute: EcolesIndexRoute,
-  OpportunitesIndexRoute: OpportunitesIndexRoute,
   ApiPublicPaymentsStripeWebhookRoute: ApiPublicPaymentsStripeWebhookRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
