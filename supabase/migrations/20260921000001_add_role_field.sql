@@ -22,7 +22,7 @@ BEGIN
     NEW.email,
     CASE
       WHEN NEW.raw_user_meta_data->>'role' IN ('etudiant', 'lyceen', 'diplome', 'recruteur', 'ecole')
-      THEN NEW.raw_user_meta_data->>'role'::public.springr_user_type
+      THEN (NEW.raw_user_meta_data->>'role')::public.springr_user_type
       ELSE NULL
     END
   )
