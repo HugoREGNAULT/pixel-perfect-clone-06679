@@ -14,6 +14,11 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
+  --radius-button: 10px;
+  --radius-input: 12px;
+  --radius-card: 16px;
+  --radius-card-lg: 20px;
+  --radius-pill: 999px;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -50,12 +55,6 @@
 
 :root {
   --radius: 0.75rem;
-  --radius-button: 10px;
-  --radius-input: 12px;
-  --radius-card: 16px;
-  --radius-card-lg: 20px;
-  --radius-pill: 999px;
-
   --background: #FAFAFA;
   --card: #FFFFFF;
   --card-foreground: #111111;

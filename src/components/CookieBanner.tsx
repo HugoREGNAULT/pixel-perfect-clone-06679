@@ -54,7 +54,7 @@ export function CookieBanner() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 px-4 py-4 lg:static z-50 lg:mx-auto lg:max-w-2xl lg:px-0 lg:py-0">
-      <div className="overflow-hidden rounded-[20px] border border-border bg-card shadow-elevated">
+      <div className="overflow-hidden rounded-card-lg border border-border bg-card shadow-elevated">
         <div className="p-5">
           <div className="flex items-start gap-3 mb-4">
             <div className="size-8 rounded-lg bg-primary-soft flex items-center justify-center shrink-0 mt-0.5">

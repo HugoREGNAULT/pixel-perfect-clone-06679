@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 
 export function Nav() {
   return (
-    <nav className="flex items-center justify-between gap-4 border-b border-divider bg-card px-5 py-3 md:py-4 lg:px-8" data-node-id="3:721">
+    <nav className="flex items-center justify-between gap-4 border-b border-divider bg-background px-5 py-3 md:py-4 lg:px-8" data-node-id="3:721">
       {/* Logo */}
       <Link to="/" className="flex items-center gap-2 no-underline flex-shrink-0">
-        <div className="flex size-8 items-center justify-center rounded-[10px] bg-primary text-sm font-semibold text-primary-foreground md:size-9">
+        <div className="flex size-8 items-center justify-center rounded-button bg-primary text-sm font-semibold text-primary-foreground md:size-9">
           S
         </div>
         <span
@@ -62,7 +62,7 @@ export function Nav() {
       </ul>
 
       {/* Search Bar - Desktop Only */}
-      <div className="hidden items-center gap-2 rounded-[12px] border border-border bg-background px-3 py-2 lg:flex">
+      <div className="hidden items-center gap-2 rounded-input border border-border bg-card px-3 py-2 lg:flex">
         <input
           type="text"
           placeholder="Rechercher un job"
