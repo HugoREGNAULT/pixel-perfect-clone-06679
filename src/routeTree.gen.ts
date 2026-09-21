@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VisionRouteImport } from './routes/vision'
 import { Route as TarifsRouteImport } from './routes/tarifs'
 import { Route as SuccessRouteImport } from './routes/success'
 import { Route as SignupRouteImport } from './routes/signup'
@@ -57,12 +58,18 @@ import { Route as AdminParametresRouteImport } from './routes/admin/parametres'
 import { Route as AdminPaiementsRouteImport } from './routes/admin/paiements'
 import { Route as AdminOffresRouteImport } from './routes/admin/offres'
 import { Route as AdminModerationRouteImport } from './routes/admin/moderation'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminJpoRouteImport } from './routes/admin/jpo'
 import { Route as AdminEcolesRouteImport } from './routes/admin/ecoles'
 import { Route as AdminBonsPlansRouteImport } from './routes/admin/bons-plans'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicPaymentsStripeWebhookRouteImport } from './routes/api/public/payments/stripe-webhook'
 
+const VisionRoute = VisionRouteImport.update({
+  id: '/vision',
+  path: '/vision',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TarifsRoute = TarifsRouteImport.update({
   id: '/tarifs',
   path: '/tarifs',
@@ -303,6 +310,11 @@ const AdminModerationRoute = AdminModerationRouteImport.update({
   path: '/moderation',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminJpoRoute = AdminJpoRouteImport.update({
   id: '/jpo',
   path: '/jpo',
@@ -359,9 +371,11 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/success': typeof SuccessRoute
   '/tarifs': typeof TarifsRoute
+  '/vision': typeof VisionRoute
   '/admin/bons-plans': typeof AdminBonsPlansRoute
   '/admin/ecoles': typeof AdminEcolesRoute
   '/admin/jpo': typeof AdminJpoRoute
+  '/admin/login': typeof AdminLoginRoute
   '/admin/moderation': typeof AdminModerationRoute
   '/admin/offres': typeof AdminOffresRoute
   '/admin/paiements': typeof AdminPaiementsRoute
@@ -413,9 +427,11 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/success': typeof SuccessRoute
   '/tarifs': typeof TarifsRoute
+  '/vision': typeof VisionRoute
   '/admin/bons-plans': typeof AdminBonsPlansRoute
   '/admin/ecoles': typeof AdminEcolesRoute
   '/admin/jpo': typeof AdminJpoRoute
+  '/admin/login': typeof AdminLoginRoute
   '/admin/moderation': typeof AdminModerationRoute
   '/admin/offres': typeof AdminOffresRoute
   '/admin/paiements': typeof AdminPaiementsRoute
@@ -469,9 +485,11 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/success': typeof SuccessRoute
   '/tarifs': typeof TarifsRoute
+  '/vision': typeof VisionRoute
   '/admin/bons-plans': typeof AdminBonsPlansRoute
   '/admin/ecoles': typeof AdminEcolesRoute
   '/admin/jpo': typeof AdminJpoRoute
+  '/admin/login': typeof AdminLoginRoute
   '/admin/moderation': typeof AdminModerationRoute
   '/admin/offres': typeof AdminOffresRoute
   '/admin/paiements': typeof AdminPaiementsRoute
@@ -526,9 +544,11 @@ export interface FileRouteTypes {
     | '/signup'
     | '/success'
     | '/tarifs'
+    | '/vision'
     | '/admin/bons-plans'
     | '/admin/ecoles'
     | '/admin/jpo'
+    | '/admin/login'
     | '/admin/moderation'
     | '/admin/offres'
     | '/admin/paiements'
@@ -580,9 +600,11 @@ export interface FileRouteTypes {
     | '/signup'
     | '/success'
     | '/tarifs'
+    | '/vision'
     | '/admin/bons-plans'
     | '/admin/ecoles'
     | '/admin/jpo'
+    | '/admin/login'
     | '/admin/moderation'
     | '/admin/offres'
     | '/admin/paiements'
@@ -635,9 +657,11 @@ export interface FileRouteTypes {
     | '/signup'
     | '/success'
     | '/tarifs'
+    | '/vision'
     | '/admin/bons-plans'
     | '/admin/ecoles'
     | '/admin/jpo'
+    | '/admin/login'
     | '/admin/moderation'
     | '/admin/offres'
     | '/admin/paiements'
@@ -691,6 +715,7 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   SuccessRoute: typeof SuccessRoute
   TarifsRoute: typeof TarifsRoute
+  VisionRoute: typeof VisionRoute
   BrandAssetsRoute: typeof BrandAssetsRoute
   BrandSocialKitRoute: typeof BrandSocialKitRoute
   DashboardDiplomeRoute: typeof DashboardDiplomeRoute
@@ -712,6 +737,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/vision': {
+      id: '/vision'
+      path: '/vision'
+      fullPath: '/vision'
+      preLoaderRoute: typeof VisionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tarifs': {
       id: '/tarifs'
       path: '/tarifs'
@@ -1048,6 +1080,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminModerationRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/jpo': {
       id: '/admin/jpo'
       path: '/jpo'
@@ -1090,6 +1129,7 @@ interface AdminRouteChildren {
   AdminBonsPlansRoute: typeof AdminBonsPlansRoute
   AdminEcolesRoute: typeof AdminEcolesRoute
   AdminJpoRoute: typeof AdminJpoRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   AdminModerationRoute: typeof AdminModerationRoute
   AdminOffresRoute: typeof AdminOffresRoute
   AdminPaiementsRoute: typeof AdminPaiementsRoute
@@ -1102,6 +1142,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminBonsPlansRoute: AdminBonsPlansRoute,
   AdminEcolesRoute: AdminEcolesRoute,
   AdminJpoRoute: AdminJpoRoute,
+  AdminLoginRoute: AdminLoginRoute,
   AdminModerationRoute: AdminModerationRoute,
   AdminOffresRoute: AdminOffresRoute,
   AdminPaiementsRoute: AdminPaiementsRoute,
@@ -1140,6 +1181,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   SuccessRoute: SuccessRoute,
   TarifsRoute: TarifsRoute,
+  VisionRoute: VisionRoute,
   BrandAssetsRoute: BrandAssetsRoute,
   BrandSocialKitRoute: BrandSocialKitRoute,
   DashboardDiplomeRoute: DashboardDiplomeRoute,
