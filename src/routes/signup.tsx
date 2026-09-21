@@ -32,6 +32,8 @@ function SignupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState("etudiant");
+  const [birthDate, setBirthDate] = useState("");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -55,6 +57,24 @@ function SignupPage() {
       return;
     }
 
+    // Validate age for lyceen
+    if (role === "lyceen") {
+      if (!birthDate) {
+        toast.error("Veuillez entrer votre date de naissance");
+        return;
+      }
+
+      const birthDateObj = new Date(birthDate);
+      const today = new Date();
+      const age = today.getFullYear() - birthDateObj.getFullYear();
+      const monthDiff = today.getMonth() - birthDateObj.getMonth();
+
+      if (age < 15 || (age === 15 && monthDiff < 0)) {
+        toast.error("Vous devez avoir au moins 15 ans pour cette option");
+        return;
+      }
+    }
+
     setLoading(true);
     try {
       const { data: authData, error } = await supabase.auth.signUp({
@@ -64,7 +84,7 @@ function SignupPage() {
           data: {
             firstName,
             lastName,
-            role: "etudiant", // Default role
+            role,
           },
           emailRedirectTo: `${window.location.origin}/onboarding`,
         },
@@ -113,6 +133,51 @@ function SignupPage() {
           {/* Form Card */}
           <div className="bg-white border-2 border-black rounded-3xl p-8 lg:p-10 drop-shadow-[8px_8px_0px_black]">
             <form onSubmit={submit} className="space-y-6">
+              {/* Role Selection */}
+              <div>
+                <label className="block font-bold text-[#111827] text-sm mb-3">
+                  Vous êtes ?
+                </label>
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                  {[
+                    { value: "etudiant", label: "Étudiant" },
+                    { value: "lyceen", label: "Lycéen" },
+                    { value: "diplome", label: "Diplômé" },
+                    { value: "recruteur", label: "Recruteur" },
+                    { value: "ecole", label: "École/Université" },
+                  ].map((option) => (
+                    <label key={option.value} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="role"
+                        value={option.value}
+                        checked={role === option.value}
+                        onChange={(e) => setRole(e.target.value)}
+                        className="w-4 h-4 border border-[#767676] cursor-pointer"
+                      />
+                      <span className="text-sm text-[#111827]">{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Birth Date for Lyceen */}
+              {role === "lyceen" && (
+                <div>
+                  <label htmlFor="birthDate" className="block font-bold text-[#111827] text-sm mb-2">
+                    Date de naissance
+                  </label>
+                  <input
+                    id="birthDate"
+                    type="date"
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
+                    className="w-full bg-white border-2 border-[#d1d5db] rounded-2xl px-5 py-4 text-[#111827] focus:outline-none focus:border-[#0066ff] transition-colors"
+                  />
+                  <p className="text-xs text-[#6b7280] mt-2">Minimum 15 ans requis</p>
+                </div>
+              )}
+
               {/* Name fields */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
