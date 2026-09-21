@@ -23,11 +23,13 @@ import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
 import { Route as MentorsRouteImport } from './routes/mentors'
 import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as LancementRouteImport } from './routes/lancement'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FonctionnalitesRouteImport } from './routes/fonctionnalites'
 import { Route as EvenementsRouteImport } from './routes/evenements'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
+import { Route as CommunauteRouteImport } from './routes/communaute'
 import { Route as CguRouteImport } from './routes/cgu'
 import { Route as CancelRouteImport } from './routes/cancel'
 import { Route as BonsPlansRouteImport } from './routes/bons-plans'
@@ -131,6 +133,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LancementRoute = LancementRouteImport.update({
+  id: '/lancement',
+  path: '/lancement',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
@@ -154,6 +161,11 @@ const CookiesRoute = CookiesRouteImport.update({
 const ConfidentialiteRoute = ConfidentialiteRouteImport.update({
   id: '/confidentialite',
   path: '/confidentialite',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunauteRoute = CommunauteRouteImport.update({
+  id: '/communaute',
+  path: '/communaute',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CguRoute = CguRouteImport.update({
@@ -326,11 +338,13 @@ export interface FileRoutesByFullPath {
   '/bons-plans': typeof BonsPlansRoute
   '/cancel': typeof CancelRoute
   '/cgu': typeof CguRoute
+  '/communaute': typeof CommunauteRoute
   '/confidentialite': typeof ConfidentialiteRoute
   '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
   '/fonctionnalites': typeof FonctionnalitesRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/lancement': typeof LancementRoute
   '/login': typeof LoginRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/mentors': typeof MentorsRoute
@@ -378,11 +392,13 @@ export interface FileRoutesByTo {
   '/bons-plans': typeof BonsPlansRoute
   '/cancel': typeof CancelRoute
   '/cgu': typeof CguRoute
+  '/communaute': typeof CommunauteRoute
   '/confidentialite': typeof ConfidentialiteRoute
   '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
   '/fonctionnalites': typeof FonctionnalitesRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/lancement': typeof LancementRoute
   '/login': typeof LoginRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/mentors': typeof MentorsRoute
@@ -432,11 +448,13 @@ export interface FileRoutesById {
   '/bons-plans': typeof BonsPlansRoute
   '/cancel': typeof CancelRoute
   '/cgu': typeof CguRoute
+  '/communaute': typeof CommunauteRoute
   '/confidentialite': typeof ConfidentialiteRoute
   '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
   '/fonctionnalites': typeof FonctionnalitesRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/lancement': typeof LancementRoute
   '/login': typeof LoginRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/mentors': typeof MentorsRoute
@@ -487,11 +505,13 @@ export interface FileRouteTypes {
     | '/bons-plans'
     | '/cancel'
     | '/cgu'
+    | '/communaute'
     | '/confidentialite'
     | '/cookies'
     | '/evenements'
     | '/fonctionnalites'
     | '/forgot-password'
+    | '/lancement'
     | '/login'
     | '/mentions-legales'
     | '/mentors'
@@ -539,11 +559,13 @@ export interface FileRouteTypes {
     | '/bons-plans'
     | '/cancel'
     | '/cgu'
+    | '/communaute'
     | '/confidentialite'
     | '/cookies'
     | '/evenements'
     | '/fonctionnalites'
     | '/forgot-password'
+    | '/lancement'
     | '/login'
     | '/mentions-legales'
     | '/mentors'
@@ -592,11 +614,13 @@ export interface FileRouteTypes {
     | '/bons-plans'
     | '/cancel'
     | '/cgu'
+    | '/communaute'
     | '/confidentialite'
     | '/cookies'
     | '/evenements'
     | '/fonctionnalites'
     | '/forgot-password'
+    | '/lancement'
     | '/login'
     | '/mentions-legales'
     | '/mentors'
@@ -646,11 +670,13 @@ export interface RootRouteChildren {
   BonsPlansRoute: typeof BonsPlansRoute
   CancelRoute: typeof CancelRoute
   CguRoute: typeof CguRoute
+  CommunauteRoute: typeof CommunauteRoute
   ConfidentialiteRoute: typeof ConfidentialiteRoute
   CookiesRoute: typeof CookiesRoute
   EvenementsRoute: typeof EvenementsRoute
   FonctionnalitesRoute: typeof FonctionnalitesRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LancementRoute: typeof LancementRoute
   LoginRoute: typeof LoginRoute
   MentionsLegalesRoute: typeof MentionsLegalesRoute
   MentorsRoute: typeof MentorsRoute
@@ -784,6 +810,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lancement': {
+      id: '/lancement'
+      path: '/lancement'
+      fullPath: '/lancement'
+      preLoaderRoute: typeof LancementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/forgot-password': {
       id: '/forgot-password'
       path: '/forgot-password'
@@ -817,6 +850,13 @@ declare module '@tanstack/react-router' {
       path: '/confidentialite'
       fullPath: '/confidentialite'
       preLoaderRoute: typeof ConfidentialiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/communaute': {
+      id: '/communaute'
+      path: '/communaute'
+      fullPath: '/communaute'
+      preLoaderRoute: typeof CommunauteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cgu': {
@@ -1079,11 +1119,13 @@ const rootRouteChildren: RootRouteChildren = {
   BonsPlansRoute: BonsPlansRoute,
   CancelRoute: CancelRoute,
   CguRoute: CguRoute,
+  CommunauteRoute: CommunauteRoute,
   ConfidentialiteRoute: ConfidentialiteRoute,
   CookiesRoute: CookiesRoute,
   EvenementsRoute: EvenementsRoute,
   FonctionnalitesRoute: FonctionnalitesRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
+  LancementRoute: LancementRoute,
   LoginRoute: LoginRoute,
   MentionsLegalesRoute: MentionsLegalesRoute,
   MentorsRoute: MentorsRoute,
