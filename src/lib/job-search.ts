@@ -3,7 +3,7 @@
 // Calls the Supabase Edge Function which handles France Travail + La Bonne Alternance
 // Falls back to local Supabase offres table if the Edge Function is unavailable
 
-import { supabase, getSupabaseAnonKey } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 
 export type JobSource = "france_travail" | "bonne_alternance" | "local";
 export type JobType   = "stage" | "alternance" | "cdi" | "cdd" | "job";
@@ -46,37 +46,9 @@ export interface SearchResult {
   error?: string | null;
 }
 
-const EDGE_FN_URL = `https://ujjpfcdcyvdliofvadul.supabase.co/functions/v1/job-search`;
-
 export async function searchJobs(params: SearchParams): Promise<SearchResult> {
-  const qs = new URLSearchParams();
-  if (params.q)         qs.set("q",         params.q);
-  if (params.type)      qs.set("type",      params.type);
-  if (params.city)      qs.set("city",      params.city);
-  if (params.sector)    qs.set("sector",    params.sector);
-  if (params.education) qs.set("education", params.education);
-  if (params.page)      qs.set("page",      String(params.page));
-
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-
-    // Always send Authorization header: use session token if available, otherwise use anon key
-    const anonKey = getSupabaseAnonKey();
-    const authToken = session?.access_token ?? anonKey;
-
-    const res = await fetch(`${EDGE_FN_URL}?${qs}`, {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "apikey": anonKey,
-      },
-    });
-
-    if (!res.ok) throw new Error(`Edge function error: ${res.status}`);
-    return await res.json() as SearchResult;
-  } catch (err) {
-    console.warn("[job-search] Edge function unavailable, falling back to local DB:", err);
-    return fallbackToLocal(params);
-  }
+  // Les offres proviennent de la base du projet ; aucun appel externe.
+  return fallbackToLocal(params);
 }
 
 
