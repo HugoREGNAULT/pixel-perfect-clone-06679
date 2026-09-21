@@ -39,3 +39,4 @@ screenshots/
 playwright-report/
 test-results/
 *-chromium-darwin.png
+tests/e2e/capture-onboarding-connected.spec.ts
