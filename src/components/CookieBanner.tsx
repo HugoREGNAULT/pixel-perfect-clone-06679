@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
-import { Cookie, X, ChevronDown, ChevronUp } from "lucide-react";
+import { Cookie, ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type ConsentState = {
   essential: true;
@@ -53,7 +54,7 @@ export function CookieBanner() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 px-4 py-4 lg:static z-50 lg:mx-auto lg:max-w-2xl lg:px-0 lg:py-0">
-      <div className="rounded-2xl border border-border bg-card backdrop-blur overflow-hidden shadow-lg lg:shadow">
+      <div className="overflow-hidden rounded-card-lg border border-border bg-card shadow-elevated">
         <div className="p-5">
           <div className="flex items-start gap-3 mb-4">
             <div className="size-8 rounded-lg bg-primary-soft flex items-center justify-center shrink-0 mt-0.5">
@@ -94,18 +95,19 @@ export function CookieBanner() {
 
           <div className="flex flex-col gap-2">
             <div className="flex gap-2">
-              <button
+              <Button
                 onClick={acceptAll}
-                className="flex-1 rounded-lg bg-primary text-primary-foreground text-sm font-semibold px-4 py-2.5 hover:bg-primary-hover transition-colors"
+                className="flex-1"
               >
                 Accepter tout
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={rejectAll}
-                className="flex-1 rounded-lg border border-border text-foreground text-sm font-medium px-4 py-2.5 hover:bg-muted transition-colors"
+                variant="outline"
+                className="flex-1"
               >
                 Refuser
-              </button>
+              </Button>
             </div>
             <button
               onClick={() => setExpanded(v => !v)}
@@ -115,12 +117,12 @@ export function CookieBanner() {
               {expanded ? "Masquer les options" : "Personnaliser"}
             </button>
             {expanded && (
-              <button
+              <Button
                 onClick={saveCustom}
-                className="rounded-lg border border-primary text-primary text-sm font-medium px-4 py-2.5 hover:bg-primary-soft transition-colors"
+                variant="outline"
               >
                 Enregistrer mes choix
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -153,6 +155,7 @@ function ToggleRow({
         aria-checked={checked}
         disabled={disabled}
         onClick={() => onChange?.(!checked)}
+        aria-label={label}
         className={`relative shrink-0 mt-0.5 h-5 w-9 rounded-full transition-colors focus:outline-none ${
           disabled
             ? "bg-muted cursor-not-allowed"
@@ -162,7 +165,7 @@ function ToggleRow({
         }`}
       >
         <span
-          className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-white transition-transform ${
+          className={`absolute top-0.5 left-0.5 size-4 rounded-full bg-card border border-border transition-transform ${
             checked ? "translate-x-4" : "translate-x-0"
           }`}
         />

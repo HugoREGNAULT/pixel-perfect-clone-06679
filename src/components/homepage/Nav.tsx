@@ -1,41 +1,28 @@
 import { Link } from "@tanstack/react-router";
+import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function Nav() {
   return (
-    <nav
-      className="flex items-center justify-between px-5 lg:px-8 py-3 md:py-4 border-b-2 border-black gap-4"
-      style={{ backgroundColor: "var(--color-bg-white)" }}
-      data-node-id="3:721"
-    >
+    <nav className="flex items-center justify-between gap-4 border-b border-divider bg-background px-5 py-3 md:py-4 lg:px-8" data-node-id="3:721">
       {/* Logo */}
       <Link to="/" className="flex items-center gap-2 no-underline flex-shrink-0">
-        <div
-          className="flex items-center justify-center w-8 md:w-10 h-8 md:h-10 rounded-lg border-2 border-black font-bold text-white text-sm md:text-base"
-          style={{
-            backgroundColor: "var(--color-primary)",
-            boxShadow: "var(--shadow-hard-4px)",
-          }}
-        >
+        <div className="flex size-8 items-center justify-center rounded-button bg-primary text-sm font-semibold text-primary-foreground md:size-9">
           S
         </div>
         <span
-          className="text-xl md:text-2xl font-bold tracking-tight hidden sm:inline"
-          style={{ color: "var(--color-text-dark)", fontFamily: "var(--font-poppins)" }}
+          className="hidden text-xl font-semibold text-foreground sm:inline md:text-2xl"
         >
           Springr
         </span>
       </Link>
 
       {/* Nav Links - Desktop Only */}
-      <ul
-        className="hidden md:flex gap-6 lg:gap-8 items-center"
-        style={{ color: "var(--color-text-dark)" }}
-      >
+      <ul className="hidden items-center gap-6 text-foreground-2 md:flex lg:gap-8">
         <li>
           <a
             href="#fonctionnalites"
-            className="text-xs lg:text-sm font-medium hover:opacity-70 transition-opacity"
-            style={{ fontFamily: "var(--font-inter)" }}
+            className="text-xs font-medium transition-colors hover:text-foreground lg:text-sm"
           >
             Fonctionnalités
           </a>
@@ -43,8 +30,7 @@ export function Nav() {
         <li>
           <a
             href="#offres"
-            className="text-xs lg:text-sm font-medium hover:opacity-70 transition-opacity"
-            style={{ fontFamily: "var(--font-inter)" }}
+            className="text-xs font-medium transition-colors hover:text-foreground lg:text-sm"
           >
             Offres
           </a>
@@ -52,8 +38,7 @@ export function Nav() {
         <li>
           <a
             href="#mentorat"
-            className="text-xs lg:text-sm font-medium hover:opacity-70 transition-opacity"
-            style={{ fontFamily: "var(--font-inter)" }}
+            className="text-xs font-medium transition-colors hover:text-foreground lg:text-sm"
           >
             Mentorat
           </a>
@@ -61,8 +46,7 @@ export function Nav() {
         <li>
           <a
             href="#communaute"
-            className="text-xs lg:text-sm font-medium hover:opacity-70 transition-opacity"
-            style={{ fontFamily: "var(--font-inter)" }}
+            className="text-xs font-medium transition-colors hover:text-foreground lg:text-sm"
           >
             Communauté
           </a>
@@ -70,8 +54,7 @@ export function Nav() {
         <li>
           <a
             href="#tarifs"
-            className="text-xs lg:text-sm font-medium hover:opacity-70 transition-opacity"
-            style={{ fontFamily: "var(--font-inter)" }}
+            className="text-xs font-medium transition-colors hover:text-foreground lg:text-sm"
           >
             Tarifs
           </a>
@@ -79,51 +62,27 @@ export function Nav() {
       </ul>
 
       {/* Search Bar - Desktop Only */}
-      <div className="hidden lg:flex items-center border-2 rounded-3xl px-3 py-2 gap-2 flex-shrink-0"
-        style={{ borderColor: "var(--color-border-light)" }}>
+      <div className="hidden items-center gap-2 rounded-input border border-border bg-card px-3 py-2 lg:flex">
         <input
           type="text"
           placeholder="Rechercher un job"
-          className="bg-transparent text-sm outline-none flex-1 hidden xl:block"
-          style={{
-            color: "var(--color-text-dark)",
-            fontFamily: "var(--font-inter)",
-          }}
+          aria-label="Rechercher un job"
+          className="hidden flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-faint xl:block"
         />
-        <button
-          className="text-lg transition-opacity hover:opacity-70 flex-shrink-0"
-          style={{ color: "var(--color-primary)" }}
-        >
-          🔍
-        </button>
+        <Button variant="ghost" size="icon" className="size-7 text-muted-foreground" aria-label="Lancer la recherche">
+          <Search className="size-4" />
+        </Button>
       </div>
 
       {/* Right Section: Connexion + S'inscrire */}
       <div className="flex items-center gap-2 md:gap-3 lg:gap-4 flex-shrink-0">
         {/* Connexion Link */}
-        <a
-          href="/login"
-          className="text-xs md:text-sm lg:text-base font-medium hover:opacity-70 transition-opacity hidden sm:inline"
-          style={{
-            color: "var(--color-text-dark)",
-            fontFamily: "var(--font-inter)",
-          }}
-        >
+        <Link to="/login" className="hidden text-xs font-medium text-foreground-2 transition-colors hover:text-foreground sm:inline md:text-sm">
           Connexion
-        </a>
+        </Link>
 
         {/* S'inscrire Button */}
-        <button
-          className="px-3 md:px-6 py-2 md:py-2.5 rounded-lg font-bold text-xs md:text-sm border-2 border-black transition-opacity hover:opacity-90"
-          style={{
-            backgroundColor: "var(--color-highlight)",
-            color: "black",
-            fontFamily: "var(--font-inter)",
-            boxShadow: "var(--shadow-hard-4px)",
-          }}
-        >
-          S'inscrire
-        </button>
+        <Button asChild size="sm"><Link to="/signup">S'inscrire</Link></Button>
       </div>
     </nav>
   );
