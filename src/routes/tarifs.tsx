@@ -30,7 +30,6 @@ const COMPARISON_TABLE = [
   { feature: "Profil et candidatures illimitées", gratuit: true, premium: true },
   { feature: "Badge Premium", gratuit: false, premium: true },
   { feature: "Alertes offres", gratuit: false, premium: true },
-  { feature: "Accès aux mentors", gratuit: false, premium: true },
   { feature: "Support prioritaire", gratuit: false, premium: true },
 ];
 

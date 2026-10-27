@@ -20,7 +20,7 @@ export const FAQ_COMMON: FaqItem[] = [
   },
   {
     question: "Comment contacter le support ?",
-    answer: "Nos équipes répondent via support@springr.fr. Les clients Premium ont accès au support prioritaire.",
+    answer: "Nos équipes répondent via hello@springr.app. Les clients Premium ont accès au support prioritaire.",
   },
 ];
 

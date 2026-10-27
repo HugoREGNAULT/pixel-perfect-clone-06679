@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lookupCode } from "@/lib/referral";
-import { Gift, Star, Zap, Users, ArrowUpRight, Loader2, AlertCircle, CheckCircle2, GraduationCap } from "lucide-react";
+import { Gift, Star, Zap, ArrowUpRight, Loader2, AlertCircle, CheckCircle2, GraduationCap } from "lucide-react";
 
 export const Route = createFileRoute("/invite/$code")({
   head: ({ params }) => ({
@@ -93,7 +93,6 @@ function InvitePage() {
                 {[
                   { icon: Zap,           text: "Accès à toutes les offres en avant-première" },
                   { icon: Star,          text: "Profil mis en avant auprès des recruteurs" },
-                  { icon: Users,         text: "Accès aux mentors Premium" },
                   { icon: GraduationCap, text: "JPO et événements exclusifs" },
                 ].map(({ icon: Icon, text }) => (
                   <div key={text} className="flex items-center gap-3">

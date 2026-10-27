@@ -22,7 +22,7 @@ const DEFAULTS: Settings = {
   maintenance_message: null,
   max_candidatures_per_month: 10,
   commission_rate: 0.15,
-  support_email: "support@springr.app",
+  support_email: "hello@springr.app",
 };
 
 function AdminParamsPage() {
@@ -44,7 +44,7 @@ function AdminParamsPage() {
         maintenance_message:         (map.maintenance_message as string | null) ?? null,
         max_candidatures_per_month:  (map.max_candidatures_per_month as number) ?? 10,
         commission_rate:             (map.commission_rate as number) ?? 0.15,
-        support_email:               (map.support_email as string) ?? "support@springr.app",
+        support_email:               (map.support_email as string) ?? "hello@springr.app",
       });
       setLoading(false);
     }

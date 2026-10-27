@@ -32,7 +32,6 @@ export const STUDENT_PREMIUM = {
     "Tout du plan Gratuit",
     "Badge Premium sur ton profil",
     "Alertes offres",
-    "Accès aux mentors",
     "Support prioritaire",
   ],
   cta: "Devenir Premium",
