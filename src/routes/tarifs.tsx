@@ -6,6 +6,13 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { supabase } from "@/integrations/supabase/client";
 import { createSpringrCheckout } from "@/lib/springr.payments.functions";
 import { toast } from "sonner";
+import {
+  STUDENT_FREE,
+  STUDENT_PREMIUM,
+  RECRUITER_FREE,
+  RECRUITER_STARTER,
+  RECRUITER_PRO,
+} from "@/lib/pricing";
 
 export const Route = createFileRoute("/tarifs")({
   head: () => ({
@@ -21,118 +28,61 @@ export const Route = createFileRoute("/tarifs")({
 
 const PLANS = [
   {
-    id: "startup",
+    id: "gratuit",
     lookupKey: null,
-    name: "Startup",
-    monthly: "0€",
-    yearly: "0€",
+    name: STUDENT_FREE.name,
+    monthly: STUDENT_FREE.price,
+    yearly: STUDENT_FREE.price,
     sub: "Commencer",
     color: "border-slate-200",
     accent: "text-gray-500",
     featured: false,
-    cta: "Commencer gratuitement",
+    cta: STUDENT_FREE.cta,
     ctaStyle: "border border-slate-200 text-foreground hover:bg-slate-100",
-    features: [
-      "Accès aux offres",
-      "Profil étudiant",
-      "1 candidature par jour",
-      "Accès aux JPO",
-    ],
+    features: STUDENT_FREE.features,
   },
   {
     id: "premium",
-    lookupKey: { monthly: "student_premium_monthly", yearly: "student_premium_yearly" },
-    name: "Premium",
-    monthly: "4,99€",
-    yearly: "49,99€",
-    yearlyMonth: "4,17€",
-    sub: "Recommandé",
+    lookupKey: STUDENT_PREMIUM.lookupKeys,
+    name: STUDENT_PREMIUM.name,
+    monthly: STUDENT_PREMIUM.price,
+    yearly: STUDENT_PREMIUM.priceYearly,
+    yearlyMonth: STUDENT_PREMIUM.priceYearlyMonthly,
+    sub: STUDENT_PREMIUM.sub,
     color: "border-primary",
     accent: "text-primary",
     featured: true,
-    cta: "Devenir Premium",
+    cta: STUDENT_PREMIUM.cta,
     ctaStyle: "bg-primary text-white hover:bg-blue-600",
-    features: [
-      "Tout du plan Startup",
-      "Candidatures illimitées",
-      "Alertes offres",
-      "Badge Premium",
-      "Accès aux mentors",
-      "Support prioritaire",
-    ],
+    features: STUDENT_PREMIUM.features,
   },
   {
-    id: "entreprises",
+    id: "recruteurs",
     lookupKey: null,
-    name: "Entreprises",
-    monthly: "189€",
-    yearly: "1890€",
-    sub: "Plan personnalisé",
+    name: "Recruteurs",
+    monthly: RECRUITER_FREE.price,
+    yearly: RECRUITER_FREE.price,
+    sub: "Pour les entreprises",
     color: "border-highlight",
     accent: "text-highlight",
     featured: false,
-    cta: "Nous contacter",
+    cta: "Voir les tarifs recruteurs",
     ctaStyle: "bg-highlight text-foreground hover:bg-yellow-400",
     features: [
-      "Offres illimitées",
-      "Support 24/7",
-      "Reporting avancé",
-      "Manager dédié",
-      "Marque blanche",
-      "API access",
+      `${RECRUITER_FREE.name} : ${RECRUITER_FREE.price}`,
+      `${RECRUITER_STARTER.name} : ${RECRUITER_STARTER.price} ${RECRUITER_STARTER.period.replace("/", "par ")}`,
+      `${RECRUITER_PRO.name} : ${RECRUITER_PRO.priceMonthly} par mois (HT)`,
     ],
   },
 ] as const;
 
 const COMPARISON_TABLE = [
-  {
-    feature: "Fonctionnalités de base",
-    startup: "✓",
-    premium: "✓",
-    entreprises: "✓",
-  },
-  {
-    feature: "Candidatures par jour",
-    startup: "1",
-    premium: "Illimitées",
-    entreprises: "Illimitées",
-  },
-  {
-    feature: "Offres visibles",
-    startup: "N/A",
-    premium: "N/A",
-    entreprises: "Illimitées",
-  },
-  {
-    feature: "Badge Premium",
-    startup: "N/A",
-    premium: "✓",
-    entreprises: "N/A",
-  },
-  {
-    feature: "Alertes offres",
-    startup: "N/A",
-    premium: "✓",
-    entreprises: "✓",
-  },
-  {
-    feature: "Accès mentors",
-    startup: "N/A",
-    premium: "✓",
-    entreprises: "Prioritaire",
-  },
-  {
-    feature: "Support",
-    startup: "Standard",
-    premium: "Prioritaire",
-    entreprises: "24/7 dédié",
-  },
-  {
-    feature: "Manager dédié",
-    startup: "N/A",
-    premium: "N/A",
-    entreprises: "✓",
-  },
+  { feature: "Fonctionnalités de base", gratuit: "✓", premium: "✓" },
+  { feature: "Candidatures", gratuit: "Illimitées", premium: "Illimitées" },
+  { feature: "Badge Premium", gratuit: "N/A", premium: "✓" },
+  { feature: "Alertes offres", gratuit: "N/A", premium: "✓" },
+  { feature: "Accès mentors", gratuit: "N/A", premium: "✓" },
+  { feature: "Support", gratuit: "Standard", premium: "Prioritaire" },
 ];
 
 const FAQS = [
@@ -142,7 +92,7 @@ const FAQS = [
   },
   {
     question: "L'essai gratuit est-il vraiment gratuit ?",
-    answer: "Oui, notre plan Startup est complètement gratuit. Aucune carte bancaire requise pour commencer.",
+    answer: "Oui, notre plan Gratuit est complètement gratuit. Aucune carte bancaire requise pour commencer.",
   },
   {
     question: "Puis-je annuler mon abonnement ?",
@@ -158,7 +108,7 @@ const FAQS = [
   },
   {
     question: "Comment contacter le support ?",
-    answer: "Nos équipes répondent via support@springr.fr. Les clients Premium+ ont accès au support prioritaire.",
+    answer: "Nos équipes répondent via support@springr.fr. Les clients Premium ont accès au support prioritaire.",
   },
 ];
 
@@ -171,6 +121,10 @@ function TarifsPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   async function handleCheckout(planId: string, lookupKey: string | null) {
+    if (planId === "recruteurs") {
+      navigate({ to: "/recruteurs" });
+      return;
+    }
     if (!lookupKey) {
       navigate({ to: "/signup" });
       return;
@@ -293,7 +247,7 @@ function TarifsPage() {
                     <h2 className="font-display font-bold text-2xl text-foreground mb-4">{plan.name}</h2>
                     <div className="flex items-baseline gap-2">
                       <span className="font-display font-bold text-4xl text-foreground">{price}</span>
-                      {plan.id !== "startup" && <span className="text-gray-500 text-sm">{period}</span>}
+                      {plan.id === "premium" && <span className="text-gray-500 text-sm">{period}</span>}
                     </div>
                     {monthlyEquiv && (
                       <p className="text-xs text-gray-500 mt-2">soit {monthlyEquiv}/mois en moyenne</p>
@@ -319,7 +273,7 @@ function TarifsPage() {
                     ) : (
                       <>
                         {plan.cta}
-                        {plan.id !== "startup" && <ArrowUpRight className="size-4" />}
+                        {plan.id === "premium" && <ArrowUpRight className="size-4" />}
                       </>
                     )}
                   </button>
@@ -345,9 +299,8 @@ function TarifsPage() {
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50">
                     <th className="text-left py-4 px-6 font-semibold text-foreground">Fonctionnalité</th>
-                    <th className="text-center py-4 px-6 font-semibold text-foreground">Startup</th>
+                    <th className="text-center py-4 px-6 font-semibold text-foreground">Gratuit</th>
                     <th className="text-center py-4 px-6 font-semibold text-foreground">Premium</th>
-                    <th className="text-center py-4 px-6 font-semibold text-foreground">Entreprises</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -357,9 +310,8 @@ function TarifsPage() {
                       className={`border-b border-slate-200 ${idx % 2 === 0 ? "bg-white" : "bg-slate-50"}`}
                     >
                       <td className="py-4 px-6 text-foreground font-medium">{row.feature}</td>
-                      <td className="text-center py-4 px-6 text-gray-500">{row.startup}</td>
+                      <td className="text-center py-4 px-6 text-gray-500">{row.gratuit}</td>
                       <td className="text-center py-4 px-6 text-success font-medium">{row.premium}</td>
-                      <td className="text-center py-4 px-6 text-primary font-medium">{row.entreprises}</td>
                     </tr>
                   ))}
                 </tbody>

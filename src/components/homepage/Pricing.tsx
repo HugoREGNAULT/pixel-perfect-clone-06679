@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { Check } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
+import {
+  STUDENT_FREE,
+  STUDENT_PREMIUM,
+  RECRUITER_FREE,
+  RECRUITER_STARTER,
+  RECRUITER_PRO,
+} from "@/lib/pricing";
 
 export function Pricing() {
   const navigate = useNavigate();
@@ -8,108 +15,56 @@ export function Pricing() {
 
   const studentPlans = [
     {
-      id: "gratuit",
-      name: "Gratuit",
-      sub: "Pour commencer",
-      price: "0€",
+      id: STUDENT_FREE.id,
+      name: STUDENT_FREE.name,
+      sub: STUDENT_FREE.sub,
+      price: STUDENT_FREE.price,
       period: "",
-      features: [
-        "Profil étudiant complet",
-        "Accès aux offres de stage/alternance",
-        "1 candidature par jour",
-        "Accès aux JPO",
-        "Annuaire des écoles",
-      ],
-      cta: "Commencer gratuitement",
+      features: STUDENT_FREE.features as readonly string[],
+      cta: STUDENT_FREE.cta,
       highlighted: false,
     },
     {
-      id: "premium",
-      name: "Premium",
-      sub: "Recommandé",
-      price: "4,99€",
-      period: "/mois",
-      features: [
-        "Tout du plan Gratuit",
-        "Candidatures illimitées",
-        "Badge Premium sur ton profil",
-        "Alertes offres en temps réel",
-        "Accès aux mentors en DM",
-        "Support prioritaire",
-      ],
-      cta: "Devenir Premium",
+      id: STUDENT_PREMIUM.id,
+      name: STUDENT_PREMIUM.name,
+      sub: STUDENT_PREMIUM.sub,
+      price: STUDENT_PREMIUM.price,
+      period: STUDENT_PREMIUM.period,
+      features: STUDENT_PREMIUM.features as readonly string[],
+      cta: STUDENT_PREMIUM.cta,
       highlighted: true,
-    },
-    {
-      id: "premium_plus",
-      name: "Premium+",
-      sub: "Tout débloqué",
-      price: "9,99€",
-      period: "/mois",
-      features: [
-        "Tout du plan Premium",
-        "Badge Premium+ exclusif visible",
-        "Coaching CV & lettre de motivation",
-        "Accès anticipé aux nouvelles features",
-        "Canal Discord privé avec l'équipe",
-        "Ton avis dans la roadmap",
-      ],
-      cta: "Choisir Premium+",
-      highlighted: false,
     },
   ];
 
   const enterprisePlans = [
     {
-      id: "gratuit",
-      name: "Gratuit",
-      sub: "Pour commencer",
-      price: "0€",
-      period: "",
-      features: [
-        "Jusqu'à 3 offres par mois",
-        "Profil entreprise basique",
-        "Accès aux candidatures",
-        "Listing standard dans les résultats",
-        "Support par email",
-      ],
-      cta: "Commencer gratuitement",
+      id: RECRUITER_FREE.id,
+      name: RECRUITER_FREE.name,
+      sub: RECRUITER_FREE.sub,
+      price: RECRUITER_FREE.price,
+      period: RECRUITER_FREE.period,
+      features: RECRUITER_FREE.features as readonly string[],
+      cta: RECRUITER_FREE.cta,
       highlighted: false,
     },
     {
-      id: "company_starter",
-      name: "Starter",
-      sub: "Le plus populaire",
-      price: "29,99€",
-      period: "/offre",
-      features: [
-        "1 annonce mise en avant",
-        "Badge « Sponsorisée » visible",
-        "Boost visibilité ×10",
-        "Analytics de l'annonce (vues, clics)",
-        "Position prioritaire dans les résultats",
-        "Support prioritaire sous 24h",
-      ],
-      cta: "Publier une offre",
+      id: RECRUITER_STARTER.id,
+      name: RECRUITER_STARTER.name,
+      sub: RECRUITER_STARTER.sub,
+      price: RECRUITER_STARTER.price,
+      period: RECRUITER_STARTER.period,
+      features: RECRUITER_STARTER.features as readonly string[],
+      cta: RECRUITER_STARTER.cta,
       highlighted: true,
     },
     {
-      id: "company_pro",
-      name: "Pro Illimité",
-      sub: "Pour les équipes RH",
-      price: "199€",
-      period: "/mois HT",
-      features: [
-        "Offres illimitées chaque mois",
-        "Tableau de bord recruteur complet",
-        "Stats avancées (vues, candidatures, taux)",
-        "Accès aux profils étudiants open-to-work",
-        "Sourcing proactif par domaine",
-        "Export CSV des candidatures",
-        "Account manager dédié",
-        "Intégration ATS disponible",
-      ],
-      cta: "Passer Pro",
+      id: RECRUITER_PRO.id,
+      name: RECRUITER_PRO.name,
+      sub: RECRUITER_PRO.sub,
+      price: RECRUITER_PRO.priceMonthly,
+      period: RECRUITER_PRO.periodHomepage,
+      features: RECRUITER_PRO.features as readonly string[],
+      cta: RECRUITER_PRO.cta,
       highlighted: false,
     },
   ];
@@ -185,7 +140,7 @@ export function Pricing() {
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
+        <div className={`grid grid-cols-1 gap-6 md:gap-8 mx-auto ${isEnterprise ? "md:grid-cols-3 max-w-5xl" : "md:grid-cols-2 max-w-3xl"}`}>
           {plans.map((plan) => (
             <div
               key={plan.id}
