@@ -1,5 +1,7 @@
 // Génère public/sitemap.xml : pages statiques + une URL par école (table `ecoles`).
 // Usage : npm run sitemap [-- --out chemin.xml]
+// À lancer À LA MAIN uniquement (aucun hook de build ne l'appelle) ; public/sitemap.xml
+// reste versionné et n'est mis à jour que lorsque tu commites sa nouvelle version.
 // Lit l'URL et la clé publique Supabase depuis les variables d'environnement
 // (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY ou VITE_SUPABASE_PUBLISHABLE_KEY, ou .env).
 // Aucune valeur de clé n'est affichée ni écrite dans le fichier généré.

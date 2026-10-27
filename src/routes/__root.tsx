@@ -75,7 +75,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  head: ({ matches }) => {
+    const leaf = matches[matches.length - 1];
+    // Les fiches école déclarent leur propre canonical : on évite le doublon.
+    const isEcole = leaf?.routeId === "/ecoles/$slug";
+    return {
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -108,9 +112,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "canonical", href: "https://springr.app" },
+      ...(isEcole ? [] : [{ rel: "canonical", href: `https://springr.app${leaf?.pathname === "/" ? "" : (leaf?.pathname ?? "")}` }]),
     ],
-  }),
+    };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,

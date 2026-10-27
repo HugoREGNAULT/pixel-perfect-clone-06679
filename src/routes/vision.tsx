@@ -29,7 +29,7 @@ function VisionPage() {
           <div className="mb-6 flex justify-center lg:mb-8">
             <div className="-rotate-1 flex items-center gap-2.5 rounded-full border-2 border-black bg-white px-4 py-2.5 text-sm font-bold" style={{ boxShadow: "0 4px 0 0 rgba(0,0,0,1)" }}>
               <div className="size-2 rounded-full bg-success" />
-              Lancement T4 2025
+              Pré-lancement
             </div>
           </div>
 
@@ -109,7 +109,7 @@ function VisionPage() {
       {/* Problem Statement Section */}
       <section className="bg-white px-5 py-20 lg:px-8">
         <div className="mx-auto max-w-6xl">
-          <div className="grid gap-12 lg:grid-cols-2">
+          <div className="grid gap-12">
             {/* Problems */}
             <div className="space-y-8">
               <h2 className="text-3xl font-bold text-text-dark lg:text-4xl">
@@ -118,7 +118,7 @@ function VisionPage() {
 
               {[
                 { icon: Users, color: "bg-red-100", title: "Fragmentation", desc: "LinkedIn pour le réseau, Indeed pour les jobs, Studapart pour le logement... Pourquoi jongler entre 10 plateformes ?" },
-                { icon: Lightbulb, color: "bg-blue-100", title: "Isolement", desc: "12,5% des 15-29 ans sont NEET. Difficile de se faire un réseau professionnel sans expérience." },
+                { icon: Lightbulb, color: "bg-blue-100", title: "Isolement", desc: "Difficile de se faire un réseau professionnel sans expérience." },
                 { icon: TrendingUp, color: "bg-yellow-100", title: "Information cachée", desc: "Les meilleures opportunités et bons plans ne sont pas accessibles au grand public." },
               ].map((item, i) => (
                 <div key={i} className="flex gap-4">
@@ -132,29 +132,6 @@ function VisionPage() {
                 </div>
               ))}
             </div>
-
-            {/* Market Stats */}
-            <div className="rounded-2xl border-2 border-black bg-gray-100 p-8" style={{ boxShadow: "8px 8px 0px rgba(0,0,0,1)" }}>
-              <h3 className="text-center font-bold text-text-dark">Chiffres clés du marché</h3>
-              <div className="mt-8 grid grid-cols-2 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">1.04M</div>
-                  <p className="mt-1 text-sm text-text-gray-1">apprentis fin 2024</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-red-600">12.5%</div>
-                  <p className="mt-1 text-sm text-text-gray-1">des 15-29 ans NEET</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-success">160K</div>
-                  <p className="mt-1 text-sm text-text-gray-1">mentorés en 2023</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-highlight">+160%</div>
-                  <p className="mt-1 text-sm text-text-gray-1">demande mentorat</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -164,7 +141,7 @@ function VisionPage() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-16 text-center">
             <h2 className="font-display text-4xl font-bold text-text-dark lg:text-5xl">
-              Roadmap 2025
+              Roadmap
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-text-gray-1">
               Notre plan pour révolutionner la vie étudiante
@@ -176,8 +153,8 @@ function VisionPage() {
             {[
               { phase: "T1", title: "Validation", desc: "Étude marché + maquettes Figma", status: "En cours", statusBg: "bg-blue-100 text-primary" },
               { phase: "T2", title: "Développement", desc: "Création du MVP + partenariats", status: "À venir", statusBg: "bg-gray-200 text-text-gray-1" },
-              { phase: "T3", title: "Bêta fermée", desc: "Test avec 200 étudiants sélectionnés", status: "À venir", statusBg: "bg-gray-200 text-text-gray-1" },
-              { phase: "T4", title: "Lancement", desc: "Ouverture publique de la plateforme", status: "Q4 2025", statusBg: "bg-gray-200 text-text-gray-1" },
+              { phase: "T3", title: "Bêta fermée", desc: "Test avec des étudiants sélectionnés", status: "À venir", statusBg: "bg-gray-200 text-text-gray-1" },
+              { phase: "T4", title: "Lancement", desc: "Ouverture publique de la plateforme", status: "À venir", statusBg: "bg-gray-200 text-text-gray-1" },
             ].map((item, i) => (
               <div key={i} className="relative text-center">
                 <div className={`-translate-x-1/2 absolute left-1/2 top-0 size-16 -translate-y-1/2 transform rounded-full border-2 border-black font-bold text-white shadow-md ${
