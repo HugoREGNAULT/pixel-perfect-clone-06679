@@ -164,6 +164,7 @@ function FonctionnalitesPage() {
     <div className="min-h-screen bg-background">
       <AppNav />
 
+      <main>
       {/* Hero Section */}
       <section className="py-12 md:py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="text-center mb-8">
@@ -370,6 +371,7 @@ function FonctionnalitesPage() {
           </div>
         </div>
       </section>
+      </main>
 
     </div>
   );

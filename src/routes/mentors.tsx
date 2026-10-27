@@ -49,6 +49,7 @@ function MentorsPage() {
     <div className="min-h-screen bg-background text-foreground">
       <AppNav />
 
+      <main>
       {/* Grayed out main content */}
       <div className="opacity-60 pointer-events-none">
         <section className="py-20 px-5 lg:px-8">
@@ -138,6 +139,7 @@ function MentorsPage() {
           </p>
         </div>
       </section>
+      </main>
     </div>
   );
 }

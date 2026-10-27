@@ -102,6 +102,7 @@ function HomePage() {
     <>
       <div className="min-h-screen bg-background text-foreground overflow-x-hidden flex flex-col pb-[140px] lg:pb-0">
         <Nav />
+        <main>
         <Hero />
         <WhySpringr />
         <FeaturesTab />
@@ -109,6 +110,7 @@ function HomePage() {
         <Mentorship />
         <Pricing />
         <NewsletterCTA />
+        </main>
       </div>
       <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
     </>
@@ -170,10 +172,12 @@ function SpringrLanding() {
     <>
       <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
         <NavLegacy onFounder={() => setFounderOpen(true)} user={user} onSignOut={handleSignOut} />
+        <main>
         <Hero />
         <WhySpringr />
         <FeaturesTab />
         <NewsletterCTA />
+        </main>
       </div>
       <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
     </>
