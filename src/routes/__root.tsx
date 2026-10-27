@@ -78,7 +78,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: ({ matches }) => {
     const leaf = matches[matches.length - 1];
     // Les fiches école déclarent leur propre canonical : on évite le doublon.
-    const isEcole = leaf?.routeId === "/ecoles/$slug";
+    const isEcole = String(leaf?.routeId) === "/ecoles/$slug";
     return {
     meta: [
       { charSet: "utf-8" },
