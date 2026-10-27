@@ -13,26 +13,46 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CookieBanner } from "@/components/CookieBanner";
 import { SiteFooter } from "@/components/SiteFooter";
+import { AppNav } from "@/components/AppNav";
+import { Button } from "@/components/ui/button";
+
+const USEFUL_LINKS = [
+  { to: "/opportunites", label: "Voir les offres" },
+  { to: "/bons-plans", label: "Bons plans" },
+  { to: "/ecoles", label: "Écoles" },
+  { to: "/evenements", label: "Événements" },
+  { to: "/contact", label: "Nous contacter" },
+] as const;
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 text-foreground">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground/20">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page introuvable</h2>
-        <p className="mt-2 text-sm text-foreground-2">
-          Cette page n'existe pas ou a été déplacée.
+    <>
+      <AppNav />
+      <main id="main" className="mx-auto w-full max-w-xl px-5 py-16 md:py-24 text-center min-h-[60vh]">
+        <p className="text-display font-bold text-primary" aria-hidden="true">404</p>
+        <h1 className="mt-2 text-h1 font-bold text-foreground">Page introuvable</h1>
+        <p className="mt-3 text-base text-muted-foreground">
+          Cette page n'existe pas ou a été déplacée. Vérifie l'adresse, ou reprends ton chemin depuis un de ces liens.
         </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
-          >
-            Retour à l'accueil
-          </Link>
+        <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center">
+          <Button asChild size="lg">
+            <Link to="/">Retour à l'accueil</Link>
+          </Button>
         </div>
-      </div>
-    </div>
+        <ul className="mt-6 flex flex-wrap justify-center gap-x-2">
+          {USEFUL_LINKS.map(({ to, label }) => (
+            <li key={to}>
+              <Link
+                to={to}
+                className="inline-flex min-h-11 items-center px-3 font-semibold text-primary underline-offset-4 hover:underline"
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </main>
+    </>
   );
 }
 
@@ -44,33 +64,30 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 text-foreground">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          Une erreur est survenue
-        </h1>
-        <p className="mt-2 text-sm text-foreground-2">
-          Quelque chose s'est mal passé. Tu peux réessayer ou revenir à l'accueil.
+    <>
+      <AppNav />
+      <main id="main" className="mx-auto w-full max-w-xl px-5 py-16 md:py-24 text-center min-h-[60vh]">
+        <h1 className="text-h1 font-bold text-foreground">Une erreur est survenue</h1>
+        <p className="mt-3 text-base text-muted-foreground">
+          Quelque chose s'est mal passé de notre côté. Tu peux réessayer ou revenir à l'accueil.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
+        <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center">
+          <Button
+            size="lg"
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
           >
             Réessayer
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-full border border-border px-6 py-2.5 text-sm font-medium text-foreground hover:bg-muted transition-colors"
-          >
-            Retour à l'accueil
-          </a>
+          </Button>
+          <Button asChild variant="secondary" size="lg">
+            <a href="/">Retour à l'accueil</a>
+          </Button>
         </div>
-      </div>
-    </div>
+      </main>
+      <SiteFooter />
+    </>
   );
 }
 
