@@ -11,8 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 const NAV_LINKS = [
   { to: "/opportunites", label: "Opportunités" },
@@ -135,7 +133,7 @@ export function AppNav() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 flex h-17 items-center border-b border-divider bg-background/95 backdrop-blur">
+      <header className="sticky top-0 z-40 backdrop-blur bg-background border-b border-border h-17 flex items-center">
         <div className="mx-auto max-w-7xl px-5 w-full flex items-center justify-between gap-4">
           {/* Logo */}
           <Link
@@ -153,7 +151,7 @@ export function AppNav() {
                 key={to}
                 to={to}
                 className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                  isActive(to) ? "text-accent font-semibold bg-highlight" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  isActive(to) ? "text-primary font-semibold bg-primary-soft" : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}
               >
                 {label}
@@ -168,34 +166,30 @@ export function AppNav() {
               <form onSubmit={submitSearch} className="flex items-center gap-2 animate-in fade-in slide-in-from-right-2 duration-150">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground pointer-events-none" />
-                  <Input
+                  <input
                     ref={searchInputRef}
                     value={searchQ}
                     onChange={e => setSearchQ(e.target.value)}
                     placeholder="Rechercher…"
-                    className="h-9 w-48 bg-card pl-8 pr-3 text-sm transition-all focus-visible:w-64"
+                    className="w-48 rounded-lg bg-muted border border-border pl-8 pr-3 py-1.5 text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:w-64 transition-all text-foreground"
                   />
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
+                <button
                   type="button"
                   onClick={() => { setSearchOpen(false); setSearchQ(""); }}
-                  className="size-8 text-muted-foreground"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X className="size-4" />
-                </Button>
+                </button>
               </form>
             ) : (
-              <Button
-                variant="ghost"
-                size="icon"
+              <button
                 onClick={openSearch}
-                className="text-muted-foreground"
+                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 aria-label="Recherche"
               >
                 <Search className="size-4" />
-              </Button>
+              </button>
             )}
 
             {/* Messages icon */}
@@ -218,7 +212,7 @@ export function AppNav() {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 transition-colors hover:border-border-strong hover:bg-muted focus:outline-none">
+                  <button className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 hover:border-primary hover:bg-primary-soft transition-all focus:outline-none">
                     <div className="size-5 rounded-lg bg-muted flex items-center justify-center text-foreground-2 text-[10px] font-semibold shrink-0">
                       {initials}
                     </div>
@@ -278,15 +272,13 @@ export function AppNav() {
 
           {/* Mobile: search + messages + hamburger */}
           <div className="flex items-center gap-1 lg:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
               onClick={openSearch}
-              className="text-muted-foreground"
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Recherche"
             >
               <Search className="size-5" />
-            </Button>
+            </button>
             {user && (
               <Link
                 to="/messages"
@@ -302,15 +294,13 @@ export function AppNav() {
                 )}
               </Link>
             )}
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
               onClick={() => setOpen(!open)}
-              className="text-muted-foreground"
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Menu"
             >
               {open ? <X className="size-5" /> : <Menu className="size-5" />}
-            </Button>
+            </button>
           </div>
         </div>
 
@@ -320,26 +310,24 @@ export function AppNav() {
             <form onSubmit={submitSearch} className="flex gap-2">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
-                <Input
+                <input
                   ref={searchInputRef}
                   value={searchQ}
                   onChange={e => setSearchQ(e.target.value)}
                   placeholder="Offre, mentor, événement…"
-                  className="w-full bg-card pl-10 pr-4 text-sm"
+                  className="w-full rounded-lg bg-muted border border-border pl-10 pr-4 py-2.5 text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors text-foreground"
                 />
               </div>
-              <Button type="submit" className="px-4">
+              <button type="submit" className="rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground">
                 OK
-              </Button>
-              <Button
+              </button>
+              <button
                 type="button"
-                variant="ghost"
-                size="icon"
                 onClick={() => { setSearchOpen(false); setSearchQ(""); }}
-                className="text-muted-foreground"
+                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <X className="size-4" />
-              </Button>
+              </button>
             </form>
           </div>
         )}
@@ -354,7 +342,7 @@ export function AppNav() {
               to={to}
               onClick={() => setOpen(false)}
               className={`block px-3 py-2.5 rounded-lg text-sm transition-colors ${
-                isActive(to) ? "text-accent font-semibold bg-highlight" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                isActive(to) ? "text-primary font-semibold bg-primary-soft" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
             >
               {label}
@@ -407,13 +395,12 @@ export function AppNav() {
                 >
                   <Settings className="size-4" /> Paramètres
                 </Link>
-                <Button
+                <button
                   onClick={signOut}
-                  variant="ghost"
-                  className="h-auto w-full justify-start px-3 py-2.5 text-muted-foreground"
+                  className="w-full text-left px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex items-center gap-2"
                 >
                   <LogOut className="size-4" /> Déconnexion
-                </Button>
+                </button>
               </>
             ) : (
               <>
