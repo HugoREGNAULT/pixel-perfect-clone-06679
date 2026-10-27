@@ -284,7 +284,7 @@ function ParrainagePage() {
             {[
               { n: "1", title: "Tu partages",     desc: "Envoie ton lien ou ton code à un ami.",          icon: Share2    },
               { n: "2", title: "Il s'inscrit",    desc: "Il crée son compte via ton lien en 2 minutes.",  icon: Users     },
-              { n: "3", title: "Vous gagnez tous deux", desc: "Lui 7 jours Premium, toi +1 parrainage.", icon: Gift      },
+              { n: "3", title: "Chacun y gagne", desc: "Lui 7 jours Premium, toi +1 parrainage.", icon: Gift      },
             ].map(({ n, title, desc, icon: Icon }) => (
               <div key={n} className="rounded-2xl border border-white/8 bg-ink-2 p-5">
                 <div className="size-8 rounded-xl bg-violet/15 border border-violet/25 flex items-center justify-center text-xs font-mono font-bold text-violet-soft mb-3">{n}</div>
