@@ -6,7 +6,6 @@ import {
   Loader2, AlertTriangle, Compass, GraduationCap, Lightbulb, Heart, MapPin,
 } from "lucide-react";
 import { AppNav } from "@/components/AppNav";
-import { SiteFooter } from "@/components/SiteFooter";
 import { supabase } from "@/integrations/supabase/client";
 import { searchJobs, type JobOffer } from "@/lib/job-search";
 
@@ -14,7 +13,7 @@ export const Route = createFileRoute("/opportunites/")({
   head: () => ({
     meta: [
       { title: "Offres — Springr" },
-      { name: "description", content: "Découvrez les meilleures opportunités de stage, alternance et emploi en direct depuis France Travail et La Bonne Alternance." },
+      { name: "description", content: "Stages, alternances et premiers emplois pour les 15-29 ans." },
     ],
   }),
   component: OffresPage,
@@ -235,7 +234,6 @@ function OffresPage() {
         </section>
       </main>
 
-      <SiteFooter />
     </div>
   );
 }

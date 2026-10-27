@@ -13,7 +13,6 @@ import {
   Sparkles,
   Shield,
   Rocket,
-  Star,
   Loader2,
 } from "lucide-react";
 
@@ -97,18 +96,11 @@ const PLANS = [
   },
 ] as const;
 
-const TRUST_STATS = [
-  { n: "2 400+", label: "étudiants inscrits" },
-  { n: "48",     label: "écoles représentées" },
-  { n: "120",    label: "mentors actifs" },
-  { n: "94%",    label: "taux de réponse" },
-];
-
 const ADVANTAGES = [
   { icon: Users,     title: "Talent qualifié & ciblé",      desc: "Des profils étudiants vérifiés, avec compétences, projets et écoles — pas des CVs vides." },
   { icon: Zap,       title: "Mise en ligne en 2 minutes",   desc: "Publie une offre depuis ton tableau de bord sans friction. Visible immédiatement." },
   { icon: BarChart3, title: "Stats en temps réel",          desc: "Vues, clics, candidatures : tu sais exactement ce qui fonctionne." },
-  { icon: Shield,    title: "Profils vérifiés",             desc: "Chaque étudiant a une adresse email académique vérifiée et un profil complet." },
+  { icon: Shield,    title: "Profils étudiants",            desc: "Chaque étudiant crée un profil avec ses compétences, ses projets et son école." },
 ];
 
 /* -------------------------------------------------------------------- page */
@@ -175,8 +167,7 @@ function RecruteursPage() {
               <span className="text-violet">avant tout le monde.</span>
             </h1>
             <p className="text-mute text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-              2 400 étudiants qualifiés sur Springr, actifs dans leurs recherches.
-              Publie tes offres là où ça compte.
+              Publie tes offres auprès d'étudiants et de jeunes diplômés de 15 à 29 ans.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link to="/signup" className="group inline-flex items-center gap-2 rounded-full bg-lime px-7 py-4 text-base font-semibold text-ink hover:-translate-y-0.5 transition-transform glow-lime">
@@ -186,15 +177,6 @@ function RecruteursPage() {
               <a href="#tarifs" className="inline-flex items-center gap-2 rounded-full border border-white/15 px-7 py-4 text-base text-white hover:bg-white/5 transition-all">
                 Voir les tarifs
               </a>
-            </div>
-
-            <div className="mt-14 flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
-              {TRUST_STATS.map(({ n, label }) => (
-                <div key={label} className="text-center">
-                  <div className="font-display text-2xl font-bold text-white">{n}</div>
-                  <div className="text-xs text-mute mt-0.5">{label}</div>
-                </div>
-              ))}
             </div>
           </div>
         </section>
@@ -327,18 +309,13 @@ function RecruteursPage() {
           </p>
         </section>
 
-        {/* ---- testimonial / CTA ---- */}
+        {/* ---- CTA ---- */}
         <section className="mx-auto max-w-5xl px-5 pb-10">
           <div className="relative rounded-3xl border border-violet/30 bg-gradient-to-br from-violet/20 via-ink-2 to-ink-2 p-8 sm:p-14 overflow-hidden noise">
             <div className="absolute -top-20 -right-20 size-80 rounded-full bg-violet/30 blur-[100px]" />
             <div className="absolute -bottom-20 -left-20 size-60 rounded-full bg-lime/15 blur-[100px]" />
 
             <div className="relative text-center max-w-2xl mx-auto">
-              <Star className="size-8 text-lime mx-auto mb-5 fill-lime/30" />
-              <blockquote className="font-display text-2xl sm:text-3xl font-bold leading-snug mb-6">
-                « On a trouvé 3 alternants en moins d'une semaine via Springr. Des profils qu'on n'aurait jamais croisés sur LinkedIn. »
-              </blockquote>
-              <p className="text-mute text-sm mb-8">— Léa, RH chez Pennylane · Utilisatrice beta</p>
               <Link
                 to="/signup"
                 className="group inline-flex items-center gap-2 rounded-full bg-lime px-7 py-4 text-base font-semibold text-ink hover:-translate-y-0.5 transition-transform glow-lime"

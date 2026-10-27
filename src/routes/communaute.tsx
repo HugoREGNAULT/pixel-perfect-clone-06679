@@ -2,7 +2,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { AppNav } from "@/components/AppNav";
-import { SiteFooter } from "@/components/SiteFooter";
 import {
   ExternalLink,
   Loader2,
@@ -242,7 +241,6 @@ function CommunautePage() {
         </section>
       </main>
 
-      <SiteFooter />
     </div>
   );
 }

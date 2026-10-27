@@ -16,7 +16,7 @@ export const Route = createFileRoute("/bons-plans")({
   head: () => ({
     meta: [
       { title: "Bons Plans Étudiants — Springr" },
-      { name: "description", content: "Les meilleures réductions, aides de l'État et offres gratuites pour les étudiants français. 58 bons plans sélectionnés." },
+      { name: "description", content: "Les meilleures réductions, aides de l'État et offres gratuites pour les étudiants français." },
     ],
   }),
   component: BonsPlansPage,

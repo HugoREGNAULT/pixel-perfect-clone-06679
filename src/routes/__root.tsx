@@ -83,7 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Springr connecte étudiants, mentors et recruteurs sur une seule plateforme — pensée par et pour les jeunes actifs." },
       { name: "author", content: "Springr" },
       { property: "og:title", content: "Springr — Le réseau pro des étudiants" },
-      { property: "og:description", content: "Profil vivant, mentors, opportunités matchées. Pré-lancement en cours." },
+      { property: "og:description", content: "Le réseau pro des 15-29 ans : offres, bons plans, avis d'écoles. Pré-lancement." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://springr.app" },
       { property: "og:image", content: "https://springr.app/og-image.png" },
@@ -94,7 +94,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@springrapp" },
       { name: "twitter:title", content: "Springr — Le réseau pro des étudiants" },
-      { name: "twitter:description", content: "Profil vivant, mentors, opportunités matchées. Pré-lancement en cours." },
+      { name: "twitter:description", content: "Le réseau pro des 15-29 ans : offres, bons plans, avis d'écoles. Pré-lancement." },
       { name: "twitter:image", content: "https://springr.app/og-image.png" },
     ],
     links: [

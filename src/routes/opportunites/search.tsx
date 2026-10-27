@@ -14,7 +14,7 @@ export const Route = createFileRoute("/opportunites/search")({
   head: () => ({
     meta: [
       { title: "Recherche d'Opportunités — Springr" },
-      { name: "description", content: "Stages, alternances et emplois en direct depuis France Travail et La Bonne Alternance." },
+      { name: "description", content: "Stages, alternances et premiers emplois pour les 15-29 ans." },
     ],
   }),
   component: OpportunitesSearchPage,

@@ -8,8 +8,8 @@ export function FeaturesTab() {
     {
       name: "Offres",
       icon: Briefcase,
-      title: "Matching intelligent",
-      description: "Découvrez les meilleures opportunités adaptées à votre profil. Notre algorithme analyse votre parcours et vos aspirations pour vous proposer des offres et stages vraiment pertinents.",
+      title: "Recommandations selon ton profil",
+      description: "Tu indiques ta ville, ton secteur et le type de contrat que tu cherches ; Springr te propose en priorité les offres qui correspondent.",
     },
     {
       name: "Mentorat",
