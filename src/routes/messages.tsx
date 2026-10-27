@@ -460,7 +460,7 @@ function MessagesPage() {
                     </div>
                     {conv.lastMsg && (
                       <p className={`text-xs truncate ${conv.unreadCount > 0 ? "text-white/70 font-medium" : "text-mute"}`}>
-                        {conv.lastMsg.sender_id === userId ? "Vous : " : ""}{conv.lastMsg.content}
+                        {conv.lastMsg.sender_id === userId ? "Toi : " : ""}{conv.lastMsg.content}
                       </p>
                     )}
                   </div>

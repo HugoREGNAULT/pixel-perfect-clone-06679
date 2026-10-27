@@ -98,7 +98,7 @@ function LoginPage() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="votre@email.com"
+                  placeholder="ton@email.com"
                   className="w-full bg-white border-2 border-slate-300 rounded-2xl px-5 py-4 text-foreground placeholder:text-slate-400 focus:outline-none focus:border-primary transition-colors"
                 />
               </div>

@@ -6,7 +6,7 @@ export const Route = createFileRoute("/vision")({
   head: () => ({
     meta: [
       { title: "Notre Vision — Springr" },
-      { name: "description", content: "Découvrez la vision de Springr pour révolutionner la vie étudiante." },
+      { name: "description", content: "Découvre la vision de Springr pour révolutionner la vie étudiante." },
     ],
   }),
   component: VisionPage,
@@ -40,14 +40,14 @@ function VisionPage() {
               <span className="relative inline-block -rotate-1 bg-highlight px-2">
                 révolutionner
               </span>{" "}
-              votre avenir étudiant
+              ton avenir étudiant
             </h1>
           </div>
 
           {/* Description */}
           <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-text-gray-1">
             Springr centralise stages, alternances, mentorat et bons plans dans une seule app moderne.
-            Rejoignez la liste d'attente pour être parmi les premiers à découvrir l'avenir de la vie étudiante.
+            Rejoins la liste d'attente pour être parmi les premiers à découvrir l'avenir de la vie étudiante.
           </p>
 
           {/* Stats */}
@@ -84,8 +84,8 @@ function VisionPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { icon: "01", color: "bg-primary", title: "Offres & Stages", desc: "Offres de stage, d'alternance et de premier emploi" },
-              { icon: "02", color: "bg-success", title: "Mentorat Pro", desc: "Accès direct à des professionnels expérimentés de votre domaine" },
-              { icon: "03", color: "bg-red-500", title: "Bons Plans", desc: "Logement, réductions, outils... tout ce dont vous avez besoin" },
+              { icon: "02", color: "bg-success", title: "Mentorat Pro", desc: "Accès direct à des professionnels expérimentés de ton domaine" },
+              { icon: "03", color: "bg-red-500", title: "Bons Plans", desc: "Logement, réductions, outils... tout ce dont tu as besoin" },
               { icon: "04", color: "bg-purple-600", title: "Communauté", desc: "Forums, salons vocaux et événements exclusifs" },
             ].map((item, i) => (
               <div
@@ -210,10 +210,10 @@ function VisionPage() {
 
         <div className="relative z-10 mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold text-white lg:text-4xl">
-            Soyez parmi les premiers à découvrir Springr
+            Sois parmi les premiers à découvrir Springr
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-gray-300">
-            Rejoignez notre communauté de futurs leaders et obtenez un accès prioritaire + 3 mois Premium offerts
+            Rejoins notre communauté de futurs leaders et obtiens un accès prioritaire + 3 mois Premium offerts
           </p>
 
           <div className="mt-10">
@@ -221,7 +221,7 @@ function VisionPage() {
               <div className="flex flex-col gap-4 sm:flex-row sm:gap-3">
                 <input
                   type="email"
-                  placeholder="Votre email étudiant"
+                  placeholder="Ton email étudiant"
                   className="flex-1 rounded-lg border-2 border-black bg-white px-6 py-3 placeholder:text-gray-400 focus:outline-none"
                 />
                 <button className="rounded-lg border-2 border-black bg-primary px-8 py-3 font-bold text-white transition-opacity hover:opacity-90" style={{ boxShadow: "4px 4px 0px rgba(0,0,0,1)" }}>
@@ -247,7 +247,7 @@ function VisionPage() {
           </div>
 
           <p className="mt-6 text-xs text-gray-400">
-            En vous inscrivant, vous acceptez de recevoir nos mises à jour par email. Vous pouvez vous désinscrire à tout moment.
+            En t'inscrivant, tu acceptes de recevoir nos mises à jour par email. Tu peux te désinscrire à tout moment.
           </p>
         </div>
       </section>

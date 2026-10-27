@@ -105,7 +105,7 @@ function OffresPage() {
 
             {/* Heading */}
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-center leading-tight mb-4">
-              Trouvez votre opportunité
+              Trouve ton opportunité
               <br />
               <span className="bg-gradient-to-r from-primary to-highlight bg-clip-text text-transparent">
                 parfaite
@@ -167,9 +167,9 @@ function OffresPage() {
         <section className="bg-muted/30 px-5 lg:px-8 py-16 lg:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="mb-12 text-center">
-              <h2 className="font-display text-3xl lg:text-4xl font-bold mb-3">Explorez par domaine</h2>
+              <h2 className="font-display text-3xl lg:text-4xl font-bold mb-3">Explore par domaine</h2>
               <p className="text-foreground/70 text-base lg:text-lg">
-                Trouvez les meilleures opportunités dans votre secteur d'intérêt
+                Trouve les meilleures opportunités dans ton secteur d'intérêt
               </p>
             </div>
 
@@ -212,10 +212,10 @@ function OffresPage() {
 
           <div className="relative z-10 mx-auto max-w-2xl text-center">
             <h2 className="font-display text-4xl lg:text-5xl font-bold mb-4">
-              Prêt à trouver votre prochaine opportunité ?
+              Prêt à trouver ta prochaine opportunité ?
             </h2>
             <p className="text-white/80 text-lg mb-8">
-              Créer votre profil Springr et commencez à explorer les meilleures offres dès aujourd'hui.
+              Crée ton profil Springr et commence à explorer les meilleures offres dès aujourd'hui.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

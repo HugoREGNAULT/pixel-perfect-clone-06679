@@ -83,7 +83,7 @@ export function Hero() {
                 color: "var(--color-text-dark)",
               }}
             >
-              <span>Boostez votre</span>
+              <span>Booste ton</span>
               <span className="relative inline-block">
                 <span
                   className="-rotate-2 inline-block px-3"
@@ -115,7 +115,7 @@ export function Hero() {
               color: "var(--color-text-gray-1)",
             }}
           >
-            Centralisez stages, alternances, mentorat et bons plans dans une seule app. Rejoignez la communauté qui connecte étudiants, écoles et entreprises.
+            Centralise stages, alternances, mentorat et bons plans dans une seule app. Rejoins la communauté qui connecte étudiants, écoles et entreprises.
           </p>
 
           {/* CTA Buttons */}
@@ -421,7 +421,7 @@ function HeroProductComposition() {
                 color: "var(--color-text-gray-2)",
               }}
             >
-              Studio Nova vous attend
+              Studio Nova t'attend
             </div>
           </div>
         </div>

@@ -96,7 +96,7 @@ function AdminLoginPage() {
               Accès Admin
             </h1>
             <p className="text-center text-gray-600 mb-8 text-base font-medium">
-              Connectez-vous au panneau d'administration
+              Connecte-toi au panneau d'administration
             </p>
 
             {/* Form */}

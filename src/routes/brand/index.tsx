@@ -182,7 +182,7 @@ function BrandPage() {
         <section id="couleurs">
           <SectionHeader n="03" title="Couleurs" />
           <p className="text-mute mb-8 text-sm leading-relaxed max-w-2xl">
-            La palette Springr est construite autour du contraste fort (fond quasi-noir) et de deux accents complémentaires — le violet électrique et le vert lime. Cliquez sur une couleur pour copier son code hex.
+            La palette Springr est construite autour du contraste fort (fond quasi-noir) et de deux accents complémentaires — le violet électrique et le vert lime. Clique sur une couleur pour copier son code hex.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {COLORS.map(c => <ColorSwatch key={c.name} {...c} />)}

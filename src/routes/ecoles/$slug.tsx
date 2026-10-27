@@ -884,25 +884,25 @@ function generateFAQ(e: Ecole): { q: string; a: string }[] {
       q: `Combien d'étudiants à ${e.name} ?`,
       a: e.nombre_etudiants
         ? `${e.name} accueille environ ${e.nombre_etudiants.toLocaleString("fr-FR")} étudiants.`
-        : `${e.name} est un établissement de type "${e.type_etablissement || e.type}" situé à ${e.city}. Consultez le site officiel pour les effectifs exacts.`,
+        : `${e.name} est un établissement de type "${e.type_etablissement || e.type}" situé à ${e.city}. Consulte le site officiel pour les effectifs exacts.`,
     },
     {
       q: `Quels diplômes prépare ${e.name} ?`,
       a: e.diplomes?.length
         ? `${e.name} prépare aux formations suivantes : ${e.diplomes.slice(0, 6).join(", ")}${e.diplomes.length > 6 ? ` et ${e.diplomes.length - 6} autres` : ""}.`
-        : `Consultez le site officiel de ${e.name} pour découvrir l'ensemble des formations proposées.`,
+        : `Consulte le site officiel de ${e.name} pour découvrir l'ensemble des formations proposées.`,
     },
     {
       q: `Comment contacter ${e.name} ?`,
       a: e.email
-        ? `Vous pouvez contacter ${e.name} par email à l'adresse ${e.email}${e.telephone ? ` ou par téléphone au ${e.telephone}` : ""}${e.adresse ? `. L'établissement est situé au ${e.adresse}, ${e.code_postal ?? ""} ${e.city}` : ""}.`
+        ? `Tu peux contacter ${e.name} par email à l'adresse ${e.email}${e.telephone ? ` ou par téléphone au ${e.telephone}` : ""}${e.adresse ? `. L'établissement est situé au ${e.adresse}, ${e.code_postal ?? ""} ${e.city}` : ""}.`
         : e.site_web || e.website
-        ? `Rendez-vous sur le site officiel ${(e.site_web || e.website)?.replace(/^https?:\/\//, "")} pour les coordonnées complètes.`
+        ? `Rends-toi sur le site officiel ${(e.site_web || e.website)?.replace(/^https?:\/\//, "")} pour les coordonnées complètes.`
         : `Adresse : ${e.city}${e.region ? `, ${e.region}` : ""}.`,
     },
     {
       q: `Y a-t-il des journées portes ouvertes à ${e.name} ?`,
-      a: `Des journées portes ouvertes sont régulièrement organisées à ${e.name}. Consultez l'onglet JPO de cette page ou la page Événements de Springr pour les prochaines dates.`,
+      a: `Des journées portes ouvertes sont régulièrement organisées à ${e.name}. Consulte l'onglet JPO de cette page ou la page Événements de Springr pour les prochaines dates.`,
     },
   ];
 }

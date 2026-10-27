@@ -100,7 +100,7 @@ function OnboardingPage() {
     e.preventDefault();
 
     if (!firstName || !lastName || !birthDate || !professionalStatus || !diploma || !region) {
-      toast.error("Veuillez remplir tous les champs");
+      toast.error("Remplis tous les champs");
       return;
     }
 
@@ -111,7 +111,7 @@ function OnboardingPage() {
     const monthDiff = today.getMonth() - birthDateObj.getMonth();
 
     if (age < 15 || (age === 15 && monthDiff < 0)) {
-      toast.error("Vous devez avoir au moins 15 ans pour vous inscrire");
+      toast.error("Tu dois avoir au moins 15 ans pour t'inscrire");
       return;
     }
 
@@ -186,10 +186,10 @@ function OnboardingPage() {
           {/* Heading */}
           <div className="mb-12 text-center">
             <h1 className="text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
-              Personnalisez votre expérience
+              Personnalise ton expérience
             </h1>
             <p className="text-gray-600 text-lg">
-              Aidez-nous à vous proposer le meilleur contenu adapté à votre
+              Aide-nous à te proposer le meilleur contenu adapté à ton
               profil
             </p>
           </div>
@@ -254,7 +254,7 @@ function OnboardingPage() {
                     required
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    placeholder="Votre prénom"
+                    placeholder="Ton prénom"
                     className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-foreground placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary transition-all shadow-[2px_2px_0px_black]"
                   />
                 </div>
@@ -278,7 +278,7 @@ function OnboardingPage() {
                     required
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    placeholder="Votre nom"
+                    placeholder="Ton nom"
                     className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-foreground placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary transition-all shadow-[2px_2px_0px_black]"
                   />
                 </div>
@@ -308,7 +308,7 @@ function OnboardingPage() {
                   className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all shadow-[2px_2px_0px_black]"
                 />
                 <p className="text-xs text-gray-500 mt-2">
-                  Vous devez avoir au moins 15 ans pour vous inscrire
+                  Tu dois avoir au moins 15 ans pour t'inscrire
                 </p>
               </div>
 
@@ -364,7 +364,7 @@ function OnboardingPage() {
                   onChange={(e) => setDiploma(e.target.value)}
                   className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all shadow-[2px_2px_0px_black]"
                 >
-                  <option value="">Sélectionnez votre diplôme</option>
+                  <option value="">Sélectionne ton diplôme</option>
                   {diplomaOptions.map((opt) => (
                     <option key={opt} value={opt}>
                       {opt}
@@ -395,7 +395,7 @@ function OnboardingPage() {
                   onChange={(e) => setRegion(e.target.value)}
                   className="w-full bg-white border-2 border-black rounded-2xl px-6 py-5 text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all shadow-[2px_2px_0px_black]"
                 >
-                  <option value="">Sélectionnez votre région</option>
+                  <option value="">Sélectionne ta région</option>
                   {regionOptions.map((opt) => (
                     <option key={opt} value={opt}>
                       {opt}
@@ -415,12 +415,12 @@ function OnboardingPage() {
                 </svg>
                 <div>
                   <p className="font-semibold text-sm text-gray-700 mb-1">
-                    Vos données sont protégées
+                    Tes données sont protégées
                   </p>
                   <p className="text-xs text-gray-700">
-                    Ces informations nous permettent de personnaliser votre
-                    expérience et de vous proposer des opportunités adaptées à
-                    votre profil.
+                    Ces informations nous permettent de personnaliser ton
+                    expérience et de te proposer des opportunités adaptées à
+                    ton profil.
                   </p>
                 </div>
               </div>
@@ -458,7 +458,7 @@ function OnboardingPage() {
 
               {/* Terms text */}
               <div className="text-center text-xs text-gray-500">
-                En continuant, vous acceptez nos{" "}
+                En continuant, tu acceptes nos{" "}
                 <a href="/conditions-utilisation" className="text-primary font-bold hover:underline">
                   conditions d'utilisation
                 </a>{" "}

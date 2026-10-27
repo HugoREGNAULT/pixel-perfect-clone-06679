@@ -20,7 +20,7 @@ export const Route = createFileRoute("/communaute")({
       {
         name: "description",
         content:
-          "Rejoignez la communauté Springr. Découvrez les bons plans, les JPO et connectez-vous avec d'autres étudiants.",
+          "Rejoins la communauté Springr. Découvre les bons plans, les JPO et connecte-toi avec d'autres étudiants.",
       },
     ],
   }),
@@ -67,12 +67,12 @@ function CommunautePage() {
       <main className="flex-1 mx-auto max-w-6xl px-5 py-10 w-full">
         {/* ── Hero Section ──────────────────────────────────────────────────*/}
         <div className="mb-16">
-          <div className="eyebrow mb-3">Connectez-vous · Partagez · Prograssez</div>
+          <div className="eyebrow mb-3">Connecte-toi · Partage · Progresse</div>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] mb-4">
             Communauté Springr
           </h1>
           <p className="text-mute text-lg max-w-2xl">
-            Rejoignez une communauté bienveillante de jeunes talents. Accédez à des ressources
+            Rejoins une communauté bienveillante de jeunes talents. Accède à des ressources
             exclusives, bons plans et événements.
           </p>
         </div>
@@ -219,7 +219,7 @@ function CommunautePage() {
             <MessageCircle className="size-12 text-mute/40 mx-auto mb-4" />
             <h3 className="font-display text-xl font-bold mb-2">Bientôt disponible</h3>
             <p className="text-mute max-w-sm mx-auto">
-              Un espace pour échanger avec la communauté et poser vos questions aux mentors.
+              Un espace pour échanger avec la communauté et poser tes questions aux mentors.
             </p>
           </div>
         </section>
@@ -235,7 +235,7 @@ function CommunautePage() {
             <Activity className="size-12 text-mute/40 mx-auto mb-4" />
             <h3 className="font-display text-xl font-bold mb-2">Bientôt disponible</h3>
             <p className="text-mute max-w-sm mx-auto">
-              Découvrez ce que font les autres membres de la communauté.
+              Découvre ce que font les autres membres de la communauté.
             </p>
           </div>
         </section>

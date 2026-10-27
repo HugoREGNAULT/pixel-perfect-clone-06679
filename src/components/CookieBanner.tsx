@@ -62,7 +62,7 @@ export function CookieBanner() {
             <div className="flex-1">
               <p className="text-sm font-semibold text-foreground mb-1">Gestion des cookies</p>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Nous utilisons des cookies pour améliorer votre expérience. Consultez notre{" "}
+                Nous utilisons des cookies pour améliorer ton expérience. Consulte notre{" "}
                 <Link to="/cookies" className="text-primary hover:underline">politique cookies</Link>.
               </p>
             </div>
@@ -85,7 +85,7 @@ export function CookieBanner() {
               />
               <ToggleRow
                 label="Cookies marketing"
-                description="Personnalisation des contenus selon vos intérêts."
+                description="Personnalisation des contenus selon tes intérêts."
                 checked={marketing}
                 onChange={setMarketing}
               />

@@ -7,7 +7,7 @@ export const Route = createFileRoute("/brand/assets")({
   head: () => ({
     meta: [
       { title: "Assets & Kit Marque — Springr" },
-      { name: "description", content: "Téléchargez les logos, icônes et assets officiels de la marque Springr en SVG et PNG." },
+      { name: "description", content: "Télécharge les logos, icônes et assets officiels de la marque Springr en SVG et PNG." },
     ],
   }),
   component: AssetsPage,

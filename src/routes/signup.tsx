@@ -53,14 +53,14 @@ function SignupPage() {
     }
 
     if (!agreedToTerms) {
-      toast.error("Veuillez accepter les conditions d'utilisation");
+      toast.error("Accepte les conditions d'utilisation");
       return;
     }
 
     // Validate age for lyceen
     if (role === "lyceen") {
       if (!birthDate) {
-        toast.error("Veuillez entrer votre date de naissance");
+        toast.error("Entre ta date de naissance");
         return;
       }
 
@@ -70,7 +70,7 @@ function SignupPage() {
       const monthDiff = today.getMonth() - birthDateObj.getMonth();
 
       if (age < 15 || (age === 15 && monthDiff < 0)) {
-        toast.error("Vous devez avoir au moins 15 ans pour cette option");
+        toast.error("Tu dois avoir au moins 15 ans pour cette option");
         return;
       }
     }
@@ -92,7 +92,7 @@ function SignupPage() {
 
       if (error) throw error;
 
-      toast.success("Compte créé ! Vérifiez votre email pour confirmer.");
+      toast.success("Compte créé ! Vérifie ton email pour confirmer.");
       navigate({ to: "/login", replace: true });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erreur lors de l'inscription");
@@ -126,7 +126,7 @@ function SignupPage() {
               Inscription
             </h1>
             <p className="text-gray-600 text-lg">
-              Créez votre compte gratuitement
+              Crée ton compte gratuitement
             </p>
           </div>
 
@@ -136,7 +136,7 @@ function SignupPage() {
               {/* Role Selection */}
               <div>
                 <label className="block font-bold text-foreground text-sm mb-3">
-                  Vous êtes ?
+                  Tu es ?
                 </label>
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
                   {[
@@ -222,7 +222,7 @@ function SignupPage() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="votre@email.com"
+                  placeholder="ton@email.com"
                   className="w-full bg-white border-2 border-slate-300 rounded-2xl px-5 py-4 text-foreground placeholder:text-slate-400 focus:outline-none focus:border-primary transition-colors"
                 />
               </div>

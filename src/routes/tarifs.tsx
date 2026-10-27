@@ -17,7 +17,7 @@ export const Route = createFileRoute("/tarifs")({
   head: () => ({
     meta: [
       { title: "Des tarifs transparents pour tous — Springr" },
-      { name: "description", content: "Découvrez les plans de tarification Springr. Étudiants et entreprises." },
+      { name: "description", content: "Découvre les plans de tarification Springr. Étudiants et entreprises." },
     ],
   }),
   component: TarifsPage,
@@ -87,7 +87,7 @@ const COMPARISON_TABLE = [
 const FAQS = [
   {
     question: "Puis-je changer de plan n'importe quand ?",
-    answer: "Oui, vous pouvez modifier votre plan à tout moment. Les changements prennent effet immédiatement.",
+    answer: "Oui, tu peux modifier ton plan à tout moment. Les changements prennent effet immédiatement.",
   },
   {
     question: "L'essai gratuit est-il vraiment gratuit ?",
@@ -95,15 +95,15 @@ const FAQS = [
   },
   {
     question: "Puis-je annuler mon abonnement ?",
-    answer: "Bien sûr ! Vous pouvez annuler votre abonnement à tout moment via votre profil. Aucun engagement requis.",
+    answer: "Bien sûr ! Tu peux annuler ton abonnement à tout moment via ton profil. Aucun engagement requis.",
   },
   {
-    question: "Proposez-vous une facturation annuelle ?",
+    question: "Y a-t-il une facturation annuelle ?",
     answer: "Oui, nous offrons une réduction de 17% sur la facturation annuelle pour les plans Premium.",
   },
   {
-    question: "Avez-vous des tarifs pour les étudiants ?",
-    answer: "Notre plan Premium à 4,99€/mois est déjà très accessible pour les étudiants. Vous pouvez commencer gratuitement.",
+    question: "Y a-t-il des tarifs pour les étudiants ?",
+    answer: "Notre plan Premium à 4,99€/mois est déjà très accessible pour les étudiants. Tu peux commencer gratuitement.",
   },
   {
     question: "Comment contacter le support ?",
@@ -176,7 +176,7 @@ function TarifsPage() {
               Des tarifs transparents pour tous
             </h1>
             <p className="text-gray-500 text-lg max-w-2xl mx-auto mb-8">
-              Découvrez l'offre qui correspond à votre projet. Débuter est gratuit, sans engagement.
+              Découvre l'offre qui correspond à ton projet. Débuter est gratuit, sans engagement.
             </p>
 
             {/* Billing toggle */}
@@ -353,7 +353,7 @@ function TarifsPage() {
         {/* CTA Section */}
         <div className="bg-foreground text-white py-16 px-4 lg:px-0">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="font-display text-3xl font-bold mb-4">Prêt à booster votre carrière ?</h2>
+            <h2 className="font-display text-3xl font-bold mb-4">Prêt à booster ta carrière ?</h2>
             <p className="text-slate-400 mb-8 text-lg">
               Rejoins les premiers inscrits et trouve ton stage ou ton alternance.
             </p>

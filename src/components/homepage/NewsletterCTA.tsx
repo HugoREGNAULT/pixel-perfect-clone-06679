@@ -60,7 +60,7 @@ export function NewsletterCTA() {
             fontFamily: "var(--font-poppins)",
           }}
         >
-          Prêt à lancer votre carrière ?
+          Prêt à lancer ta carrière ?
         </h2>
 
         {/* Subtitle */}
@@ -91,7 +91,7 @@ export function NewsletterCTA() {
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-xl mx-auto mb-6 md:mb-8">
           <input
             type="email"
-            placeholder="Votre email étudiant"
+            placeholder="Ton email étudiant"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required

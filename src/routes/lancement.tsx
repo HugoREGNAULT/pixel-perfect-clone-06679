@@ -14,7 +14,7 @@ export const Route = createFileRoute("/lancement")({
       {
         name: "description",
         content:
-          "Rejoignez Springr avant le lancement officiel. Accès anticipé, newsletter exclusive et avantages Founder.",
+          "Rejoins Springr avant le lancement officiel. Accès anticipé, newsletter exclusive et avantages Founder.",
       },
     ],
   }),
@@ -116,7 +116,7 @@ function LaunchPage() {
                   color: "var(--color-text-dark)",
                 }}
               >
-                Découvrez Springr
+                Découvre Springr
                 <br />
                 <span className="relative inline-block">
                   <span
@@ -137,7 +137,7 @@ function LaunchPage() {
                 fontFamily: "var(--font-inter)",
               }}
             >
-              Soyez parmi les premiers à accéder au réseau pro pensé par et pour la nouvelle génération. Rejoignez notre communauté de founders.
+              Sois parmi les premiers à accéder au réseau pro pensé par et pour la nouvelle génération. Rejoins notre communauté de founders.
             </p>
 
             {/* CTA Buttons */}
@@ -200,7 +200,7 @@ function LaunchPage() {
                 fontFamily: "var(--font-poppins)",
               }}
             >
-              Restez informé du lancement
+              Reste informé du lancement
             </h2>
 
             {/* Subtitle */}
@@ -211,7 +211,7 @@ function LaunchPage() {
                 fontFamily: "var(--font-inter)",
               }}
             >
-              Recevez les mises à jour exclusives, les actualités de la communauté et les bons plans en avant-première.
+              Reçois les mises à jour exclusives, les actualités de la communauté et les bons plans en avant-première.
             </p>
 
             {/* Success message */}
@@ -231,7 +231,7 @@ function LaunchPage() {
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2 lg:gap-3 mb-4 lg:mb-6">
               <input
                 type="email"
-                placeholder="Votre email étudiant"
+                placeholder="Ton email étudiant"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
                 required
@@ -319,7 +319,7 @@ function LaunchPage() {
                     fontFamily: "var(--font-inter)",
                   }}
                 >
-                  Découvrez des offres d'emploi, de stage et de mentorat spécialement pensées pour les 15-29 ans.
+                  Découvre des offres d'emploi, de stage et de mentorat spécialement pensées pour les 15-29 ans.
                 </p>
               </div>
 
@@ -347,7 +347,7 @@ function LaunchPage() {
                     fontFamily: "var(--font-inter)",
                   }}
                 >
-                  Connectez-vous avec des mentors expérimentés pour progresser dans votre carrière.
+                  Connecte-toi avec des mentors expérimentés pour progresser dans ta carrière.
                 </p>
               </div>
 
@@ -375,7 +375,7 @@ function LaunchPage() {
                     fontFamily: "var(--font-inter)",
                   }}
                 >
-                  Rejoignez une communauté dynamique de jeunes professionnels partageant les mêmes ambitions.
+                  Rejoins une communauté dynamique de jeunes professionnels partageant les mêmes ambitions.
                 </p>
               </div>
             </div>
@@ -406,7 +406,7 @@ function LaunchPage() {
                 fontFamily: "var(--font-inter)",
               }}
             >
-              Support Springr dès le départ et bénéficiez d'avantages exclusifs à vie : badge spécial, accès aux features en avant-première et prix garantis.
+              Soutiens Springr dès le départ et bénéficie d'avantages exclusifs à vie : badge spécial, accès aux features en avant-première et prix garantis.
             </p>
 
             <div className="bg-white p-6 lg:p-8 rounded-lg border-2" style={{ borderColor: "var(--color-highlight)" }}>
@@ -495,7 +495,7 @@ function LaunchPage() {
               fontFamily: "var(--font-poppins)",
             }}
           >
-            Contactez-nous
+            Contacte-nous
           </a>
         </section>
         </main>

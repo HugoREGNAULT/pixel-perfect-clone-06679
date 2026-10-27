@@ -14,20 +14,20 @@ export function FeaturesTab() {
     {
       name: "Mentorat",
       icon: Users,
-      title: "Trouvez votre mentor",
-      description: "Connectez-vous avec des professionnels expérimentés dans votre domaine d'intérêt. Bénéficiez de conseils personnalisés pour accélérer votre développement professionnel.",
+      title: "Trouve ton mentor",
+      description: "Connecte-toi avec des professionnels expérimentés dans ton domaine d'intérêt. Bénéficie de conseils personnalisés pour accélérer ton développement professionnel.",
     },
     {
       name: "Bons Plans",
       icon: Gift,
       title: "Exclusivités étudiantes",
-      description: "Accédez à des réductions et offres partenaires pensées pour les étudiants. Du logement aux outils numériques, tout ce dont vous avez besoin au meilleur prix.",
+      description: "Accède à des réductions et offres partenaires pensées pour les étudiants. Du logement aux outils numériques, tout ce dont tu as besoin au meilleur prix.",
     },
     {
       name: "Communauté",
       icon: MessageSquare,
-      title: "Connectez-vous",
-      description: "Rejoignez une communauté de jeunes passionnés comme vous. Participez aux forums, salons vocaux et événements pour grandir ensemble.",
+      title: "Connecte-toi",
+      description: "Rejoins une communauté de jeunes passionnés comme toi. Participe aux forums, salons vocaux et événements pour grandir ensemble.",
     },
   ];
 

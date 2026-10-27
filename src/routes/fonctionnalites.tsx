@@ -24,7 +24,7 @@ export const Route = createFileRoute("/fonctionnalites")({
       {
         name: "description",
         content:
-          "Découvrez toutes les fonctionnalités de Springr pour accompagner votre carrière étudiante.",
+          "Découvre toutes les fonctionnalités de Springr pour accompagner ta carrière étudiante.",
       },
     ],
   }),
@@ -53,7 +53,7 @@ interface PillarFeature {
 const PILLAR_FEATURES: PillarFeature[] = [
   {
     title: "Offres & Opportunités",
-    description: "Accédez à une plateforme complète pour découvrir les meilleures opportunités d'emploi et de stage.",
+    description: "Accède à une plateforme complète pour découvrir les meilleures opportunités d'emploi et de stage.",
     features: [
       "Recherche avancée d'offres",
       "Alertes personnalisées",
@@ -66,12 +66,12 @@ const PILLAR_FEATURES: PillarFeature[] = [
   },
   {
     title: "Mentorat Expert",
-    description: "Bénéficiez de l'expertise et des conseils de professionnels expérimentés.",
+    description: "Bénéficie de l'expertise et des conseils de professionnels expérimentés.",
     features: [
       "Connexion avec mentors vérifiés",
       "Séances de coaching personnalisées",
       "Partage d'expérience et conseils",
-      "Suivi de vos progrès",
+      "Suivi de tes progrès",
     ],
     icon: <Users className="w-8 h-8" />,
     color: "green",
@@ -79,7 +79,7 @@ const PILLAR_FEATURES: PillarFeature[] = [
   },
   {
     title: "Bons Plans Gratuits",
-    description: "Découvrez les ressources gratuites sélectionnées pour accélérer votre carrière.",
+    description: "Découvre les ressources gratuites sélectionnées pour accélérer ta carrière.",
     features: [
       "Offres d'emploi premium gratuites",
       "Ressources et formations",
@@ -92,7 +92,7 @@ const PILLAR_FEATURES: PillarFeature[] = [
   },
   {
     title: "Réseau & Événements",
-    description: "Participez à des événements pour élargir votre réseau professionnel.",
+    description: "Participe à des événements pour élargir ton réseau professionnel.",
     features: [
       "JPO et présentations d'entreprises",
       "Networking events",
@@ -109,42 +109,42 @@ const MORE_FEATURES: Feature[] = [
   {
     id: "profile",
     name: "Profil Personnalisé",
-    description: "Créez un profil complet mettant en avant vos compétences et vos aspirations.",
+    description: "Crée un profil complet mettant en avant tes compétences et tes aspirations.",
     icon: <User className="w-6 h-6" />,
     link: "/profil",
   },
   {
     id: "dashboard",
     name: "Dashboard Intelligent",
-    description: "Suivez vos candidatures et gérez vos interactions en un seul endroit.",
+    description: "Suis tes candidatures et gère tes interactions en un seul endroit.",
     icon: <TrendingUp className="w-6 h-6" />,
     link: "/mes-candidatures",
   },
   {
     id: "messages",
     name: "Messagerie",
-    description: "Communiquez directement avec les mentors, recruteurs et autres membres.",
+    description: "Communique directement avec les mentors, recruteurs et autres membres.",
     icon: <MessageSquare className="w-6 h-6" />,
     link: "/messages",
   },
   {
     id: "bookmarks",
     name: "Bookmarks",
-    description: "Sauvegardez vos offres favorites pour les consulter plus tard.",
+    description: "Sauvegarde tes offres favorites pour les consulter plus tard.",
     icon: <BookmarkIcon className="w-6 h-6" />,
     comingSoon: true,
   },
   {
     id: "notifications",
     name: "Notifications Intelligentes",
-    description: "Recevez des alertes sur les offres correspondant à votre profil.",
+    description: "Reçois des alertes sur les offres correspondant à ton profil.",
     icon: <Bell className="w-6 h-6" />,
     comingSoon: true,
   },
   {
     id: "community",
     name: "Communauté",
-    description: "Participez à des discussions et à l'entraide au sein de la communauté Springr.",
+    description: "Participe à des discussions et à l'entraide au sein de la communauté Springr.",
     icon: <Network className="w-6 h-6" />,
     comingSoon: true,
   },
@@ -172,7 +172,7 @@ function FonctionnalitesPage() {
             Fonctionnalités complètes
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Découvrez l'ensemble des outils conçus pour accompagner votre carrière professionnelle et accélérer votre développement.
+            Découvre l'ensemble des outils conçus pour accompagner ta carrière professionnelle et accélérer ton développement.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -199,7 +199,7 @@ function FonctionnalitesPage() {
             Quatre piliers, une plateforme
           </h2>
           <p className="text-lg text-muted-foreground">
-            Tous les outils pour réussir votre carrière d'étudiant·e
+            Tous les outils pour réussir ta carrière d'étudiant·e
           </p>
         </div>
 
@@ -264,7 +264,7 @@ function FonctionnalitesPage() {
             Et bien plus encore...
           </h2>
           <p className="text-lg text-muted-foreground">
-            Des fonctionnalités supplémentaires pour enrichir votre expérience
+            Des fonctionnalités supplémentaires pour enrichir ton expérience
           </p>
         </div>
 

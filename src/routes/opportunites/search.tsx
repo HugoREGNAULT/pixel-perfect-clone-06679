@@ -142,7 +142,7 @@ function OpportunitesSearchPage() {
         {/* Hero */}
         <div className="mb-12">
           <h1 className="font-display text-5xl lg:text-6xl font-bold leading-tight mb-3">
-            Trouvez votre opportunité parfaite
+            Trouve ton opportunité parfaite
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl">
             Stages, alternances, premiers emplois et bien plus. Toutes les offres réunies au même endroit.
@@ -224,9 +224,9 @@ function OpportunitesSearchPage() {
         {/* Explore by sector */}
         {!hasFilters && !loading && (
           <div className="mb-12">
-            <h2 className="font-display text-2xl font-bold mb-2">Explorez par domaine</h2>
+            <h2 className="font-display text-2xl font-bold mb-2">Explore par domaine</h2>
             <p className="text-muted-foreground mb-6">
-              Trouvez les meilleures opportunités dans votre domaine d'intérêt
+              Trouve les meilleures opportunités dans ton domaine d'intérêt
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[

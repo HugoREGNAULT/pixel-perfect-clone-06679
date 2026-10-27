@@ -10,7 +10,7 @@ export const Route = createFileRoute("/mentors")({
   head: () => ({
     meta: [
       { title: "Mentors Springr" },
-      { name: "description", content: "Rencontrez nos mentors experts. Bientôt disponible sur Springr." },
+      { name: "description", content: "Rencontre nos mentors experts. Bientôt disponible sur Springr." },
     ],
   }),
   component: MentorsPage,
@@ -118,7 +118,7 @@ function MentorsPage() {
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
             <input
               type="email"
-              placeholder="Votre email"
+              placeholder="Ton email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required

@@ -77,7 +77,7 @@ function AdminJpoPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-display font-bold text-white mb-2">JPO — Soumissions Modérées</h1>
-        <p className="text-sm text-white/40">Approuvez les JPO soumises par les écoles</p>
+        <p className="text-sm text-white/40">Approuve les JPO soumises par les écoles</p>
       </div>
 
       {/* Stats */}

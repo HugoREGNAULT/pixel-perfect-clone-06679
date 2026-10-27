@@ -117,7 +117,7 @@ function OffresSection() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-xs font-mono uppercase tracking-widest text-mute mb-0.5">
-            {companyName ? companyName : "Vos annonces"}
+            {companyName ? companyName : "Tes annonces"}
           </p>
           <h2 className="font-display font-bold text-lg">Offres postées</h2>
         </div>
