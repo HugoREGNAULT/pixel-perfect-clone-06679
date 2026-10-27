@@ -235,7 +235,7 @@ function AdminOverview() {
               <h1 className="text-4xl font-black text-black tracking-tight">
                 Dashboard Admin
               </h1>
-              <p className="text-gray-600 mt-1">Vue d'ensemble de la plateforme UpNest</p>
+              <p className="text-gray-600 mt-1">Vue d'ensemble de la plateforme Springr</p>
             </div>
             <div className="flex gap-3">
               <button className="border-2 border-black text-white font-bold py-2.5 px-6 rounded-2xl drop-shadow-[4px_4px_0px_black] flex items-center gap-2 text-sm" style={{ backgroundColor: 'var(--color-admin-primary)' }}>
