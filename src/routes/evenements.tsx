@@ -3,17 +3,25 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo, useEffect } from "react";
 import { AppNav } from "@/components/AppNav";
 import {
-  Calendar, MapPin, X, ExternalLink, SlidersHorizontal,
-  CalendarDays, Loader2, GraduationCap, Clock, School,
+  Calendar, MapPin, X, ExternalLink, CalendarDays, Clock, School, WifiOff, RefreshCw,
 } from "lucide-react";
+import { PageShell } from "@/components/ui/container";
+import { SectionHeader } from "@/components/ui/section-header";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input, fieldBase } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/evenements")({
   head: () => ({
     meta: [
-      { title: "JPO Écoles de France — Springr" },
-      { name: "description", content: "Toutes les Journées Portes Ouvertes des écoles et universités de France. Filtres par région, type, mois." },
+      { title: "Événements — Springr" },
+      { name: "description", content: "Les journées portes ouvertes des écoles et universités. Filtre par région, type d'établissement et mois." },
     ],
   }),
   component: EvenementsPage,
@@ -29,13 +37,13 @@ type JpoEvent = Jpo & { source?: "jpos" | "submissions" };
 
 /* ── Config d'affichage ──────────────────────────────────────────────────────*/
 
-const TYPE_CONFIG: Record<TypeEcole, { label: string; color: string; bg: string; border: string; icon: typeof School }> = {
-  "université":          { label: "Université",       color: "text-blue-400",   bg: "bg-blue-400/10",   border: "border-blue-400/30",   icon: School         },
-  "école de commerce":   { label: "École de commerce",color: "text-amber-400",  bg: "bg-amber-400/10",  border: "border-amber-400/30",  icon: GraduationCap  },
-  "ingé":                { label: "École d'ingénieurs",color: "text-violet-soft",bg: "bg-violet/10",     border: "border-violet/30",     icon: GraduationCap  },
-  "BTS":                 { label: "BTS / IUT",        color: "text-cyan-400",   bg: "bg-cyan-400/10",   border: "border-cyan-400/30",   icon: School         },
-  "lycée":               { label: "Lycée",            color: "text-lime",       bg: "bg-lime/10",       border: "border-lime/30",       icon: School         },
-  "autre":               { label: "Autre",            color: "text-mute",       bg: "bg-white/5",       border: "border-white/10",      icon: School         },
+const TYPE_LABEL: Record<TypeEcole, string> = {
+  "université": "Université",
+  "école de commerce": "École de commerce",
+  "ingé": "École d'ingénieurs",
+  "BTS": "BTS / IUT",
+  "lycée": "Lycée",
+  "autre": "Autre",
 };
 
 const TYPE_LIST: TypeEcole[] = ["université", "école de commerce", "ingé", "BTS", "lycée", "autre"];
@@ -69,50 +77,50 @@ function monthLabel(key: string) {
 function EvenementsPage() {
   const [jpos, setJpos]           = useState<Jpo[]>([]);
   const [loading, setLoading]     = useState(true);
+  const [failed, setFailed]       = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
   const [typeFilter, setType]     = useState<"Tous" | TypeEcole>("Tous");
   const [regionFilter, setRegion] = useState("Toutes");
   const [monthFilter, setMonth]   = useState("Tous");
   const [search, setSearch]       = useState("");
   const [showPast, setShowPast]   = useState(false);
-  const [fetchError, setFetchError] = useState<string | null>(null);
 
   useEffect(() => {
     const db = supabase as any;
+    setLoading(true);
+    setFailed(false);
     Promise.all([
       db.from("jpos").select("*").order("date", { ascending: true }),
       db.from("jpo_submissions").select("*").eq("status", "approved").order("date_jpo", { ascending: true }),
     ])
-      .then(([{ data: jposData, error: jposError }, { data: subData, error: subError }]) => {
-        if (jposError) {
-          console.error("[JPO] Erreur Supabase:", jposError.message);
-          setFetchError(jposError.message);
-        }
+      .then(([{ data: jposData, error: jposError }, { data: subData }]) => {
+        if (jposError) setFailed(true);
 
         const jposArray = (jposData ?? []) as Jpo[];
         const submissionsArray = (subData ?? []).map((s: any) => ({
           id: s.id,
           nom_ecole: s.nom_ecole,
           date: s.date_jpo,
-          ville: "", // submissions don't have ville
-          region: "", // submissions don't have region
+          ville: "",
+          region: "",
           type_ecole: "autre" as TypeEcole,
           lien_inscription: s.lien,
           updated_at: s.created_at,
           source: "submissions" as const,
         }));
 
-        const combined = [...jposArray, ...submissionsArray].sort(
-          (a, b) => new Date(a.date ?? "").getTime() - new Date(b.date ?? "").getTime()
-        );
+        const combined = [...jposArray, ...submissionsArray]
+          .filter((j: any) => j.date)
+          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
         setJpos(combined as any);
         setLoading(false);
-      });
-  }, []);
+      })
+      .catch(() => { setFailed(true); setLoading(false); });
+  }, [reloadKey]);
 
-  /* Dérivés */
   const regions = useMemo(
-    () => ["Toutes", ...Array.from(new Set(jpos.map((j) => j.region))).sort()],
+    () => ["Toutes", ...Array.from(new Set(jpos.map((j) => j.region).filter(Boolean))).sort()],
     [jpos],
   );
 
@@ -130,270 +138,167 @@ function EvenementsPage() {
       if (typeFilter !== "Tous" && j.type_ecole !== typeFilter) return false;
       if (regionFilter !== "Toutes" && j.region !== regionFilter) return false;
       if (monthFilter !== "Tous" && monthKey(j.date) !== monthFilter) return false;
-      if (q && !j.nom_ecole.toLowerCase().includes(q) && !j.ville.toLowerCase().includes(q)) return false;
+      if (q && !j.nom_ecole.toLowerCase().includes(q) && !(j.ville ?? "").toLowerCase().includes(q)) return false;
       return true;
     });
   }, [jpos, typeFilter, regionFilter, monthFilter, search, showPast]);
 
-  const hasFilters = typeFilter !== "Tous" || regionFilter !== "Toutes" || monthFilter !== "Tous" || search || showPast;
+  const hasFilters = typeFilter !== "Tous" || regionFilter !== "Toutes" || monthFilter !== "Tous" || !!search;
 
-  function reset() { setType("Tous"); setRegion("Toutes"); setMonth("Tous"); setSearch(""); setShowPast(false); }
+  function reset() { setType("Tous"); setRegion("Toutes"); setMonth("Tous"); setSearch(""); }
+
+  const pill = (on: boolean) => cn(
+    "inline-flex min-h-11 items-center rounded-full border px-4 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+    on ? "border-primary bg-primary text-primary-foreground" : "border-input bg-card text-foreground hover:bg-muted",
+  );
 
   return (
-    <div className="min-h-screen bg-ink text-white">
+    <>
       <AppNav />
+      <PageShell size="md" className="pb-20">
+        <SectionHeader
+          as="h1"
+          eyebrow="Journées portes ouvertes"
+          title="Événements"
+          description="Les journées portes ouvertes des écoles et universités. Vérifie la date et les modalités d'inscription auprès de l'établissement."
+        />
 
-      <main className="mx-auto max-w-5xl px-5 py-10 pb-24">
-
-        {/* ── Hero ──────────────────────────────────────────────────────────*/}
-        <div className="mb-8">
-          <div className="eyebrow mb-3">Scraped automatiquement · Mis à jour chaque lundi</div>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05]">
-            JPO — Portes Ouvertes
-          </h1>
-          <p className="mt-4 text-mute text-lg max-w-xl">
-            Toutes les journées portes ouvertes des écoles et universités de France, au même endroit.
+        {!loading && !failed && upcoming6m > 0 && (
+          <p className="mt-6 flex items-center gap-3 rounded-lg border border-border bg-primary-soft px-4 py-3 text-sm text-primary-soft-foreground">
+            <CalendarDays aria-hidden className="size-5 shrink-0" />
+            <span><strong className="font-display text-lg">{upcoming6m}</strong> JPO à venir dans les 6 prochains mois</span>
           </p>
-        </div>
-
-        {/* ── Compteur 6 mois ───────────────────────────────────────────────*/}
-        {!loading && upcoming6m > 0 && (
-          <div className="flex items-center gap-3 rounded-2xl border border-lime/20 bg-lime/5 px-5 py-4 mb-8">
-            <CalendarDays className="size-5 text-lime shrink-0" />
-            <p className="text-sm">
-              <span className="font-display font-bold text-white text-lg">{upcoming6m}</span>
-              <span className="text-mute ml-2">JPO à venir dans les 6 prochains mois</span>
-            </p>
-          </div>
         )}
 
-        {/* ── Filtres ───────────────────────────────────────────────────────*/}
-        <div className="sticky top-14 z-30 -mx-5 px-5 py-4 bg-ink/90 backdrop-blur-xl border-b border-white/5 mb-8 space-y-3">
-          {/* Search + selects + reset */}
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="relative flex-1 min-w-[180px] max-w-sm">
-              <School className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-mute pointer-events-none" />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Nom d'école, ville…"
-                className="w-full rounded-xl bg-white/5 border border-white/10 pl-10 pr-9 py-2.5 text-sm placeholder:text-mute/60 focus:outline-none focus:border-violet/60 focus:bg-white/[0.07] transition-colors"
-              />
-              {search && (
-                <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-mute hover:text-white">
-                  <X className="size-4" />
-                </button>
-              )}
+        <div role="search" aria-label="Filtrer les événements" className="mt-8 space-y-4 rounded-lg border border-border bg-card p-4 sm:p-5">
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="relative">
+              <label htmlFor="ev-search" className="sr-only">Nom d'école ou ville</label>
+              <School aria-hidden className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input id="ev-search" type="search" value={search} onChange={(e) => setSearch(e.target.value)}
+                placeholder="Nom d'école, ville" className="pl-10" />
             </div>
-
-            <select
-              value={regionFilter}
-              onChange={(e) => setRegion(e.target.value)}
-              className="rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-mute focus:outline-none focus:border-violet/60 focus:text-white transition-colors cursor-pointer"
-            >
-              {regions.map((r) => <option key={r} value={r}>{r}</option>)}
-            </select>
-
-            <select
-              value={monthFilter}
-              onChange={(e) => setMonth(e.target.value)}
-              className="rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-mute focus:outline-none focus:border-violet/60 focus:text-white transition-colors cursor-pointer"
-            >
-              {months.map((m) => (
-                <option key={m} value={m}>{m === "Tous" ? "Tous les mois" : monthLabel(m)}</option>
-              ))}
-            </select>
-
-            {hasFilters && (
-              <button onClick={reset} className="inline-flex items-center gap-1.5 text-sm text-mute hover:text-white transition-colors whitespace-nowrap">
-                <X className="size-3.5" /> Réinitialiser
-              </button>
-            )}
+            <div>
+              <label htmlFor="ev-region" className="sr-only">Région</label>
+              <select id="ev-region" value={regionFilter} onChange={(e) => setRegion(e.target.value)} className={cn(fieldBase, "h-11")}>
+                {regions.map((r) => <option key={r} value={r}>{r === "Toutes" ? "Toutes les régions" : r}</option>)}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="ev-month" className="sr-only">Mois</label>
+              <select id="ev-month" value={monthFilter} onChange={(e) => setMonth(e.target.value)} className={cn(fieldBase, "h-11")}>
+                {months.map((m) => <option key={m} value={m}>{m === "Tous" ? "Tous les mois" : monthLabel(m)}</option>)}
+              </select>
+            </div>
           </div>
 
-          {/* Type pills */}
-          <div className="flex flex-wrap items-center gap-2">
-            <SlidersHorizontal className="size-4 text-mute shrink-0" />
-            <button
-              onClick={() => setType("Tous")}
-              className={`rounded-full px-3 py-1.5 text-xs font-medium border transition-all ${typeFilter === "Tous" ? "bg-white text-ink border-white" : "border-white/15 text-mute hover:border-white/30 hover:text-white"}`}
-            >
-              Tous types
-            </button>
-            {TYPE_LIST.map((t) => {
-              const cfg = TYPE_CONFIG[t];
-              return (
-                <button
-                  key={t}
-                  onClick={() => setType(t)}
-                  className={`rounded-full px-3 py-1.5 text-xs font-medium border transition-all ${
-                    typeFilter === t
-                      ? `${cfg.bg} ${cfg.border} ${cfg.color}`
-                      : "border-white/15 text-mute hover:border-white/30 hover:text-white"
-                  }`}
-                >
-                  {cfg.label}
-                </button>
-              );
-            })}
+          <div role="group" aria-label="Type d'établissement" className="flex flex-wrap gap-2">
+            <button type="button" aria-pressed={typeFilter === "Tous"} onClick={() => setType("Tous")} className={pill(typeFilter === "Tous")}>Tous types</button>
+            {TYPE_LIST.map((t) => (
+              <button key={t} type="button" aria-pressed={typeFilter === t} onClick={() => setType(t)} className={pill(typeFilter === t)}>
+                {TYPE_LABEL[t]}
+              </button>
+            ))}
+          </div>
 
-            <div className="w-px h-4 bg-white/10 mx-1" />
-            <button
-              onClick={() => setShowPast(!showPast)}
-              className={`rounded-full px-3 py-1.5 text-xs font-medium border transition-all ${showPast ? "bg-white/10 border-white/30 text-white" : "border-white/15 text-mute hover:border-white/30 hover:text-white"}`}
-            >
+          <div className="flex flex-wrap items-center gap-3">
+            <button type="button" aria-pressed={showPast} onClick={() => setShowPast(!showPast)} className={pill(showPast)}>
               Afficher les passées
             </button>
+            {hasFilters && <Button type="button" variant="ghost" size="sm" onClick={reset}><X /> Réinitialiser</Button>}
           </div>
         </div>
 
-        {/* ── Compteur résultats ─────────────────────────────────────────────*/}
-        <div className="flex items-center gap-3 mb-6">
-          <span className="font-display font-bold text-2xl">{filtered.length}</span>
-          <span className="text-mute text-sm">JPO{filtered.length !== 1 ? "s" : ""}</span>
-          {hasFilters && <span className="text-xs font-mono text-lime bg-lime/10 border border-lime/20 rounded-full px-2 py-0.5">Filtres actifs</span>}
+        <div className="mt-8" aria-live="polite">
+          {loading ? (
+            <div className="space-y-3" aria-busy="true">
+              {Array.from({ length: 4 }, (_, i) => <Skeleton key={i} className="h-28 rounded-lg" />)}
+            </div>
+          ) : failed ? (
+            <EmptyState
+              icon={<WifiOff />}
+              title="Les événements sont indisponibles pour le moment"
+              description="Nous n'arrivons pas à charger la liste. Ça ne vient pas de tes filtres : réessaie dans quelques instants."
+              action={<Button onClick={() => setReloadKey((k) => k + 1)}><RefreshCw /> Réessayer</Button>}
+            />
+          ) : jpos.length === 0 ? (
+            <EmptyState icon={<CalendarDays />} title="Pas encore d'événements" description="Aucune journée portes ouvertes n'est publiée pour l'instant. Reviens bientôt." />
+          ) : filtered.length === 0 ? (
+            <EmptyState
+              icon={<CalendarDays />}
+              title="Aucun événement ne correspond"
+              description={showPast || hasFilters ? "Essaie d'élargir tes filtres." : "Aucune JPO à venir. Tu peux afficher les passées."}
+              action={
+                <div className="flex flex-wrap justify-center gap-3">
+                  {hasFilters && <Button variant="secondary" onClick={reset}>Retirer les filtres</Button>}
+                  {!showPast && <Button variant="secondary" onClick={() => setShowPast(true)}>Afficher les passées</Button>}
+                </div>
+              }
+            />
+          ) : (
+            <>
+              <p className="mb-4 text-sm text-muted-foreground">
+                <strong className="font-display text-lg text-foreground">{filtered.length}</strong> JPO
+              </p>
+              <ul className="space-y-3">
+                {filtered.map((jpo) => <li key={jpo.id}><JpoCard jpo={jpo} /></li>)}
+              </ul>
+            </>
+          )}
         </div>
-
-        {/* ── Liste ─────────────────────────────────────────────────────────*/}
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-32 gap-4">
-            <Loader2 className="size-7 text-mute animate-spin" />
-            <p className="text-mute text-sm">Chargement des JPO…</p>
-          </div>
-        ) : fetchError ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <CalendarDays className="size-10 text-red-400 mb-4" />
-            <h3 className="font-display text-xl font-bold mb-2">Erreur de chargement</h3>
-            <p className="text-mute text-sm max-w-xs mb-2">
-              Impossible de charger les JPO depuis Supabase.
-            </p>
-            <code className="text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2 max-w-sm break-all">
-              {fetchError}
-            </code>
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <CalendarDays className="size-10 text-mute mb-4" />
-            <h3 className="font-display text-xl font-bold mb-2">Aucune JPO trouvée</h3>
-            <p className="text-mute text-sm max-w-xs mb-6">
-              Essaie de modifier tes filtres ou d'élargir ta recherche.
-            </p>
-            <button
-              onClick={reset}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm hover:bg-white/5 transition-all"
-            >
-              <X className="size-4" /> Réinitialiser
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {filtered.map((jpo) => <JpoCard key={jpo.id} jpo={jpo} />)}
-          </div>
-        )}
-      </main>
-    </div>
+      </PageShell>
+    </>
   );
 }
 
 /* ── Carte JPO ───────────────────────────────────────────────────────────────*/
 
 function JpoCard({ jpo }: { jpo: Jpo }) {
-  const type    = (jpo.type_ecole as TypeEcole) in TYPE_CONFIG ? (jpo.type_ecole as TypeEcole) : "autre";
-  const cfg     = TYPE_CONFIG[type];
-  const past    = !isUpcoming(jpo.date);
-  const soon    = isSoon(jpo.date);
-  const diff    = dayDiff(jpo.date);
+  const type = (jpo.type_ecole as TypeEcole) in TYPE_LABEL ? (jpo.type_ecole as TypeEcole) : "autre";
+  const past = !isUpcoming(jpo.date);
+  const soon = isSoon(jpo.date);
+  const diff = dayDiff(jpo.date);
+  const d = new Date(jpo.date + "T12:00:00");
 
   return (
-    <article className={`group flex flex-col sm:flex-row gap-4 sm:gap-6 rounded-2xl border p-5 hover:-translate-y-0.5 transition-all duration-200 ${
-      past
-        ? "border-white/5 bg-white/[0.02] opacity-50"
-        : soon
-        ? "border-lime/25 bg-gradient-to-r from-lime/5 to-transparent hover:border-lime/40"
-        : "border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent hover:border-white/20"
-    }`}>
-
-      {/* Date block */}
-      <div className="shrink-0 flex sm:flex-col items-center sm:items-start gap-3 sm:gap-1">
-        <div className={`rounded-xl border px-3 py-2 text-center min-w-[4rem] ${soon ? "border-lime/30 bg-lime/10" : "border-white/10 bg-white/5"}`}>
-          <div className={`font-mono text-[10px] uppercase tracking-widest ${soon ? "text-lime" : "text-mute"}`}>
-            {new Intl.DateTimeFormat("fr-FR", { month: "short" }).format(new Date(jpo.date + "T12:00:00"))}
-          </div>
-          <div className={`font-display font-bold text-2xl leading-none ${soon ? "text-lime" : ""}`}>
-            {new Date(jpo.date + "T12:00:00").getDate()}
-          </div>
-          <div className="font-mono text-[10px] text-mute">
-            {new Date(jpo.date + "T12:00:00").getFullYear()}
-          </div>
+    <Card interactive={!past} className={cn("flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-6", past && "bg-muted")}>
+      <div className="flex shrink-0 items-center gap-3 sm:flex-col sm:items-start">
+        <div className={cn("min-w-16 rounded-md border px-3 py-2 text-center", soon ? "border-primary bg-primary-soft text-primary-soft-foreground" : "border-border bg-muted text-foreground")}>
+          <div className="text-xs font-semibold uppercase">{new Intl.DateTimeFormat("fr-FR", { month: "short" }).format(d)}</div>
+          <div className="font-display text-2xl font-bold leading-none">{d.getDate()}</div>
+          <div className="text-xs text-muted-foreground">{d.getFullYear()}</div>
         </div>
-
-        {/* Badge timing */}
-        {!past && (
-          soon ? (
-            <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-lime bg-lime/10 border border-lime/25 rounded-full px-2 py-0.5 whitespace-nowrap">
-              <Clock className="size-2.5" />
-              {diff === 0 ? "Aujourd'hui" : diff === 1 ? "Demain" : `Dans ${diff}j`}
-            </span>
-          ) : diff <= 30 ? (
-            <span className="text-[10px] font-mono text-mute whitespace-nowrap">Dans {diff}j</span>
-          ) : null
+        {!past && soon && (
+          <Badge variant="highlight"><Clock aria-hidden className="size-3.5" />{diff === 0 ? "Aujourd'hui" : diff === 1 ? "Demain" : `Dans ${diff} j`}</Badge>
         )}
-        {past && <span className="text-[10px] font-mono text-mute border border-white/10 rounded-full px-2 py-0.5">Passée</span>}
+        {!past && !soon && diff <= 30 && <span className="text-sm text-muted-foreground">Dans {diff} j</span>}
+        {past && <Badge variant="secondary">Passée</Badge>}
       </div>
 
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        <div className="flex flex-wrap items-center gap-2 mb-2">
-          <span className={`inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider border rounded-full px-2 py-0.5 ${cfg.bg} ${cfg.border} ${cfg.color}`}>
-            {cfg.label}
-          </span>
-          {soon && !past && (
-            <span className="text-[10px] font-mono uppercase tracking-wider text-lime bg-lime/10 border border-lime/25 rounded-full px-2 py-0.5">
-              Bientôt
+      <div className="min-w-0 flex-1">
+        <Badge variant="secondary" className="mb-2">{TYPE_LABEL[type]}</Badge>
+        <h2 className="font-display text-lg font-semibold leading-snug text-foreground">{jpo.nom_ecole}</h2>
+        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+          {jpo.ville && (
+            <span className="flex items-center gap-1.5">
+              <MapPin aria-hidden className="size-4 shrink-0" />
+              {jpo.ville}
+              {jpo.region && jpo.region !== "France" && jpo.region !== jpo.ville && <span>· {jpo.region}</span>}
             </span>
           )}
-        </div>
-
-        <h2 className="font-display font-bold text-base sm:text-lg leading-snug mb-1 group-hover:text-lime transition-colors">
-          {jpo.nom_ecole}
-        </h2>
-
-        <div className="flex flex-wrap items-center gap-4 text-xs text-mute mt-2">
-          <span className="flex items-center gap-1.5">
-            <MapPin className="size-3 shrink-0" />
-            {jpo.ville}
-            {jpo.region && jpo.region !== "France" && jpo.region !== jpo.ville && (
-              <span className="text-white/30">· {jpo.region}</span>
-            )}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Calendar className="size-3 shrink-0" />
-            {formatDateFR(jpo.date)}
-          </span>
+          <span className="flex items-center gap-1.5"><Calendar aria-hidden className="size-4 shrink-0" />{formatDateFR(jpo.date)}</span>
         </div>
       </div>
 
-      {/* CTA */}
-      <div className="shrink-0 flex sm:flex-col items-end justify-start gap-2 pt-0.5">
+      <div className="shrink-0">
         {jpo.lien_inscription && !past ? (
-          <a
-            href={jpo.lien_inscription}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all ${
-              soon
-                ? "bg-lime text-ink hover:-translate-y-0.5 hover:shadow-[0_0_20px_-4px_rgba(181,255,61,0.4)]"
-                : "border border-white/15 text-white hover:bg-white/5 hover:border-white/30"
-            }`}
-          >
-            S'inscrire <ExternalLink className="size-3.5" />
-          </a>
-        ) : past ? (
-          <span className="text-xs text-mute border border-white/10 rounded-full px-4 py-2">Terminée</span>
+          <Button asChild variant={soon ? "primary" : "secondary"} className="w-full sm:w-auto">
+            <a href={jpo.lien_inscription} target="_blank" rel="noopener noreferrer">S'inscrire <ExternalLink /></a>
+          </Button>
         ) : (
-          <span className="text-xs text-mute border border-white/10 rounded-full px-4 py-2">Lien bientôt</span>
+          <span className="text-sm text-muted-foreground">{past ? "Terminée" : "Lien bientôt disponible"}</span>
         )}
       </div>
-    </article>
+    </Card>
   );
 }
