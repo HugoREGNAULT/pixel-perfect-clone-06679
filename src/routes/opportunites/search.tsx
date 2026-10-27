@@ -360,6 +360,7 @@ function OfferListItem({
           <div className="font-semibold text-sm text-foreground line-clamp-1">{offer.title}</div>
           <div className="text-xs text-muted-foreground mt-1">
             {offer.company} · {offer.city}
+            {offer.source !== "local" && ` · Source : ${SOURCE_META[offer.source]?.label ?? ""}`}
           </div>
           <div className="flex gap-2 mt-2 flex-wrap">
             <span className={`text-[10px] px-2 py-1 rounded ${typeMeta.color}`}>
@@ -455,7 +456,7 @@ function DetailPanel({
       <div className="pt-4 border-t border-border">
         <div className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border ${sourceMeta.color}`}>
           <span className="size-1.5 rounded-full bg-current" />
-          Offre officielle · {sourceMeta.label}
+          {offer.source === "local" ? `Offre officielle · ${sourceMeta.label}` : `Source : ${sourceMeta.label}`}
         </div>
       </div>
     </div>

@@ -194,7 +194,7 @@ function ProfileOffresSection() {
   );
 }
 
-// ── Section 1 — Matching du jour ─────────────────────────────────────────────
+// ── Section 1 — Recommandations du jour ─────────────────────────────────────────────
 
 type MatchTab = "offres" | "mentors" | "jpos";
 
@@ -245,7 +245,8 @@ function MatchingSection() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-xs font-mono uppercase tracking-widest text-mute mb-0.5">Recommandé pour toi</p>
-          <h2 className="font-display font-bold text-lg">Sélectionné aujourd'hui</h2>
+          <h2 className="font-display font-bold text-lg">Recommandations du jour</h2>
+          <p className="text-xs text-mute mt-0.5">Selon ta ville, ton secteur et ton type de contrat.</p>
         </div>
       </div>
 

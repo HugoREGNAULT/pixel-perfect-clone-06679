@@ -263,6 +263,8 @@ function FeaturedOfferCard({ offer }: { offer: JobOffer }) {
       {/* Company & Title */}
       <h3 className="font-semibold text-foreground mb-2 line-clamp-2">{offer.title}</h3>
       <p className="text-sm text-muted-foreground mb-4">{offer.company}</p>
+      {offer.source === "france_travail" && <p className="text-xs text-muted-foreground mb-2">Source : France Travail</p>}
+      {offer.source === "bonne_alternance" && <p className="text-xs text-muted-foreground mb-2">Source : La Bonne Alternance</p>}
 
       {/* Details */}
       <div className="space-y-2 mb-4 text-sm text-muted-foreground">
