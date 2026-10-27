@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { getAdminStatus } from "@/lib/admin-guard.functions";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -31,16 +32,14 @@ export const Route = createFileRoute("/admin")({
     } = await supabase.auth.getUser();
     if (!user) throw redirect({ to: "/admin/login" as any });
 
-    const db = supabase as any;
-    const { data: profile } = await db
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-
-    console.log("[admin] user.id:", user.id, "profile.role:", profile?.role);
-
-    if (!profile || profile.role !== "admin") {
+    // Rôle vérifié côté serveur à partir du jeton, pas depuis un état client.
+    let isAdmin = false;
+    try {
+      ({ isAdmin } = await getAdminStatus());
+    } catch {
+      isAdmin = false;
+    }
+    if (!isAdmin) {
       throw redirect({ to: "/" as any });
     }
   },

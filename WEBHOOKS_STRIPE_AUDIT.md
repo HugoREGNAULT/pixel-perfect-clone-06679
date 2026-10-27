@@ -119,3 +119,44 @@ Si **TOUS LES DEUX sont actifs** (= problème d'ambiguïté) :
 4. Supprimer le webhook inutile + adapter le code accordingly
 
 **Pour l'instant :** Les deux webhooks restent, avec cette documentation de l'ambiguïté.
+
+
+---
+
+# Complément (Agent D) : checklist tableau de bord Stripe
+
+Rien n'est supprimé. Aucune valeur de secret n'est écrite ici.
+
+## Rôle de chaque endpoint
+
+| Endpoint (route) | Fichier | Écrit dans | Événements gérés | Vérification de signature | Secret lu (nom de variable) |
+|---|---|---|---|---|---|
+| `/api/public/payments/webhook?env=sandbox` ou `?env=live` | `src/routes/api/public/payments/webhook.ts` | table `founders` (uniquement si `metadata.kind = "founder"`) | `checkout.session.completed`, `checkout.session.async_payment_succeeded` | `verifyWebhook(request, env)` dans `src/lib/stripe.server.ts` | `PAYMENTS_SANDBOX_WEBHOOK_SECRET` (env=sandbox) ou `PAYMENTS_LIVE_WEBHOOK_SECRET` (env=live) |
+| `/api/public/payments/stripe-webhook` | `src/routes/api/public/payments/stripe-webhook.ts` | table `subscriptions` (nécessite `metadata.supabase_user_id` et `plan_id`) | `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed` | HMAC-SHA256 maison (`verifyStripeSignature`, tolérance 300 s, rejet 400 si invalide) | `STRIPE_WEBHOOK_SECRET` |
+
+Note : le nom des variables du premier endpoint a été relu dans `stripe.server.ts` (`PAYMENTS_SANDBOX_WEBHOOK_SECRET` / `PAYMENTS_LIVE_WEBHOOK_SECRET`) ; la section ci-dessus du document d'origine mentionnait `PAYMENTS_WEBHOOK_SECRET[_LIVE]`, ce qui ne correspond plus au code.
+
+Points d'attention constatés :
+- Les deux endpoints reçoivent `checkout.session.completed` mais filtrent différemment : `webhook.ts` ignore tout ce qui n'a pas `metadata.kind = "founder"` ; `stripe-webhook.ts` ignore tout ce qui n'a pas `supabase_user_id` + `plan_id`. Un même événement n'est donc normalement traité que par un seul des deux (pas de doublon tant que les metadata sont exclusives), mais cela repose sur les metadata de la session de paiement.
+- `stripe-webhook.ts` n'a pas de gestion sandbox/live (un seul secret). `handleCheckoutCompleted` fait un `insert` simple pour un paiement sans abonnement : un rejeu Stripe du même événement crée un doublon (non idempotent dans ce cas).
+- Le endpoint `webhook.ts` répond 200 `ignored` si `?env` est absent ou invalide : une URL enregistrée sans `?env=` n'écrira jamais rien.
+
+## À vérifier dans le tableau de bord Stripe (Développeurs > Webhooks)
+
+Faire la vérification dans le mode Test (sandbox) ET dans le mode Live, séparément.
+
+1. Lister les endpoints existants. Attendus :
+   - Live : une destination vers `https://<domaine>/api/public/payments/webhook?env=live` (paiements Founder) et/ou une vers `https://<domaine>/api/public/payments/stripe-webhook` (abonnements). Savoir lesquels sont réellement actifs détermine quelle table est alimentée.
+   - Test : `.../webhook?env=sandbox` (et éventuellement `.../stripe-webhook` si les abonnements sont testés).
+2. Événements cochés par endpoint :
+   - `webhook` : `checkout.session.completed`, `checkout.session.async_payment_succeeded`.
+   - `stripe-webhook` : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`.
+   - Retirer les événements non gérés (ils sont ignorés mais génèrent du bruit).
+3. Correspondance secret de signature (« Signing secret » propre à CHAQUE endpoint, affiché par « Révéler ») :
+   - endpoint `webhook?env=live` -> doit être la valeur de `PAYMENTS_LIVE_WEBHOOK_SECRET`.
+   - endpoint `webhook?env=sandbox` -> `PAYMENTS_SANDBOX_WEBHOOK_SECRET`.
+   - endpoint `stripe-webhook` -> `STRIPE_WEBHOOK_SECRET` (un seul secret : si l'endpoint existe en test ET en live, un seul des deux fonctionnera avec cette variable).
+   Chaque endpoint a son propre secret : ne pas réutiliser celui d'un endpoint pour un autre.
+4. Onglet « Livraisons récentes » de chaque endpoint : chercher des réponses 400 (signature invalide, mauvais secret), 500 (`Configuration error` = variable absente) ou 200 avec `ignored`.
+5. Si les deux endpoints sont actifs en live : confirmer que les sessions Founder portent `metadata.kind = "founder"` et les sessions d'abonnement `supabase_user_id` + `plan_id`, pour éviter qu'un événement soit ignoré par les deux.
+6. Décision à prendre avant toute suppression : voir « Décision en attente » plus haut. Ce complément ne change pas la recommandation.
