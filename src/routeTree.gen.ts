@@ -30,6 +30,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FonctionnalitesRouteImport } from './routes/fonctionnalites'
 import { Route as EvenementsRouteImport } from './routes/evenements'
 import { Route as CookiesRouteImport } from './routes/cookies'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
 import { Route as CommunauteRouteImport } from './routes/communaute'
 import { Route as CguRouteImport } from './routes/cgu'
@@ -169,6 +170,11 @@ const EvenementsRoute = EvenementsRouteImport.update({
 const CookiesRoute = CookiesRouteImport.update({
   id: '/cookies',
   path: '/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfidentialiteRoute = ConfidentialiteRouteImport.update({
@@ -358,6 +364,7 @@ export interface FileRoutesByFullPath {
   '/cgu': typeof CguRoute
   '/communaute': typeof CommunauteRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
   '/fonctionnalites': typeof FonctionnalitesRoute
@@ -415,6 +422,7 @@ export interface FileRoutesByTo {
   '/cgu': typeof CguRoute
   '/communaute': typeof CommunauteRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
   '/fonctionnalites': typeof FonctionnalitesRoute
@@ -473,6 +481,7 @@ export interface FileRoutesById {
   '/cgu': typeof CguRoute
   '/communaute': typeof CommunauteRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/evenements': typeof EvenementsRoute
   '/fonctionnalites': typeof FonctionnalitesRoute
@@ -533,6 +542,7 @@ export interface FileRouteTypes {
     | '/cgu'
     | '/communaute'
     | '/confidentialite'
+    | '/contact'
     | '/cookies'
     | '/evenements'
     | '/fonctionnalites'
@@ -590,6 +600,7 @@ export interface FileRouteTypes {
     | '/cgu'
     | '/communaute'
     | '/confidentialite'
+    | '/contact'
     | '/cookies'
     | '/evenements'
     | '/fonctionnalites'
@@ -647,6 +658,7 @@ export interface FileRouteTypes {
     | '/cgu'
     | '/communaute'
     | '/confidentialite'
+    | '/contact'
     | '/cookies'
     | '/evenements'
     | '/fonctionnalites'
@@ -706,6 +718,7 @@ export interface RootRouteChildren {
   CguRoute: typeof CguRoute
   CommunauteRoute: typeof CommunauteRoute
   ConfidentialiteRoute: typeof ConfidentialiteRoute
+  ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   EvenementsRoute: typeof EvenementsRoute
   FonctionnalitesRoute: typeof FonctionnalitesRoute
@@ -891,6 +904,13 @@ declare module '@tanstack/react-router' {
       path: '/cookies'
       fullPath: '/cookies'
       preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/confidentialite': {
@@ -1192,6 +1212,7 @@ const rootRouteChildren: RootRouteChildren = {
   CguRoute: CguRoute,
   CommunauteRoute: CommunauteRoute,
   ConfidentialiteRoute: ConfidentialiteRoute,
+  ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   EvenementsRoute: EvenementsRoute,
   FonctionnalitesRoute: FonctionnalitesRoute,
