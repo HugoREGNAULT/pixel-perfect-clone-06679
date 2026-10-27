@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect, useMemo } from "react";
+import { Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { AppNav } from "@/components/AppNav";
 import {
@@ -13,10 +14,20 @@ import {
   Tag,
   MapPin,
   ArrowUpRight,
-  Loader2,
   ChevronDown,
   ChevronUp,
+  WifiOff,
+  RefreshCw,
 } from "lucide-react";
+import { PageShell } from "@/components/ui/container";
+import { SectionHeader } from "@/components/ui/section-header";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input, fieldBase } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 import type { Tables } from "@/integrations/supabase/types";
 
 /* ------------------------------------------------------------------- route */
@@ -51,7 +62,6 @@ interface BaseResult {
   subtitle: string;
   meta: string;
   badge?: string;
-  badgeCls?: string;
   city?: string;
   sector?: string;
   type?: string;
@@ -62,18 +72,13 @@ type DbMentor  = Tables<"mentors">;
 type DbEvent   = Tables<"evenements">;
 type DbDeal    = Tables<"bons_plans">;
 
-const TYPE_COLORS: Record<string, string> = {
-  stage:       "border-violet/30 bg-violet/10 text-violet-soft",
-  alternance:  "border-lime/30 bg-lime/10 text-lime",
-  job:         "border-amber-400/30 bg-amber-400/10 text-amber-300",
-};
 const TYPE_LABELS: Record<string, string> = { stage: "Stage", alternance: "Alternance", job: "Premier job" };
 
-const KIND_CONFIG: Record<ResultKind, { icon: React.ComponentType<{ className?: string }>; label: string; color: string }> = {
-  offre:     { icon: Briefcase,   label: "Offre",      color: "text-violet-soft" },
-  mentor:    { icon: Users,       label: "Mentor",     color: "text-lime"        },
-  evenement: { icon: CalendarDays, label: "Événement", color: "text-cyan-400"   },
-  deal:      { icon: Tag,         label: "Bon plan",   color: "text-amber-400"   },
+const KIND_CONFIG: Record<ResultKind, { icon: React.ComponentType<{ className?: string }>; label: string; plural: string; href: string }> = {
+  offre:     { icon: Briefcase,    label: "Offre",     plural: "Offres",     href: "/opportunites" },
+  mentor:    { icon: Users,        label: "Mentor",    plural: "Mentors",    href: "/mentors" },
+  evenement: { icon: CalendarDays, label: "Événement", plural: "Événements", href: "/evenements" },
+  deal:      { icon: Tag,          label: "Bon plan",  plural: "Bons plans", href: "/bons-plans" },
 };
 
 /* ------------------------------------------------------------------- page */
@@ -85,85 +90,92 @@ function RecherchePage() {
   const [localQ, setLocalQ]     = useState(params.q);
   const [results, setResults]   = useState<BaseResult[]>([]);
   const [loading, setLoading]   = useState(false);
+  const [failed, setFailed]     = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [typeFilter, setTypeFilter]   = useState(params.type);
-  const [sectorFilter, setSectorFilter] = useState(params.sector);
-  const [cityFilter, setCityFilter]   = useState(params.city);
+  const typeFilter = params.type;
+  const sectorFilter = params.sector;
+  const cityFilter = params.city;
 
   const SECTORS = useMemo(() => [...new Set(results.filter(r => r.sector).map(r => r.sector!))].sort(), [results]);
   const CITIES  = useMemo(() => [...new Set(results.filter(r => r.city).map(r => r.city!))].sort(), [results]);
 
   useEffect(() => {
     setLocalQ(params.q);
-    if (!params.q.trim()) { setResults([]); return; }
+    if (!params.q.trim()) { setResults([]); setFailed(false); return; }
     search(params.q);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.q]);
 
   async function search(q: string) {
     setLoading(true);
-    const pattern = `%${q}%`;
+    setFailed(false);
+    const pattern = `%${q.replace(/[,()%]/g, " ")}%`;
 
-    const [offresRes, mentorsRes, eventsRes, dealsRes] = await Promise.all([
-      supabase.from("offres").select("*").or(`title.ilike.${pattern},company.ilike.${pattern},sector.ilike.${pattern},city.ilike.${pattern}`).limit(30),
-      supabase.from("mentors").select("*").or(`first_name.ilike.${pattern},last_name.ilike.${pattern},company.ilike.${pattern},sector.ilike.${pattern},position.ilike.${pattern}`).limit(20),
-      supabase.from("evenements").select("*").or(`title.ilike.${pattern},organizer.ilike.${pattern},city.ilike.${pattern}`).limit(20),
-      supabase.from("bons_plans").select("*").eq("actif", true).or(`titre.ilike.${pattern},description.ilike.${pattern},categorie.ilike.${pattern}`).limit(10),
-    ]);
+    try {
+      const [offresRes, mentorsRes, eventsRes, dealsRes] = await Promise.all([
+        supabase.from("offres").select("*").or(`title.ilike.${pattern},company.ilike.${pattern},sector.ilike.${pattern},city.ilike.${pattern}`).limit(30),
+        supabase.from("mentors").select("*").or(`first_name.ilike.${pattern},last_name.ilike.${pattern},company.ilike.${pattern},sector.ilike.${pattern},position.ilike.${pattern}`).limit(20),
+        supabase.from("evenements").select("*").or(`title.ilike.${pattern},organizer.ilike.${pattern},city.ilike.${pattern}`).limit(20),
+        supabase.from("bons_plans").select("*").eq("actif", true).or(`titre.ilike.${pattern},description.ilike.${pattern},categorie.ilike.${pattern}`).limit(10),
+      ]);
 
-    const mapped: BaseResult[] = [
-      ...(offresRes.data ?? []).map((o: DbOffer): BaseResult => ({
-        id: o.id, kind: "offre",
-        title: o.title, subtitle: o.company,
-        meta: o.city + (o.remote ? " · Remote" : ""),
-        badge: TYPE_LABELS[o.type] ?? o.type,
-        badgeCls: TYPE_COLORS[o.type] ?? "border-white/15 text-mute",
-        city: o.city, sector: o.sector, type: o.type,
-      })),
-      ...(mentorsRes.data ?? []).map((m: DbMentor): BaseResult => ({
-        id: m.id, kind: "mentor",
-        title: `${m.first_name} ${m.last_name}`,
-        subtitle: `${m.position} · ${m.company}`,
-        meta: m.city,
-        badge: m.sector,
-        badgeCls: "border-violet/30 bg-violet/10 text-violet-soft",
-        city: m.city, sector: m.sector,
-      })),
-      ...(eventsRes.data ?? []).map((e: DbEvent): BaseResult => ({
-        id: e.id, kind: "evenement",
-        title: e.title, subtitle: e.organizer,
-        meta: e.city + " · " + new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short" }).format(new Date(e.date)),
-        badge: e.type,
-        badgeCls: "border-cyan-400/30 bg-cyan-400/10 text-cyan-400",
-        city: e.city,
-      })),
-      ...(dealsRes.data ?? []).map((d: DbDeal): BaseResult => ({
-        id: d.id, kind: "deal",
-        title: d.titre,
-        subtitle: d.description,
-        meta: d.categorie,
-        badge: d.badge_texte || d.categorie,
-        badgeCls: "border-amber-400/30 bg-amber-400/10 text-amber-300",
-      })),
-    ];
+      if ([offresRes, mentorsRes, eventsRes, dealsRes].every(r => r.error)) setFailed(true);
 
-    setResults(mapped);
+      const mapped: BaseResult[] = [
+        ...(offresRes.data ?? []).map((o: DbOffer): BaseResult => ({
+          id: o.id, kind: "offre",
+          title: o.title, subtitle: o.company,
+          meta: o.city + (o.remote ? " · Télétravail" : ""),
+          badge: TYPE_LABELS[o.type] ?? o.type,
+          city: o.city, sector: o.sector, type: o.type,
+        })),
+        ...(mentorsRes.data ?? []).map((m: DbMentor): BaseResult => ({
+          id: m.id, kind: "mentor",
+          title: `${m.first_name} ${m.last_name}`,
+          subtitle: `${m.position} · ${m.company}`,
+          meta: m.city,
+          badge: m.sector,
+          city: m.city, sector: m.sector,
+        })),
+        ...(eventsRes.data ?? []).map((e: DbEvent): BaseResult => ({
+          id: e.id, kind: "evenement",
+          title: e.title, subtitle: e.organizer,
+          meta: e.city + " · " + new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short" }).format(new Date(e.date)),
+          badge: e.type,
+          city: e.city,
+        })),
+        ...(dealsRes.data ?? []).map((d: DbDeal): BaseResult => ({
+          id: d.id, kind: "deal",
+          title: d.titre,
+          subtitle: d.description,
+          meta: d.categorie,
+          badge: d.badge_texte || d.categorie,
+        })),
+      ];
+      setResults(mapped);
+    } catch {
+      setFailed(true);
+      setResults([]);
+    }
     setLoading(false);
+  }
+
+  function setUrl(next: Partial<{ q: string; type: string; sector: string; city: string }>, replace = true) {
+    navigate({ to: "/recherche", search: { q: params.q, type: typeFilter, sector: sectorFilter, city: cityFilter, ...next }, replace });
   }
 
   function submitSearch(e: React.FormEvent) {
     e.preventDefault();
-    navigate({ to: "/recherche", search: { q: localQ, type: typeFilter, sector: sectorFilter, city: cityFilter } });
+    setUrl({ q: localQ.trim() }, false);
   }
 
   function clearFilters() {
-    setTypeFilter(""); setSectorFilter(""); setCityFilter("");
-    navigate({ to: "/recherche", search: { q: params.q, type: "", sector: "", city: "" } });
+    setUrl({ type: "", sector: "", city: "" });
   }
 
   const filtered = useMemo(() => {
     return results.filter(r => {
-      if (typeFilter && r.type && r.type !== typeFilter) return false;
+      if (typeFilter && r.type !== typeFilter) return false;
       if (sectorFilter && r.sector !== sectorFilter) return false;
       if (cityFilter && r.city !== cityFilter) return false;
       return true;
@@ -182,141 +194,103 @@ function RecherchePage() {
   const KIND_ORDER: ResultKind[] = ["offre", "mentor", "evenement", "deal"];
 
   return (
-    <div className="min-h-screen bg-ink text-white">
+    <>
       <AppNav />
+      <PageShell size="md" className="pb-20">
+        <SectionHeader
+          as="h1"
+          eyebrow="Recherche"
+          title={params.q ? `Résultats pour « ${params.q} »` : "Que cherches-tu ?"}
+          description="Offres, mentors, événements et bons plans au même endroit."
+        />
 
-      <main className="mx-auto max-w-5xl px-5 py-10 pb-24">
-        {/* hero */}
-        <div className="mb-8">
-          <div className="eyebrow mb-3">Recherche globale</div>
-          <h1 className="font-display text-4xl sm:text-5xl font-bold leading-tight mb-6">
-            {params.q ? (
-              <>Résultats pour <span className="text-lime">"{params.q}"</span></>
-            ) : (
-              "Que cherches-tu ?"
+        <form onSubmit={submitSearch} role="search" className="mt-6 flex max-w-xl gap-3">
+          <div className="relative flex-1">
+            <label htmlFor="rech-q" className="sr-only">Rechercher</label>
+            <Search aria-hidden className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input id="rech-q" type="search" value={localQ} onChange={e => setLocalQ(e.target.value)}
+              placeholder="Offre, mentor, événement" className="px-10" />
+            {localQ && (
+              <button type="button" aria-label="Effacer la recherche"
+                onClick={() => { setLocalQ(""); setUrl({ q: "", type: "", sector: "", city: "" }, false); }}
+                className="absolute right-0 top-0 flex size-11 items-center justify-center text-muted-foreground hover:text-foreground">
+                <X aria-hidden className="size-4" />
+              </button>
             )}
-          </h1>
-
-          {/* search bar */}
-          <form onSubmit={submitSearch} className="flex gap-3 max-w-xl">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-mute pointer-events-none" />
-              <input
-                value={localQ}
-                onChange={e => setLocalQ(e.target.value)}
-                placeholder="Offre, mentor, événement…"
-                autoFocus={!params.q}
-                className="w-full rounded-xl bg-white/5 border border-white/10 pl-11 pr-4 py-3.5 text-sm placeholder:text-mute/50 focus:outline-none focus:border-violet/60 focus:bg-white/[0.07] transition-colors"
-              />
-              {localQ && (
-                <button
-                  type="button"
-                  onClick={() => { setLocalQ(""); navigate({ to: "/recherche", search: { q: "", type: "", sector: "", city: "" } }); }}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-mute hover:text-white transition-colors"
-                >
-                  <X className="size-4" />
-                </button>
-              )}
-            </div>
-            <button
-              type="submit"
-              className="rounded-xl bg-lime px-5 text-sm font-semibold text-ink hover:-translate-y-0.5 hover:shadow-[0_0_20px_-4px_rgba(181,255,61,0.5)] transition-all"
-            >
-              Chercher
-            </button>
-          </form>
-        </div>
+          </div>
+          <Button type="submit">Chercher</Button>
+        </form>
 
         {params.q && (
-          <>
-            {/* filter toggle */}
-            <div className="flex items-center gap-3 mb-4 flex-wrap">
-              <button
-                onClick={() => setFiltersOpen(o => !o)}
-                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-all ${filtersOpen ? "border-violet/60 bg-violet/10 text-white" : "border-white/15 text-mute hover:border-white/30"}`}
-              >
-                <SlidersHorizontal className="size-4" />
-                Filtres
-                {hasFilters && <span className="size-2 rounded-full bg-lime" />}
-                {filtersOpen ? <ChevronUp className="size-3.5" /> : <ChevronDown className="size-3.5" />}
-              </button>
+          <div className="mt-8">
+            <div className="mb-4 flex flex-wrap items-center gap-3">
+              <Button type="button" variant="secondary" aria-expanded={filtersOpen} onClick={() => setFiltersOpen(o => !o)}>
+                <SlidersHorizontal /> Filtres
+                {hasFilters && <span aria-label="filtres actifs" className="size-2 rounded-full bg-primary" />}
+                {filtersOpen ? <ChevronUp /> : <ChevronDown />}
+              </Button>
               {hasFilters && (
-                <button onClick={clearFilters} className="inline-flex items-center gap-1 text-sm text-mute hover:text-white transition-colors">
-                  <X className="size-3.5" /> Réinitialiser
-                </button>
+                <Button type="button" variant="ghost" size="sm" onClick={clearFilters}><X /> Réinitialiser</Button>
               )}
-              {!loading && (
-                <span className="ml-auto text-sm text-mute">
-                  <span className="font-display font-bold text-white">{total}</span> résultat{total !== 1 ? "s" : ""}
+              {!loading && !failed && (
+                <span className="ml-auto text-sm text-muted-foreground" aria-live="polite">
+                  <strong className="font-display text-lg text-foreground">{total}</strong> résultat{total !== 1 ? "s" : ""}
                 </span>
               )}
             </div>
 
-            {/* filter panel */}
             {filtersOpen && (
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 mb-6 animate-in fade-in slide-in-from-top-2 duration-150">
-                <div className="grid sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-widest text-mute mb-2">Type de contrat</label>
-                    <div className="flex flex-wrap gap-2">
-                      {["stage", "alternance", "job"].map(t => (
-                        <button
-                          key={t}
-                          onClick={() => setTypeFilter(typeFilter === t ? "" : t)}
-                          className={`rounded-full px-3 py-1.5 text-xs font-medium border transition-all ${typeFilter === t ? "bg-white text-ink border-white" : "border-white/15 text-mute hover:border-white/30"}`}
-                        >
-                          {TYPE_LABELS[t]}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-widest text-mute mb-2">Secteur</label>
-                    <select
-                      value={sectorFilter}
-                      onChange={e => setSectorFilter(e.target.value)}
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm text-mute focus:outline-none focus:border-violet/60 focus:text-white transition-colors"
-                    >
-                      <option value="">Tous les secteurs</option>
-                      {SECTORS.map(s => <option key={s} value={s}>{s}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-widest text-mute mb-2">Ville</label>
-                    <select
-                      value={cityFilter}
-                      onChange={e => setCityFilter(e.target.value)}
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm text-mute focus:outline-none focus:border-violet/60 focus:text-white transition-colors"
-                    >
-                      <option value="">Toutes les villes</option>
-                      {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
-                    </select>
+              <div className="mb-6 grid gap-4 rounded-lg border border-border bg-card p-4 sm:grid-cols-3 sm:p-5">
+                <div role="group" aria-label="Type de contrat">
+                  <p className="mb-2 text-sm font-semibold text-foreground">Type de contrat</p>
+                  <div className="flex flex-wrap gap-2">
+                    {["stage", "alternance", "job"].map(t => (
+                      <button key={t} type="button" aria-pressed={typeFilter === t}
+                        onClick={() => setUrl({ type: typeFilter === t ? "" : t })}
+                        className={cn(
+                          "inline-flex min-h-11 items-center rounded-full border px-4 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                          typeFilter === t ? "border-primary bg-primary text-primary-foreground" : "border-input bg-card text-foreground hover:bg-muted",
+                        )}>
+                        {TYPE_LABELS[t]}
+                      </button>
+                    ))}
                   </div>
                 </div>
-                <div className="flex justify-end mt-4">
-                  <button
-                    onClick={() => navigate({ to: "/recherche", search: { q: params.q, type: typeFilter, sector: sectorFilter, city: cityFilter } })}
-                    className="rounded-full bg-lime px-5 py-2 text-sm font-semibold text-ink hover:-translate-y-0.5 transition-transform"
-                  >
-                    Appliquer
-                  </button>
+                <div>
+                  <label htmlFor="rech-secteur" className="mb-2 block text-sm font-semibold text-foreground">Secteur</label>
+                  <select id="rech-secteur" value={sectorFilter} onChange={e => setUrl({ sector: e.target.value })} className={cn(fieldBase, "h-11")}>
+                    <option value="">Tous les secteurs</option>
+                    {SECTORS.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="rech-ville" className="mb-2 block text-sm font-semibold text-foreground">Ville</label>
+                  <select id="rech-ville" value={cityFilter} onChange={e => setUrl({ city: e.target.value })} className={cn(fieldBase, "h-11")}>
+                    <option value="">Toutes les villes</option>
+                    {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
                 </div>
               </div>
             )}
 
-            {/* results */}
             {loading ? (
-              <div className="flex items-center justify-center py-24">
-                <Loader2 className="size-7 text-mute animate-spin" />
+              <div className="space-y-2" aria-busy="true">
+                {Array.from({ length: 5 }, (_, i) => <Skeleton key={i} className="h-16 rounded-lg" />)}
               </div>
+            ) : failed ? (
+              <EmptyState
+                icon={<WifiOff />}
+                title="La recherche est indisponible pour le moment"
+                description="Nous n'arrivons pas à joindre les données. Ça ne vient pas de ton mot-clé : réessaie dans quelques instants."
+                action={<Button onClick={() => search(params.q)}><RefreshCw /> Réessayer</Button>}
+              />
             ) : total === 0 ? (
-              <div className="flex flex-col items-center justify-center py-24 text-center">
-                <Search className="size-10 text-mute mb-4" />
-                <h3 className="font-display text-xl font-bold mb-2">Aucun résultat</h3>
-                <p className="text-mute text-sm max-w-xs">
-                  Essaie un autre mot-clé ou élargis tes filtres.
-                </p>
-              </div>
+              <EmptyState
+                icon={<Search />}
+                title="Aucun résultat"
+                description={hasFilters ? "Des résultats existent peut-être sans tes filtres." : "Essaie un autre mot-clé ou un terme plus général."}
+                action={hasFilters ? <Button variant="secondary" onClick={clearFilters}>Retirer les filtres</Button> : undefined}
+              />
             ) : (
               <div className="space-y-10">
                 {KIND_ORDER.map(kind => {
@@ -325,62 +299,55 @@ function RecherchePage() {
                   const cfg = KIND_CONFIG[kind];
                   const Icon = cfg.icon;
                   return (
-                    <section key={kind}>
-                      <div className="flex items-center gap-2 mb-4">
-                        <Icon className={`size-4 ${cfg.color}`} />
-                        <h2 className="font-display font-bold text-lg">{cfg.label}s</h2>
-                        <span className="text-xs font-mono text-mute ml-1">{items.length}</span>
+                    <section key={kind} aria-labelledby={`rech-${kind}`}>
+                      <div className="mb-4 flex items-center gap-2">
+                        <Icon aria-hidden className="size-5 text-primary" />
+                        <h2 id={`rech-${kind}`} className="text-h4 font-semibold text-foreground">{cfg.plural}</h2>
+                        <span className="text-sm text-muted-foreground">{items.length}</span>
                       </div>
-                      <div className="space-y-2">
-                        {items.map(r => <ResultCard key={r.id} result={r} q={params.q} />)}
-                      </div>
+                      <ul className="space-y-2">
+                        {items.map(r => <li key={r.id}><ResultCard result={r} q={params.q} /></li>)}
+                      </ul>
                     </section>
                   );
                 })}
               </div>
             )}
-          </>
+          </div>
         )}
 
-        {/* empty state (no query) */}
-        {!params.q && !loading && (
-          <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {!params.q && (
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {(["offre", "mentor", "evenement", "deal"] as ResultKind[]).map(kind => {
               const cfg = KIND_CONFIG[kind];
               const Icon = cfg.icon;
-              const hrefs: Record<ResultKind, string> = {
-                offre: "/opportunites", mentor: "/mentors", evenement: "/evenements", deal: "/bons-plans"
-              };
               return (
-                <a
-                  key={kind}
-                  href={hrefs[kind]}
-                  className="group rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent p-5 flex flex-col gap-3 hover:border-white/20 hover:-translate-y-0.5 transition-all"
-                >
-                  <Icon className={`size-5 ${cfg.color}`} />
-                  <div>
-                    <p className="font-display font-bold text-sm">Explorer les {cfg.label}s</p>
-                    <p className="text-xs text-mute mt-0.5">Voir tous les résultats</p>
-                  </div>
-                  <ArrowUpRight className="size-4 text-mute group-hover:text-white transition-colors self-end mt-auto" />
-                </a>
+                <li key={kind}>
+                  <Link to={cfg.href} className="block h-full">
+                    <Card interactive className="flex h-full flex-col gap-3 p-5">
+                      <Icon aria-hidden className="size-5 text-primary" />
+                      <p className="font-display text-base font-semibold text-foreground">Explorer les {cfg.plural.toLowerCase()}</p>
+                      <ArrowUpRight aria-hidden className="mt-auto size-4 self-end text-muted-foreground" />
+                    </Card>
+                  </Link>
+                </li>
               );
             })}
-          </div>
+          </ul>
         )}
-      </main>
-    </div>
+      </PageShell>
+    </>
   );
 }
 
 /* ------------------------------------------------------------------- result card */
 
 function highlight(text: string, q: string) {
-  if (!q) return text;
+  if (!q || !text) return text;
   const parts = text.split(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"));
   return parts.map((part, i) =>
     part.toLowerCase() === q.toLowerCase()
-      ? <mark key={i} className="bg-lime/20 text-lime rounded-sm px-0.5">{part}</mark>
+      ? <mark key={i} className="rounded-sm bg-primary-soft px-0.5 text-primary-soft-foreground">{part}</mark>
       : part
   );
 }
@@ -388,36 +355,29 @@ function highlight(text: string, q: string) {
 function ResultCard({ result: r, q }: { result: BaseResult; q: string }) {
   const cfg = KIND_CONFIG[r.kind];
   const Icon = cfg.icon;
+  const search = r.kind === "offre" ? { q: r.title } : undefined;
 
   return (
-    <div className="group flex items-center gap-4 rounded-xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent px-4 py-3.5 hover:border-white/20 hover:bg-white/[0.04] transition-all">
-      {/* icon */}
-      <div className="size-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-        <Icon className={`size-4 ${cfg.color}`} />
-      </div>
-
-      {/* content */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 flex-wrap mb-0.5">
-          <span className="font-semibold text-sm">{highlight(r.title, q)}</span>
-          {r.badge && (
-            <span className={`text-[10px] font-mono uppercase tracking-wide border rounded-full px-2 py-0.5 ${r.badgeCls}`}>
-              {r.badge}
-            </span>
-          )}
+    <Link to={cfg.href} search={search} className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
+      <Card interactive className="flex items-center gap-4 px-4 py-3.5">
+        <div aria-hidden className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary-soft-foreground">
+          <Icon className="size-5" />
         </div>
-        <p className="text-xs text-mute truncate">{highlight(r.subtitle, q)}</p>
-      </div>
-
-      {/* meta */}
-      {r.meta && (
-        <div className="shrink-0 text-xs text-mute flex items-center gap-1">
-          {r.city && <MapPin className="size-3" />}
-          <span className="hidden sm:inline">{r.meta}</span>
+        <div className="min-w-0 flex-1">
+          <div className="mb-0.5 flex flex-wrap items-center gap-2">
+            <span className="text-base font-semibold text-foreground">{highlight(r.title, q)}</span>
+            {r.badge && <Badge variant="secondary">{r.badge}</Badge>}
+          </div>
+          <p className="truncate text-sm text-muted-foreground">{highlight(r.subtitle, q)}</p>
         </div>
-      )}
-
-      <ArrowUpRight className="size-4 text-mute group-hover:text-white transition-colors shrink-0" />
-    </div>
+        {r.meta && (
+          <div className="hidden shrink-0 items-center gap-1 text-sm text-muted-foreground sm:flex">
+            {r.city && <MapPin aria-hidden className="size-4" />}
+            <span>{r.meta}</span>
+          </div>
+        )}
+        <ArrowUpRight aria-hidden className="size-4 shrink-0 text-muted-foreground" />
+      </Card>
+    </Link>
   );
 }
