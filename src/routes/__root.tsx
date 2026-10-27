@@ -129,7 +129,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      ...(isEcole ? [] : [{ rel: "canonical", href: `https://springr.app${leaf?.pathname === "/" ? "" : (leaf?.pathname ?? "")}` }]),
+      ...(isEcole ? [] : [{ rel: "canonical", href: `https://springr.app${(leaf?.pathname ?? "").replace(/\/+$/, "")}` }]),
     ],
     };
   },
