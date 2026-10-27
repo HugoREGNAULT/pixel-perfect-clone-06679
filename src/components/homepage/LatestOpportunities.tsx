@@ -1,286 +1,134 @@
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { searchJobs } from "@/lib/job-search";
-import { ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { ArrowRight, Briefcase } from "lucide-react";
+import { searchJobs } from "@/lib/job-search";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Container } from "@/components/ui/container";
+import { EmptyState } from "@/components/ui/empty-state";
+import { SectionHeader } from "@/components/ui/section-header";
+import { Skeleton } from "@/components/ui/skeleton";
+
+type Job = Awaited<ReturnType<typeof searchJobs>>["offers"][number];
+
+const TYPE_LABEL: Record<string, string> = {
+  alternance: "Alternance",
+  stage: "Stage",
+  cdi: "CDI",
+  cdd: "CDD",
+  job: "Job",
+};
 
 export function LatestOpportunities() {
-  const { data: searchResult, isLoading, isError } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["latest-jobs"],
     queryFn: () => searchJobs({ type: "alternance", page: 1 }),
+    retry: false,
   });
 
-  const jobs = searchResult?.offers?.slice(0, 3) ?? [];
+  // Base injoignable : on ne laisse pas un chargement infini.
+  const [timedOut, setTimedOut] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setTimedOut(true), 6000);
+    return () => clearTimeout(t);
+  }, []);
+
+  const jobs = data?.offers?.slice(0, 3) ?? [];
+  const failed = isError || (isLoading && timedOut) || Boolean(data?.error);
 
   return (
-    <section
-      id="dernieres-opportunites"
-      className="py-20 px-5 lg:px-8"
-      style={{ backgroundColor: "var(--color-bg-white)" }}
-      data-node-id="3:395"
-    >
-      <div className="max-w-6xl mx-auto">
-        {/* Header with title and link */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-8 md:mb-16 gap-4 md:gap-8">
-          <div>
-            <h2
-              className="text-2xl md:text-4xl font-bold leading-tight mb-2"
-              style={{
-                color: "var(--color-text-dark)",
-                fontFamily: "var(--font-poppins)",
-              }}
+    <section id="dernieres-opportunites" className="scroll-mt-20 border-y border-border bg-muted py-12 md:py-20">
+      <Container>
+        <SectionHeader
+          title="Dernières opportunités"
+          action={
+            <Link
+              to="/opportunites"
+              className="inline-flex min-h-11 items-center gap-1.5 text-base font-semibold text-primary hover:underline"
             >
-              Dernières opportunités
-            </h2>
-            <p
-              className="text-sm md:text-base"
-              style={{
-                color: "var(--color-text-gray-1)",
-                fontFamily: "var(--font-inter)",
-              }}
-            >
-              Des centaines de nouvelles offres ajoutées chaque jour.
-            </p>
-          </div>
-          <Link
-            to="/opportunites/search"
-            className="flex items-center gap-2 shrink-0 whitespace-nowrap"
-            style={{
-              color: "var(--color-primary)",
-              fontFamily: "var(--font-inter)",
-              fontWeight: 700,
-              fontSize: "14px",
-            }}
-          >
-            Voir toutes les offres
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+              Voir toutes les offres
+              <ArrowRight className="size-4" aria-hidden />
+            </Link>
+          }
+        />
+        <div className="mt-6 md:mt-8">
+          {isLoading && !timedOut ? (
+            <Skeleton className="h-40 w-full" aria-busy="true" aria-label="Chargement des offres" />
+          ) : failed ? (
+            <EmptyState
+              icon={<Briefcase />}
+              title="Offres momentanément indisponibles"
+              description="Réessaie dans un instant ou ouvre la liste complète des offres."
+              action={
+                <Button asChild variant="secondary">
+                  <Link to="/opportunites">Voir les offres</Link>
+                </Button>
+              }
+            />
+          ) : jobs.length === 0 ? (
+            <EmptyState
+              icon={<Briefcase />}
+              title="Pas encore d'offres"
+              description="Les premières offres arrivent. Crée ton profil pour ne pas les manquer."
+              action={
+                <Button asChild>
+                  <Link to="/signup">Commencer gratuitement</Link>
+                </Button>
+              }
+            />
+          ) : (
+            <ul className="grid gap-4 md:grid-cols-3 md:gap-6">
+              {jobs.map((job) => (
+                <li key={job.id}>
+                  <JobCard job={job} />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-
-        {/* Loading state */}
-        {isLoading && (
-          <div className="flex items-center justify-center py-16">
-            <Loader2 className="w-6 h-6 animate-spin" style={{ color: "var(--color-primary)" }} />
-          </div>
-        )}
-
-        {/* Error state */}
-        {(isError || searchResult?.error) && (
-          <div
-            className="text-center py-8 px-4 rounded-[12px]"
-            style={{
-              backgroundColor: "var(--color-bg-light-gray)",
-              color: "var(--color-text-gray-1)",
-            }}
-          >
-            <p>Offres momentanément indisponibles, réessaie dans un instant</p>
-          </div>
-        )}
-
-        {/* Jobs grid */}
-        {!isLoading && !isError && !searchResult?.error && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {jobs.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
-          </div>
-        )}
-
-        {/* Empty state */}
-        {!isLoading && !isError && !searchResult?.error && jobs.length === 0 && (
-          <div
-            className="text-center py-8 px-4 rounded-[12px]"
-            style={{
-              backgroundColor: "var(--color-bg-light-gray)",
-              color: "var(--color-text-gray-1)",
-            }}
-          >
-            <p>Aucune offre disponible pour le moment.</p>
-          </div>
-        )}
-      </div>
+      </Container>
     </section>
   );
 }
 
-interface JobCardProps {
-  job: ReturnType<typeof searchJobs> extends Promise<infer T>
-    ? T extends { offers: (infer U)[] }
-      ? U
-      : never
-    : never;
-}
-
-function getBadgeColors(type: string): { bg: string; text: string } {
-  const colorMap: Record<string, { bg: string; text: string }> = {
-    alternance: {
-      bg: "var(--color-badge-blue-bg)",
-      text: "var(--color-badge-blue-text)",
-    },
-    stage: {
-      bg: "var(--color-badge-yellow-bg)",
-      text: "var(--color-badge-yellow-text)",
-    },
-    cdi: {
-      bg: "var(--color-badge-blue-bg)",
-      text: "var(--color-badge-blue-text)",
-    },
-    cdd: {
-      bg: "var(--color-badge-green-bg)",
-      text: "var(--color-badge-green-text)",
-    },
-    job: {
-      bg: "var(--color-badge-gray-bg)",
-      text: "var(--color-badge-gray-text)",
-    },
-  };
-  return colorMap[type] || colorMap.job;
-}
-
-function JobCard({ job }: JobCardProps) {
-  // Get first letter of company name
-  const companyInitial = (job.company?.[0] || "?").toUpperCase();
-
-  // Get colors for avatar and badges
-  const badgeColors = getBadgeColors(job.type);
-
+function JobCard({ job }: { job: Job }) {
   return (
-    <div
-      className="bg-white rounded-[12px] border-2 p-4 md:p-6 flex flex-col h-full"
-      style={{
-        borderColor: "var(--color-border-light)",
-        boxShadow: "var(--shadow-hard-4px)",
-      }}
-    >
-      {/* Company avatar */}
-      <div
-        className="w-10 md:w-12 h-10 md:h-12 rounded-[8px] flex items-center justify-center mb-3 md:mb-4 flex-shrink-0 font-bold text-base md:text-lg"
-        style={{
-          backgroundColor: badgeColors.bg,
-          color: badgeColors.text,
-        }}
-      >
-        {companyInitial}
+    <Card className="flex h-full flex-col gap-3 p-5">
+      <div className="flex flex-wrap gap-2">
+        <Badge variant="default">{TYPE_LABEL[job.type] ?? job.type}</Badge>
+        <Badge variant="outline">{job.remote ? "Télétravail" : "Sur site"}</Badge>
+        {job.salary ? <Badge variant="success">{job.salary}</Badge> : null}
       </div>
-
-      {/* Job title */}
-      <h3
-        className="font-bold text-base md:text-lg leading-6 md:leading-7 mb-2"
-        style={{
-          color: "var(--color-text-dark)",
-          fontFamily: "var(--font-inter)",
-        }}
-      >
-        {job.title}
-      </h3>
-
-      {/* Company and city */}
-      <p
-        className="text-xs md:text-sm mb-3 md:mb-4"
-        style={{
-          color: "var(--color-text-gray-2)",
-          fontFamily: "var(--font-inter)",
-        }}
-      >
-        {job.company} • {job.city}
+      <h3 className="text-h4 font-semibold text-foreground">{job.title}</h3>
+      <p className="flex-1 text-small text-muted-foreground">
+        {[job.company, job.city].filter(Boolean).join(" · ")}
       </p>
-
-      {/* Tags/Badges */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        {/* Type badge */}
-        <span
-          className="px-2 py-1 rounded-[4px] text-xs font-semibold"
-          style={{
-            backgroundColor: badgeColors.bg,
-            color: badgeColors.text,
-            fontFamily: "var(--font-inter)",
-          }}
-        >
-          {formatJobType(job.type)}
-        </span>
-
-        {/* Salary badge (if available) */}
-        {job.salary && (
-          <span
-            className="px-2 py-1 rounded-[4px] text-xs font-semibold"
-            style={{
-              backgroundColor: "var(--color-badge-green-bg)",
-              color: "var(--color-badge-green-text)",
-              fontFamily: "var(--font-inter)",
-            }}
-          >
-            {job.salary}
-          </span>
-        )}
-
-        {/* Remote badge */}
-        <span
-          className="px-2 py-1 rounded-[4px] text-xs font-semibold"
-          style={{
-            backgroundColor: "var(--color-badge-gray-bg)",
-            color: "var(--color-badge-gray-text)",
-            fontFamily: "var(--font-inter)",
-          }}
-        >
-          {job.remote ? "Remote" : "Sur site"}
-        </span>
+      <div className="flex items-center justify-between gap-3 border-t border-border pt-3">
+        <span className="text-caption text-muted-foreground">{formatTimestamp(job.publishedAt)}</span>
+        {job.applyUrl ? (
+          <Button asChild size="sm" variant="secondary">
+            <a href={job.applyUrl} target="_blank" rel="noopener noreferrer">
+              Postuler
+              <span className="sr-only"> à {job.title} (nouvel onglet)</span>
+            </a>
+          </Button>
+        ) : null}
       </div>
-
-      {/* Spacer */}
-      <div className="flex-1" />
-
-      {/* Footer with timestamp and button */}
-      <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: "var(--color-border-light)" }}>
-        <span
-          className="text-xs"
-          style={{
-            color: "var(--color-text-gray-3)",
-            fontFamily: "var(--font-inter)",
-          }}
-        >
-          {formatTimestamp(job.publishedAt)}
-        </span>
-
-        <a
-          href={job.applyUrl || "#"}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-4 py-2 rounded-[8px] text-sm font-bold text-white text-center"
-          style={{
-            backgroundColor: "var(--color-text-dark)",
-            fontFamily: "var(--font-inter)",
-          }}
-        >
-          Postuler
-        </a>
-      </div>
-    </div>
+    </Card>
   );
 }
 
-// Helper to format job type
-function formatJobType(type: string): string {
-  const typeMap: Record<string, string> = {
-    alternance: "Alternance",
-    stage: "Stage",
-    cdi: "CDI",
-    cdd: "CDD",
-    job: "Job",
-  };
-  return typeMap[type] || type;
-}
-
-// Helper to format timestamp
 function formatTimestamp(publishedAt: string): string {
-  const now = new Date();
   const date = new Date(publishedAt);
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-
-  if (diffMins < 1) return "À l'instant";
-  if (diffMins < 60) return `Il y a ${diffMins}m`;
-  if (diffHours < 24) return `Il y a ${diffHours}h`;
-  if (diffDays < 7) return `Il y a ${diffDays}j`;
+  if (Number.isNaN(date.getTime())) return "";
+  const mins = Math.floor((Date.now() - date.getTime()) / 60000);
+  const hours = Math.floor(mins / 60);
+  const days = Math.floor(hours / 24);
+  if (mins < 1) return "À l'instant";
+  if (mins < 60) return `Il y a ${mins} min`;
+  if (hours < 24) return `Il y a ${hours} h`;
+  if (days < 7) return `Il y a ${days} j`;
   return date.toLocaleDateString("fr-FR");
 }

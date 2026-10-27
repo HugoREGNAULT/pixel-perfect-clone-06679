@@ -1,491 +1,81 @@
-import { useEffect, useState } from "react";
-import { searchJobs } from "@/lib/job-search";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight, Briefcase, GraduationCap, Gift } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Container } from "@/components/ui/container";
 
-const imgMentor = "/images/homepage/mentor-avatar.png";
-const imgSvg2 = "/images/homepage/feature-svg-1.svg";
-const imgSvg3 = "/images/homepage/feature-svg-2.svg";
-const imgSvg5 = "/images/homepage/feature-svg-3.svg";
+const ENTRIES = [
+  {
+    to: "/opportunites",
+    icon: Briefcase,
+    title: "Stages et alternances",
+    text: "Cherche par ville et par type de contrat.",
+  },
+  {
+    to: "/bons-plans",
+    icon: Gift,
+    title: "Bons plans étudiants",
+    text: "Réductions et avantages réunis au même endroit.",
+  },
+  {
+    to: "/ecoles",
+    icon: GraduationCap,
+    title: "Annuaire des écoles",
+    text: "Compare les écoles et repère les journées portes ouvertes.",
+  },
+] as const;
 
 export function Hero() {
-  const [jobsCount, setJobsCount] = useState(0);
-
-  useEffect(() => {
-    // Fetch jobs count pour le compteur
-    searchJobs({ q: "" }).then((result) => {
-      if (result.total > 100) {
-        setJobsCount(result.total);
-      }
-    }).catch(() => {});
-  }, []);
-
   return (
-    <section
-      className="bg-white flex flex-col gap-[40px] lg:gap-[80px] isolate items-center pb-[56px] pt-[80px] lg:pb-[112px] lg:pt-[160px] relative w-full overflow-hidden px-5 lg:px-[197.5px]"
-      data-node-id="3:3"
-      data-name="Hero Section"
-    >
-      {/* Decorative blurs */}
-      <div
-        className="absolute bg-red-500 blur-3xl bottom-[-32px] left-20 mix-blend-multiply opacity-70 rounded-full z-[4]"
-        style={{ width: "256px", height: "256px" }}
-      />
-      <div
-        className="absolute blur-3xl left-0 mix-blend-multiply opacity-70 rounded-full top-40 z-[3]"
-        style={{
-          backgroundColor: "var(--color-primary)",
-          width: "256px",
-          height: "256px",
-        }}
-      />
-      <div
-        className="absolute blur-3xl mix-blend-multiply opacity-70 right-0 rounded-full top-40 z-[2]"
-        style={{
-          backgroundColor: "var(--color-highlight)",
-          width: "256px",
-          height: "256px",
-        }}
-      />
-
-      <div className="flex flex-col lg:flex-row gap-[40px] lg:gap-[64px] items-start justify-center relative shrink-0 w-full lg:max-w-7xl z-[5]">
-        {/* Left: Text Content */}
-        <div className="flex-1 min-w-0">
-          {/* Badge */}
-          <div className="-rotate-1 flex items-center justify-center mb-8 w-fit">
-            <div
-              className="bg-white border-2 border-black flex items-center px-4.5 py-2.5 relative rounded-full"
-              style={{
-                boxShadow: "var(--shadow-hard-4px)",
-              }}
-            >
-              <div
-                className="h-2 w-2 mr-3 rounded-full"
-                style={{ backgroundColor: "var(--color-success)" }}
-              />
-              <div
-                className="text-sm font-bold"
-                style={{
-                  color: "var(--color-text-dark)",
-                  fontFamily: "var(--font-inter)",
-                }}
-              >
-                La plateforme des 15-29 ans
-              </div>
-            </div>
-          </div>
-
-          {/* H1 avec "avenir" surligné */}
-          <h1 className="mb-6">
-            <div
-              className="flex flex-wrap gap-2 text-[40px] lg:text-[72px] leading-[56px] lg:leading-[72px]"
-              style={{
-                fontFamily: "var(--font-poppins)",
-                fontWeight: "800",
-                color: "var(--color-text-dark)",
-              }}
-            >
-              <span>Booste ton</span>
-              <span className="relative inline-block">
-                <span
-                  className="-rotate-2 inline-block px-3"
-                  style={{ backgroundColor: "var(--color-highlight)" }}
-                >
-                  avenir
-                </span>
-              </span>
-              <span>dès</span>
-            </div>
-            <div
-              className="text-[40px] lg:text-[72px] leading-[56px] lg:leading-[72px]"
-              style={{
-                fontFamily: "var(--font-poppins)",
-                fontWeight: "800",
-                color: "var(--color-text-dark)",
-              }}
-            >
-              maintenant.
-            </div>
+    <section className="border-b border-border bg-background">
+      <Container className="grid gap-10 py-12 md:py-16 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-16 lg:py-24">
+        <div className="space-y-6">
+          <p className="eyebrow">Le réseau pro des 15-29 ans</p>
+          <h1 className="text-display font-bold text-foreground">
+            Trouve ton stage, ton alternance et tes bons plans.
           </h1>
-
-          {/* Description */}
-          <p
-            className="mb-12 max-w-2xl text-[16px] lg:text-[20px] leading-[26px] lg:leading-[32.5px]"
-            style={{
-              fontFamily: "var(--font-inter)",
-              fontWeight: "400",
-              color: "var(--color-text-gray-1)",
-            }}
-          >
-            Centralise stages, alternances, mentorat et bons plans dans une seule app. Rejoins la communauté qui connecte étudiants, écoles et entreprises.
+          <p className="max-w-xl text-body-lg text-muted-foreground">
+            Springr réunit au même endroit les offres, les bons plans et les écoles pour les
+            étudiants, et un espace pour les recruteurs qui veulent les rencontrer.
           </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-12">
-            <button
-              className="border-2 border-black inline-flex gap-2 items-center justify-center pb-4.5 pt-4.5 px-8.5 relative rounded-lg shrink-0"
-              style={{
-                backgroundColor: "var(--color-primary)",
-                color: "white",
-                boxShadow: "var(--shadow-hard-3px)",
-                fontFamily: "var(--font-inter)",
-                fontWeight: "700",
-                fontSize: "18px",
-              }}
-            >
-              <span>Commencer gratuitement</span>
-              <svg
-                width="16"
-                height="18"
-                viewBox="0 0 16 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M1 9h14M9 1l7 8-7 8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-
-            <button
-              className="bg-white border-2 border-black inline-flex gap-2 items-center justify-center pb-4.5 pt-4.5 px-8.5 relative rounded-lg shrink-0"
-              style={{
-                color: "var(--color-text-dark)",
-                fontFamily: "var(--font-inter)",
-                fontWeight: "700",
-                fontSize: "18px",
-                boxShadow: "var(--shadow-hard-4px)",
-              }}
-              onClick={() => window.location.hash = "fonctionnalites"}
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="9" cy="9" r="8" stroke="currentColor" strokeWidth="2" />
-                <path d="M7 9l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <span>Voir la démo</span>
-            </button>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button asChild size="lg">
+              <Link to="/signup">
+                Commencer gratuitement
+                <ArrowRight aria-hidden />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="secondary">
+              {/* P5 gère la présélection du rôle côté inscription. */}
+              <Link to="/signup" search={{ role: "recruteur" } as never}>
+                Je recrute
+              </Link>
+            </Button>
           </div>
-
+          <p className="text-small text-muted-foreground">
+            Gratuit pour les étudiants, sans carte bancaire.
+          </p>
         </div>
 
-        {/* Right: Product Composition - Visible on mobile (scaled), full size on desktop */}
-        <div className="flex flex-col lg:flex-row flex-1 min-w-0 mt-8 lg:mt-0 justify-center lg:justify-start w-full lg:w-auto">
-          <div className="scale-[0.65] lg:scale-100 origin-center lg:origin-start w-full lg:w-auto">
-            <HeroProductComposition />
-          </div>
-        </div>
-      </div>
-
+        <ul className="grid gap-3" aria-label="Ce que tu trouves sur Springr">
+          {ENTRIES.map(({ to, icon: Icon, title, text }) => (
+            <li key={to}>
+              <Link to={to} className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
+                <Card interactive className="flex items-center gap-4 p-4 sm:p-5">
+                  <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary-soft-foreground">
+                    <Icon className="size-5" aria-hidden />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-h4 font-semibold text-foreground">{title}</span>
+                    <span className="block text-small text-muted-foreground">{text}</span>
+                  </span>
+                  <ArrowRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+                </Card>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Container>
     </section>
-  );
-}
-
-function HeroProductComposition() {
-  return (
-    <div className="relative w-full">
-      {/* Main Card - Dashboard */}
-      <div
-        className="bg-white border-2 border-black flex flex-col gap-6 items-start pb-11 pt-6 px-6 relative rounded-2xl"
-        style={{
-          boxShadow: "var(--shadow-hard-8px)",
-        }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between w-full">
-          <div>
-            <div
-              style={{
-                fontSize: "20px",
-                fontFamily: "var(--font-inter)",
-                fontWeight: "700",
-                color: "var(--color-text-dark)",
-              }}
-            >
-              Tableau de bord
-            </div>
-            <div
-              style={{
-                fontSize: "14px",
-                fontFamily: "var(--font-inter)",
-                fontWeight: "400",
-                color: "var(--color-text-gray-2)",
-              }}
-            >
-              Bonjour, Thomas 👋
-            </div>
-          </div>
-
-          {/* Badge */}
-          <div
-            className="border inline-flex flex-col items-start px-3 py-1.5 relative rounded-full shrink-0"
-            style={{
-              backgroundColor: "var(--color-success-alpha-20)",
-              borderColor: "var(--color-success)",
-            }}
-          >
-            <div
-              style={{
-                fontSize: "12px",
-                fontFamily: "var(--font-inter)",
-                fontWeight: "700",
-                color: "var(--color-success)",
-              }}
-            >
-              Étudiant Premium
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="w-full grid grid-cols-2 gap-4">
-          {/* Stat 1 */}
-          <div
-            className="border flex flex-col rounded-3xl p-4"
-            style={{
-              backgroundColor: "var(--color-bg-light-blue)",
-              borderColor: "var(--color-stat-blue-border)",
-            }}
-          >
-            <div className="mb-2">
-              <img alt="" className="w-6 h-6" src={imgSvg2} />
-            </div>
-            <div
-              style={{
-                fontSize: "24px",
-                fontFamily: "var(--font-inter)",
-                fontWeight: "700",
-                color: "var(--color-text-dark)",
-              }}
-            >
-              12
-            </div>
-            <div
-              style={{
-                fontSize: "12px",
-                fontFamily: "var(--font-inter)",
-                fontWeight: "400",
-                color: "var(--color-text-gray-2)",
-              }}
-            >
-              Candidatures envoyées
-            </div>
-          </div>
-
-          {/* Stat 2 */}
-          <div
-            className="border flex flex-col rounded-3xl p-4"
-            style={{
-              backgroundColor: "var(--color-bg-light-yellow)",
-              borderColor: "var(--color-stat-yellow-border)",
-            }}
-          >
-            <div className="mb-2">
-              <img alt="" className="w-6 h-6" src={imgSvg3} />
-            </div>
-            <div
-              style={{
-                fontSize: "24px",
-                fontFamily: "var(--font-inter)",
-                fontWeight: "700",
-                color: "var(--color-text-dark)",
-              }}
-            >
-              3
-            </div>
-            <div
-              style={{
-                fontSize: "12px",
-                fontFamily: "var(--font-inter)",
-                fontWeight: "400",
-                color: "var(--color-text-gray-2)",
-              }}
-            >
-              Entretiens prévus
-            </div>
-          </div>
-        </div>
-
-        {/* Match Card - Offer */}
-        <div
-          className="w-full flex flex-col gap-4 rounded-3xl p-5"
-          style={{
-            backgroundColor: "var(--color-text-dark)",
-          }}
-        >
-          <div className="flex items-start justify-between">
-            <div
-              className="w-8 h-8 flex items-center justify-center rounded opacity-50"
-              style={{
-                backgroundColor: "var(--color-white-alpha-20)",
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                <polyline points="9 22 9 12 15 12 15 22" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-
-            <div
-              className="flex flex-col items-start px-2 py-1 relative rounded"
-              style={{
-                backgroundColor: "var(--color-success)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: "12px",
-                  fontFamily: "var(--font-inter)",
-                  fontWeight: "700",
-                  color: "black",
-                }}
-              >
-                98% Match
-              </div>
-            </div>
-          </div>
-
-          <div
-            style={{
-              fontSize: "18px",
-              fontFamily: "var(--font-inter)",
-              fontWeight: "700",
-              color: "white",
-            }}
-          >
-            Product Designer Junior
-          </div>
-
-          <div
-            style={{
-              fontSize: "14px",
-              fontFamily: "var(--font-inter)",
-              fontWeight: "400",
-              color: "var(--color-text-gray-3)",
-            }}
-          >
-            Paris • Alternance • 1200€/mois
-          </div>
-
-          <button
-            className="w-full bg-white py-2 rounded font-bold"
-            style={{
-              fontSize: "16px",
-              fontFamily: "var(--font-inter)",
-              fontWeight: "700",
-              color: "black",
-            }}
-          >
-            Postuler en 1 clic
-          </button>
-        </div>
-      </div>
-
-      {/* Floating Notification */}
-      <div
-        className="absolute bg-white border-2 border-black flex flex-col items-start p-4 rounded-3xl -top-5 -right-5 z-20"
-        style={{
-          boxShadow: "var(--shadow-hard-4px)",
-        }}
-      >
-        <div className="flex gap-3 items-center">
-          <div
-            className="flex items-center justify-center rounded-full shrink-0"
-            style={{
-              backgroundColor: "var(--color-notification-bg)",
-              width: "40px",
-              height: "40px",
-            }}
-          >
-            <img alt="" className="w-4 h-4" src={imgSvg5} />
-          </div>
-
-          <div className="flex flex-col">
-            <div
-              style={{
-                fontSize: "14px",
-                fontFamily: "var(--font-inter)",
-                fontWeight: "700",
-                color: "var(--color-text-dark)",
-              }}
-            >
-              Offre acceptée !
-            </div>
-
-            <div
-              style={{
-                fontSize: "12px",
-                fontFamily: "var(--font-inter)",
-                fontWeight: "400",
-                color: "var(--color-text-gray-2)",
-              }}
-            >
-              Studio Nova t'attend
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mentor Badge */}
-      <div
-        className="absolute flex items-center justify-center rotate-3 -bottom-6 -left-6 z-10"
-        style={{
-          width: "178px",
-          height: "105px",
-        }}
-      >
-        <div
-          className="flex flex-col gap-2 items-start pb-4 pt-4 px-4 rounded-3xl border-2 border-black"
-          style={{
-            backgroundColor: "var(--color-highlight)",
-            boxShadow: "var(--shadow-hard-4px)",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "14px",
-              fontFamily: "var(--font-inter)",
-              fontWeight: "700",
-              color: "var(--color-text-dark)",
-            }}
-          >
-            Mentor suggéré
-          </div>
-
-          <div className="flex gap-2 items-center">
-            <img
-              alt=""
-              className="w-8 h-8 rounded-full border-2 border-black"
-              src={imgMentor}
-            />
-
-            <div className="flex flex-col">
-              <div
-                style={{
-                  fontSize: "12px",
-                  fontFamily: "var(--font-inter)",
-                  fontWeight: "700",
-                  color: "var(--color-text-dark)",
-                }}
-              >
-                Sarah K.
-              </div>
-
-              <div
-                style={{
-                  fontSize: "10px",
-                  fontFamily: "var(--font-inter)",
-                  fontWeight: "400",
-                  color: "var(--color-text-secondary)",
-                }}
-              >
-                Senior Dev @Studio Nova
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }
