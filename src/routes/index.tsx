@@ -1,35 +1,17 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
-import { z } from "zod";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { DASHBOARD_ROUTE } from "@/lib/dashboard";
-import {
-  Loader2,
-  ArrowUpRight,
-  LogOut,
-  Menu,
-  X,
-} from "lucide-react";
-import { toast } from "sonner";
-import { subscribeNewsletter } from "@/lib/newsletter.functions";
-import { FounderCheckoutDialog } from "@/components/FounderCheckoutDialog";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
-import { Nav } from "@/components/homepage/Nav";
+import { AppNav } from "@/components/AppNav";
 import { Hero } from "@/components/homepage/Hero";
-import { WhySpringr } from "@/components/homepage/WhySpringr";
+import { HowItWorks } from "@/components/homepage/HowItWorks";
 import { FeaturesTab } from "@/components/homepage/FeaturesTab";
 import { LatestOpportunities } from "@/components/homepage/LatestOpportunities";
 import { Mentorship } from "@/components/homepage/Mentorship";
 import { Pricing } from "@/components/homepage/Pricing";
+import { Faq } from "@/components/homepage/Faq";
 import { NewsletterCTA } from "@/components/homepage/NewsletterCTA";
-
-const NAV_LINKS = [
-  { to: "/opportunites", label: "Opportunités" },
-  { to: "/mentors",      label: "Mentors"      },
-  { to: "/bons-plans",   label: "Bons Plans"   },
-  { to: "/evenements",   label: "Événements"   },
-  { to: "/recruteurs",   label: "Recruteurs"   },
-] as const;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,255 +20,51 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Springr connecte étudiants, mentors et recruteurs. Le réseau pro pensé par et pour la nouvelle génération.",
+          "Springr réunit offres de stage et d'alternance, bons plans et écoles pour les 15-29 ans, et un espace pour les recruteurs.",
       },
     ],
   }),
   component: HomePage,
 });
 
-const emailSchema = z.string().trim().email("Email invalide").max(255);
-
 function HomePage() {
   const navigate = useNavigate();
-  const [founderOpen, setFounderOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [authChecked, setAuthChecked] = useState(false);
-  const [profileCount, setProfileCount] = useState(0);
 
-  function redirectToDashboard(u: User) {
-    const role = u.user_metadata?.role as string | undefined;
-    const target = role ? (DASHBOARD_ROUTE[role] ?? "/dashboard") : "/dashboard";
-    navigate({ to: target as any, replace: true });
-  }
-
+  // Le contenu public est rendu tout de suite (SSR compris) ; les connectés sont redirigés ensuite.
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      const u = data.session?.user ?? null;
-      setUser(u);
-      setAuthChecked(true);
-      if (u) redirectToDashboard(u);
-    });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
-      const u = session?.user ?? null;
-      setUser(u);
-      if (u) redirectToDashboard(u);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    (supabase
-      .from("profiles")
-      .select("id", { count: "exact", head: true }) as unknown as Promise<{ count: number | null }>)
-      .then(({ count }) => {
-        if (count && count > 100) setProfileCount(count);
+    function redirectToDashboard(u: User) {
+      const role = u.user_metadata?.role as string | undefined;
+      const target = role ? (DASHBOARD_ROUTE[role] ?? "/dashboard") : "/dashboard";
+      navigate({ to: target as never, replace: true });
+    }
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (data.session?.user) redirectToDashboard(data.session.user);
       })
       .catch(() => {});
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_, session) => {
+      if (session?.user) redirectToDashboard(session.user);
+    });
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function handleSignOut() {
-    await supabase.auth.signOut();
-    toast.success("Déconnecté·e.");
-  }
-
-  if (!authChecked || user) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="size-6 text-muted-foreground animate-spin" />
-      </div>
-    );
-  }
-
   return (
-    <>
-      <div className="min-h-screen bg-background text-foreground overflow-x-hidden flex flex-col pb-[140px] lg:pb-0">
-        <Nav />
-        <main>
+    <div className="min-h-screen overflow-x-clip bg-background text-foreground">
+      <AppNav />
+      <main id="main">
         <Hero />
-        <WhySpringr />
+        <HowItWorks />
         <FeaturesTab />
         <LatestOpportunities />
         <Mentorship />
         <Pricing />
+        <Faq />
         <NewsletterCTA />
-        </main>
-      </div>
-      <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
-    </>
+      </main>
+    </div>
   );
 }
-
-function SpringrLanding() {
-  const navigate = useNavigate();
-  const [founderOpen, setFounderOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [authChecked, setAuthChecked] = useState(false);
-  const [profileCount, setProfileCount] = useState(0);
-
-  function redirectToDashboard(u: User) {
-    const role = u.user_metadata?.role as string | undefined;
-    const target = role ? (DASHBOARD_ROUTE[role] ?? "/dashboard") : "/dashboard";
-    navigate({ to: target as any, replace: true });
-  }
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      const u = data.session?.user ?? null;
-      setUser(u);
-      setAuthChecked(true);
-      if (u) redirectToDashboard(u);
-    });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
-      const u = session?.user ?? null;
-      setUser(u);
-      if (u) redirectToDashboard(u);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    (supabase
-      .from("profiles")
-      .select("id", { count: "exact", head: true }) as unknown as Promise<{ count: number | null }>)
-      .then(({ count }) => {
-        if (count && count > 100) setProfileCount(count);
-      })
-      .catch(() => {});
-  }, []);
-
-  async function handleSignOut() {
-    await supabase.auth.signOut();
-    toast.success("Déconnecté·e.");
-  }
-
-  if (!authChecked || user) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="size-6 text-muted-foreground animate-spin" />
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-        <NavLegacy onFounder={() => setFounderOpen(true)} user={user} onSignOut={handleSignOut} />
-        <main>
-        <Hero />
-        <WhySpringr />
-        <FeaturesTab />
-        <NewsletterCTA />
-        </main>
-      </div>
-      <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
-    </>
-  );
-}
-
-/* -------------------------------------------- LEGACY: NeedSection, FeaturesSection */
-
-// Removed - replaced with FeaturesTab component
-
-/* -------------------------------------------------------------- LOGO / NAV */
-
-function Logo({ className = "" }: { className?: string }) {
-  return (
-    <span className={`font-display font-bold tracking-tight text-xl text-foreground ${className}`}>
-      springr
-    </span>
-  );
-}
-
-function NavLegacy({
-  onFounder,
-  user,
-  onSignOut,
-}: {
-  onFounder: () => void;
-  user: User | null;
-  onSignOut: () => void;
-}) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const role = user?.user_metadata?.role as string | undefined;
-  const roleLabel = role === "etudiant" ? "Étudiant" : role === "mentor" ? "Mentor" : role === "recruteur" ? "Recruteur" : null;
-  const initials = (user?.user_metadata?.name?.[0] ?? user?.email?.[0])?.toUpperCase();
-
-  return (
-    <>
-      <header className="sticky top-0 z-40 backdrop-blur-sm bg-background/95 border-b border-border">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8 h-14 flex items-center justify-between gap-4">
-          <Logo />
-
-          {/* Desktop links */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {NAV_LINKS.map(({ to, label }) => (
-              <Link key={to} to={to} className="px-3 py-1.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
-                {label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Desktop auth */}
-          <div className="hidden lg:flex items-center gap-2 shrink-0">
-            {user ? (
-              <>
-                <Link to="/profil" className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 hover:border-border-strong hover:bg-muted transition-all">
-                  <div className="size-5 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-[10px] font-bold">{initials}</div>
-                  <span className="text-sm text-foreground">Mon profil</span>
-                  {roleLabel && <span className="text-xs font-medium text-primary border border-primary/30 rounded-full px-2 py-0.5">{roleLabel}</span>}
-                </Link>
-                <button onClick={onSignOut} className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:border-border-strong transition-all">
-                  <LogOut className="size-3.5" /> Déconnexion
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5">Connexion</Link>
-                <Link to="/signup" className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-foreground hover:bg-muted transition-all">Inscription</Link>
-              </>
-            )}
-          </div>
-
-          {/* Mobile: hamburger */}
-          <div className="lg:hidden flex items-center gap-2">
-            <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 text-muted-foreground hover:text-foreground transition-colors" aria-label="Menu">
-              {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-14 z-30 bg-background/95 backdrop-blur-sm border-b border-border px-5 py-4 space-y-1">
-          {NAV_LINKS.map(({ to, label }) => (
-            <Link key={to} to={to} onClick={() => setMenuOpen(false)} className="block px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
-              {label}
-            </Link>
-          ))}
-          <div className="pt-3 border-t border-border space-y-2">
-            {user ? (
-              <>
-                <Link to="/profil" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-foreground hover:bg-muted">
-                  <div className="size-6 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-xs font-bold">{initials}</div>
-                  Mon profil
-                </Link>
-                <button onClick={() => { setMenuOpen(false); onSignOut(); }} className="w-full text-left px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-2">
-                  <LogOut className="size-4" /> Déconnexion
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" onClick={() => setMenuOpen(false)} className="block px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted">Connexion</Link>
-                <Link to="/signup" onClick={() => setMenuOpen(false)} className="block px-3 py-2.5 rounded-lg text-sm font-semibold text-primary-foreground bg-primary text-center">Inscription</Link>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
-

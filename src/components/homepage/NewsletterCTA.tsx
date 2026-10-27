@@ -2,6 +2,10 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { subscribeNewsletter } from "@/lib/newsletter.functions";
+import { Button } from "@/components/ui/button";
+import { Container } from "@/components/ui/container";
+import { Input } from "@/components/ui/input";
+import { SectionHeader } from "@/components/ui/section-header";
 
 const emailSchema = z.string().trim().email("Email invalide").max(255);
 
@@ -32,103 +36,39 @@ export function NewsletterCTA() {
   }
 
   return (
-    <section
-      id="newsletter-cta"
-      className="relative py-20 px-5 lg:px-8 overflow-hidden"
-      style={{ backgroundColor: "var(--color-dark-navy)" }}
-      data-node-id="3:704"
-    >
-      {/* Decorative background blur elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="absolute top-10 left-10 w-32 h-32 rounded-full blur-3xl opacity-30"
-          style={{ backgroundColor: "var(--color-primary)" }}
-        />
-        <div
-          className="absolute bottom-10 right-10 w-32 h-32 rounded-full blur-3xl opacity-30"
-          style={{ backgroundColor: "var(--color-highlight)" }}
-        />
-      </div>
-
-      {/* Content */}
-      <div className="max-w-3xl mx-auto text-center relative z-10">
-        {/* Title */}
-        <h2
-          className="text-2xl md:text-4xl font-bold mb-4 md:mb-6 leading-tight"
-          style={{
-            color: "white",
-            fontFamily: "var(--font-poppins)",
-          }}
-        >
-          Prêt à lancer ta carrière ?
-        </h2>
-
-        {/* Subtitle */}
-        <p
-          className="text-sm md:text-lg mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed"
-          style={{
-            color: "var(--color-text-gray-3)",
-            fontFamily: "var(--font-inter)",
-          }}
-        >
-          Prêt à lancer ta carrière ? Laisse ton e-mail, on te prévient au lancement.
-        </p>
-
-        {/* Success message */}
-        {submitted && (
-          <div
-            className="mb-4 md:mb-6 p-3 md:p-4 rounded-[12px] text-white font-semibold text-sm md:text-base"
-            style={{
-              backgroundColor: "var(--color-success)",
-              fontFamily: "var(--font-inter)",
-            }}
-          >
-            Merci de ton inscription! 🎉
-          </div>
-        )}
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-xl mx-auto mb-6 md:mb-8">
-          <input
-            type="email"
-            placeholder="Ton email étudiant"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={loading}
-            className="flex-1 px-4 md:px-6 py-3 md:py-4 rounded-[12px] border-2 focus:outline-none transition-colors text-sm md:text-base"
-            style={{
-              borderColor: "var(--color-border-light)",
-              backgroundColor: "white",
-              color: "var(--color-text-dark)",
-              fontFamily: "var(--font-inter)",
-            }}
+    <section id="newsletter-cta" className="scroll-mt-20 bg-background py-12 md:py-20">
+      <Container size="sm">
+        <div className="rounded-lg border border-border bg-primary-soft p-6 text-center md:p-10">
+          <SectionHeader
+            align="center"
+            title="Prêt à lancer ta carrière ?"
+            description="Laisse ton e-mail, on te prévient au lancement."
           />
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-6 md:px-8 py-3 md:py-4 rounded-[12px] font-bold text-white transition-opacity text-sm md:text-base"
-            style={{
-              backgroundColor: "var(--color-primary)",
-              fontFamily: "var(--font-inter)",
-              opacity: loading ? 0.7 : 1,
-            }}
-          >
-            {loading ? "..." : "Je m'inscris"}
-          </button>
-        </form>
-
-        {/* Footer text */}
-        <p
-          className="text-xs md:text-sm"
-          style={{
-            color: "var(--color-text-gray-2)",
-            fontFamily: "var(--font-inter)",
-          }}
-        >
-          Pas de spam, promis.
-        </p>
-      </div>
+          {submitted ? (
+            <p role="status" className="mt-6 rounded-md bg-success px-4 py-3 text-base font-semibold text-success-foreground">
+              Merci, c'est noté !
+            </p>
+          ) : null}
+          <form onSubmit={handleSubmit} className="mx-auto mt-6 flex max-w-xl flex-col gap-3 sm:flex-row">
+            <label htmlFor="newsletter-email" className="sr-only">Ton e-mail</label>
+            <Input
+              id="newsletter-email"
+              type="email"
+              placeholder="Ton e-mail étudiant"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={loading}
+              className="flex-1"
+            />
+            <Button type="submit" disabled={loading}>
+              {loading ? "Envoi…" : "Je m'inscris"}
+            </Button>
+          </form>
+          <p className="mt-4 text-small text-muted-foreground">Pas de spam. Tu peux te désabonner à tout moment.</p>
+        </div>
+      </Container>
     </section>
   );
 }

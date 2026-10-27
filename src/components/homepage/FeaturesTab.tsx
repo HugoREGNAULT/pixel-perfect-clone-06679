@@ -1,141 +1,62 @@
-import { useState } from "react";
-import { Briefcase, Users, Gift, MessageSquare } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight, Briefcase, GraduationCap, Gift } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Container } from "@/components/ui/container";
+import { SectionHeader } from "@/components/ui/section-header";
 
+const FEATURES = [
+  {
+    to: "/opportunites",
+    icon: Briefcase,
+    title: "Offres",
+    text: "Stages, alternances et premiers emplois au même endroit, au lieu d'être éparpillés sur dix sites.",
+    cta: "Voir les offres",
+  },
+  {
+    to: "/bons-plans",
+    icon: Gift,
+    title: "Bons plans",
+    text: "Des réductions et avantages pensés pour les étudiants, faciles à retrouver.",
+    cta: "Voir les bons plans",
+  },
+  {
+    to: "/ecoles",
+    icon: GraduationCap,
+    title: "Écoles",
+    text: "Un annuaire pour comparer les écoles et repérer leurs journées portes ouvertes.",
+    cta: "Explorer les écoles",
+  },
+] as const;
+
+/** Section « Fonctionnalités » (ancre #fonctionnalites : remplace l'ancienne page /fonctionnalites). */
 export function FeaturesTab() {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const tabs = [
-    {
-      name: "Offres",
-      icon: Briefcase,
-      title: "Recommandations selon ton profil",
-      description: "Tu indiques ta ville, ton secteur et le type de contrat que tu cherches ; Springr te propose en priorité les offres qui correspondent.",
-    },
-    {
-      name: "Mentorat",
-      icon: Users,
-      title: "Trouve ton mentor",
-      description: "Connecte-toi avec des professionnels expérimentés dans ton domaine d'intérêt. Bénéficie de conseils personnalisés pour accélérer ton développement professionnel.",
-    },
-    {
-      name: "Bons Plans",
-      icon: Gift,
-      title: "Exclusivités étudiantes",
-      description: "Accède à des réductions et offres partenaires pensées pour les étudiants. Du logement aux outils numériques, tout ce dont tu as besoin au meilleur prix.",
-    },
-    {
-      name: "Communauté",
-      icon: MessageSquare,
-      title: "Connecte-toi",
-      description: "Rejoins une communauté de jeunes passionnés comme toi. Participe aux forums, salons vocaux et événements pour grandir ensemble.",
-    },
-  ];
-
-  const IconComponent = tabs[activeTab].icon;
-
   return (
-    <section
-      id="fonctionnalites"
-      className="py-20 px-5 lg:px-8"
-      style={{ backgroundColor: "var(--color-bg-white)" }}
-      data-node-id="3:166"
-    >
-      <div className="max-w-6xl mx-auto">
-        <h2
-          className="text-center mb-8 md:mb-16 text-2xl md:text-4xl font-bold leading-tight"
-          style={{
-            color: "var(--color-text-dark)",
-            fontFamily: "var(--font-poppins)",
-          }}
-        >
-          Fonctionnalités
-        </h2>
-
-        {/* Tabs Header */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
-        >
-          {tabs.map((tab, i) => {
-            const TabIcon = tab.icon;
-            const isActive = i === activeTab;
-            return (
-              <button
-                key={i}
-                onClick={() => setActiveTab(i)}
-                className="p-4 rounded-[16px] border-2 transition-all text-left"
-                style={{
-                  borderColor: isActive
-                    ? "var(--color-primary)"
-                    : "var(--color-text-dark)",
-                  backgroundColor: isActive
-                    ? "var(--color-primary)"
-                    : "var(--color-bg-white)",
-                }}
+    <section id="fonctionnalites" className="scroll-mt-20 border-y border-border bg-muted py-12 md:py-20">
+      <Container>
+        <SectionHeader
+          align="center"
+          title="Tout ce qu'il te faut, au même endroit"
+          description="Springr rassemble les offres, les bons plans et les écoles pour t'éviter de multiplier les onglets."
+        />
+        <div className="mt-8 grid gap-4 md:mt-12 md:grid-cols-3 md:gap-6">
+          {FEATURES.map(({ to, icon: Icon, title, text, cta }) => (
+            <Card key={to} className="flex flex-col gap-3 p-5 md:p-6">
+              <span className="flex size-11 items-center justify-center rounded-md bg-primary-soft text-primary-soft-foreground">
+                <Icon className="size-5" aria-hidden />
+              </span>
+              <h3 className="text-h4 font-semibold text-foreground">{title}</h3>
+              <p className="flex-1 text-base text-muted-foreground">{text}</p>
+              <Link
+                to={to}
+                className="inline-flex min-h-11 items-center gap-1.5 text-base font-semibold text-primary hover:underline"
               >
-                <div
-                  className="flex items-center gap-3 mb-2"
-                  style={{
-                    color: isActive
-                      ? "white"
-                      : "var(--color-text-dark)",
-                  }}
-                >
-                  <TabIcon className="w-5 h-5" />
-                  <span
-                    className="font-bold text-sm"
-                    style={{
-                      fontFamily: "var(--font-inter)",
-                    }}
-                  >
-                    {tab.name}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
+                {cta}
+                <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </Card>
+          ))}
         </div>
-
-        {/* Content Card */}
-        <div
-          className="rounded-[16px] border-2 p-6 md:p-12 min-h-[200px] md:min-h-[300px] flex flex-col justify-center"
-          style={{
-            borderColor: "var(--color-text-dark)",
-            backgroundColor: "var(--color-bg-white)",
-          }}
-        >
-          <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6 mb-4 md:mb-6">
-            <div
-              className="w-12 md:w-16 h-12 md:h-16 rounded-[12px] flex items-center justify-center flex-shrink-0"
-              style={{
-                backgroundColor: "var(--color-primary)",
-              }}
-            >
-              <IconComponent className="w-6 md:w-8 h-6 md:h-8 text-white" />
-            </div>
-            <div>
-              <h3
-                className="text-xl md:text-2xl font-bold mb-2"
-                style={{
-                  color: "var(--color-text-dark)",
-                  fontFamily: "var(--font-poppins)",
-                }}
-              >
-                {tabs[activeTab].title}
-              </h3>
-            </div>
-          </div>
-
-          <p
-            className="text-sm md:text-base leading-relaxed max-w-2xl"
-            style={{
-              color: "var(--color-text-gray-1)",
-              fontFamily: "var(--font-inter)",
-            }}
-          >
-            {tabs[activeTab].description}
-          </p>
-        </div>
-      </div>
+      </Container>
     </section>
   );
 }
