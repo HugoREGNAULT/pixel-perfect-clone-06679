@@ -58,14 +58,13 @@ export const RECRUITER_FREE = {
 export const RECRUITER_STARTER = {
   id: "company_starter",
   name: "Starter",
-  sub: "Le plus populaire",
+  sub: "Pour une annonce",
   price: "29,99€",
   period: "/offre",
   lookupKey: "company_starter_per_job",
   features: [
     "1 annonce mise en avant",
     "Badge « Sponsorisée » visible",
-    "Boost visibilité ×10",
     "Analytics de l'annonce (vues, clics)",
     "Position prioritaire dans les résultats",
     "Support prioritaire sous 24h",

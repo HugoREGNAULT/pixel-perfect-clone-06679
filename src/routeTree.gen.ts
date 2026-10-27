@@ -17,8 +17,8 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecruteursRouteImport } from './routes/recruteurs'
 import { Route as RechercheRouteImport } from './routes/recherche'
 import { Route as ProfilRouteImport } from './routes/profil'
+import { Route as PourLesEcolesRouteImport } from './routes/pour-les-ecoles'
 import { Route as ParrainageRouteImport } from './routes/parrainage'
-import { Route as OpportunitesRouteImport } from './routes/opportunites'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
@@ -55,12 +55,12 @@ import { Route as DashboardEcoleRouteImport } from './routes/dashboard/ecole'
 import { Route as DashboardDiplomeRouteImport } from './routes/dashboard/diplome'
 import { Route as BrandSocialKitRouteImport } from './routes/brand/social-kit'
 import { Route as BrandAssetsRouteImport } from './routes/brand/assets'
+import { Route as AdminLoginRouteImport } from './routes/admin_.login'
 import { Route as AdminUtilisateursRouteImport } from './routes/admin/utilisateurs'
 import { Route as AdminParametresRouteImport } from './routes/admin/parametres'
 import { Route as AdminPaiementsRouteImport } from './routes/admin/paiements'
 import { Route as AdminOffresRouteImport } from './routes/admin/offres'
 import { Route as AdminModerationRouteImport } from './routes/admin/moderation'
-import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminJpoRouteImport } from './routes/admin/jpo'
 import { Route as AdminEcolesRouteImport } from './routes/admin/ecoles'
 import { Route as AdminBonsPlansRouteImport } from './routes/admin/bons-plans'
@@ -107,14 +107,14 @@ const ProfilRoute = ProfilRouteImport.update({
   path: '/profil',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PourLesEcolesRoute = PourLesEcolesRouteImport.update({
+  id: '/pour-les-ecoles',
+  path: '/pour-les-ecoles',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ParrainageRoute = ParrainageRouteImport.update({
   id: '/parrainage',
   path: '/parrainage',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpportunitesRoute = OpportunitesRouteImport.update({
-  id: '/opportunites',
-  path: '/opportunites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -218,9 +218,9 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpportunitesIndexRoute = OpportunitesIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => OpportunitesRoute,
+  id: '/opportunites/',
+  path: '/opportunites/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const EcolesIndexRoute = EcolesIndexRouteImport.update({
   id: '/ecoles/',
@@ -243,9 +243,9 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 const OpportunitesSearchRoute = OpportunitesSearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => OpportunitesRoute,
+  id: '/opportunites/search',
+  path: '/opportunites/search',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const InviteCodeRoute = InviteCodeRouteImport.update({
   id: '/invite/$code',
@@ -297,6 +297,11 @@ const BrandAssetsRoute = BrandAssetsRouteImport.update({
   path: '/brand/assets',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin_/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminUtilisateursRoute = AdminUtilisateursRouteImport.update({
   id: '/utilisateurs',
   path: '/utilisateurs',
@@ -320,11 +325,6 @@ const AdminOffresRoute = AdminOffresRouteImport.update({
 const AdminModerationRoute = AdminModerationRouteImport.update({
   id: '/moderation',
   path: '/moderation',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminJpoRoute = AdminJpoRouteImport.update({
@@ -376,8 +376,8 @@ export interface FileRoutesByFullPath {
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
   '/onboarding': typeof OnboardingRoute
-  '/opportunites': typeof OpportunitesRouteWithChildren
   '/parrainage': typeof ParrainageRoute
+  '/pour-les-ecoles': typeof PourLesEcolesRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
   '/recruteurs': typeof RecruteursRoute
@@ -389,12 +389,12 @@ export interface FileRoutesByFullPath {
   '/admin/bons-plans': typeof AdminBonsPlansRoute
   '/admin/ecoles': typeof AdminEcolesRoute
   '/admin/jpo': typeof AdminJpoRoute
-  '/admin/login': typeof AdminLoginRoute
   '/admin/moderation': typeof AdminModerationRoute
   '/admin/offres': typeof AdminOffresRoute
   '/admin/paiements': typeof AdminPaiementsRoute
   '/admin/parametres': typeof AdminParametresRoute
   '/admin/utilisateurs': typeof AdminUtilisateursRoute
+  '/admin/login': typeof AdminLoginRoute
   '/brand/assets': typeof BrandAssetsRoute
   '/brand/social-kit': typeof BrandSocialKitRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
@@ -435,6 +435,7 @@ export interface FileRoutesByTo {
   '/messages': typeof MessagesRoute
   '/onboarding': typeof OnboardingRoute
   '/parrainage': typeof ParrainageRoute
+  '/pour-les-ecoles': typeof PourLesEcolesRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
   '/recruteurs': typeof RecruteursRoute
@@ -446,12 +447,12 @@ export interface FileRoutesByTo {
   '/admin/bons-plans': typeof AdminBonsPlansRoute
   '/admin/ecoles': typeof AdminEcolesRoute
   '/admin/jpo': typeof AdminJpoRoute
-  '/admin/login': typeof AdminLoginRoute
   '/admin/moderation': typeof AdminModerationRoute
   '/admin/offres': typeof AdminOffresRoute
   '/admin/paiements': typeof AdminPaiementsRoute
   '/admin/parametres': typeof AdminParametresRoute
   '/admin/utilisateurs': typeof AdminUtilisateursRoute
+  '/admin/login': typeof AdminLoginRoute
   '/brand/assets': typeof BrandAssetsRoute
   '/brand/social-kit': typeof BrandSocialKitRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
@@ -493,8 +494,8 @@ export interface FileRoutesById {
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/messages': typeof MessagesRoute
   '/onboarding': typeof OnboardingRoute
-  '/opportunites': typeof OpportunitesRouteWithChildren
   '/parrainage': typeof ParrainageRoute
+  '/pour-les-ecoles': typeof PourLesEcolesRoute
   '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
   '/recruteurs': typeof RecruteursRoute
@@ -506,12 +507,12 @@ export interface FileRoutesById {
   '/admin/bons-plans': typeof AdminBonsPlansRoute
   '/admin/ecoles': typeof AdminEcolesRoute
   '/admin/jpo': typeof AdminJpoRoute
-  '/admin/login': typeof AdminLoginRoute
   '/admin/moderation': typeof AdminModerationRoute
   '/admin/offres': typeof AdminOffresRoute
   '/admin/paiements': typeof AdminPaiementsRoute
   '/admin/parametres': typeof AdminParametresRoute
   '/admin/utilisateurs': typeof AdminUtilisateursRoute
+  '/admin_/login': typeof AdminLoginRoute
   '/brand/assets': typeof BrandAssetsRoute
   '/brand/social-kit': typeof BrandSocialKitRoute
   '/dashboard/diplome': typeof DashboardDiplomeRoute
@@ -554,8 +555,8 @@ export interface FileRouteTypes {
     | '/mes-candidatures'
     | '/messages'
     | '/onboarding'
-    | '/opportunites'
     | '/parrainage'
+    | '/pour-les-ecoles'
     | '/profil'
     | '/recherche'
     | '/recruteurs'
@@ -567,12 +568,12 @@ export interface FileRouteTypes {
     | '/admin/bons-plans'
     | '/admin/ecoles'
     | '/admin/jpo'
-    | '/admin/login'
     | '/admin/moderation'
     | '/admin/offres'
     | '/admin/paiements'
     | '/admin/parametres'
     | '/admin/utilisateurs'
+    | '/admin/login'
     | '/brand/assets'
     | '/brand/social-kit'
     | '/dashboard/diplome'
@@ -613,6 +614,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/onboarding'
     | '/parrainage'
+    | '/pour-les-ecoles'
     | '/profil'
     | '/recherche'
     | '/recruteurs'
@@ -624,12 +626,12 @@ export interface FileRouteTypes {
     | '/admin/bons-plans'
     | '/admin/ecoles'
     | '/admin/jpo'
-    | '/admin/login'
     | '/admin/moderation'
     | '/admin/offres'
     | '/admin/paiements'
     | '/admin/parametres'
     | '/admin/utilisateurs'
+    | '/admin/login'
     | '/brand/assets'
     | '/brand/social-kit'
     | '/dashboard/diplome'
@@ -670,8 +672,8 @@ export interface FileRouteTypes {
     | '/mes-candidatures'
     | '/messages'
     | '/onboarding'
-    | '/opportunites'
     | '/parrainage'
+    | '/pour-les-ecoles'
     | '/profil'
     | '/recherche'
     | '/recruteurs'
@@ -683,12 +685,12 @@ export interface FileRouteTypes {
     | '/admin/bons-plans'
     | '/admin/ecoles'
     | '/admin/jpo'
-    | '/admin/login'
     | '/admin/moderation'
     | '/admin/offres'
     | '/admin/paiements'
     | '/admin/parametres'
     | '/admin/utilisateurs'
+    | '/admin_/login'
     | '/brand/assets'
     | '/brand/social-kit'
     | '/dashboard/diplome'
@@ -730,8 +732,8 @@ export interface RootRouteChildren {
   MesCandidaturesRoute: typeof MesCandidaturesRoute
   MessagesRoute: typeof MessagesRoute
   OnboardingRoute: typeof OnboardingRoute
-  OpportunitesRoute: typeof OpportunitesRouteWithChildren
   ParrainageRoute: typeof ParrainageRoute
+  PourLesEcolesRoute: typeof PourLesEcolesRoute
   ProfilRoute: typeof ProfilRoute
   RechercheRoute: typeof RechercheRoute
   RecruteursRoute: typeof RecruteursRoute
@@ -740,6 +742,7 @@ export interface RootRouteChildren {
   SuccessRoute: typeof SuccessRoute
   TarifsRoute: typeof TarifsRoute
   VisionRoute: typeof VisionRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   BrandAssetsRoute: typeof BrandAssetsRoute
   BrandSocialKitRoute: typeof BrandSocialKitRoute
   DashboardDiplomeRoute: typeof DashboardDiplomeRoute
@@ -750,9 +753,11 @@ export interface RootRouteChildren {
   EcolesSlugRoute: typeof EcolesSlugRoute
   FounderSuccessRoute: typeof FounderSuccessRoute
   InviteCodeRoute: typeof InviteCodeRoute
+  OpportunitesSearchRoute: typeof OpportunitesSearchRoute
   BrandIndexRoute: typeof BrandIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   EcolesIndexRoute: typeof EcolesIndexRoute
+  OpportunitesIndexRoute: typeof OpportunitesIndexRoute
   ApiPublicPaymentsStripeWebhookRoute: typeof ApiPublicPaymentsStripeWebhookRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
@@ -815,18 +820,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfilRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pour-les-ecoles': {
+      id: '/pour-les-ecoles'
+      path: '/pour-les-ecoles'
+      fullPath: '/pour-les-ecoles'
+      preLoaderRoute: typeof PourLesEcolesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/parrainage': {
       id: '/parrainage'
       path: '/parrainage'
       fullPath: '/parrainage'
       preLoaderRoute: typeof ParrainageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/opportunites': {
-      id: '/opportunites'
-      path: '/opportunites'
-      fullPath: '/opportunites'
-      preLoaderRoute: typeof OpportunitesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -971,10 +976,10 @@ declare module '@tanstack/react-router' {
     }
     '/opportunites/': {
       id: '/opportunites/'
-      path: '/'
+      path: '/opportunites'
       fullPath: '/opportunites/'
       preLoaderRoute: typeof OpportunitesIndexRouteImport
-      parentRoute: typeof OpportunitesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/ecoles/': {
       id: '/ecoles/'
@@ -1006,10 +1011,10 @@ declare module '@tanstack/react-router' {
     }
     '/opportunites/search': {
       id: '/opportunites/search'
-      path: '/search'
+      path: '/opportunites/search'
       fullPath: '/opportunites/search'
       preLoaderRoute: typeof OpportunitesSearchRouteImport
-      parentRoute: typeof OpportunitesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/invite/$code': {
       id: '/invite/$code'
@@ -1081,6 +1086,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrandAssetsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin_/login': {
+      id: '/admin_/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/utilisateurs': {
       id: '/admin/utilisateurs'
       path: '/utilisateurs'
@@ -1114,13 +1126,6 @@ declare module '@tanstack/react-router' {
       path: '/moderation'
       fullPath: '/admin/moderation'
       preLoaderRoute: typeof AdminModerationRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/jpo': {
@@ -1165,7 +1170,6 @@ interface AdminRouteChildren {
   AdminBonsPlansRoute: typeof AdminBonsPlansRoute
   AdminEcolesRoute: typeof AdminEcolesRoute
   AdminJpoRoute: typeof AdminJpoRoute
-  AdminLoginRoute: typeof AdminLoginRoute
   AdminModerationRoute: typeof AdminModerationRoute
   AdminOffresRoute: typeof AdminOffresRoute
   AdminPaiementsRoute: typeof AdminPaiementsRoute
@@ -1178,7 +1182,6 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminBonsPlansRoute: AdminBonsPlansRoute,
   AdminEcolesRoute: AdminEcolesRoute,
   AdminJpoRoute: AdminJpoRoute,
-  AdminLoginRoute: AdminLoginRoute,
   AdminModerationRoute: AdminModerationRoute,
   AdminOffresRoute: AdminOffresRoute,
   AdminPaiementsRoute: AdminPaiementsRoute,
@@ -1188,20 +1191,6 @@ const AdminRouteChildren: AdminRouteChildren = {
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
-interface OpportunitesRouteChildren {
-  OpportunitesSearchRoute: typeof OpportunitesSearchRoute
-  OpportunitesIndexRoute: typeof OpportunitesIndexRoute
-}
-
-const OpportunitesRouteChildren: OpportunitesRouteChildren = {
-  OpportunitesSearchRoute: OpportunitesSearchRoute,
-  OpportunitesIndexRoute: OpportunitesIndexRoute,
-}
-
-const OpportunitesRouteWithChildren = OpportunitesRoute._addFileChildren(
-  OpportunitesRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -1224,8 +1213,8 @@ const rootRouteChildren: RootRouteChildren = {
   MesCandidaturesRoute: MesCandidaturesRoute,
   MessagesRoute: MessagesRoute,
   OnboardingRoute: OnboardingRoute,
-  OpportunitesRoute: OpportunitesRouteWithChildren,
   ParrainageRoute: ParrainageRoute,
+  PourLesEcolesRoute: PourLesEcolesRoute,
   ProfilRoute: ProfilRoute,
   RechercheRoute: RechercheRoute,
   RecruteursRoute: RecruteursRoute,
@@ -1234,6 +1223,7 @@ const rootRouteChildren: RootRouteChildren = {
   SuccessRoute: SuccessRoute,
   TarifsRoute: TarifsRoute,
   VisionRoute: VisionRoute,
+  AdminLoginRoute: AdminLoginRoute,
   BrandAssetsRoute: BrandAssetsRoute,
   BrandSocialKitRoute: BrandSocialKitRoute,
   DashboardDiplomeRoute: DashboardDiplomeRoute,
@@ -1244,9 +1234,11 @@ const rootRouteChildren: RootRouteChildren = {
   EcolesSlugRoute: EcolesSlugRoute,
   FounderSuccessRoute: FounderSuccessRoute,
   InviteCodeRoute: InviteCodeRoute,
+  OpportunitesSearchRoute: OpportunitesSearchRoute,
   BrandIndexRoute: BrandIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   EcolesIndexRoute: EcolesIndexRoute,
+  OpportunitesIndexRoute: OpportunitesIndexRoute,
   ApiPublicPaymentsStripeWebhookRoute: ApiPublicPaymentsStripeWebhookRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }

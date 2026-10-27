@@ -24,7 +24,9 @@ export const Route = createFileRoute("/ecoles/")({
       { name: "description", content: "Explore les universités, grandes écoles, lycées et IUT. Filtre par région, type et statut." },
     ],
   }),
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { q?: string; type?: string; region?: string; statut?: string; page?: number } => ({
     q: (search.q as string) || "",
     type: (search.type as string) || "",
     region: (search.region as string) || "",
@@ -64,7 +66,7 @@ function typeLabel(type: string | null): string {
 }
 
 function EcolesPage() {
-  const { q, type, region, statut, page } = Route.useSearch();
+  const { q = "", type = "", region = "", statut = "", page = 1 } = Route.useSearch();
   const navigate = Route.useNavigate();
 
   const [ecoles, setEcoles] = useState<Ecole[]>([]);
@@ -83,7 +85,8 @@ function EcolesPage() {
 
   const load = useCallback(async () => {
     setLoading(true);
-    let query = supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- table ecoles absente des types générés
+    let query = (supabase as any)
       .from("ecoles")
       .select("id, name, type, city, type_etablissement, statut, region, slug, nombre_etudiants, diplomes", { count: "exact" })
       .order("nombre_etudiants", { ascending: false, nullsFirst: false })

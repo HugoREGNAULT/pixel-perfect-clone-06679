@@ -184,7 +184,7 @@ function OffresSection() {
             const age = daysAgo(o.posted_at);
             const count = candCounts[o.id] ?? 0;
             return (
-              <Link key={o.id} to="/opportunites/search"
+              <Link key={o.id} to="/opportunites"
                 className="flex items-center gap-3 rounded-md border border-border bg-card px-4 py-3 hover:bg-muted transition-colors group">
                 {/* Type badge */}
                 <div className={`shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${
@@ -282,7 +282,7 @@ function PendingCandidaturesSection() {
           <h2 className="font-display font-semibold text-lg text-foreground">Candidatures reçues</h2>
         </div>
         <Button asChild size="sm" variant="secondary">
-          <Link to="/opportunites/search">
+          <Link to="/opportunites">
             Tout voir <ArrowUpRight aria-hidden />
           </Link>
         </Button>
@@ -327,7 +327,7 @@ function PendingCandidaturesSection() {
                     <cfg.icon className="size-3" aria-hidden />{cfg.label}
                   </div>
                   <Button asChild size="sm" variant="secondary">
-                    <Link to="/opportunites/search">Voir</Link>
+                    <Link to="/opportunites">Voir</Link>
                   </Button>
                 </div>
               </div>

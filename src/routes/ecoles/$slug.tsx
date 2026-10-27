@@ -27,7 +27,7 @@ const db = supabase as any;
 
 export const Route = createFileRoute("/ecoles/$slug")({
   loader: async ({ params }) => {
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from("ecoles")
       .select("*")
       .eq("slug", params.slug)
@@ -63,7 +63,7 @@ export const Route = createFileRoute("/ecoles/$slug")({
       links: [{ rel: "canonical", href: url }],
     };
   },
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): { tab?: string } => ({
     // Pas de valeur par défaut ici : sinon /ecoles/x est redirigé (307) vers ?tab=presentation.
     tab: (s.tab as string) || undefined,
   }),
