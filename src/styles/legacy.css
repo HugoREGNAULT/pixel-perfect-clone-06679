@@ -1,0 +1,143 @@
+/*
+ * COUCHE DE COMPATIBILITÉ TEMPORAIRE
+ * ----------------------------------
+ * Legacy, à supprimer quand les pages sont migrées (voir docs/refonte/01-da.md, section « Migration »).
+ *
+ * Contexte : l'ancien thème sombre (ink / ink-2 / ink-3 / lime / violet / violet-soft / mute) a perdu ses
+ * tokens, alors qu'environ 700 usages (text-lime, bg-ink, text-mute, border-violet/30…) subsistent : ces classes
+ * ne génèrent rien, le texte devient invisible. Ici on les redéfinit comme alias vers la palette actuelle.
+ *
+ * Deux contextes, car ces pages mélangent deux usages :
+ *  - contexte CLAIR (défaut, ex. dashboards posés sur DashboardLayout) : lime/violet deviennent des violets
+ *    foncés lisibles sur fond clair, `mute` devient le gris de texte secondaire ;
+ *  - contexte SOMBRE (tout sous un élément `.bg-ink`, ex. les 24 pages « min-h-screen bg-ink text-white », ou sous
+ *    `.dark`) : lime/violet deviennent des violets clairs, `mute` un gris clair. `text-white`, `border-white/10`
+ *    restent corrects dans ce contexte.
+ * Les variables sont héritées : tout descendant d'un `.bg-ink` bascule en contexte sombre.
+ *
+ * Non couvert : `text-white` / `bg-white/5` / `border-white/10` posés sur fond CLAIR (dashboards étudiant,
+ * recruteur : cartes conçues pour le sombre), les portails Radix (dialogues rendus hors du `.bg-ink`).
+ */
+
+@theme inline {
+  --color-ink: var(--lg-ink);
+  --color-ink-2: var(--lg-ink-2);
+  --color-ink-3: var(--lg-ink-3);
+  --color-lime: var(--lg-lime);
+  --color-violet: var(--lg-violet);
+  --color-violet-soft: var(--lg-violet-soft);
+  --color-mute: var(--lg-mute);
+}
+
+:root {
+  /* Surfaces sombres : fixes (jamais inversées), car `text-white` leur est associé. */
+  --lg-ink: #16151D;
+  --lg-ink-2: #1F1D2B;
+  --lg-ink-3: #282638;
+  --lg-lime-fill: #B5A6F7;          /* fond de CTA : texte `text-ink` dessus 8.4:1 */
+
+  /* Contexte clair */
+  --lg-lime: #4B3A9E;               /* 8.4:1 sur background */
+  --lg-violet: #6049C8;             /* 6.1:1 sur background */
+  --lg-violet-soft: #4B3A9E;        /* 8.8:1 sur card */
+  --lg-mute: #55536A;               /* 7.1:1 sur background */
+}
+
+/* Contexte sombre : variante `dark` et tout ce qui est sous `.bg-ink` */
+.dark,
+.bg-ink {
+  --lg-lime: #B5A6F7;               /* 8.4:1 sur ink, 7.7:1 sur ink-2 */
+  --lg-violet: #A99BEB;             /* 6.8:1 sur ink-2 */
+  --lg-violet-soft: #CFC6FA;        /* 10.3:1 sur ink-2 */
+  --lg-mute: #A7A5B8;               /* 7.5:1 sur ink, 6.9:1 sur ink-2 */
+}
+
+/* Fonds pleins : couleur fixe pour que `text-ink` / `text-white` posé dessus reste lisible dans les deux contextes
+   (le non-calque l'emporte sur @layer utilities). Les variantes à opacité (bg-lime/10…) suivent le contexte. */
+.bg-lime { background-color: var(--lg-lime-fill); }
+.bg-violet { background-color: var(--primary); }   /* texte blanc dessus : 6.4:1 */
+.text-ink { color: #16151D; }                       /* toujours sombre : posé sur bg-lime ou bg-white */
+
+/* Effets décoratifs de l'ancien thème, neutralisés ou adoucis */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.noise { background-image: none; }
+.glow-lime { box-shadow: var(--shadow-2); }
+
+/*
+ * Alias des anciens blocs « Figma Homepage / Badge / Card / Admin » (lus via var(--color-…) dans des styles inline
+ * de l'accueil, de /lancement, de l'admin). Ils pointent maintenant vers les tokens de la DA : le bleu #0066ff et le
+ * jaune #fdcb58 disparaissent, les pages concernées passent au violet / corail doux sans autre modification.
+ * Legacy, à supprimer quand les pages sont migrées.
+ */
+:root {
+  --color-primary: var(--primary);
+  --color-highlight: var(--highlight);
+  --color-success: var(--success-foreground);   /* ancien vert vif #00d084, ici un vert lisible (fond, texte, bordure) */
+
+  --color-text-dark: var(--foreground);
+  --color-text-secondary: var(--foreground-2);
+  --color-text-gray-1: var(--foreground-2);
+  --color-text-gray-2: var(--muted-foreground);
+  --color-text-gray-3: var(--placeholder);
+  --color-bg-white: var(--card);
+  --color-bg-light-blue: var(--primary-soft);
+  --color-bg-light-yellow: var(--highlight);
+  --color-bg-light-gray: var(--muted);
+  --color-dark-navy: var(--lg-ink);
+  --color-border-light: var(--border);
+  --color-stat-blue-border: var(--border);
+  --color-stat-yellow-border: var(--border);
+  --color-notification-bg: var(--success);
+  --color-success-alpha-20: color-mix(in srgb, var(--success-foreground) 20%, transparent);
+  --color-white-alpha-20: rgba(255, 255, 255, 0.2);
+
+  --color-badge-blue-bg: var(--primary-soft);
+  --color-badge-blue-text: var(--primary-soft-foreground);
+  --color-badge-yellow-bg: var(--warning);
+  --color-badge-yellow-text: var(--warning-foreground);
+  --color-badge-green-bg: var(--success);
+  --color-badge-green-text: var(--success-foreground);
+  --color-badge-gray-bg: var(--muted);
+  --color-badge-gray-text: var(--foreground-2);
+
+  --color-card-pink-bg: var(--primary-soft);
+  --color-card-blue-bg: var(--highlight);
+  --color-card-green-bg: var(--success);
+
+  --color-admin-primary: var(--primary);
+  --color-admin-primary-hover: var(--primary-hover);
+  --color-admin-bg-light: var(--muted);
+  --color-admin-bg-light-red: var(--destructive-soft);
+  --color-admin-bg-light-yellow: var(--warning);
+  --color-admin-red-dark: var(--destructive-soft-foreground);
+  --color-admin-red: var(--destructive);
+  --color-admin-yellow-bright: var(--warning-foreground);
+  --color-admin-yellow-text: var(--warning-foreground);
+  --color-admin-green-bright: var(--success-foreground);
+  --color-admin-dark-1: var(--lg-ink);
+  --color-admin-dark-2: var(--lg-ink-2);
+  --color-admin-success: var(--success-foreground);
+  --color-admin-highlight: var(--highlight);
+
+  /* Ombres noires dures de l'ancien style brutaliste : adoucies (plus de décalage noir). */
+  --shadow-hard-3px: var(--shadow-1);
+  --shadow-hard-4px: var(--shadow-1);
+  --shadow-hard-8px: var(--shadow-2);
+  --shadow-soft: var(--shadow-1);
+
+  --radius: 12px;
+  --radius-card: 12px;
+  --radius-button: 12px;
+  --border-radius: 12px;
+}
+
+/* L'eyebrow de la DA est un violet foncé : sur les pages sombres legacy on le passe en violet clair. */
+.bg-ink .eyebrow, .dark .eyebrow { color: var(--lg-lime); }
+
+/* Ancien CTA « vert vif + texte blanc » (login, signup) : `bg-success` est maintenant un fond pâle → texte blanc invisible. */
+.bg-success.text-white { background-color: var(--success-foreground); }

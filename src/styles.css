@@ -1,191 +1,81 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
-
-@theme inline {
-  --font-display: "Poppins", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-poppins: "Poppins", system-ui, sans-serif;
-  --font-inter: "Inter", system-ui, sans-serif;
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-foreground-2: var(--foreground-2);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-hover: var(--primary-hover);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary-soft: var(--primary-soft);
-  --color-primary-soft-foreground: var(--primary-soft-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-highlight: var(--highlight);
-  --color-highlight-foreground: var(--highlight-foreground);
-  --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
-}
-
-:root {
-  --radius: 0.75rem;
-
-  --background: #FAFAF7;
-  --card: #FFFFFF;
-  --card-foreground: #16151D;
-  --popover: #FFFFFF;
-  --foreground: #16151D;
-  --foreground-2: #3A3848;
-
-  --muted: #F2F1F5;
-  --muted-foreground: #55536A;
-  --placeholder: #76748A;
-
-  --border: #E6E4EC;
-  --border-strong: #D9D6E3;
-  --input: #D9D6E3;
-
-  --primary: #6E56CF;
-  --primary-hover: #5A45B0;
-  --primary-foreground: #FFFFFF;
-  --primary-soft: #F1EEFC;
-  --primary-soft-foreground: #4B3A9E;
-
-  --secondary: #FFFFFF;
-  --secondary-foreground: #16151D;
-
-  --accent: #6E56CF;
-  --accent-foreground: #FFFFFF;
-
-  --destructive: #C8372D;
-  --destructive-foreground: #FFFFFF;
-
-  --border-radius: 12px;
-  --ring: #6E56CF;
-
-  --highlight: #FFF0EC;
-  --highlight-foreground: #B23A22;
-
-  --success: #E8F5EE;
-  --success-foreground: #1F7A4D;
-
-  /* Figma Homepage Tokens */
-  --color-primary: #0066ff;
-  --color-highlight: #fdcb58;
-  --color-text-dark: #111827;
-  --color-text-gray-1: #4b5563;
-  --color-text-gray-2: #6b7280;
-  --color-text-gray-3: #9ca3af;
-  --color-text-secondary: #1f2937;
-  --color-bg-white: #ffffff;
-  --color-bg-light-blue: #eff6ff;
-  --color-bg-light-yellow: #fefce8;
-  --color-bg-light-gray: #f3f4f6;
-  --color-success: #00d084;
-  --color-dark-navy: #111827;
-  --color-border-light: #e5e7eb;
-  --color-stat-blue-border: #dbeafe;
-  --color-stat-yellow-border: #fef9c3;
-  --color-notification-bg: #dcfce7;
-  --color-success-alpha-20: rgba(0, 208, 132, 0.2);
-  --color-white-alpha-20: rgba(255, 255, 255, 0.2);
-
-  /* Badge colors */
-  --color-badge-blue-bg: #eff6ff;
-  --color-badge-blue-text: #1d4ed8;
-  --color-badge-yellow-bg: #fefce8;
-  --color-badge-yellow-text: #a16207;
-  --color-badge-green-bg: #f0fdf4;
-  --color-badge-green-text: #15803d;
-  --color-badge-gray-bg: #f3f4f6;
-  --color-badge-gray-text: #4b5563;
-
-  /* Card background colors (WhySpringr) */
-  --color-card-pink-bg: #E8D5FF;
-  --color-card-blue-bg: #D0E8FF;
-  --color-card-green-bg: #D0F0E8;
-
-  /* Admin Panel Tokens */
-  --color-admin-primary: #0066ff;
-  --color-admin-primary-hover: #0056cc;
-  --color-admin-bg-light: #f9fafb;
-  --color-admin-bg-light-red: #fee2e2;
-  --color-admin-bg-light-yellow: #fefce8;
-  --color-admin-red-dark: #991b1b;
-  --color-admin-red: #ff4d4d;
-  --color-admin-yellow-bright: #fde047;
-  --color-admin-yellow-text: #854d0e;
-  --color-admin-green-bright: #22c55e;
-  --color-admin-dark-1: #07070F;
-  --color-admin-dark-2: #0A0A12;
-  --color-admin-success: #00d084;
-  --color-admin-highlight: #fdcb58;
-
-  /* Ombres */
-  --shadow-hard-3px: 3px 3px 0px rgba(0, 0, 0, 1);
-  --shadow-hard-4px: 4px 4px 0px rgba(0, 0, 0, 1);
-  --shadow-hard-8px: 8px 8px 0px rgba(0, 0, 0, 1);
-  --shadow-soft: 0 1px 2px rgba(22, 21, 29, 0.04);
-
-  /* Radius */
-  --radius-card: 12px;
-  --radius-button: 12px;
-}
+@import "./styles/tokens.css";
+@import "./styles/legacy.css";
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; background: var(--background); }
+  * { border-color: var(--border); }
+  html {
+    scroll-behavior: smooth;
+    background: var(--background);
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4, h5, h6, .font-display {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
     font-weight: 600;
+    text-wrap: balance;
   }
+  /* Titres sans classe de taille : échelle de la DA (les classes text-* explicites l'emportent). */
+  h1 { font-size: var(--text-h1); line-height: var(--text-h1--line-height); font-weight: 700; }
+  h2 { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
+  h3 { font-size: var(--text-h3); line-height: var(--text-h3--line-height); }
+  h4 { font-size: var(--text-h4); line-height: var(--text-h4--line-height); }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
   ::selection { background: var(--primary); color: var(--primary-foreground); }
+  ::placeholder { color: var(--placeholder); opacity: 1; }
+}
+
+/* Champs >= 16 px sur mobile (évite le zoom automatique d'iOS). Hors calque pour battre text-sm/text-xs des pages. */
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @utility eyebrow {
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.75rem;
-  letter-spacing: 0.05em;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted-foreground);
+  color: var(--primary-soft-foreground);
 }
 
 @utility card-base {
   position: relative;
-  border-radius: 0.875rem;
+  border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   background: var(--card);
-  box-shadow: 0 1px 2px rgba(22, 21, 29, 0.04);
-  transition: border-color 0.25s ease;
+  box-shadow: var(--shadow-1);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 @utility card-hover {
   &:hover {
-    border-color: #CFC8EE;
+    border-color: var(--card-hover-border);
+    box-shadow: var(--shadow-2);
   }
 }
 
