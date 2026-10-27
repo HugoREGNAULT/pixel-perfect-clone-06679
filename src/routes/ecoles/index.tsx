@@ -1,70 +1,54 @@
-// @ts-nocheck
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect, useCallback } from "react";
-import { AppNav } from "@/components/AppNav";
 import {
-  Search, X, Loader2, GraduationCap, MapPin, Users,
-  Building2, ChevronLeft, ChevronRight, SlidersHorizontal,
+  Search, X, GraduationCap, MapPin, Users, Building2,
+  ChevronLeft, ChevronRight, SlidersHorizontal, WifiOff,
 } from "lucide-react";
+import { AppNav } from "@/components/AppNav";
+import { EcoleLogo } from "@/components/ecoles/EcoleLogo";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageShell } from "@/components/ui/container";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Input, fieldBase } from "@/components/ui/input";
+import { SectionHeader } from "@/components/ui/section-header";
+import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
-import type { Tables } from "@/integrations/supabase/types";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/ecoles/")({
   head: () => ({
     meta: [
-      { title: "Annuaire des Écoles — Springr" },
-      { name: "description", content: "Explore toutes les universités, grandes écoles, lycées et IUT de France. Filtres par région, type, statut." },
+      { title: "Annuaire des écoles | Springr" },
+      { name: "description", content: "Explore les universités, grandes écoles, lycées et IUT. Filtre par région, type et statut." },
     ],
   }),
   validateSearch: (search: Record<string, unknown>) => ({
-    q:      (search.q      as string) || "",
-    type:   (search.type   as string) || "",
+    q: (search.q as string) || "",
+    type: (search.type as string) || "",
     region: (search.region as string) || "",
     statut: (search.statut as string) || "",
-    page:   Number(search.page) || 1,
+    page: Number(search.page) || 1,
   }),
   component: EcolesPage,
 });
 
-type Ecole = Tables<"ecoles">;
+type Ecole = Record<string, any>;
 
 const PAGE_SIZE = 24;
 
 const TYPES = [
-  "Université",
-  "Grande école",
-  "École d'ingénieurs",
-  "École de commerce et de gestion",
-  "Institut d'études politiques",
-  "École normale supérieure",
-  "Institut universitaire de technologie",
-  "Lycée général et technologique",
-  "Lycée professionnel",
-  "CPGE",
-  "STS",
+  "Université", "Grande école", "École d'ingénieurs", "École de commerce et de gestion",
+  "Institut d'études politiques", "École normale supérieure", "Institut universitaire de technologie",
+  "Lycée général et technologique", "Lycée professionnel", "CPGE", "STS",
 ];
 
 const REGIONS = [
-  "Île-de-France", "Auvergne-Rhône-Alpes", "Nouvelle-Aquitaine",
-  "Occitanie", "Hauts-de-France", "Provence-Alpes-Côte d'Azur",
-  "Grand Est", "Pays de la Loire", "Bretagne", "Normandie",
-  "Bourgogne-Franche-Comté", "Centre-Val de Loire", "Corse",
-  "Guadeloupe", "Martinique", "La Réunion", "Mayotte",
+  "Île-de-France", "Auvergne-Rhône-Alpes", "Nouvelle-Aquitaine", "Occitanie", "Hauts-de-France",
+  "Provence-Alpes-Côte d'Azur", "Grand Est", "Pays de la Loire", "Bretagne", "Normandie",
+  "Bourgogne-Franche-Comté", "Centre-Val de Loire", "Corse", "Guadeloupe", "Martinique", "La Réunion", "Mayotte",
 ];
-
-const TYPE_ICON: Record<string, string> = {
-  "Université": "🎓",
-  "Grande école": "🏛️",
-  "École d'ingénieurs": "⚙️",
-  "École de commerce et de gestion": "📈",
-  "Institut d'études politiques": "🗳️",
-  "École normale supérieure": "📚",
-  "Institut universitaire de technologie": "🔬",
-  "Lycée général et technologique": "🏫",
-  "Lycée professionnel": "🔧",
-  "CPGE": "📐",
-  "STS": "📋",
-};
 
 function typeLabel(type: string | null): string {
   if (!type) return "Établissement";
@@ -79,58 +63,52 @@ function typeLabel(type: string | null): string {
   return type.slice(0, 22);
 }
 
-function statutColor(statut: string | null) {
-  if (statut === "privé" || statut?.includes("privé")) return "text-amber-400 border-amber-400/30 bg-amber-400/10";
-  return "text-emerald-400 border-emerald-400/30 bg-emerald-400/10";
-}
-
-// ── Page ─────────────────────────────────────────────────────────────────────
-
 function EcolesPage() {
   const { q, type, region, statut, page } = Route.useSearch();
   const navigate = Route.useNavigate();
 
-  const [ecoles,  setEcoles]  = useState<Ecole[]>([]);
-  const [total,   setTotal]   = useState(0);
+  const [ecoles, setEcoles] = useState<Ecole[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Local form state (applied on submit/change)
-  const [qVal,      setQVal]      = useState(q);
-  const [typeVal,   setTypeVal]   = useState(type);
+  const [qVal, setQVal] = useState(q);
+  const [typeVal, setTypeVal] = useState(type);
   const [regionVal, setRegionVal] = useState(region);
   const [statutVal, setStatutVal] = useState(statut);
 
   const offset = (page - 1) * PAGE_SIZE;
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
-  const fetch = useCallback(async () => {
+  const load = useCallback(async () => {
     setLoading(true);
-
     let query = supabase
       .from("ecoles")
-      .select(
-        "id, name, type, city, type_etablissement, statut, region, slug, nombre_etudiants, diplomes",
-        { count: "exact" }
-      )
+      .select("id, name, type, city, type_etablissement, statut, region, slug, nombre_etudiants, diplomes", { count: "exact" })
       .order("nombre_etudiants", { ascending: false, nullsFirst: false })
       .order("name")
       .range(offset, offset + PAGE_SIZE - 1);
 
     if (q) query = query.ilike("name", `%${q}%`);
-    if (type)   query = query.ilike("type_etablissement", `%${type}%`);
+    if (type) query = query.ilike("type_etablissement", `%${type}%`);
     if (region) query = query.eq("region", region);
     if (statut) query = query.eq("statut", statut);
 
     const { data, count, error } = await query;
-    if (!error && data) {
+    if (error || !data) {
+      setFailed(true);
+      setEcoles([]);
+      setTotal(0);
+    } else {
+      setFailed(false);
       setEcoles(data as Ecole[]);
       setTotal(count ?? 0);
     }
     setLoading(false);
   }, [q, type, region, statut, offset]);
 
-  useEffect(() => { fetch(); }, [fetch]);
+  useEffect(() => { load(); }, [load]);
 
   function applySearch(e: React.FormEvent) {
     e.preventDefault();
@@ -147,92 +125,69 @@ function EcolesPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  const hasFilters = q || type || region || statut;
+  const hasFilters = !!(q || type || region || statut);
+  const selectCls = cn(fieldBase, "h-11 py-2");
 
   return (
-    <div className="min-h-screen bg-ink text-white">
+    <div className="bg-background text-foreground">
       <AppNav />
 
-      <main className="mx-auto max-w-7xl px-5 py-10 pb-24">
+      <PageShell className="pb-8">
+        <SectionHeader
+          as="h1"
+          eyebrow="Annuaire"
+          title="Annuaire des écoles"
+          description="Universités, grandes écoles, lycées, IUT : cherche par nom, région ou type d'établissement."
+        />
 
-        {/* ── Hero ──────────────────────────────────────────────────────────*/}
-        <div className="mb-10">
-          <div className="eyebrow mb-3">APIs officielles · Données Éducation Nationale</div>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05]">
-            Annuaire des Écoles
-          </h1>
-          <p className="mt-4 text-mute text-lg max-w-xl">
-            Universités, grandes écoles, lycées, IUT — toutes les formations de France.
-          </p>
-        </div>
-
-        {/* ── Search + Filters ──────────────────────────────────────────────*/}
-        <form onSubmit={applySearch} className="mb-8 space-y-4">
-          <div className="flex gap-3">
-            {/* Search input */}
-            <div className="relative flex-1 max-w-lg">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-mute pointer-events-none" />
-              <input
+        <form onSubmit={applySearch} className="mt-8 space-y-4" role="search">
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="relative flex-1 sm:max-w-lg">
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+              <Input
                 value={qVal}
                 onChange={(e) => setQVal(e.target.value)}
                 placeholder="Rechercher un établissement…"
-                className="w-full rounded-xl bg-white/5 border border-white/10 pl-10 pr-4 py-3 text-sm placeholder:text-mute/60 focus:outline-none focus:border-violet/60 focus:bg-white/[0.07] transition-colors"
+                aria-label="Rechercher un établissement"
+                className="pl-10"
               />
             </div>
-            <button
-              type="button"
-              onClick={() => setShowFilters((f) => !f)}
-              className={`inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-sm transition-all ${
-                showFilters || hasFilters
-                  ? "border-violet/50 bg-violet/10 text-violet-soft"
-                  : "border-white/10 text-mute hover:border-white/25 hover:text-white"
-              }`}
-            >
-              <SlidersHorizontal className="size-4" />
-              Filtres
-              {hasFilters && <span className="size-2 rounded-full bg-violet" />}
-            </button>
-            <button
-              type="submit"
-              className="rounded-xl bg-violet/90 hover:bg-violet text-white px-5 py-3 text-sm font-semibold transition-all"
-            >
-              Chercher
-            </button>
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => setShowFilters((f) => !f)}
+                aria-expanded={showFilters}
+                aria-controls="filtres-ecoles"
+              >
+                <SlidersHorizontal aria-hidden="true" />
+                Filtres
+                {hasFilters && <span className="size-2 rounded-full bg-primary" aria-label="filtres actifs" />}
+              </Button>
+              <Button type="submit">Chercher</Button>
+            </div>
           </div>
 
-          {/* Filter panel */}
           {showFilters && (
-            <div className="grid sm:grid-cols-3 gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div id="filtres-ecoles" className="grid gap-4 rounded-lg border border-border bg-card p-4 sm:grid-cols-3">
               <div>
-                <label className="block text-[10px] font-mono uppercase tracking-widest text-mute mb-1.5">Type</label>
-                <select
-                  value={typeVal}
-                  onChange={(e) => setTypeVal(e.target.value)}
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-sm text-white focus:outline-none focus:border-violet/60 transition-colors"
-                >
+                <label htmlFor="f-type" className="mb-1.5 block text-sm font-semibold">Type</label>
+                <select id="f-type" value={typeVal} onChange={(e) => setTypeVal(e.target.value)} className={selectCls}>
                   <option value="">Tous les types</option>
                   {TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-[10px] font-mono uppercase tracking-widest text-mute mb-1.5">Région</label>
-                <select
-                  value={regionVal}
-                  onChange={(e) => setRegionVal(e.target.value)}
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-sm text-white focus:outline-none focus:border-violet/60 transition-colors"
-                >
+                <label htmlFor="f-region" className="mb-1.5 block text-sm font-semibold">Région</label>
+                <select id="f-region" value={regionVal} onChange={(e) => setRegionVal(e.target.value)} className={selectCls}>
                   <option value="">Toutes les régions</option>
                   {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-[10px] font-mono uppercase tracking-widest text-mute mb-1.5">Statut</label>
-                <select
-                  value={statutVal}
-                  onChange={(e) => setStatutVal(e.target.value)}
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-sm text-white focus:outline-none focus:border-violet/60 transition-colors"
-                >
-                  <option value="">Public & privé</option>
+                <label htmlFor="f-statut" className="mb-1.5 block text-sm font-semibold">Statut</label>
+                <select id="f-statut" value={statutVal} onChange={(e) => setStatutVal(e.target.value)} className={selectCls}>
+                  <option value="">Public et privé</option>
                   <option value="public">Public</option>
                   <option value="privé">Privé</option>
                 </select>
@@ -241,159 +196,109 @@ function EcolesPage() {
           )}
         </form>
 
-        {/* ── Counter ───────────────────────────────────────────────────────*/}
-        {!loading && (
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <GraduationCap className="size-5 text-violet shrink-0" />
-              <p className="text-sm">
-                <span className="font-display font-bold text-white text-lg">{total.toLocaleString("fr-FR")}</span>
-                <span className="text-mute ml-2">établissement{total > 1 ? "s" : ""} trouvé{total > 1 ? "s" : ""}</span>
+        <div className="mt-8 min-h-[2.75rem]" aria-live="polite">
+          {!loading && !failed && ecoles.length > 0 && (
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-foreground-2">
+                <span className="font-display text-lg font-bold text-foreground">{total.toLocaleString("fr-FR")}</span>{" "}
+                établissement{total > 1 ? "s" : ""} trouvé{total > 1 ? "s" : ""}
               </p>
+              {hasFilters && (
+                <Button variant="ghost" size="sm" onClick={clearFilters}>
+                  <X aria-hidden="true" /> Réinitialiser
+                </Button>
+              )}
             </div>
-            {hasFilters && (
-              <button onClick={clearFilters} className="inline-flex items-center gap-1.5 text-xs text-mute hover:text-white transition-colors">
-                <X className="size-3.5" /> Réinitialiser
-              </button>
-            )}
-          </div>
-        )}
+          )}
+        </div>
 
-        {/* ── Grid ──────────────────────────────────────────────────────────*/}
         {loading ? (
-          <div className="flex items-center justify-center py-32">
-            <Loader2 className="size-7 text-mute animate-spin" />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true">
+            {Array.from({ length: 6 }, (_, i) => <Skeleton key={i} className="h-36 rounded-lg" />)}
           </div>
+        ) : failed ? (
+          <EmptyState
+            icon={<WifiOff />}
+            title="Annuaire indisponible pour le moment"
+            description="On n'arrive pas à charger les écoles. Réessaie dans quelques instants."
+            action={<Button onClick={load}>Réessayer</Button>}
+          />
         ) : ecoles.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <GraduationCap className="size-10 text-mute mb-4" />
-            <h3 className="font-display text-xl font-bold mb-2">Aucun résultat</h3>
-            <p className="text-mute text-sm max-w-xs mb-5">
-              Essaie un autre nom ou élargis les filtres.
-            </p>
-            <button onClick={clearFilters}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm hover:bg-white/5 transition-all">
-              <X className="size-4" /> Tout afficher
-            </button>
-          </div>
+          <EmptyState
+            icon={<GraduationCap />}
+            title={hasFilters ? "Aucune école ne correspond" : "Pas encore d'écoles dans l'annuaire"}
+            description={hasFilters ? "Retire un filtre ou change le nom que tu cherches." : "L'annuaire se remplit : reviens bientôt."}
+            action={hasFilters ? (
+              <Button variant="secondary" onClick={clearFilters}><X aria-hidden="true" /> Retirer les filtres</Button>
+            ) : undefined}
+          />
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {ecoles.map((e) => <EcoleCard key={e.id} ecole={e} />)}
-          </div>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {ecoles.map((e) => <li key={e.id} className="contents"><EcoleCard ecole={e} /></li>)}
+          </ul>
         )}
 
-        {/* ── Pagination ────────────────────────────────────────────────────*/}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-10">
-            <button
-              onClick={() => goPage(page - 1)}
-              disabled={page <= 1}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 px-4 py-2.5 text-sm disabled:opacity-30 hover:border-white/25 hover:bg-white/5 transition-all"
-            >
-              <ChevronLeft className="size-4" /> Précédent
-            </button>
-
-            <div className="flex items-center gap-1">
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                let p: number;
-                if (totalPages <= 5) { p = i + 1; }
-                else if (page <= 3) { p = i + 1; }
-                else if (page >= totalPages - 2) { p = totalPages - 4 + i; }
-                else { p = page - 2 + i; }
-                return (
-                  <button
-                    key={p}
-                    onClick={() => goPage(p)}
-                    className={`size-9 rounded-xl text-sm font-medium transition-all ${
-                      p === page
-                        ? "bg-violet text-white"
-                        : "border border-white/10 text-mute hover:border-white/25 hover:text-white"
-                    }`}
-                  >
-                    {p}
-                  </button>
-                );
-              })}
-            </div>
-
-            <button
-              onClick={() => goPage(page + 1)}
-              disabled={page >= totalPages}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 px-4 py-2.5 text-sm disabled:opacity-30 hover:border-white/25 hover:bg-white/5 transition-all"
-            >
-              Suivant <ChevronRight className="size-4" />
-            </button>
-          </div>
+        {totalPages > 1 && !failed && (
+          <nav aria-label="Pagination" className="mt-10 flex flex-wrap items-center justify-center gap-2">
+            <Button variant="secondary" size="sm" onClick={() => goPage(page - 1)} disabled={page <= 1}>
+              <ChevronLeft aria-hidden="true" /> Précédent
+            </Button>
+            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+              let p: number;
+              if (totalPages <= 5 || page <= 3) p = i + 1;
+              else if (page >= totalPages - 2) p = totalPages - 4 + i;
+              else p = page - 2 + i;
+              return (
+                <Button
+                  key={p}
+                  size="icon"
+                  variant={p === page ? "primary" : "secondary"}
+                  onClick={() => goPage(p)}
+                  aria-label={`Page ${p}`}
+                  aria-current={p === page ? "page" : undefined}
+                >
+                  {p}
+                </Button>
+              );
+            })}
+            <Button variant="secondary" size="sm" onClick={() => goPage(page + 1)} disabled={page >= totalPages}>
+              Suivant <ChevronRight aria-hidden="true" />
+            </Button>
+          </nav>
         )}
-      </main>
+      </PageShell>
     </div>
   );
 }
 
-// ── Card ──────────────────────────────────────────────────────────────────────
-
 function EcoleCard({ ecole }: { ecole: Ecole }) {
-  const icon = TYPE_ICON[ecole.type_etablissement ?? ""] ?? "🏫";
   const label = typeLabel(ecole.type_etablissement ?? ecole.type);
-  const href = ecole.slug ? `/ecoles/${ecole.slug}` : null;
 
-  const card = (
-    <article className="group relative flex flex-col rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent p-5 hover:border-white/20 hover:-translate-y-1 transition-all duration-200 h-full">
-      {/* Logo or icon */}
-      <div className="size-12 rounded-xl bg-white border border-white/10 flex items-center justify-center text-2xl mb-4 overflow-hidden shrink-0">
-        {ecole.logo_url ? (
-          <img
-            src={ecole.logo_url}
-            alt=""
-            className="size-full object-contain p-1"
-            onError={(e) => {
-              const el = e.currentTarget as HTMLImageElement;
-              el.style.display = "none";
-              (el.parentElement as HTMLElement).innerHTML = `<span class="text-xl">${icon}</span>`;
-            }}
-          />
-        ) : (
-          <span className="text-xl">{icon}</span>
-        )}
-      </div>
-
-      {/* Name */}
-      <h2 className="font-display font-bold text-base leading-snug mb-1 group-hover:text-violet-soft transition-colors line-clamp-2">
-        {ecole.name}
-      </h2>
-
-      {/* City + region */}
-      <div className="flex items-center gap-1.5 text-xs text-mute mb-3">
-        <MapPin className="size-3 shrink-0" />
+  const body = (
+    <Card interactive className="flex h-full flex-col p-5">
+      <EcoleLogo ecole={ecole} className="mb-4 size-12" />
+      <h2 className="line-clamp-2 text-h4 font-semibold leading-snug text-foreground">{ecole.name}</h2>
+      <p className="mb-3 mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
+        <MapPin className="size-4 shrink-0" aria-hidden="true" />
         <span className="truncate">{ecole.city}{ecole.region ? ` · ${ecole.region}` : ""}</span>
-      </div>
-
-      <div className="flex flex-wrap gap-2 mt-auto">
-        {/* Type pill */}
-        <span className="inline-flex items-center gap-1 rounded-full border border-violet/25 bg-violet/10 px-2.5 py-0.5 text-[10px] font-mono text-violet-soft">
-          <Building2 className="size-2.5" />
-          {label}
-        </span>
-
-        {/* Statut */}
-        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-mono ${statutColor(ecole.statut)}`}>
-          {ecole.statut === "privé" ? "Privé" : "Public"}
-        </span>
-
-        {/* Étudiants */}
-        {ecole.nombre_etudiants && (
-          <span className="inline-flex items-center gap-1 rounded-full border border-white/10 px-2.5 py-0.5 text-[10px] font-mono text-mute">
-            <Users className="size-2.5" />
-            {ecole.nombre_etudiants.toLocaleString("fr-FR")}
-          </span>
+      </p>
+      <div className="mt-auto flex flex-wrap gap-2">
+        <Badge><Building2 className="size-3.5" aria-hidden="true" />{label}</Badge>
+        {ecole.statut && (
+          <Badge variant={ecole.statut === "privé" ? "warning" : "success"}>{ecole.statut === "privé" ? "Privé" : "Public"}</Badge>
         )}
+        {ecole.nombre_etudiants ? (
+          <Badge variant="secondary"><Users className="size-3.5" aria-hidden="true" />{ecole.nombre_etudiants.toLocaleString("fr-FR")}</Badge>
+        ) : null}
       </div>
-    </article>
+    </Card>
   );
 
-  return href ? (
-    <Link to={href as any} className="block">{card}</Link>
+  return ecole.slug ? (
+    <Link to="/ecoles/$slug" params={{ slug: ecole.slug }} className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
+      {body}
+    </Link>
   ) : (
-    <div>{card}</div>
+    <div>{body}</div>
   );
 }
