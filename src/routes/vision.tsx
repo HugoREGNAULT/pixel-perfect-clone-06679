@@ -82,7 +82,7 @@ function VisionPage() {
           {/* Vision Cards */}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: "01", color: "bg-primary", title: "Offres & Stages", desc: "Matching intelligent avec les meilleures entreprises françaises" },
+              { icon: "01", color: "bg-primary", title: "Offres & Stages", desc: "Offres de stage, d'alternance et de premier emploi" },
               { icon: "02", color: "bg-success", title: "Mentorat Pro", desc: "Accès direct à des professionnels expérimentés de votre domaine" },
               { icon: "03", color: "bg-red-500", title: "Bons Plans", desc: "Logement, réductions, outils... tout ce dont vous avez besoin" },
               { icon: "04", color: "bg-purple-600", title: "Communauté", desc: "Forums, salons vocaux et événements exclusifs" },

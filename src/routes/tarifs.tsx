@@ -2,7 +2,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check, ArrowUpRight, Sparkles, Loader2, ChevronDown } from "lucide-react";
 import { AppNav } from "@/components/AppNav";
-import { SiteFooter } from "@/components/SiteFooter";
 import { supabase } from "@/integrations/supabase/client";
 import { createSpringrCheckout } from "@/lib/springr.payments.functions";
 import { toast } from "sonner";
@@ -404,7 +403,7 @@ function TarifsPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="font-display text-3xl font-bold mb-4">Prêt à booster votre carrière ?</h2>
             <p className="text-slate-400 mb-8 text-lg">
-              Rejoignez des milliers d'étudiants qui ont trouvé leur stage ou alternance grâce à Springr.
+              Rejoins les premiers inscrits et trouve ton stage ou ton alternance.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
@@ -423,8 +422,6 @@ function TarifsPage() {
           </div>
         </div>
 
-        {/* Footer */}
-        <SiteFooter />
       </main>
     </div>
   );

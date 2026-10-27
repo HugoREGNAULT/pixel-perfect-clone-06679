@@ -16,7 +16,6 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { AppNav } from "@/components/AppNav";
-import { SiteFooter } from "@/components/SiteFooter";
 
 export const Route = createFileRoute("/fonctionnalites")({
   head: () => ({
@@ -168,9 +167,6 @@ function FonctionnalitesPage() {
       {/* Hero Section */}
       <section className="py-12 md:py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="text-center mb-8">
-          <div className="inline-block mb-4 px-3 py-1 bg-primary-soft text-primary rounded-full text-sm font-medium">
-            À complété
-          </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
             Fonctionnalités complètes
           </h1>
@@ -356,7 +352,7 @@ function FonctionnalitesPage() {
             Prêt à découvrir toutes ces fonctionnalités ?
           </h2>
           <p className="text-lg md:text-xl mb-8 opacity-90">
-            Rejoignez les milliers d'étudiants qui transforment leur carrière avec Springr.
+            Rejoins les premiers étudiants qui construisent leur réseau avec Springr.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -375,7 +371,6 @@ function FonctionnalitesPage() {
         </div>
       </section>
 
-      <SiteFooter />
     </div>
   );
 }

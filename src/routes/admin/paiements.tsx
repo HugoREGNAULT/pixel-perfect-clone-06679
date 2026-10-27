@@ -2,10 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { TrendingUp, CreditCard, Users, XCircle, ExternalLink } from "lucide-react";
-import {
-  ResponsiveContainer, BarChart, Bar, XAxis, YAxis,
-  Tooltip, CartesianGrid,
-} from "recharts";
 
 export const Route = createFileRoute("/admin/paiements")({
   head: () => ({ meta: [{ title: "Admin — Paiements · Springr" }] }),
@@ -42,16 +38,6 @@ const STATUS_COLORS: Record<string, string> = {
   canceled:  "bg-white/8 text-white/35",
   incomplete:"bg-red-500/15 text-red-400",
 };
-
-// Revenue by month — mock since Stripe isn't client-readable
-const REVENUE_MONTHS = [
-  { mois: "Jan", mrr: 0    }, { mois: "Fév", mrr: 0    },
-  { mois: "Mar", mrr: 199  }, { mois: "Avr", mrr: 498  },
-  { mois: "Mai", mrr: 997  }, { mois: "Jun", mrr: 1496 },
-  { mois: "Jul", mrr: 1995 }, { mois: "Aoû", mrr: 2494 },
-  { mois: "Sep", mrr: 2993 }, { mois: "Oct", mrr: 3492 },
-  { mois: "Nov", mrr: 3991 }, { mois: "Déc", mrr: 4490 },
-];
 
 function AdminPaiementsPage() {
   const db = supabase as any;
@@ -99,20 +85,8 @@ function AdminPaiementsPage() {
       <div className="bg-white/4 border border-white/8 rounded-xl p-5">
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-sm font-medium text-white/80">Revenus mensuels — 12 mois</h3>
-          <span className="text-xs text-white/25 font-mono">estimé · Stripe</span>
         </div>
-        <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={REVENUE_MONTHS} margin={{ left: -20, right: 8 }}>
-            <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
-            <XAxis dataKey="mois" tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 10 }} tickLine={false} axisLine={false} />
-            <YAxis tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 10 }} tickLine={false} axisLine={false} />
-            <Tooltip
-              contentStyle={{ background: "#12121C", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 12 }}
-              formatter={(v) => [`${v} €`, "MRR"]}
-            />
-            <Bar dataKey="mrr" fill="#B5FF3D" radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+        <p className="text-sm text-white/40 text-center py-16">Pas encore de données</p>
       </div>
 
       {/* Subscriptions table */}

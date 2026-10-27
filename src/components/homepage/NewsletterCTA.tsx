@@ -71,7 +71,7 @@ export function NewsletterCTA() {
             fontFamily: "var(--font-inter)",
           }}
         >
-          Prêt à lancer votre carrière ? [À CONFIRMER : avantage au lancement]
+          Prêt à lancer ta carrière ? Laisse ton e-mail, on te prévient au lancement.
         </p>
 
         {/* Success message */}
