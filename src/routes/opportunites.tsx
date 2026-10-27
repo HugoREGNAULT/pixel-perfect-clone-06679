@@ -385,7 +385,7 @@ function OfferCard({ offer, applied, onApply }: { offer: JobOffer; applied: bool
 
       {/* source badge */}
       <div className="mb-4">
-        <span className={`text-[10px] border rounded-full px-2 py-0.5 font-mono ${sourceMeta.color}`}>{sourceMeta.label}</span>
+        <span className={`text-[10px] border rounded-full px-2 py-0.5 font-mono ${sourceMeta.color}`}>{isExternal ? `Source : ${sourceMeta.label}` : sourceMeta.label}</span>
       </div>
 
       {/* apply button */}

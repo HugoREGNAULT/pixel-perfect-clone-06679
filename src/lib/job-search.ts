@@ -3,7 +3,7 @@
 // Calls the Supabase Edge Function which handles France Travail + La Bonne Alternance
 // Falls back to local Supabase offres table if the Edge Function is unavailable
 
-import { supabase, getSupabaseAnonKey } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 
 export type JobSource = "france_travail" | "bonne_alternance" | "local";
 export type JobType   = "stage" | "alternance" | "cdi" | "cdd" | "job";
@@ -46,9 +46,32 @@ export interface SearchResult {
   error?: string | null;
 }
 
-const EDGE_FN_URL = `https://ujjpfcdcyvdliofvadul.supabase.co/functions/v1/job-search`;
+const EDGE_TIMEOUT_MS = 8000;
+const VALID_TYPES: JobType[] = ["stage", "alternance", "cdi", "cdd", "job"];
 
-export async function searchJobs(params: SearchParams): Promise<SearchResult> {
+// Normalise une offre renvoyée par la fonction Edge vers le type JobOffer de l'UI
+function normalizeEdgeOffer(r: any): JobOffer {
+  const source: JobSource = r?.source === "france_travail" || r?.source === "bonne_alternance" ? r.source : "local";
+  return {
+    id:          String(r?.id ?? ""),
+    source,
+    title:       String(r?.title ?? ""),
+    company:     String(r?.company ?? ""),
+    city:        String(r?.city ?? ""),
+    type:        VALID_TYPES.includes(r?.type) ? r.type : "job",
+    sector:      String(r?.sector ?? ""),
+    description: String(r?.description ?? ""),
+    publishedAt: String(r?.publishedAt ?? ""),
+    applyUrl:    String(r?.applyUrl ?? ""),
+    remote:      r?.remote === true,
+    tags:        Array.isArray(r?.tags) ? r.tags.filter((t: unknown) => typeof t === "string") : [],
+    experience:  r?.experience ? String(r.experience) : undefined,
+    education:   r?.education ? String(r.education) : undefined,
+    salary:      r?.salary ? String(r.salary) : undefined,
+  };
+}
+
+async function searchViaEdge(params: SearchParams): Promise<SearchResult> {
   const qs = new URLSearchParams();
   if (params.q)         qs.set("q",         params.q);
   if (params.type)      qs.set("type",      params.type);
@@ -56,27 +79,54 @@ export async function searchJobs(params: SearchParams): Promise<SearchResult> {
   if (params.sector)    qs.set("sector",    params.sector);
   if (params.education) qs.set("education", params.education);
   if (params.page)      qs.set("page",      String(params.page));
+  const query = qs.toString();
+
+  const controller = new AbortController();
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => {
+      controller.abort();
+      reject(new Error("job-search timeout"));
+    }, EDGE_TIMEOUT_MS);
+  });
 
   try {
-    const { data: { session } } = await supabase.auth.getSession();
-
-    // Always send Authorization header: use session token if available, otherwise use anon key
-    const anonKey = getSupabaseAnonKey();
-    const authToken = session?.access_token ?? anonKey;
-
-    const res = await fetch(`${EDGE_FN_URL}?${qs}`, {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "apikey": anonKey,
-      },
+    // La fonction Edge lit ses paramètres dans l'URL (GET)
+    const call = supabase.functions.invoke(`job-search${query ? `?${query}` : ""}`, {
+      method: "GET",
+      signal: controller.signal,
     });
+    const { data, error } = await Promise.race([call, timeout]);
+    if (error) throw error;
+    if (!data || !Array.isArray(data.offers)) throw new Error("Réponse job-search invalide");
+    return {
+      offers:  data.offers.map(normalizeEdgeOffer),
+      total:   typeof data.total === "number" ? data.total : data.offers.length,
+      page:    data.page ?? params.page ?? 1,
+      perPage: data.perPage ?? 20,
+      cached:  data.cached === true,
+      sources: data.sources,
+      errors:  data.errors,
+    };
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
 
-    if (!res.ok) throw new Error(`Edge function error: ${res.status}`);
-    return await res.json() as SearchResult;
+export async function searchJobs(params: SearchParams): Promise<SearchResult> {
+  let edgeResult: SearchResult | null = null;
+  try {
+    edgeResult = await searchViaEdge(params);
+    if (edgeResult.offers.length > 0) return edgeResult;
+    console.warn("[job-search] Edge function returned 0 offers, falling back to local DB");
   } catch (err) {
     console.warn("[job-search] Edge function unavailable, falling back to local DB:", err);
-    return fallbackToLocal(params);
   }
+
+  const local = await fallbackToLocal(params);
+  // Si la base locale est vide aussi, on garde la réponse (vide) de la fonction Edge quand elle existe
+  if (local.offers.length === 0 && edgeResult) return edgeResult;
+  return local;
 }
 
 
