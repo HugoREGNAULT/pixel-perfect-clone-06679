@@ -16,7 +16,7 @@ const PLAN_LABELS: Record<string, string> = {
   student_premium:      "Premium Étudiant",
   student_premium_plus: "Premium+ Étudiant",
   company_starter:      "Starter Recruteur",
-  company_pro:          "Pro Illimité",
+  company_pro:          "Pro",
 };
 
 function SuccessPage() {

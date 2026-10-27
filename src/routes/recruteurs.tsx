@@ -4,6 +4,7 @@ import { AppNav } from "@/components/AppNav";
 import { supabase } from "@/integrations/supabase/client";
 import { createSpringrCheckout } from "@/lib/springr.payments.functions";
 import { toast } from "sonner";
+import { RECRUITER_FREE, RECRUITER_STARTER, RECRUITER_PRO } from "@/lib/pricing";
 import {
   Check,
   ArrowUpRight,
@@ -25,74 +26,26 @@ export const Route = createFileRoute("/recruteurs")({
 
 const PLANS = [
   {
-    id: "gratuit",
+    ...RECRUITER_FREE,
     lookupKey: null,
-    name: "Gratuit",
-    price: "0€",
-    period: "",
-    sub: "Pour commencer",
     color: "border-white/15",
     accent: "text-mute",
-    cta: "Commencer gratuitement",
     ctaStyle: "border border-white/20 text-white hover:bg-white/5",
     featured: false,
-    features: [
-      "Jusqu'à 3 offres par mois",
-      "Profil entreprise basique",
-      "Accès aux candidatures",
-      "Listing standard dans les résultats",
-      "Support par email",
-    ],
-    missing: ["Mise en avant", "Analytics", "Tableau de bord", "Accès aux profils étudiants"],
   },
   {
-    id: "company_starter",
-    lookupKey: "company_starter_per_job",
-    name: "Starter",
-    price: "29,99€",
-    period: "/offre",
-    sub: "Le plus populaire",
+    ...RECRUITER_STARTER,
     color: "border-violet/50",
     accent: "text-violet-soft",
-    cta: "Publier une offre",
     ctaStyle: "bg-violet text-white hover:bg-violet/90",
     featured: true,
-    features: [
-      "1 annonce mise en avant",
-      "Badge « Sponsorisée » visible",
-      "Boost visibilité ×10",
-      "Analytics de l'annonce (vues, clics)",
-      "Position prioritaire dans les résultats",
-      "Support prioritaire sous 24h",
-    ],
-    missing: ["Offres illimitées", "Tableau de bord complet", "Accès aux profils"],
   },
   {
-    id: "company_pro",
-    lookupKeyMonthly: "company_pro_monthly",
-    lookupKeyYearly: "company_pro_yearly",
-    name: "Pro Illimité",
-    priceMonthly: "199€",
-    priceYearly: "1 990€",
-    period: "/mois",
-    periodYearly: "/an",
-    sub: "Pour les équipes RH",
+    ...RECRUITER_PRO,
     color: "border-lime/40",
     accent: "text-lime",
-    cta: "Passer Pro",
     ctaStyle: "bg-lime text-ink hover:-translate-y-0.5",
     featured: false,
-    features: [
-      "Offres illimitées chaque mois",
-      "Tableau de bord recruteur complet",
-      "Stats avancées (vues, candidatures, taux)",
-      "Accès aux profils étudiants open-to-work",
-      "Sourcing proactif par domaine",
-      "Export CSV des candidatures",
-      "Account manager dédié",
-      "Intégration ATS disponible",
-    ],
-    missing: [],
   },
 ] as const;
 
