@@ -28,8 +28,8 @@ const PLAN_LABELS: Record<string, string> = {
   company_pro:          "Company Pro",
 };
 const PLAN_PRICE: Record<string, number> = {
-  student_premium: 9.99, student_premium_plus: 14.99,
-  company_starter: 49, company_pro: 99,
+  student_premium: 4.99, student_premium_plus: 9.99,
+  company_starter: 29.99, company_pro: 199,
 };
 const STATUS_COLORS: Record<string, string> = {
   active:    "bg-lime/10 text-lime",

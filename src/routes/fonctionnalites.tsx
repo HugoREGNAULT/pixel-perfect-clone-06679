@@ -152,7 +152,7 @@ const MORE_FEATURES: Feature[] = [
 
 const COMPARISON_FEATURES = [
   { name: "Accès aux offres", free: true, premium: true },
-  { name: "Candidatures illimitées", free: false, premium: true },
+  { name: "Candidatures illimitées", free: true, premium: true },
   { name: "Accès aux mentors", free: false, premium: true },
   { name: "Alertes d'offres", free: false, premium: true },
   { name: "Profil premium", free: false, premium: true },
