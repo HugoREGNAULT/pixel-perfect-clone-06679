@@ -27,7 +27,7 @@ export const FAQ_COMMON: FaqItem[] = [
 /** Questions propres aux plans étudiants. */
 export const FAQ_STUDENT: FaqItem[] = [
   {
-    question: "L'essai gratuit est-il vraiment gratuit ?",
+    question: "Le plan Gratuit est-il vraiment gratuit ?",
     answer: "Oui, notre plan Gratuit est complètement gratuit. Aucune carte bancaire requise pour commencer.",
   },
   {
