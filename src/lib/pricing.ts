@@ -30,7 +30,6 @@ export const STUDENT_PREMIUM = {
   lookupKeys: { monthly: "student_premium_monthly", yearly: "student_premium_yearly" },
   features: [
     "Tout du plan Gratuit",
-    "Tout du plan Gratuit",
     "Badge Premium sur ton profil",
     "Alertes offres",
     "Accès aux mentors",
