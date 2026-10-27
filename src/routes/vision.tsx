@@ -17,6 +17,7 @@ function VisionPage() {
     <div className="min-h-screen bg-white text-foreground">
       <AppNav />
 
+      <main>
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-white px-5 py-16 lg:px-8 lg:py-32">
         <div className="absolute left-10 top-20 z-0 size-64 rounded-full blur-3xl bg-blue-400 mix-blend-multiply opacity-50" />
@@ -250,6 +251,7 @@ function VisionPage() {
           </p>
         </div>
       </section>
+      </main>
     </div>
   );
 }

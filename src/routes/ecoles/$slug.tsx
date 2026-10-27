@@ -11,12 +11,82 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { toast } from "sonner";
 
+const SITE_URL = "https://springr.app";
+
+function truncate(text: string, max: number): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max - 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.\-–]+$/, "") + "…";
+}
+
+// Description tirée uniquement des champs réels de l'école (jamais inventée).
+function buildDescription(e: any): string | null {
+  if (e.description && String(e.description).trim()) return truncate(String(e.description), 150);
+  const parts = [
+    e.type_etablissement || e.type,
+    e.city ? `à ${e.city}` : null,
+  ].filter(Boolean);
+  if (!parts.length) return null;
+  return truncate(`${e.name} : ${parts.join(" ")}.`, 150);
+}
+
+function buildJsonLd(e: any, slug: string) {
+  const ld: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    name: e.name,
+    url: `${SITE_URL}/ecoles/${slug}`,
+  };
+  const site = e.site_web || e.website;
+  if (site) ld.sameAs = [site];
+  if (e.logo_url) ld.logo = e.logo_url;
+  if (e.description) ld.description = truncate(String(e.description), 300);
+  if (e.email) ld.email = e.email;
+  if (e.telephone) ld.telephone = e.telephone;
+  if (e.adresse || e.city || e.code_postal || e.region) {
+    ld.address = {
+      "@type": "PostalAddress",
+      ...(e.adresse ? { streetAddress: e.adresse } : {}),
+      ...(e.code_postal ? { postalCode: e.code_postal } : {}),
+      ...(e.city ? { addressLocality: e.city } : {}),
+      ...(e.region ? { addressRegion: e.region } : {}),
+      addressCountry: "FR",
+    };
+  }
+  return ld;
+}
+
 export const Route = createFileRoute("/ecoles/$slug")({
-  head: ({ params }) => ({
-    meta: [
-      { title: `${params.slug.replace(/-/g, " ")} — Springr` },
-    ],
-  }),
+  loader: async ({ params }) => {
+    const { data } = await supabase
+      .from("ecoles")
+      .select("*")
+      .eq("slug", params.slug)
+      .maybeSingle();
+    return { ecole: (data as any) ?? null };
+  },
+  head: ({ params, loaderData }) => {
+    const e = loaderData?.ecole;
+    if (!e) {
+      return { meta: [{ title: `${params.slug.replace(/-/g, " ")} | Springr` }] };
+    }
+    const title = `${e.name} : avis, formations, portes ouvertes | Springr`;
+    const description = buildDescription(e);
+    const url = `${SITE_URL}/ecoles/${params.slug}`;
+    return {
+      meta: [
+        { title },
+        ...(description ? [{ name: "description", content: description }] : []),
+        { property: "og:title", content: title },
+        ...(description ? [{ property: "og:description", content: description }] : []),
+        { property: "og:url", content: url },
+        { "script:ld+json": buildJsonLd(e, params.slug) },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
   validateSearch: (s: Record<string, unknown>) => ({
     tab: (s.tab as string) || "presentation",
   }),
@@ -102,11 +172,12 @@ function EcoleDetailPage() {
   const { slug }       = Route.useParams();
   const { tab }        = Route.useSearch();
   const navigate       = Route.useNavigate();
+  const loaderData     = Route.useLoaderData();
 
-  const [ecole,    setEcole]    = useState<Ecole | null>(null);
+  const [ecole,    setEcole]    = useState<Ecole | null>(loaderData?.ecole ?? null);
   const [avis,     setAvis]     = useState<Avis[]>([]);
   const [jpos,     setJpos]     = useState<Jpo[]>([]);
-  const [loading,  setLoading]  = useState(true);
+  const [loading,  setLoading]  = useState(!loaderData?.ecole);
   const [userId,   setUserId]   = useState<string | null>(null);
   const [myAvis,   setMyAvis]   = useState<Avis | null>(null);
   const [form,     setForm]     = useState<AvisForm>(EMPTY_FORM);
@@ -123,7 +194,7 @@ function EcoleDetailPage() {
 
   useEffect(() => {
     async function load() {
-      setLoading(true);
+      if (!ecole) setLoading(true);
 
       const [{ data: ecoleData }, { data: avisData }, { data: jposData }] = await Promise.all([
         supabase.from("ecoles").select("*").eq("slug", slug).maybeSingle(),

@@ -55,6 +55,7 @@ function LaunchPage() {
       <div className="min-h-screen bg-white text-foreground overflow-x-hidden flex flex-col">
         <Nav />
 
+        <main>
         {/* Hero Section */}
         <section
           className="flex flex-col gap-8 lg:gap-12 isolate items-center py-16 lg:py-32 relative w-full overflow-hidden px-5 lg:px-8"
@@ -497,6 +498,7 @@ function LaunchPage() {
             Contactez-nous
           </a>
         </section>
+        </main>
       </div>
 
       <FounderCheckoutDialog open={founderOpen} onOpenChange={setFounderOpen} />
